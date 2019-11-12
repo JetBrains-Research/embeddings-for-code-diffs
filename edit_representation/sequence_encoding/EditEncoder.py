@@ -3,14 +3,14 @@ from torch import nn
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 
-class Encoder(nn.Module):
+class EditEncoder(nn.Module):
     """Encodes a sequence of word embeddings"""
 
     def __init__(self, input_size, hidden_size, num_layers=1, dropout=0.):
-        super(Encoder, self).__init__()
+        super(EditEncoder, self).__init__()
         self.num_layers = num_layers
         self.rnn = nn.LSTM(input_size, hidden_size, num_layers,
-                          batch_first=True, bidirectional=True, dropout=dropout)
+                           batch_first=True, bidirectional=True, dropout=dropout)
 
     def forward(self, x, mask, lengths):
         """
@@ -18,6 +18,8 @@ class Encoder(nn.Module):
         The input mini-batch x needs to be sorted by length.
         x should have dimensions [batch, time, dim].
         """
+        lengths, lengths_mask = torch.sort(lengths, descending=True)
+        x = x[lengths_mask, :, :]
         packed = pack_padded_sequence(x, lengths, batch_first=True)
         output, final = self.rnn(packed)
         final = final[0]

@@ -7,7 +7,10 @@ import numpy as np
 import torch
 from torch import nn
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
+from edit_representation.sequence_encoding.Differ import Differ
+from edit_representation.sequence_encoding.EditEncoder import EditEncoder
 from neural_editor.seq2seq.BahdanauAttention import BahdanauAttention
 from neural_editor.seq2seq.Batch import Batch
 from neural_editor.seq2seq.EncoderDecoderMt import EncoderDecoderMt
@@ -18,23 +21,26 @@ from neural_editor.seq2seq.encoder.Encoder import Encoder
 from neural_editor.seq2seq.train_config import CONFIG
 
 
-def make_model(vocab_size, emb_size=128, hidden_size_encoder=128, hidden_size_decoder=128, num_layers=1, dropout=0.1):
+def make_model(vocab_size, edit_representation_size=512, emb_size=128, hidden_size_encoder=128, hidden_size_decoder=128, num_layers=1, dropout=0.1):
     "Helper: Construct a model from hyperparameters."
     # TODO: change hidden size of decoder
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
     model = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
-        Decoder(emb_size, hidden_size_encoder, hidden_size_decoder, attention, num_layers=num_layers, dropout=dropout),
+        Decoder(emb_size, edit_representation_size, hidden_size_encoder, hidden_size_decoder, attention, num_layers=num_layers, dropout=dropout),
+        EditEncoder(3 * emb_size, edit_representation_size, num_layers=num_layers),
         nn.Embedding(vocab_size, emb_size),
-        Generator(hidden_size_decoder, vocab_size))
+        Generator(hidden_size_decoder, vocab_size),
+        Differ(vocab_size, vocab_size + 1, vocab_size + 2, vocab_size + 3, vocab_size + 4))
 
     return model.cuda() if CONFIG['USE_CUDA'] else model
 
 
 def rebatch(pad_idx, batch):
     """Wrap torchtext batch into our own Batch class for pre-processing"""
-    return Batch(batch.src, batch.trg, pad_idx)
+    return Batch(batch.src, batch.trg, batch.diff_alignment,
+                 batch.diff_prev, batch.diff_updated, pad_idx)
 
 
 def make_model_mt(src_vocab, tgt_vocab, emb_size=256, hidden_size=512, num_layers=1, dropout=0.1):
@@ -74,7 +80,7 @@ def print_data_info(train_data, valid_data, test_data, field):
     print("Number of words (types):", len(field.vocab))
 
 
-def run_epoch(data_iter, model, loss_compute, print_every=50):
+def run_epoch(data_iter, model, loss_compute, batches_num, print_every=50):
     """Standard Training and Logging Function"""
 
     start = time.time()
@@ -83,9 +89,7 @@ def run_epoch(data_iter, model, loss_compute, print_every=50):
     print_tokens = 0
 
     for i, batch in enumerate(data_iter, 1):
-        out, _, pre_output = model.forward(batch.src, batch.trg,
-                                           batch.src_mask, batch.trg_mask,
-                                           batch.src_lengths, batch.trg_lengths)
+        out, _, pre_output = model.forward(batch)
         loss = loss_compute(pre_output, batch.trg_y, batch.nseqs)
         total_loss += loss
         total_tokens += batch.ntokens
@@ -93,8 +97,8 @@ def run_epoch(data_iter, model, loss_compute, print_every=50):
 
         if model.training and i % print_every == 0:
             elapsed = time.time() - start
-            print("Epoch Step: %d Loss: %f Tokens per Sec: %f" %
-                  (i, loss / batch.nseqs, print_tokens / elapsed))
+            print("Epoch Step: %d / %d Loss: %f Tokens per Sec: %f" %
+                  (i, batches_num, loss / batch.nseqs, print_tokens / elapsed))
             start = time.time()
             print_tokens = 0
 

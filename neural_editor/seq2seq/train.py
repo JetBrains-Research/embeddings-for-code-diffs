@@ -3,6 +3,7 @@ import torch
 from torch import nn
 from torchtext import data
 
+from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from neural_editor.seq2seq.datasets.LearningToRepresentEditsJson import LearningToRepresentEditsTokenStrings
 from neural_editor.seq2seq.train_config import CONFIG
@@ -18,7 +19,9 @@ def load_data(verbose=False):
         CONFIG['DATASET_ROOT'], diffs_field,
         filter_pred=lambda x: len(vars(x)['src']) <= CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] and
                               len(vars(x)['trg']) <= CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'])
-    diffs_field.build_vocab(train_data.src, train_data.trg, min_freq=CONFIG['TOKEN_MIN_FREQ'])
+    diffs_field.build_vocab(train_data.src, train_data.trg,
+                            train_data.diff_aligment, train_data.diff_prev,
+                            train_data.diff_updated, min_freq=CONFIG['TOKEN_MIN_FREQ'])
     if verbose:
         print_data_info(train_data, val_data, test_data, diffs_field)
     return train_data, val_data, test_data, diffs_field
@@ -45,12 +48,14 @@ def train(model, train_data, val_data, diffs_field, print_every=100):
 
     dev_perplexities = []
 
+    batches_num = len(train_iter)
     for epoch in range(CONFIG['MAX_NUM_OF_EPOCHS']):
         print("Epoch", epoch)
         model.train()
         train_perplexity = run_epoch((rebatch(pad_index, b) for b in train_iter),
                                      model,
                                      SimpleLossCompute(model.generator, criterion, optim),
+                                     batches_num,
                                      print_every=print_every)
 
         model.eval()
@@ -72,7 +77,7 @@ def run_experiment():
     model = make_model(len(diffs_field.vocab),
                        emb_size=CONFIG['WORD_EMBEDDING_SIZE'], hidden_size_encoder=CONFIG['ENCODER_HIDDEN_SIZE'],
                        hidden_size_decoder=CONFIG['DECODER_HIDDEN_SIZE'],
-                       num_layers=2, dropout=0.2)
+                       num_layers=1, dropout=0.2)  # TODO: num_layers
     dev_perplexities = train(model, train_data, val_data, diffs_field, print_every=10)
     plot_perplexity(dev_perplexities)
 

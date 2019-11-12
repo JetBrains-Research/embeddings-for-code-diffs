@@ -34,6 +34,11 @@ CONFIG = {
     'DECODER_HIDDEN_SIZE': 256,
     'EARLY_STOPPING_ROUNDS': 1000,
     'BEAM_SIZE': 5,
+    'REPLACEMENT_SYMBOL': '↔',
+    'DELETION_SYMBOL': '−',
+    'ADDITION_SYMBOL': '+',
+    'UNCHANGED_SYMBOL': '=',
+    'PADDING_SYMBOL': '∅',
 }
 
 if CONFIG['SEED'] is not None:
