@@ -99,7 +99,8 @@ def greedy_decode(model, batch, max_len=100, sos_index=1, eos_index=None):
 
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
-        (encoder_hidden, encoder_final), _, edit_representation_final = model.encode(batch)
+        (encoder_hidden, encoder_final, encoder_cell_state), _, \
+        edit_representation_final, edit_representation_cell_state = model.encode(batch)
         prev_y = torch.ones(1, 1).fill_(sos_index).type_as(src)
         trg_mask = torch.ones_like(prev_y)
 
@@ -110,8 +111,8 @@ def greedy_decode(model, batch, max_len=100, sos_index=1, eos_index=None):
     for i in range(max_len):
         with torch.no_grad():
             out, hidden, pre_output = model.decode(
-                edit_representation_final,
-                encoder_hidden, encoder_final, src_mask,
+                edit_representation_final, edit_representation_cell_state,
+                encoder_hidden, encoder_final, encoder_cell_state, src_mask,
                 prev_y, trg_mask, hidden)
 
             # we predict from the pre-output layer, which is

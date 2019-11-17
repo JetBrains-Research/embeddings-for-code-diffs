@@ -32,7 +32,7 @@ class Decoder(nn.Module):
         self.pre_output_layer = nn.Linear(hidden_size + 2 * hidden_size_encoder + emb_size,
                                           hidden_size, bias=False)
 
-    def forward_step(self, edit_representation_final, prev_embed, encoder_hidden, src_mask, proj_key, hidden):
+    def forward_step(self, edit_representation_final, prev_embed, encoder_hidden, src_mask, proj_key, hidden, cell_state):
         """Perform a single decoder step (1 word)"""
 
         # compute context vector using attention mechanism
@@ -43,17 +43,19 @@ class Decoder(nn.Module):
 
         # update rnn hidden state
         rnn_input = torch.cat([prev_embed, context, edit_representation_final.transpose(0, 1)], dim=2)
-        output, hidden_cell = self.rnn(rnn_input, (hidden, torch.zeros_like(hidden)))  # TODO: zeros or cell states from encoder
-        hidden = hidden_cell[0]
+        # DONE_TODO: zeros or cell states from encoder
+        output, (hidden, cell_state) = self.rnn(rnn_input, (hidden, cell_state))
 
         pre_output = torch.cat([prev_embed, output, context], dim=2)
         pre_output = self.dropout_layer(pre_output)
         pre_output = self.pre_output_layer(pre_output)
 
-        return output, hidden, pre_output
+        return output, hidden, cell_state, pre_output
 
-    def forward(self, trg_embed, edit_representation_final, encoder_hidden, encoder_final,
-                src_mask, trg_mask, hidden=None, max_len=None):
+    def forward(self, trg_embed,
+                edit_representation_final, edit_representation_cell_state,
+                encoder_hidden, encoder_final, encoder_cell_state,
+                src_mask, trg_mask, hidden=None, cell_state=None, max_len=None):
         """Unroll the decoder one step at a time."""
 
         # the maximum number of steps to unroll the RNN
@@ -63,6 +65,8 @@ class Decoder(nn.Module):
         # initialize decoder hidden state
         if hidden is None:
             hidden = self.init_hidden(edit_representation_final, encoder_final)
+        if cell_state is None:
+            cell_state = self.init_hidden(edit_representation_cell_state, encoder_cell_state)
 
         # pre-compute projected encoder hidden states
         # (the "keys" for the attention mechanism)
@@ -76,8 +80,8 @@ class Decoder(nn.Module):
         # unroll the decoder RNN for max_len steps
         for i in range(max_len):
             prev_embed = trg_embed[:, i].unsqueeze(1)
-            output, hidden, pre_output = self.forward_step(
-                edit_representation_final, prev_embed, encoder_hidden, src_mask, proj_key, hidden)
+            output, hidden, cell_state, pre_output = self.forward_step(
+                edit_representation_final, prev_embed, encoder_hidden, src_mask, proj_key, hidden, cell_state)
             decoder_states.append(output)
             pre_output_vectors.append(pre_output)
 

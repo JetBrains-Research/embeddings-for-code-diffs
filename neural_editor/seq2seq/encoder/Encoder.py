@@ -19,13 +19,15 @@ class Encoder(nn.Module):
         x should have dimensions [batch, time, dim].
         """
         packed = pack_padded_sequence(x, lengths, batch_first=True)
-        output, hidden_cell = self.rnn(packed)
-        final = hidden_cell[0]
+        output, (final, cell_state) = self.rnn(packed)
         output, _ = pad_packed_sequence(output, batch_first=True)
 
         # we need to manually concatenate the final states for both directions
         fwd_final = final[0:final.size(0):2]
         bwd_final = final[1:final.size(0):2]
         final = torch.cat([fwd_final, bwd_final], dim=2)  # [num_layers, batch, 2*dim]
+        fwd_cell = cell_state[0:cell_state.size(0):2]
+        bwd_cell = cell_state[1:cell_state.size(0):2]
+        cell_state = torch.cat([fwd_cell, bwd_cell], dim=2)  # [num_layers, batch, 2*dim]
 
-        return output, final
+        return output, final, cell_state
