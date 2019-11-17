@@ -1,5 +1,7 @@
 import Levenshtein as Lvn
 
+# TODO: write unit test with example from vk, problem: '' appears in output
+
 
 def build_vocab(tokens):
     max_unseen = 0

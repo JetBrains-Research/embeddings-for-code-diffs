@@ -2,7 +2,6 @@ import os
 
 import numpy as np
 import torch
-import torchtext
 
 
 def make_reproducible(seed):
@@ -23,7 +22,7 @@ CONFIG = {
     'SPLIT_ON_TRAIN_VAL_TEST': False,
     'USE_CUDA': torch.cuda.is_available(),
     'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-    'TOKENS_CODE_CHUNK_MAX_LEN': 100000,
+    'TOKENS_CODE_CHUNK_MAX_LEN': 100,
     'TOKEN_MIN_FREQ': 1,
     'LEARNING_RATE': 0.0003,
     'MAX_NUM_OF_EPOCHS': 10,
@@ -34,11 +33,13 @@ CONFIG = {
     'DECODER_HIDDEN_SIZE': 256,
     'EARLY_STOPPING_ROUNDS': 1000,
     'BEAM_SIZE': 5,
-    'REPLACEMENT_SYMBOL': '↔',
-    'DELETION_SYMBOL': '−',
-    'ADDITION_SYMBOL': '+',
-    'UNCHANGED_SYMBOL': '=',
-    'PADDING_SYMBOL': '∅',
+    'REPLACEMENT_TOKEN': 'замена',
+    'DELETION_TOKEN': 'удаление',
+    'ADDITION_TOKEN': 'добавление',
+    'UNCHANGED_TOKEN': 'равенство',
+    'PADDING_TOKEN': 'паддинг',
+    'VERBOSE': True,
+    'PRINT_EVERY_EPOCH': 5,
 }
 
 if CONFIG['SEED'] is not None:

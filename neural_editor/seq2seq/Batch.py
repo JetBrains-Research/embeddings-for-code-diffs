@@ -29,7 +29,7 @@ class Batch:
 
         if trg is not None:
             trg, trg_lengths = trg
-            self.trg = trg[:, :-1]  # TODO: what is that? it is padding, why it isn't eos token?
+            self.trg = trg[:, :-1]  # TODO: what is that? it is padding, why it isn't eos token? Answer: it is problem because not all samples in batch have the same size therefore padding is cut
             self.trg_lengths = trg_lengths
             self.trg_y = trg[:, 1:]
             self.trg_mask = (self.trg_y != pad_index)

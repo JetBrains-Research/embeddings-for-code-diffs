@@ -2,9 +2,7 @@ import io
 import json
 import os
 
-from collatex import collate
 from torchtext import data
-from tqdm import tqdm
 
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.train_config import CONFIG
@@ -63,10 +61,6 @@ class LearningToRepresentEditsJson(data.Dataset):
 class LearningToRepresentEditsTokenStrings(data.Dataset):
     """Defines a dataset for learning to represent edits. It parses text files with tokens"""
 
-    @staticmethod
-    def sort_key(ex):
-        return data.interleave_keys(len(ex.src), len(ex.trg))
-
     def __init__(self, path, prefix, field, **kwargs):
         """Create a TranslationDataset given paths and fields.
 
@@ -79,15 +73,14 @@ class LearningToRepresentEditsTokenStrings(data.Dataset):
         """
         fields = [('src', field), ('trg', field), ('diff_alignment', field), ('diff_prev', field), ('diff_updated', field)]
         examples = []
-        differ = Differ(CONFIG['REPLACEMENT_SYMBOL'], CONFIG['DELETION_SYMBOL'],
-                        CONFIG['ADDITION_SYMBOL'], CONFIG['UNCHANGED_SYMBOL'],
-                        CONFIG['PADDING_SYMBOL'])
+        differ = Differ(CONFIG['REPLACEMENT_TOKEN'], CONFIG['DELETION_TOKEN'],
+                        CONFIG['ADDITION_TOKEN'], CONFIG['UNCHANGED_TOKEN'],
+                        CONFIG['PADDING_TOKEN'])
         with open(os.path.join(path, f'{prefix}_tokens_prev_text'), mode='r', encoding='utf-8') as prev,\
              open(os.path.join(path, f'{prefix}_tokens_updated_text'), mode='r', encoding='utf-8') as updated:
-            for prev_line, updated_line in tqdm(zip(prev, updated)):
+            for prev_line, updated_line in zip(prev, updated):
                 prev_line, updated_line = prev_line.strip(), updated_line.strip()
                 if prev_line != '' and updated_line != '':
-                    # TODO: change symbols in CONFIG
                     diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '))
                     examples.append(data.Example.fromlist(
                         [prev_line, updated_line, diff[0], diff[1], diff[2]], fields))

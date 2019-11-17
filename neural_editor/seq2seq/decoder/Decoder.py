@@ -1,10 +1,11 @@
 import torch
 from torch import nn
 
-# TODO: initialization = encoder output concatenate with edit representation.
+# DONE_TODO: initialization = encoder output concatenate with edit representation.
 # TODO: feed edit representation as input to decoder LSTM at each time step.
-# TODO: consider Luong et al (2015).
+# TODO: consider Luong et al (2015). Looks like difference with current is: differenet attention (local vs global)
 # TODO: add copying mechanism (Vinyals et al., 2015).
+# TODO: large sequences need a lot of memory (out of memory)
 
 
 class Decoder(nn.Module):
@@ -19,7 +20,8 @@ class Decoder(nn.Module):
         self.attention = attention
         self.dropout = dropout
 
-        self.rnn = nn.LSTM(emb_size + 2 * hidden_size_encoder + 2 * edit_representation_size, hidden_size, num_layers, bidirectional=False,  # TODO: bidirectional=False?
+        self.rnn = nn.LSTM(emb_size + 2 * hidden_size_encoder + 2 * edit_representation_size, hidden_size,
+                           num_layers, bidirectional=False,  # TODO: bidirectional=False?
                            batch_first=True, dropout=dropout)
 
         # to initialize from the final encoder state
