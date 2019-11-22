@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 # DONE_TODO: initialization = encoder output concatenate with edit representation.
-# TODO: feed edit representation as input to decoder LSTM at each time step.
+# DONE_TODO: feed edit representation as input to decoder LSTM at each time step.
 # TODO: consider Luong et al (2015). Looks like difference with current is: differenet attention (local vs global)
 # TODO: add copying mechanism (Vinyals et al., 2015).
 # TODO: large sequences need a lot of memory (out of memory)

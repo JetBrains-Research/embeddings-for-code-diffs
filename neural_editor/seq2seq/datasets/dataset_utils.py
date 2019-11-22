@@ -2,7 +2,9 @@ import json
 import os
 
 import numpy as np
+from torchtext.data import Dataset, Field
 
+from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.train_config import CONFIG
 
 
@@ -30,6 +32,19 @@ def concat_and_write_tokens_as_string_via_separator(root, sep=' '):
                 prev_tokens_string, updated_tokens_string = sep.join(diff['PrevCodeChunkTokens']), sep.join(diff['UpdatedCodeChunkTokens'])
                 prev_tokens_text_file.write(prev_tokens_string + "\n")
                 updated_tokens_text_file.write(updated_tokens_string + "\n")
+
+
+def load_datasets(dataset_cls: Dataset.__class__, path: str, field: Field,
+                  train: str = 'train', validation: str = 'val', test: str = 'test',
+                  **kwargs):
+    train_data = None if train is None else dataset_cls(
+        os.path.join(path, train), train, field, **kwargs)
+    val_data = None if validation is None else dataset_cls(
+        os.path.join(path, validation), validation, field, **kwargs)
+    test_data = None if test is None else dataset_cls(
+        os.path.join(path, test), test, field, **kwargs)
+    return tuple(d for d in (train_data, val_data, test_data)
+                 if d is not None)
 
 
 def prepare_dataset():

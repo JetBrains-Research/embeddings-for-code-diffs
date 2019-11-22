@@ -1,18 +1,19 @@
 import os
 
 import numpy as np
-import torch
+import torch.backends.cudnn
 
 
-def make_reproducible(seed):
+def make_reproducible(seed, make_cuda_reproducible=False):
     torch.manual_seed(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+    if make_cuda_reproducible:
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
     np.random.seed(seed)
 
 
 CONFIG = {
-    'DATASET_ROOT': os.path.abspath(os.path.join(os.path.dirname(__file__), "./.data/mined_diffs")),
+    'DATASET_ROOT': os.path.abspath(os.path.join(os.path.dirname(__file__), "./.data/java/tufano_bug_fixes_test/0_50")),
     'UNK_TOKEN': "<unk>",
     'PAD_TOKEN': "<pad>",
     'SOS_TOKEN': "<s>",

@@ -16,14 +16,16 @@ from neural_editor.seq2seq.encoder.Encoder import Encoder
 from neural_editor.seq2seq.train_config import CONFIG
 
 
-def make_model(vocab_size, edit_representation_size=512, emb_size=128, hidden_size_encoder=128, hidden_size_decoder=128, num_layers=1, dropout=0.1):
+def make_model(vocab_size, edit_representation_size=512, emb_size=128, hidden_size_encoder=128, hidden_size_decoder=128,
+               num_layers=1, dropout=0.1):
     "Helper: Construct a model from hyperparameters."
     # TODO: change hidden size of decoder
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
     model = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
-        Decoder(emb_size, edit_representation_size, hidden_size_encoder, hidden_size_decoder, attention, num_layers=num_layers, dropout=dropout),
+        Decoder(emb_size, edit_representation_size, hidden_size_encoder, hidden_size_decoder, attention,
+                num_layers=num_layers, dropout=dropout),
         EditEncoder(3 * emb_size, edit_representation_size, num_layers=num_layers),
         nn.Embedding(vocab_size, emb_size),
         Generator(hidden_size_decoder, vocab_size))
@@ -100,7 +102,7 @@ def greedy_decode(model, batch, max_len=100, sos_index=1, eos_index=None):
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
         (encoder_hidden, encoder_final, encoder_cell_state), _, \
-        edit_representation_final, edit_representation_cell_state = model.encode(batch)
+         edit_representation_final, edit_representation_cell_state = model.encode(batch)
         prev_y = torch.ones(1, 1).fill_(sos_index).type_as(src)
         trg_mask = torch.ones_like(prev_y)
 

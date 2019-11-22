@@ -5,23 +5,24 @@ from torchtext import data
 import pprint
 
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
-from neural_editor.seq2seq.datasets.LearningToRepresentEditsJson import LearningToRepresentEditsTokenStrings
+from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
+from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
 from neural_editor.seq2seq.train_config import CONFIG
 from neural_editor.seq2seq.train_utils import print_data_info, make_model, \
     run_epoch, rebatch, print_examples, plot_perplexity
 
 
-def load_data(verbose=False):
+def load_data(verbose: bool):
     diffs_field = data.Field(batch_first=True, lower=CONFIG['LOWER'], include_lengths=True,
                              unk_token=CONFIG['UNK_TOKEN'], pad_token=CONFIG['PAD_TOKEN'],
                              init_token=CONFIG['SOS_TOKEN'], eos_token=CONFIG['EOS_TOKEN'])  # TODO: init_token=None?
-    train_data, val_data, test_data = LearningToRepresentEditsTokenStrings.splits(
+    train_data, val_data, test_data = load_datasets(CodeChangesTokensDataset,
         CONFIG['DATASET_ROOT'], diffs_field,
         filter_pred=lambda x: len(vars(x)['src']) <= CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] and
                               len(vars(x)['trg']) <= CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'])
     # TODO: consider building 2 vocabularies: one for (src, trg), second for diffs
     diffs_field.build_vocab(train_data.src, train_data.trg,
-                            train_data.diff_alignment, train_data.diff_prev,  # TODO: try to delete alignment
+                            train_data.diff_alignment, train_data.diff_prev,  # TODO: try to erase alignment out of vocabulary
                             train_data.diff_updated, min_freq=CONFIG['TOKEN_MIN_FREQ'])
     if verbose:
         print_data_info(train_data, val_data, test_data, diffs_field)
