@@ -17,7 +17,10 @@ def make_reproducible(seed: int, make_cuda_reproducible: bool) -> None:
 
 CONFIG = {
     'IS_TEST': True,
-    'DATASET_ROOT': os.path.abspath(os.path.join(os.path.dirname(__file__), "./.data/java/tufano_bug_fixes/0_50")),
+    'DATASET_ROOT': os.path.abspath(
+        os.path.join(os.path.dirname(__file__), './.data/datasets/java/tufano_bug_fixes/0_50')
+    ),
+    'OUTPUT_PATH': os.path.abspath(os.path.join(os.path.dirname(__file__), './.data')),  # TODO: Fix this path for HSE cluster
     'UNK_TOKEN': "<unk>",
     'PAD_TOKEN': "<pad>",
     'SOS_TOKEN': "<s>",
@@ -47,14 +50,15 @@ CONFIG = {
     'PADDING_TOKEN': 'паддинг',
     'VERBOSE': True,
     'BATCH_SIZE': 64,
+    'SAVE_MODEL_EVERY': 10,
     'PRINT_EVERY_iTH_BATCH': 5,
     'MAKE_CUDA_REPRODUCIBLE': False,
 }
 
 if CONFIG['IS_TEST']:
     CONFIG['DATASET_ROOT'] = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                          "./.data/java/tufano_bug_fixes_test/0_50"))
-    CONFIG['MAX_NUM_OF_EPOCHS'] = 3
+                                                          "./.data/datasets/java/tufano_bug_fixes_test/0_50"))
+    CONFIG['MAX_NUM_OF_EPOCHS'] = 2
 
 if CONFIG['SEED'] is not None:
     make_reproducible(CONFIG['SEED'], CONFIG['MAKE_CUDA_REPRODUCIBLE'])

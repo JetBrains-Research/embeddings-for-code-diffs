@@ -103,8 +103,9 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
 
         if model.training and i % print_every == 0:
             elapsed = time.time() - start
-            print("Epoch Step: %d / %d Loss: %f Tokens per Sec: %f" %
-                  (i, batches_num, loss / batch.nseqs, print_tokens / elapsed))
+            print(f'Epoch Step: {i} / {batches_num} '
+                  f'Loss: {loss / batch.nseqs} '
+                  f'Tokens per Sec: {print_tokens / elapsed}')
             start = time.time()
             print_tokens = 0
 
@@ -200,10 +201,11 @@ def print_examples(example_iter: typing.Generator, model: EncoderDecoder, max_le
             break
 
 
-def plot_perplexity(perplexities: typing.List[float]) -> None:
+def plot_perplexity(perplexities: typing.List[float], labels: typing.List[str]) -> None:
     """plot perplexities"""
     plt.title("Perplexity per Epoch")
     plt.xlabel("Epoch")
     plt.ylabel("Perplexity")
-    plt.plot(perplexities)
+    for perplexity_values, label in zip(perplexities, labels):
+        plt.plot(perplexity_values, label=label)
     plt.show()
