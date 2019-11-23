@@ -1,19 +1,23 @@
 import os
+import random
 
 import numpy as np
 import torch.backends.cudnn
 
 
 def make_reproducible(seed: int, make_cuda_reproducible: bool) -> None:
+    random.seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
     torch.manual_seed(seed)
     if make_cuda_reproducible:
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
-    np.random.seed(seed)
 
 
 CONFIG = {
-    'DATASET_ROOT': os.path.abspath(os.path.join(os.path.dirname(__file__), "./.data/java/tufano_bug_fixes_test/0_50")),
+    'IS_TEST': True,
+    'DATASET_ROOT': os.path.abspath(os.path.join(os.path.dirname(__file__), "./.data/java/tufano_bug_fixes/0_50")),
     'UNK_TOKEN': "<unk>",
     'PAD_TOKEN': "<pad>",
     'SOS_TOKEN': "<s>",
@@ -25,7 +29,7 @@ CONFIG = {
     'TOKENS_CODE_CHUNK_MAX_LEN': 100,
     'TOKEN_MIN_FREQ': 1,
     'LEARNING_RATE': 0.0003,
-    'MAX_NUM_OF_EPOCHS': 10,
+    'MAX_NUM_OF_EPOCHS': 1000,
     'CREATE_TOKEN_STRINGS': True,
     'EDIT_REPRESENTATION_SIZE': 512,
     'WORD_EMBEDDING_SIZE': 128,
@@ -46,6 +50,11 @@ CONFIG = {
     'PRINT_EVERY_iTH_BATCH': 5,
     'MAKE_CUDA_REPRODUCIBLE': False,
 }
+
+if CONFIG['IS_TEST']:
+    CONFIG['DATASET_ROOT'] = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                                          "./.data/java/tufano_bug_fixes_test/0_50"))
+    CONFIG['MAX_NUM_OF_EPOCHS'] = 3
 
 if CONFIG['SEED'] is not None:
     make_reproducible(CONFIG['SEED'], CONFIG['MAKE_CUDA_REPRODUCIBLE'])

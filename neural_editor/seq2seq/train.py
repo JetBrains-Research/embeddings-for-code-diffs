@@ -41,7 +41,7 @@ def train(model: EncoderDecoder,
     """Train a model on LearningToRepresentEdits"""
     # TODO: add early stopping and choosing best model on eval
     train_iter = data.BucketIterator(train_data, batch_size=CONFIG['BATCH_SIZE'], train=True,
-                                     shuffle=False,  # TODO: make shuffle reproducible
+                                     shuffle=True,
                                      sort_within_batch=True,
                                      sort_key=lambda x: (len(x.src), len(x.trg)), repeat=False,
                                      device=CONFIG['DEVICE'])
