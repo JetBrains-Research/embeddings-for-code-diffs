@@ -1,12 +1,17 @@
 import math
 import time
+import typing
 
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+import torchtext
 from torch import nn
+from torchtext.data import Dataset, Field
+from torchtext.vocab import Vocab
 
 from edit_representation.sequence_encoding.EditEncoder import EditEncoder
+from neural_editor.seq2seq import SimpleLossCompute
 from neural_editor.seq2seq.BahdanauAttention import BahdanauAttention
 from neural_editor.seq2seq.Batch import Batch
 from neural_editor.seq2seq.EncoderDecoder import EncoderDecoder
@@ -16,30 +21,36 @@ from neural_editor.seq2seq.encoder.Encoder import Encoder
 from neural_editor.seq2seq.train_config import CONFIG
 
 
-def make_model(vocab_size, edit_representation_size=512, emb_size=128, hidden_size_encoder=128, hidden_size_decoder=128,
-               num_layers=1, dropout=0.1):
-    "Helper: Construct a model from hyperparameters."
+def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
+               hidden_size_encoder: int, hidden_size_decoder: int,
+               num_layers: int,
+               dropout: float,
+               use_bridge: bool) -> EncoderDecoder:
+    """Helper: Construct a model from hyperparameters."""
     # TODO: change hidden size of decoder
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
-    model = EncoderDecoder(
+    model: EncoderDecoder = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
-        Decoder(emb_size, edit_representation_size, hidden_size_encoder, hidden_size_decoder, attention,
-                num_layers=num_layers, dropout=dropout),
-        EditEncoder(3 * emb_size, edit_representation_size, num_layers=num_layers),
-        nn.Embedding(vocab_size, emb_size),
+        Decoder(emb_size, edit_representation_size,
+                hidden_size_encoder, hidden_size_decoder,
+                attention,
+                num_layers=num_layers, dropout=dropout, bridge=use_bridge),
+        EditEncoder(3 * emb_size, edit_representation_size, num_layers, dropout),
+        nn.Embedding(vocab_size, emb_size),  # 1 -> Emb
         Generator(hidden_size_decoder, vocab_size))
+    model.to(CONFIG['DEVICE'])
+    return model
 
-    return model.cuda() if CONFIG['USE_CUDA'] else model
 
-
-def rebatch(pad_idx, batch):
+def rebatch(pad_idx: int, batch: torchtext.data.Batch) -> Batch:
     """Wrap torchtext batch into our own Batch class for pre-processing"""
+    # These fields are added dynamically by PyTorch
     return Batch(batch.src, batch.trg, batch.diff_alignment,
                  batch.diff_prev, batch.diff_updated, pad_idx)
 
 
-def print_data_info(train_data, valid_data, test_data, field):
+def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field) -> None:
     """ This prints some useful stuff about our data sets. """
 
     print("Data set sizes (number of sentence pairs):")
@@ -71,8 +82,12 @@ def print_data_info(train_data, valid_data, test_data, field):
     print("Number of words (types):", len(field.vocab))
 
 
-def run_epoch(data_iter, model, loss_compute, batches_num, print_every=50):
-    """Standard Training and Logging Function"""
+def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: SimpleLossCompute,
+              batches_num: int, print_every: int) -> float:
+    """
+    Standard Training and Logging Function
+    :return: loss per token
+    """
 
     start = time.time()
     total_tokens = 0
@@ -96,30 +111,32 @@ def run_epoch(data_iter, model, loss_compute, batches_num, print_every=50):
     return math.exp(total_loss / float(total_tokens))
 
 
-def greedy_decode(model, batch, max_len=100, sos_index=1, eos_index=None):
-    """Greedily decode a sentence."""
-
+def greedy_decode(model: EncoderDecoder, batch: Batch,
+                  max_len: int,
+                  sos_index: int, eos_index: int) -> typing.Tuple[np.array, np.array]:
+    """
+    Greedily decode a sentence.
+    :return: Tuple[[DecodedSeqLenCutWithEos], [1, DecodedSeqLen, SrcSeqLen]]
+    """
+    # [B, SrcSeqLen], [B, 1, SrcSeqLen], [B]
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
-        (encoder_hidden, encoder_final, encoder_cell_state), _, \
-         edit_representation_final, edit_representation_cell_state = model.encode(batch)
-        prev_y = torch.ones(1, 1).fill_(sos_index).type_as(src)
-        trg_mask = torch.ones_like(prev_y)
+        edit_output, edit_final, encoder_output, encoder_final = model.encode(batch)
+        prev_y = torch.ones(1, 1).fill_(sos_index).type_as(src)  # [1, 1]
+        trg_mask = torch.ones_like(prev_y)  # [1, 1]
 
     output = []
     attention_scores = []
-    hidden = None
 
     for i in range(max_len):
         with torch.no_grad():
-            out, hidden, pre_output = model.decode(
-                edit_representation_final, edit_representation_cell_state,
-                encoder_hidden, encoder_final, encoder_cell_state, src_mask,
-                prev_y, trg_mask, hidden)
+            # pre_output: [B, TrgSeqLen, DecoderH]
+            out, hidden, pre_output = model.decode(edit_final, encoder_output, encoder_final,
+                                                   src_mask, prev_y, trg_mask)
 
             # we predict from the pre-output layer, which is
             # a combination of Decoder state, prev emb, and context
-            prob = model.generator(pre_output[:, -1])
+            prob = model.generator(pre_output[:, -1])  # [B, V]
 
         _, next_word = torch.max(prob, dim=1)
         next_word = next_word.data.item()
@@ -139,30 +156,24 @@ def greedy_decode(model, batch, max_len=100, sos_index=1, eos_index=None):
     return output, np.concatenate(attention_scores, axis=1)
 
 
-def lookup_words(x, vocab=None):
-    if vocab is not None:
-        x = [vocab.itos[i] for i in x]
+def lookup_words(x: np.array, vocab: Vocab) -> typing.List[str]:
+    """
+    :param x: [SeqLen]
+    :param vocab: torchtext vocabulary
+    :return: list of words
+    """
+    return [vocab.itos[i] for i in x]
 
-    return [str(t) for t in x]
 
-
-def print_examples(example_iter, model, n=2, max_len=100, src_vocab=None, trg_vocab=None):
+def print_examples(example_iter: typing.Generator, model: EncoderDecoder, max_len: int, vocab: Vocab, n: int) -> None:
     """Prints N examples. Assumes batch size of 1."""
 
     model.eval()
     count = 0
     print()
 
-    if src_vocab is not None and trg_vocab is not None:
-        src_sos_index = src_vocab.stoi[CONFIG['SOS_TOKEN']]
-        src_eos_index = src_vocab.stoi[CONFIG['EOS_TOKEN']]
-        trg_sos_index = trg_vocab.stoi[CONFIG['SOS_TOKEN']]
-        trg_eos_index = trg_vocab.stoi[CONFIG['EOS_TOKEN']]
-    else:
-        src_sos_index = None
-        src_eos_index = None
-        trg_sos_index = 1
-        trg_eos_index = None
+    sos_index = vocab.stoi[CONFIG['SOS_TOKEN']]
+    eos_index = vocab.stoi[CONFIG['EOS_TOKEN']]
 
     # TODO: find out the best way to deal with <s> and </s>
     for i, batch in enumerate(example_iter):
@@ -171,19 +182,17 @@ def print_examples(example_iter, model, n=2, max_len=100, src_vocab=None, trg_vo
         trg = batch.trg_y.cpu().numpy()[0, :]
 
         # remove </s> (if it is there)
-        src = src[:-1] if src[-1] == src_eos_index else src
-        trg = trg[:-1] if trg[-1] == trg_eos_index else trg
+        src = src[:-1] if src[-1] == eos_index else src
+        trg = trg[:-1] if trg[-1] == eos_index else trg
 
         # remove <s> for src
-        src = src[1:] if src[0] == src_sos_index else src
+        src = src[1:] if src[0] == sos_index else src
 
-        result, _ = greedy_decode(
-            model, batch,
-            max_len=max_len, sos_index=trg_sos_index, eos_index=trg_eos_index)
+        result, _ = greedy_decode(model, batch, max_len, sos_index, eos_index)
         print("Example #%d" % (i + 1))
-        print("Src : ", " ".join(lookup_words(src, vocab=src_vocab)))  # TODO: why does it have <unk>?
-        print("Trg : ", " ".join(lookup_words(trg, vocab=trg_vocab)))
-        print("Pred: ", " ".join(lookup_words(result, vocab=trg_vocab)))
+        print("Src : ", " ".join(lookup_words(src, vocab)))  # TODO: why does it have <unk>?
+        print("Trg : ", " ".join(lookup_words(trg, vocab)))
+        print("Pred: ", " ".join(lookup_words(result, vocab)))
         print()
 
         count += 1
@@ -191,7 +200,7 @@ def print_examples(example_iter, model, n=2, max_len=100, src_vocab=None, trg_vo
             break
 
 
-def plot_perplexity(perplexities):
+def plot_perplexity(perplexities: typing.List[float]) -> None:
     """plot perplexities"""
     plt.title("Perplexity per Epoch")
     plt.xlabel("Epoch")

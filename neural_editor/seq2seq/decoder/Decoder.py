@@ -1,5 +1,8 @@
+from typing import Tuple
+
 import torch
-from torch import nn
+from torch import nn, Tensor
+from neural_editor.seq2seq import BahdanauAttention
 
 # DONE_TODO: initialization = encoder output concatenate with edit representation.
 # DONE_TODO: feed edit representation as input to decoder LSTM at each time step.
@@ -11,8 +14,10 @@ from torch import nn
 class Decoder(nn.Module):
     """A conditional RNN decoder with attention."""
 
-    def __init__(self, emb_size, edit_representation_size, hidden_size_encoder, hidden_size, attention, num_layers=1, dropout=0.5,
-                 bridge=True):
+    def __init__(self, emb_size: int, edit_representation_size: int,
+                 hidden_size_encoder: int, hidden_size: int,
+                 attention: BahdanauAttention,
+                 num_layers: int, dropout: float, bridge: bool) -> None:
         super(Decoder, self).__init__()
 
         self.hidden_size = hidden_size
@@ -21,57 +26,83 @@ class Decoder(nn.Module):
         self.dropout = dropout
 
         self.rnn = nn.LSTM(emb_size + 2 * hidden_size_encoder + 2 * edit_representation_size, hidden_size,
-                           num_layers, bidirectional=False,  # TODO: bidirectional=False?
+                           num_layers, bidirectional=False,  # TODO_DONE: bidirectional=False?
                            batch_first=True, dropout=dropout)
 
         # to initialize from the final encoder state
         self.bridge = nn.Linear(2 * hidden_size_encoder + 2 * edit_representation_size,
-                                hidden_size, bias=True) if bridge else None
+                                hidden_size, bias=True) if bridge else None  # 2 * EncoderH + 2 * EditH -> DecoderH
 
         self.dropout_layer = nn.Dropout(p=dropout)
         self.pre_output_layer = nn.Linear(hidden_size + 2 * hidden_size_encoder + emb_size,
-                                          hidden_size, bias=False)
+                                          hidden_size, bias=False)  # DecoderH + 2 * EncoderH + Emb -> DecoderH
 
-    def forward_step(self, edit_representation_final, prev_embed, encoder_hidden, src_mask, proj_key, hidden, cell_state):
-        """Perform a single decoder step (1 word)"""
+    def forward_step(self, edit_hidden: Tensor, prev_embed: Tensor, encoder_output: Tensor,
+                     src_mask: Tensor, projection_key: Tensor,
+                     hidden: Tensor, cell: Tensor) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
+        """
+        Perform a single decoder step (1 word)
+        :arg edit_hidden: [NumLayers, B, NumDirections * DiffEncoderH]
+        :arg prev_embed: [B, 1, EmbCode]
+        :arg encoder_output: [B, SrcSeqLen, NumDirections * SrcEncoderH]
+        :arg src_mask: [B, 1, SrcSeqLen]
+        :arg projection_key: [B, SrcSeqLen, DecoderH]
+        :arg hidden: [NumLayers, B, DecoderH]
+        :arg cell: [NumLayers, B, DecoderH]
+        :returns Tuple[[B, 1, DecoderH], [NumLayers, B, DecoderH], [NumLayers, B, DecoderH], [B, 1, DecoderH]]
+        """
 
         # compute context vector using attention mechanism
-        query = hidden[-1].unsqueeze(1)  # [#layers, B, D] -> [B, 1, D]
+        query = hidden[-1].unsqueeze(1)  # [B, 1, DecoderH]
+        # [B, 1, NumDirections * SrcEncoderH], [B, 1, SrcSeqLen]
         context, attn_probs = self.attention(
-            query=query, proj_key=proj_key,
-            value=encoder_hidden, mask=src_mask)
+            query=query, proj_key=projection_key,
+            value=encoder_output, mask=src_mask)
 
+        # [B, 1, NumDirections * DiffEncoderH]
+        edit_hidden_last_layer = edit_hidden.transpose(0, 1)[:, -1, :].unsqueeze(1)
         # update rnn hidden state
-        rnn_input = torch.cat([prev_embed, context, edit_representation_final.transpose(0, 1)], dim=2)
+        rnn_input = torch.cat([prev_embed, context, edit_hidden_last_layer], dim=2)
         # DONE_TODO: zeros or cell states from encoder
-        output, (hidden, cell_state) = self.rnn(rnn_input, (hidden, cell_state))
+        # [B, 1, DecoderH], [NumLayers, B, DecoderH], [NumLayers, B, DecoderH]
+        output, (hidden, cell) = self.rnn(rnn_input, (hidden, cell))
 
+        # [B, 1, EmbCode + DecoderH + NumDirections * SrcEncoderH]
         pre_output = torch.cat([prev_embed, output, context], dim=2)
         pre_output = self.dropout_layer(pre_output)
-        pre_output = self.pre_output_layer(pre_output)
+        pre_output = self.pre_output_layer(pre_output)  # [B, 1, DecoderH]
 
-        return output, hidden, cell_state, pre_output
+        return output, hidden, cell, pre_output
 
-    def forward(self, trg_embed,
-                edit_representation_final, edit_representation_cell_state,
-                encoder_hidden, encoder_final, encoder_cell_state,
-                src_mask, trg_mask, hidden=None, cell_state=None, max_len=None):
-        """Unroll the decoder one step at a time."""
+    def forward(self, trg_embed: Tensor,
+                edit_final: Tuple[Tensor, Tensor],
+                encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],
+                src_mask: Tensor, trg_mask: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
+        """
+        Unroll the decoder one step at a time.
+        :param trg_embed: [B, TrgSeqLen, EmbCode]
+        :param edit_final: Tuple of [NumLayers, B, NumDirections * DiffEncoderH]
+        :param encoder_output: [B, SrcSeqLen, NumDirections * SrcEncoderH]
+        :param encoder_final: Tuple of [NumLayers, B, NumDirections * SrcEncoderH]
+        :param src_mask: [B, 1, SrcSeqLen]
+        :param trg_mask: [B, TrgSeqLen]
+        :return: Tuple[[B, TrgSeqLen, DecoderH], [NumLayers, B, DecoderH], [B, TrgSeqLen, DecoderH]]
+        """
 
         # the maximum number of steps to unroll the RNN
-        if max_len is None:
-            max_len = trg_mask.size(-1)
+        max_len = trg_mask.size(-1)
 
         # initialize decoder hidden state
-        if hidden is None:
-            hidden = self.init_hidden(edit_representation_final, encoder_final)
-        if cell_state is None:
-            cell_state = self.init_hidden(edit_representation_cell_state, encoder_cell_state)
+        (edit_hidden, edit_cell) = edit_final  # Tuple of [NumLayers, B, NumDirections * DiffEncoderH]
+        (encoder_hidden, encoder_cell) = encoder_final  # Tuple of [NumLayers, B, NumDirections * SrcEncoderH]
+
+        hidden = self.init_hidden(edit_hidden, encoder_hidden)  # [NumLayers, B, DecoderH]
+        cell = self.init_hidden(edit_cell, encoder_cell)  # [NumLayers, B, DecoderH]
 
         # pre-compute projected encoder hidden states
         # (the "keys" for the attention mechanism)
         # this is only done for efficiency
-        proj_key = self.attention.key_layer(encoder_hidden)
+        projection_key = self.attention.key_layer(encoder_output)  # [B, SrcSeqLen, DecoderH]
 
         # here we store all intermediate hidden states and pre-output vectors
         decoder_states = []
@@ -79,21 +110,26 @@ class Decoder(nn.Module):
 
         # unroll the decoder RNN for max_len steps
         for i in range(max_len):
-            prev_embed = trg_embed[:, i].unsqueeze(1)
-            output, hidden, cell_state, pre_output = self.forward_step(
-                edit_representation_final, prev_embed, encoder_hidden, src_mask, proj_key, hidden, cell_state)
+            prev_embed = trg_embed[:, i].unsqueeze(1)  # [B, 1, EmbCode]
+            # [B, 1, DecoderH], [NumLayers, B, DecoderH], [NumLayers, B, DecoderH], [B, 1, DecoderH]
+            output, hidden, cell, pre_output = self.forward_step(
+                edit_hidden, prev_embed, encoder_output, src_mask, projection_key, hidden, cell)
             decoder_states.append(output)
             pre_output_vectors.append(pre_output)
 
-        decoder_states = torch.cat(decoder_states, dim=1)
-        pre_output_vectors = torch.cat(pre_output_vectors, dim=1)
+        decoder_states = torch.cat(decoder_states, dim=1)  # [B, TrgSeqLen, DecoderH]
+        pre_output_vectors = torch.cat(pre_output_vectors, dim=1)  # [B, TrgSeqLen, DecoderH]
         return decoder_states, hidden, pre_output_vectors  # [B, N, D]
 
-    def init_hidden(self, edit_representation_final, encoder_final):
-        """Returns the initial decoder state,
-        conditioned on the final encoder state."""
+    def init_hidden(self, edit_final: Tensor, encoder_final: Tensor) -> Tensor:
+        """
+        Returns the initial decoder state, conditioned on the final encoder state.
+        :param edit_final: [NumLayers, B, NumDirections * DiffEncoderH]
+        :param encoder_final: [NumLayers, B, NumDirections * SrcEncoderH]
+        :return: [NumLayers, B, DecoderH]
+        """
 
-        if encoder_final is None or edit_representation_final is None:
+        if encoder_final is None or edit_final is None:
             return None  # start with zeros
 
-        return torch.tanh(self.bridge(torch.cat((encoder_final, edit_representation_final), dim=2)))
+        return torch.tanh(self.bridge(torch.cat((encoder_final, edit_final), dim=2)))

@@ -1,14 +1,14 @@
 import json
 import os
+from typing import Tuple
 
 import numpy as np
 from torchtext.data import Dataset, Field
 
-from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.train_config import CONFIG
 
 
-def split_train_val_test(root, train=0.6, val=0.2, test=0.2):
+def split_train_val_test(root: str, train: float = 0.6, val: float = 0.2, test: float = 0.2) -> None:
     data_filenames = [f for f in os.listdir(root) if os.path.isfile(os.path.join(root, f))]
     with open(os.path.join(root, 'train', 'train.jsonl'), 'w', encoding='utf-8-sig') as train_file, \
             open(os.path.join(root, 'val', 'val.jsonl'), 'w', encoding='utf-8-sig') as val_file, \
@@ -21,7 +21,7 @@ def split_train_val_test(root, train=0.6, val=0.2, test=0.2):
                     file_to_write.write(line)
 
 
-def concat_and_write_tokens_as_string_via_separator(root, sep=' '):
+def concat_and_write_tokens_as_string_via_separator(root: str, sep: str = ' ') -> None:
     cases = ['train', 'val', 'test']
     for case in cases:
         with open(os.path.join(root, case, f'{case}.jsonl'), 'r', encoding='utf-8-sig') as case_json_file, \
@@ -35,16 +35,12 @@ def concat_and_write_tokens_as_string_via_separator(root, sep=' '):
 
 
 def load_datasets(dataset_cls: Dataset.__class__, path: str, field: Field,
-                  train: str = 'train', validation: str = 'val', test: str = 'test',
-                  **kwargs):
-    train_data = None if train is None else dataset_cls(
-        os.path.join(path, train), train, field, **kwargs)
-    val_data = None if validation is None else dataset_cls(
-        os.path.join(path, validation), validation, field, **kwargs)
-    test_data = None if test is None else dataset_cls(
-        os.path.join(path, test), test, field, **kwargs)
-    return tuple(d for d in (train_data, val_data, test_data)
-                 if d is not None)
+                  train: str = 'train', val: str = 'val', test: str = 'test',
+                  **kwargs) -> Tuple[Dataset, ...]:
+    train_data: Dataset = dataset_cls(os.path.join(path, train), field, **kwargs)
+    val_data: Dataset = dataset_cls(os.path.join(path, val), field, **kwargs)
+    test_data: Dataset = dataset_cls(os.path.join(path, test), field, **kwargs)
+    return tuple(d for d in (train_data, val_data, test_data))
 
 
 def prepare_dataset():

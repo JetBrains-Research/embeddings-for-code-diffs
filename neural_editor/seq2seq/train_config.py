@@ -4,7 +4,7 @@ import numpy as np
 import torch.backends.cudnn
 
 
-def make_reproducible(seed, make_cuda_reproducible=False):
+def make_reproducible(seed: int, make_cuda_reproducible: bool) -> None:
     torch.manual_seed(seed)
     if make_cuda_reproducible:
         torch.backends.cudnn.deterministic = True
@@ -21,7 +21,6 @@ CONFIG = {
     'LOWER': False,
     'SEED': 9382,
     'SPLIT_ON_TRAIN_VAL_TEST': False,
-    'USE_CUDA': torch.cuda.is_available(),
     'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
     'TOKENS_CODE_CHUNK_MAX_LEN': 100,
     'TOKEN_MIN_FREQ': 1,
@@ -32,6 +31,9 @@ CONFIG = {
     'WORD_EMBEDDING_SIZE': 128,
     'ENCODER_HIDDEN_SIZE': 128,
     'DECODER_HIDDEN_SIZE': 256,
+    'NUM_LAYERS': 2,
+    'DROPOUT': 0.2,
+    'USE_BRIDGE': True,
     'EARLY_STOPPING_ROUNDS': 1000,
     'BEAM_SIZE': 5,
     'REPLACEMENT_TOKEN': 'замена',
@@ -40,8 +42,10 @@ CONFIG = {
     'UNCHANGED_TOKEN': 'равенство',
     'PADDING_TOKEN': 'паддинг',
     'VERBOSE': True,
-    'PRINT_EVERY_EPOCH': 5,
+    'BATCH_SIZE': 64,
+    'PRINT_EVERY_iTH_BATCH': 5,
+    'MAKE_CUDA_REPRODUCIBLE': False,
 }
 
 if CONFIG['SEED'] is not None:
-    make_reproducible(CONFIG['SEED'])
+    make_reproducible(CONFIG['SEED'], CONFIG['MAKE_CUDA_REPRODUCIBLE'])

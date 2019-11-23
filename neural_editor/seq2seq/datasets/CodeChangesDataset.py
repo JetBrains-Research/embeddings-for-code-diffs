@@ -10,7 +10,7 @@ from neural_editor.seq2seq.train_config import CONFIG
 class CodeChangesTokensDataset(data.Dataset):
     """Defines a dataset for code changes. It parses text files with tokens"""
 
-    def __init__(self, path: str, prefix: str, field: Field, **kwargs):
+    def __init__(self, path: str, field: Field, **kwargs) -> None:
         """Create a TranslationDataset given paths and fields.
 
         Arguments:
