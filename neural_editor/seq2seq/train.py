@@ -1,8 +1,8 @@
 import os
-import pprint
-from typing import Tuple, List
 import pickle
-from pathlib import Path
+import pprint
+import sys
+from typing import Tuple, List
 
 import torch
 from torch import nn
@@ -13,9 +13,9 @@ from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
-from neural_editor.seq2seq.train_config import CONFIG
+from neural_editor.seq2seq.train_config import CONFIG, change_config_for_test
 from neural_editor.seq2seq.train_utils import print_data_info, make_model, \
-    run_epoch, rebatch, print_examples, plot_perplexity
+    run_epoch, rebatch, print_examples
 
 
 def load_data(verbose: bool) -> Tuple[Dataset, Dataset, Dataset, Field]:
@@ -49,7 +49,6 @@ def train(model: EncoderDecoder,
     :param print_every: print every ith batch
     :return: train and validation perplexities for each epoch
     """
-    # TODO: add early stopping and choosing best model on eval
     # TODO: why it is 0, maybe padding doesn't work because no tokenizing
     # optionally add label smoothing; see the Annotated Transformer
     pad_index: int = diffs_field.vocab.stoi[CONFIG['PAD_TOKEN']]
@@ -171,4 +170,6 @@ def run_experiment() -> None:
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1] == 'test':
+        change_config_for_test()
     run_experiment()

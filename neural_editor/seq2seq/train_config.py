@@ -16,7 +16,7 @@ def make_reproducible(seed: int, make_cuda_reproducible: bool) -> None:
 
 
 CONFIG = {
-    'IS_TEST': True,
+    'IS_TEST': False,
     'DATASET_ROOT': os.path.abspath(
         os.path.join(os.path.dirname(__file__), './.data/datasets/java/tufano_bug_fixes/0_50')
     ),
@@ -27,13 +27,11 @@ CONFIG = {
     'EOS_TOKEN': "</s>",
     'LOWER': False,
     'SEED': 9382,
-    'SPLIT_ON_TRAIN_VAL_TEST': False,
     'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-    'TOKENS_CODE_CHUNK_MAX_LEN': 100,
+    'TOKENS_CODE_CHUNK_MAX_LEN': 50,
     'TOKEN_MIN_FREQ': 1,
-    'LEARNING_RATE': 0.0003,
+    'LEARNING_RATE': 0.0001,
     'MAX_NUM_OF_EPOCHS': 1000,
-    'CREATE_TOKEN_STRINGS': True,
     'EDIT_REPRESENTATION_SIZE': 512,
     'WORD_EMBEDDING_SIZE': 128,
     'ENCODER_HIDDEN_SIZE': 128,
@@ -41,7 +39,7 @@ CONFIG = {
     'NUM_LAYERS': 2,
     'DROPOUT': 0.2,
     'USE_BRIDGE': True,
-    'EARLY_STOPPING_ROUNDS': 10,
+    'EARLY_STOPPING_ROUNDS': 1000,
     'BEAM_SIZE': 5,
     'REPLACEMENT_TOKEN': 'замена',
     'DELETION_TOKEN': 'удаление',
@@ -55,10 +53,13 @@ CONFIG = {
     'MAKE_CUDA_REPRODUCIBLE': False,
 }
 
-if CONFIG['IS_TEST']:
+
+def change_config_for_test():
+    CONFIG['IS_TEST'] = True
     CONFIG['DATASET_ROOT'] = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                           "./.data/datasets/java/tufano_bug_fixes_test/0_50"))
     CONFIG['MAX_NUM_OF_EPOCHS'] = 2
+
 
 if CONFIG['SEED'] is not None:
     make_reproducible(CONFIG['SEED'], CONFIG['MAKE_CUDA_REPRODUCIBLE'])

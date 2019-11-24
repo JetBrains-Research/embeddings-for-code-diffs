@@ -2,7 +2,6 @@ import math
 import time
 import typing
 
-import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torchtext
@@ -27,7 +26,7 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
                dropout: float,
                use_bridge: bool) -> EncoderDecoder:
     """Helper: Construct a model from hyperparameters."""
-    # TODO: change hidden size of decoder
+    # TODO_DONE: change hidden size of decoder
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
     model: EncoderDecoder = EncoderDecoder(
@@ -119,6 +118,7 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
     Greedily decode a sentence.
     :return: Tuple[[DecodedSeqLenCutWithEos], [1, DecodedSeqLen, SrcSeqLen]]
     """
+    # TODO: create beam search
     # [B, SrcSeqLen], [B, 1, SrcSeqLen], [B]
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
@@ -191,7 +191,8 @@ def print_examples(example_iter: typing.Generator, model: EncoderDecoder, max_le
 
         result, _ = greedy_decode(model, batch, max_len, sos_index, eos_index)
         print("Example #%d" % (i + 1))
-        print("Src : ", " ".join(lookup_words(src, vocab)))  # TODO: why does it have <unk>?
+        # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
+        print("Src : ", " ".join(lookup_words(src, vocab)))
         print("Trg : ", " ".join(lookup_words(trg, vocab)))
         print("Pred: ", " ".join(lookup_words(result, vocab)))
         print()
@@ -200,12 +201,3 @@ def print_examples(example_iter: typing.Generator, model: EncoderDecoder, max_le
         if count == n:
             break
 
-
-def plot_perplexity(perplexities: typing.List[float], labels: typing.List[str]) -> None:
-    """plot perplexities"""
-    plt.title("Perplexity per Epoch")
-    plt.xlabel("Epoch")
-    plt.ylabel("Perplexity")
-    for perplexity_values, label in zip(perplexities, labels):
-        plt.plot(perplexity_values, label=label)
-    plt.show()

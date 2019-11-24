@@ -6,7 +6,7 @@ import sys
 import torch
 
 from neural_editor.seq2seq.train import load_data, test
-from neural_editor.seq2seq.train_utils import plot_perplexity
+from neural_editor.seq2seq.test_utils import plot_perplexity
 
 
 def load_model_and_test(results_root) -> None:
