@@ -73,7 +73,14 @@ def train(model: EncoderDecoder,
     val_perplexities = []
 
     epochs_num: int = CONFIG['MAX_NUM_OF_EPOCHS']
+    min_val_perplexity: float = 1000000
+    num_not_decreasing_steps: int = 0
+    early_stopping_rounds: int = CONFIG['EARLY_STOPPING_ROUNDS']
     for epoch in range(epochs_num):
+        if num_not_decreasing_steps == early_stopping_rounds:
+            print(f'Training was early stopped on epoch {epoch} with early stopping rounds {early_stopping_rounds}')
+            break
+
         print(f'Epoch {epoch} / {epochs_num}')
         model.train()
         train_perplexity = run_epoch((rebatch(pad_index, b) for b in train_iter),
@@ -94,6 +101,11 @@ def train(model: EncoderDecoder,
                                        val_batches_num, print_every=print_every)
             print(f'Validation perplexity: {val_perplexity}')
             val_perplexities.append(val_perplexity)
+            if val_perplexity < min_val_perplexity:
+                min_val_perplexity = val_perplexity
+                num_not_decreasing_steps = 0
+            else:
+                num_not_decreasing_steps += 1
 
         if epoch % CONFIG['SAVE_MODEL_EVERY'] == 0:
             torch.save(model, os.path.join(CONFIG['OUTPUT_PATH'], 'model.pt'))

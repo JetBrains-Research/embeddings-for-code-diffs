@@ -41,7 +41,7 @@ CONFIG = {
     'NUM_LAYERS': 2,
     'DROPOUT': 0.2,
     'USE_BRIDGE': True,
-    'EARLY_STOPPING_ROUNDS': 1000,
+    'EARLY_STOPPING_ROUNDS': 10,
     'BEAM_SIZE': 5,
     'REPLACEMENT_TOKEN': 'замена',
     'DELETION_TOKEN': 'удаление',
