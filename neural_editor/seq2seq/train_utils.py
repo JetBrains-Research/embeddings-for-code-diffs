@@ -1,6 +1,7 @@
 import math
 import time
 import typing
+from datetime import timedelta
 
 import numpy as np
 import torch
@@ -89,6 +90,7 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
     """
 
     start = time.time()
+    epoch_start = start
     total_tokens = 0
     total_loss = 0
     print_tokens = 0
@@ -107,7 +109,8 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
                   f'Tokens per Sec: {print_tokens / elapsed}')
             start = time.time()
             print_tokens = 0
-
+    epoch_duration = time.time() - epoch_start
+    print(f'Epoch ended with duration {str(timedelta(seconds=epoch_duration))}')
     return math.exp(total_loss / float(total_tokens))
 
 

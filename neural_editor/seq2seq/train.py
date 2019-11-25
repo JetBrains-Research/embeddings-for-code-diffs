@@ -64,7 +64,8 @@ def train(model: EncoderDecoder,
     train_loss_function = SimpleLossCompute(model.generator, criterion, optimizer)
     train_perplexities = []
 
-    val_iter = data.Iterator(val_data, batch_size=1, train=False, sort=False, repeat=False, device=CONFIG['DEVICE'])
+    # TODO: batch_size 1?
+    val_iter = data.Iterator(val_data, batch_size=CONFIG['VAL_BATCH_SIZE'], train=False, sort=False, repeat=False, device=CONFIG['DEVICE'])
     val_batches_num = len(val_iter)
     # noinspection PyTypeChecker
     # reason: None is not a type of Optimizer
@@ -122,7 +123,9 @@ def test(model: EncoderDecoder, test_data: Dataset, diffs_field: Field, print_ev
     """
     pad_index: int = diffs_field.vocab.stoi[CONFIG['PAD_TOKEN']]
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
-    test_iter = data.Iterator(test_data, batch_size=1, train=False, sort=False, repeat=False, device=CONFIG['DEVICE'])
+    # TODO: batch_size 1?
+    test_iter = data.Iterator(test_data, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False, sort=False, repeat=False,
+                              device=CONFIG['DEVICE'])
     test_batches_num = len(test_iter)
     # noinspection PyTypeChecker
     # reason: None is not a type of Optimizer

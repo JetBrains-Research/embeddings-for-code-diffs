@@ -48,6 +48,8 @@ CONFIG = {
     'PADDING_TOKEN': 'паддинг',
     'VERBOSE': True,
     'BATCH_SIZE': 64,
+    'VAL_BATCH_SIZE': 1,
+    'TEST_BATCH_SIZE': 1,
     'SAVE_MODEL_EVERY': 10,
     'PRINT_EVERY_iTH_BATCH': 5,
     'MAKE_CUDA_REPRODUCIBLE': False,
