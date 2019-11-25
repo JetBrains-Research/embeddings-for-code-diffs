@@ -65,7 +65,8 @@ def train(model: EncoderDecoder,
     train_perplexities = []
 
     # TODO: batch_size 1?
-    val_iter = data.Iterator(val_data, batch_size=CONFIG['VAL_BATCH_SIZE'], train=False, sort=False, repeat=False, device=CONFIG['DEVICE'])
+    val_iter = data.Iterator(val_data, batch_size=CONFIG['VAL_BATCH_SIZE'], train=False,
+                             sort=False, repeat=False, device='cpu')
     val_batches_num = len(val_iter)
     # noinspection PyTypeChecker
     # reason: None is not a type of Optimizer
@@ -108,9 +109,17 @@ def train(model: EncoderDecoder,
                 num_not_decreasing_steps += 1
 
         if epoch % CONFIG['SAVE_MODEL_EVERY'] == 0:
-            torch.save(model, os.path.join(CONFIG['OUTPUT_PATH'], 'model.pt'))
+            save_data_on_checkpoint(model, train_perplexities, val_perplexities)
 
     return train_perplexities, val_perplexities
+
+
+def save_data_on_checkpoint(model: nn.Module, train_perplexities: List[float], val_perplexities: List[float]) -> None:
+    torch.save(model, os.path.join(CONFIG['OUTPUT_PATH'], 'model.pt'))
+    with open(os.path.join(CONFIG['OUTPUT_PATH'], 'train_perplexities.pkl'), 'wb') as train_file:
+        pickle.dump(train_perplexities, train_file)
+    with open(os.path.join(CONFIG['OUTPUT_PATH'], 'val_perplexities.pkl'), 'wb') as val_file:
+        pickle.dump(val_perplexities, val_file)
 
 
 def test(model: EncoderDecoder, test_data: Dataset, diffs_field: Field, print_every: int) -> float:
@@ -163,10 +172,7 @@ def run_experiment() -> None:
                                                  print_every=CONFIG['PRINT_EVERY_iTH_BATCH'])
     print(train_perplexities)
     print(val_perplexities)
-    with open(os.path.join(CONFIG['OUTPUT_PATH'], 'train_perplexities.pkl'), 'wb') as train_file:
-        pickle.dump(train_perplexities, train_file)
-    with open(os.path.join(CONFIG['OUTPUT_PATH'], 'val_perplexities.pkl'), 'wb') as val_file:
-        pickle.dump(val_perplexities, val_file)
+    save_data_on_checkpoint(model, train_perplexities, val_perplexities)
     # noinspection PyTypeChecker
     # reason: PyCharm doesn't understand that EncoderDecoder is child of nn.Module
     test(model, test_dataset, diffs_field, print_every=-1)
