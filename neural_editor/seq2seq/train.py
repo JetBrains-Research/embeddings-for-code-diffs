@@ -66,7 +66,11 @@ def train(model: EncoderDecoder,
 
     # TODO: batch_size 1?
     val_iter = data.Iterator(val_data, batch_size=CONFIG['VAL_BATCH_SIZE'], train=False,
-                             sort=False, repeat=False, device='cpu')
+                             sort_within_batch=True,
+                             sort_key=lambda x: (len(x.src), len(x.trg)), repeat=False,
+                             device=CONFIG['DEVICE'])
+    val_iter_for_print_examples = data.Iterator(val_data, batch_size=1, train=False,
+                                                sort=False, repeat=False, device=CONFIG['DEVICE'])
     val_batches_num = len(val_iter)
     # noinspection PyTypeChecker
     # reason: None is not a type of Optimizer
@@ -93,7 +97,7 @@ def train(model: EncoderDecoder,
 
         model.eval()
         with torch.no_grad():
-            print_examples((rebatch(pad_index, x) for x in val_iter),
+            print_examples((rebatch(pad_index, x) for x in val_iter_for_print_examples),
                            model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
                            diffs_field.vocab, n=3)
 
