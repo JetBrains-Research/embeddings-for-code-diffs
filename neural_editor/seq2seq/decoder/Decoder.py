@@ -77,7 +77,8 @@ class Decoder(nn.Module):
     def forward(self, trg_embed: Tensor,
                 edit_final: Tuple[Tensor, Tensor],
                 encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],
-                src_mask: Tensor, trg_mask: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
+                src_mask: Tensor, trg_mask: Tensor,
+                states_to_initialize: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
         """
         Unroll the decoder one step at a time.
         :param trg_embed: [B, TrgSeqLen, EmbCode]
@@ -86,7 +87,12 @@ class Decoder(nn.Module):
         :param encoder_final: Tuple of [NumLayers, B, NumDirections * SrcEncoderH]
         :param src_mask: [B, 1, SrcSeqLen]
         :param trg_mask: [B, TrgSeqLen]
-        :return: Tuple[[B, TrgSeqLen, DecoderH], [NumLayers, B, DecoderH], [B, TrgSeqLen, DecoderH]]
+        :param states_to_initialize: Tuple[[[NumLayers, B, DecoderH]], [[NumLayers, B, DecoderH]]] hidden and cell
+        :return: Tuple[
+                 [B, TrgSeqLen, DecoderH],
+                 Tuple[[NumLayers, B, DecoderH], [NumLayers, B, DecoderH]],
+                 [B, TrgSeqLen, DecoderH]
+        ]
         """
 
         # the maximum number of steps to unroll the RNN
@@ -96,8 +102,11 @@ class Decoder(nn.Module):
         (edit_hidden, edit_cell) = edit_final  # Tuple of [NumLayers, B, NumDirections * DiffEncoderH]
         (encoder_hidden, encoder_cell) = encoder_final  # Tuple of [NumLayers, B, NumDirections * SrcEncoderH]
 
-        hidden = self.init_hidden(edit_hidden, encoder_hidden)  # [NumLayers, B, DecoderH]
-        cell = self.init_hidden(edit_cell, encoder_cell)  # [NumLayers, B, DecoderH]
+        if states_to_initialize is None:
+            hidden = self.init_hidden(edit_hidden, encoder_hidden)  # [NumLayers, B, DecoderH]
+            cell = self.init_hidden(edit_cell, encoder_cell)  # [NumLayers, B, DecoderH]
+        else:
+            hidden, cell = states_to_initialize
 
         # pre-compute projected encoder hidden states
         # (the "keys" for the attention mechanism)
@@ -119,7 +128,7 @@ class Decoder(nn.Module):
 
         decoder_states = torch.cat(decoder_states, dim=1)  # [B, TrgSeqLen, DecoderH]
         pre_output_vectors = torch.cat(pre_output_vectors, dim=1)  # [B, TrgSeqLen, DecoderH]
-        return decoder_states, hidden, pre_output_vectors  # [B, N, D]
+        return decoder_states, (hidden, cell), pre_output_vectors  # [B, N, D]
 
     def init_hidden(self, edit_final: Tensor, encoder_final: Tensor) -> Tensor:
         """

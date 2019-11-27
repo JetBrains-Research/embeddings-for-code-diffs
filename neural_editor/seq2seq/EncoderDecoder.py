@@ -35,7 +35,7 @@ class EncoderDecoder(nn.Module):
         edit_output, edit_final, encoder_output, encoder_final = self.encode(batch)
         decoded = self.decode(edit_final, encoder_output,
                               encoder_final, batch.src_mask,
-                              batch.trg, batch.trg_mask)
+                              batch.trg, batch.trg_mask, None)
         return decoded
 
     def encode(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
@@ -69,7 +69,8 @@ class EncoderDecoder(nn.Module):
 
     def decode(self, edit_final: Tuple[Tensor, Tensor],
                encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],
-               src_mask: Tensor, trg: Tensor, trg_mask: Tensor) -> Tuple[Tensor, Tensor, Tensor]:
+               src_mask: Tensor, trg: Tensor, trg_mask: Tensor,
+               states_to_initialize: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tensor, Tensor]:
         """
         :param edit_final: Tuple[
             [NumLayers, B, NumDirections * DiffEncoderH],
@@ -83,7 +84,12 @@ class EncoderDecoder(nn.Module):
         :param src_mask: [B, 1, SrcSeqLen]
         :param trg: [B, TrgSeqLen]
         :param trg_mask: [B, TrgSeqLen]
-        :return: Tuple[[B, TrgSeqLen, DecoderH], [NumLayers, B, DecoderH], [B, TrgSeqLen, DecoderH]]
+        :param states_to_initialize: Tuple[[NumLayers, B, DecoderH], [NumLayers, B, DecoderH]] hidden and cell states
+        :return: Tuple[
+                 [B, TrgSeqLen, DecoderH],
+                 Tuple[[NumLayers, B, DecoderH], [NumLayers, B, DecoderH]],
+                 [B, TrgSeqLen, DecoderH]
+        ]
         """
         return self.decoder(self.embed(trg), edit_final, encoder_output, encoder_final,
-                            src_mask, trg_mask)
+                            src_mask, trg_mask, states_to_initialize)

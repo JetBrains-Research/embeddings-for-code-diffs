@@ -131,12 +131,13 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
 
     output = []
     attention_scores = []
+    states = None
 
     for i in range(max_len):
         with torch.no_grad():
             # pre_output: [B, TrgSeqLen, DecoderH]
-            out, hidden, pre_output = model.decode(edit_final, encoder_output, encoder_final,
-                                                   src_mask, prev_y, trg_mask)
+            out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
+                                                   src_mask, prev_y, trg_mask, states)
 
             # we predict from the pre-output layer, which is
             # a combination of Decoder state, prev emb, and context
