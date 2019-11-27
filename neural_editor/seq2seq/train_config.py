@@ -50,7 +50,7 @@ CONFIG = {
     'BATCH_SIZE': 64,
     'VAL_BATCH_SIZE': 64,
     'TEST_BATCH_SIZE': 64,  # TODO: find out why changing batch size for dataloader changes perplexity
-    'SAVE_MODEL_EVERY': None,  # None means to save best model on validation set
+    'SAVE_MODEL_EVERY': 5,
     'PRINT_EVERY_iTH_BATCH': 5,
     'MAKE_CUDA_REPRODUCIBLE': False,
 }

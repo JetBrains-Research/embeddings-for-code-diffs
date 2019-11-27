@@ -106,6 +106,7 @@ def train(model: EncoderDecoder,
             print(f'Validation perplexity: {val_perplexity}')
             val_perplexities.append(val_perplexity)
             if val_perplexity < min_val_perplexity:
+                save_model(model, 'best_on_validation')
                 min_val_perplexity = val_perplexity
                 num_not_decreasing_steps = 0
             else:
@@ -117,8 +118,14 @@ def train(model: EncoderDecoder,
     return train_perplexities, val_perplexities
 
 
+def save_model(model: nn.Module, model_suffix: str) -> None:
+    torch.save(model.state_dict(), os.path.join(CONFIG['OUTPUT_PATH'], f'model_state_dict_{model_suffix}.pt'))
+    torch.save(model, os.path.join(CONFIG['OUTPUT_PATH'], f'model_{model_suffix}.pt'))
+    print(f'Model saved {model_suffix}!')
+
+
 def save_data_on_checkpoint(model: nn.Module, train_perplexities: List[float], val_perplexities: List[float]) -> None:
-    torch.save(model, os.path.join(CONFIG['OUTPUT_PATH'], 'model.pt'))
+    save_model(model, 'checkpoint')
     with open(os.path.join(CONFIG['OUTPUT_PATH'], 'train_perplexities.pkl'), 'wb') as train_file:
         pickle.dump(train_perplexities, train_file)
     with open(os.path.join(CONFIG['OUTPUT_PATH'], 'val_perplexities.pkl'), 'wb') as val_file:
@@ -189,7 +196,7 @@ def run_experiment() -> None:
     save_data_on_checkpoint(model, train_perplexities, val_perplexities)
     # noinspection PyTypeChecker
     # reason: PyCharm doesn't understand that EncoderDecoder is child of nn.Module
-    test(model, test_dataset, diffs_field, print_every=-1)
+    test(model, train_dataset, val_dataset, test_dataset, diffs_field, print_every=-1)
 
 
 if __name__ == "__main__":
