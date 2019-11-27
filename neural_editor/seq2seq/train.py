@@ -64,7 +64,6 @@ def train(model: EncoderDecoder,
     train_loss_function = SimpleLossCompute(model.generator, criterion, optimizer)
     train_perplexities = []
 
-    # TODO: batch_size 1?
     val_iter = data.Iterator(val_data, batch_size=CONFIG['VAL_BATCH_SIZE'], train=False,
                              sort_within_batch=True,
                              sort_key=lambda x: (len(x.src), len(x.trg)), repeat=False,
@@ -126,8 +125,12 @@ def save_data_on_checkpoint(model: nn.Module, train_perplexities: List[float], v
         pickle.dump(val_perplexities, val_file)
 
 
-def test(model: EncoderDecoder, test_data: Dataset, diffs_field: Field, print_every: int) -> float:
+def test(model: EncoderDecoder,
+         train_data: Dataset, val_data: Dataset, test_data: Dataset,
+         diffs_field: Field, print_every: int) -> float:
     """
+    :param train_data: train data to print some examples
+    :param val_data: validation data to print some examples
     :param model: model to test
     :param test_data: test data
     :param diffs_field: Field object from torchtext
@@ -137,7 +140,10 @@ def test(model: EncoderDecoder, test_data: Dataset, diffs_field: Field, print_ev
     pad_index: int = diffs_field.vocab.stoi[CONFIG['PAD_TOKEN']]
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
     # TODO: batch_size 1?
-    test_iter = data.Iterator(test_data, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False, sort=False, repeat=False,
+    test_iter = data.Iterator(test_data, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False,
+                              sort_within_batch=True,
+                              sort_key=lambda x: (len(x.src), len(x.trg)),
+                              repeat=False,
                               device=CONFIG['DEVICE'])
     test_batches_num = len(test_iter)
     # noinspection PyTypeChecker
@@ -145,9 +151,13 @@ def test(model: EncoderDecoder, test_data: Dataset, diffs_field: Field, print_ev
     test_loss_function = SimpleLossCompute(model.generator, criterion, None)
     model.eval()
     with torch.no_grad():
-        print_examples((rebatch(pad_index, x) for x in test_iter),
-                       model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
-                       diffs_field.vocab, n=3)
+        for dataset, label in zip([train_data, val_data, test_data], ['TRAIN', 'VALIDATION', 'TEST']):
+            print_examples_iter = data.Iterator(dataset, batch_size=1, train=False, sort=False,
+                                                repeat=False, device=CONFIG['DEVICE'])
+            print(f'==={label} EXAMPLES===')
+            print_examples((rebatch(pad_index, x) for x in print_examples_iter),
+                           model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
+                           diffs_field.vocab, n=3)
 
         test_perplexity = run_epoch((rebatch(pad_index, t) for t in test_iter),
                                     model, test_loss_function,

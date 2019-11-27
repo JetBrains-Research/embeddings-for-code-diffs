@@ -10,10 +10,10 @@ from neural_editor.seq2seq.test_utils import plot_perplexity
 
 
 def load_model_and_test(results_root) -> None:
-    _, _, test_dataset, diffs_field = load_data(verbose=True)
-    model = torch.load(os.path.join(results_root, 'model.pt'))
+    train_dataset, val_dataset, test_dataset, diffs_field = load_data(verbose=True)
+    model = torch.load(os.path.join(results_root, 'model.pt'), map_location=torch.device('cpu'))
     model.eval()
-    test(model, test_dataset, diffs_field, print_every=-1)
+    test(model, train_dataset, val_dataset, test_dataset, diffs_field, print_every=-1)
 
 
 def print_results(results_root: str) -> None:
@@ -23,7 +23,7 @@ def print_results(results_root: str) -> None:
         # global CONFIG  # TODO: fix global config (this code doesn't change global config)
         config = pickle.load(config_file)
     pprint.pprint(config)
-    # load_model_and_test(results_root)
+    load_model_and_test(results_root)
     with open(os.path.join(results_root, 'train_perplexities.pkl'), 'rb') as train_file:
         train_perplexities = pickle.load(train_file)
     with open(os.path.join(results_root, 'val_perplexities.pkl'), 'rb') as val_file:
