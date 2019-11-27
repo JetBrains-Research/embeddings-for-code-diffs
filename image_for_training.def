@@ -1,0 +1,39 @@
+BootStrap: docker
+From: ubuntu:18.04
+IncludeCmd: yes
+
+%environment
+SHELL=/bin/bash
+export SHELL
+
+LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/NVIDIA-Linux-x86_64-375.66:$LD_LIBRARY_PATH
+PATH=/usr/local/NVIDIA-Linux-x86_64-410.78:/miniconda3/bin:$PATH
+
+%post
+PATH=/usr/local/./NVIDIA-Linux-x86_64-410.78:/miniconda3/bin:$PATH
+
+apt-get update
+apt-get -y upgrade
+apt-get -y install dialog apt-utils build-essential software-properties-common wget curl
+apt-get -y install git htop
+
+mkdir /tmp_dir
+cd /tmp_dir
+
+#nvidia driver
+add-apt-repository ppa:graphics-drivers/ppa
+apt-get update
+apt-get -y install nvidia-driver-410
+
+#miniconda
+curl -LO "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+bash ./Miniconda3-latest-Linux-x86_64.sh -b -p /miniconda3
+conda install python=3.7
+conda install docopt tqdm gitpython
+
+conda install pytorch numpy torchvision torchtext cudatoolkit=10.0 -c pytorch
+yes | python -m pip install python-Levenshtein
+
+%runscript
+cd /mnt/embeddings-for-code-diffs/
+./run.sh
