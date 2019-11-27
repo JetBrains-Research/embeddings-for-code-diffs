@@ -20,7 +20,7 @@ CONFIG = {
     'DATASET_ROOT': os.path.abspath(
         os.path.join(os.path.dirname(__file__), './data/datasets/java/tufano_bug_fixes/0_50')
     ),
-    'OUTPUT_PATH': os.path.abspath(os.path.join(os.path.dirname(__file__), './data')),  # TODO: Fix this path for HSE cluster
+    'OUTPUT_PATH': os.path.abspath(os.path.join(os.path.dirname(__file__), './data')),
     'UNK_TOKEN': "<unk>",
     'PAD_TOKEN': "<pad>",
     'SOS_TOKEN': "<s>",
@@ -39,7 +39,7 @@ CONFIG = {
     'NUM_LAYERS': 2,
     'DROPOUT': 0.2,
     'USE_BRIDGE': True,
-    'EARLY_STOPPING_ROUNDS': 1000,
+    'EARLY_STOPPING_ROUNDS': 10,
     'BEAM_SIZE': 5,
     'REPLACEMENT_TOKEN': 'замена',
     'DELETION_TOKEN': 'удаление',
@@ -49,8 +49,8 @@ CONFIG = {
     'VERBOSE': True,
     'BATCH_SIZE': 64,
     'VAL_BATCH_SIZE': 64,
-    'TEST_BATCH_SIZE': 512,  # TODO: find out why changing batch size for dataloader changes perplexity
-    'SAVE_MODEL_EVERY': 10,
+    'TEST_BATCH_SIZE': 64,  # TODO: find out why changing batch size for dataloader changes perplexity
+    'SAVE_MODEL_EVERY': None,  # None means to save best model on validation set
     'PRINT_EVERY_iTH_BATCH': 5,
     'MAKE_CUDA_REPRODUCIBLE': False,
 }
