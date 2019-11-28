@@ -15,10 +15,14 @@ def make_reproducible(seed: int, make_cuda_reproducible: bool) -> None:
         torch.backends.cudnn.benchmark = False
 
 
+def get_dataset_path(dataset_suffix: str) -> str:
+    return os.path.join(os.path.dirname(__file__), '../../../embeddings-for-code-diffs-data/datasets', dataset_suffix)
+
+
 CONFIG = {
     'IS_TEST': False,
     'DATASET_ROOT': os.path.abspath(
-        os.path.join(os.path.dirname(__file__), './data/datasets/java/tufano_bug_fixes/0_50')
+        get_dataset_path('java/tufano_bug_fixes/0_50')
     ),
     'OUTPUT_PATH': os.path.abspath(os.path.join(os.path.dirname(__file__), './data')),
     'UNK_TOKEN': "<unk>",
@@ -58,8 +62,7 @@ CONFIG = {
 
 def change_config_for_test():
     CONFIG['IS_TEST'] = True
-    CONFIG['DATASET_ROOT'] = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                          "./data/datasets/java/tufano_bug_fixes_test/0_50"))
+    CONFIG['DATASET_ROOT'] = get_dataset_path('java/tufano_bug_fixes_test/0_50')
     CONFIG['MAX_NUM_OF_EPOCHS'] = 2
 
 
