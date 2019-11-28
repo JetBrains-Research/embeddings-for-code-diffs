@@ -24,7 +24,7 @@ CONFIG = {
     'DATASET_ROOT': os.path.abspath(
         get_dataset_path('java/tufano_bug_fixes/0_50')
     ),
-    'OUTPUT_PATH': os.path.abspath(os.path.join(os.path.dirname(__file__), './data')),
+    'OUTPUT_PATH': os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../embeddings-for-code-diffs-data/')),
     'UNK_TOKEN': "<unk>",
     'PAD_TOKEN': "<pad>",
     'SOS_TOKEN': "<s>",
