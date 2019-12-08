@@ -13,6 +13,7 @@ from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
+from neural_editor.seq2seq.test_utils import calculate_accuracy
 from neural_editor.seq2seq.train_config import CONFIG, change_config_for_test
 from neural_editor.seq2seq.train_utils import print_data_info, make_model, \
     run_epoch, rebatch, print_examples
@@ -158,14 +159,20 @@ def test(model: EncoderDecoder,
     test_loss_function = SimpleLossCompute(model.generator, criterion, None)
     model.eval()
     with torch.no_grad():
-        for dataset, label in zip([train_data, val_data, test_data], ['TRAIN', 'VALIDATION', 'TEST']):
-            print_examples_iter = data.Iterator(dataset, batch_size=1, train=False, sort=False,
-                                                repeat=False, device=CONFIG['DEVICE'])
+        for dataset, label in zip([val_data, train_data, test_data], ['VALIDATION', 'TRAIN', 'TEST']):
+            print_examples_iterator = data.Iterator(dataset, batch_size=1, train=False, sort=False,
+                                                    repeat=False, device=CONFIG['DEVICE'])
             print(f'==={label} EXAMPLES===')
-            print_examples((rebatch(pad_index, x) for x in print_examples_iter),
+            print_examples((rebatch(pad_index, x) for x in print_examples_iterator),
                            model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
                            diffs_field.vocab, n=3)
-
+            accuracy_iterator = data.Iterator(dataset, batch_size=1, train=False, sort=False,
+                                              repeat=False, device=CONFIG['DEVICE'])
+            accuracy = calculate_accuracy([rebatch(pad_index, t) for t in accuracy_iterator],
+                                          model,
+                                          CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
+                                          diffs_field.vocab)
+            print(f'Accuracy on {label}: {accuracy}')
         test_perplexity = run_epoch((rebatch(pad_index, t) for t in test_iter),
                                     model, test_loss_function,
                                     test_batches_num, print_every=print_every)
