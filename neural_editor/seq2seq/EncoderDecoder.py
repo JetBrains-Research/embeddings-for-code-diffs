@@ -70,7 +70,7 @@ class EncoderDecoder(nn.Module):
     def decode(self, edit_final: Tuple[Tensor, Tensor],
                encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],
                src_mask: Tensor, trg: Tensor, trg_mask: Tensor,
-               states_to_initialize: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tensor, Tensor]:
+               states_to_initialize: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
         """
         :param edit_final: Tuple[
             [NumLayers, B, NumDirections * DiffEncoderH],

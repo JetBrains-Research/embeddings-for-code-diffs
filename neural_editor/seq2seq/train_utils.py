@@ -116,7 +116,7 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
 
 def greedy_decode(model: EncoderDecoder, batch: Batch,
                   max_len: int,
-                  sos_index: int, eos_index: int) -> typing.Tuple[np.array, np.array]:
+                  sos_index: int, eos_index: int) -> typing.List[np.array]:
     """
     Greedily decode a sentence.
     :return: Tuple[[DecodedSeqLenCutWithEos], [1, DecodedSeqLen, SrcSeqLen]]
@@ -126,11 +126,10 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
         edit_output, edit_final, encoder_output, encoder_final = model.encode(batch)
-        prev_y = torch.ones(1, 1).fill_(sos_index).type_as(src)  # [1, 1]
-        trg_mask = torch.ones_like(prev_y)  # [1, 1]
+        prev_y = torch.ones(batch.nseqs, 1).fill_(sos_index).type_as(src)  # [B, 1]
+        trg_mask = torch.ones_like(prev_y)  # [B, 1]
 
-    output = []
-    attention_scores = []
+    output = torch.zeros((batch.nseqs, max_len))
     states = None
 
     for i in range(max_len):
@@ -143,22 +142,20 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
             # a combination of Decoder state, prev emb, and context
             prob = model.generator(pre_output[:, -1])  # [B, V]
 
-        _, next_word = torch.max(prob, dim=1)
-        next_word = next_word.data.item()
-        output.append(next_word)
-        prev_y = torch.ones(1, 1).type_as(src).fill_(next_word)
-        attention_scores.append(model.decoder.attention.alphas.cpu().numpy())
+        _, next_words = torch.max(prob, dim=1)
+        output[:, i] = next_words
+        prev_y[:, 0] = next_words
 
-    output = np.array(output)
+    output = output.cpu().long().numpy()
+    return remove_eos(output, eos_index)
 
-    # cut off everything starting from </s>
-    # (only when eos_index provided)
-    if eos_index is not None:
-        first_eos = np.where(output == eos_index)[0]
-        if len(first_eos) > 0:
-            output = output[:first_eos[0]]
 
-    return output, np.concatenate(attention_scores, axis=1)
+def remove_eos(batch: np.array, eos_index: int) -> typing.List[np.array]:
+    result = []
+    for sequence in batch:
+        eos = np.where(sequence == eos_index)[0][0]
+        result.append(sequence[:eos])
+    return result
 
 
 def lookup_words(x: np.array, vocab: Vocab) -> typing.List[str]:
@@ -193,7 +190,8 @@ def print_examples(example_iter: typing.Generator, model: EncoderDecoder, max_le
         # remove <s> for src
         src = src[1:] if src[0] == sos_index else src
 
-        result, _ = greedy_decode(model, batch, max_len, sos_index, eos_index)
+        result = greedy_decode(model, batch, max_len, sos_index, eos_index)
+        result = result[0]
         print("Example #%d" % (i + 1))
         # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
         print("Src : ", " ".join(lookup_words(src, vocab)))

@@ -166,8 +166,11 @@ def test(model: EncoderDecoder,
             print_examples((rebatch(pad_index, x) for x in print_examples_iterator),
                            model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
                            diffs_field.vocab, n=3)
-            accuracy_iterator = data.Iterator(dataset, batch_size=1, train=False, sort=False,
-                                              repeat=False, device=CONFIG['DEVICE'])
+            accuracy_iterator = data.Iterator(dataset, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False,
+                                              sort_within_batch=True,
+                                              sort_key=lambda x: (len(x.src), len(x.trg)),
+                                              repeat=False,
+                                              device=CONFIG['DEVICE'])
             accuracy = calculate_accuracy([rebatch(pad_index, t) for t in accuracy_iterator],
                                           model,
                                           CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
