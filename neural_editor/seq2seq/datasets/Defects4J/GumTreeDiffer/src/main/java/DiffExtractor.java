@@ -41,12 +41,12 @@ class DiffExtractor {
     private List<MethodDiff> extractMethodDiffs() {
         List<MethodDiff> methodDiffs = new ArrayList<>();
         extractMethodDiffsRecursively(prevContext.getRoot(), methodDiffs);
-        return methodDiffs;
+        return methodDiffs.stream().filter(MethodDiff::hasMethodChanged).collect(Collectors.toList());
     }
 
     private void extractMethodDiffsRecursively(ITree prev, List<MethodDiff> result) {
         ITree updated = matcher.getMappings().getDst(prev);
-        if (prev.getType() == METHOD_DECLARATION && updated.getType() == METHOD_DECLARATION) {
+        if (prev.getType() == METHOD_DECLARATION && updated != null && updated.getType() == METHOD_DECLARATION) {
             result.add(new MethodDiff(prev, updated));
         }
         for (ITree child: prev.getChildren()) {
@@ -60,10 +60,10 @@ class DiffExtractor {
             return;
         }
         Path currentDir = root.resolve("method_pairs");
-        Files.createDirectory(currentDir);
+        Files.createDirectories(currentDir);
         for (MethodDiff methodDiff: methodDiffs) {
             Path dirToWriteFiles = currentDir.resolve(methodDiff.getMethodName());
-            Files.createDirectory(dirToWriteFiles);
+            Files.createDirectories(dirToWriteFiles);
             Files.writeString(dirToWriteFiles.resolve("prev_method.java"), methodDiff.getPrev());
             Files.writeString(dirToWriteFiles.resolve("updated_method.java"), methodDiff.getUpdated());
         }
@@ -73,34 +73,50 @@ class DiffExtractor {
         private String methodName;
         private String prev;
         private String updated;
+        private ITree prevMethod;
+        private ITree updatedMethod;
 
         @Contract(pure = true)
         private MethodDiff(ITree prevMethod, ITree updatedMethod) {
+            this.prevMethod = prevMethod;
+            this.updatedMethod = updatedMethod;
             prev = getNodeText(prevMethod, prevFileText);
             updated = getNodeText(updatedMethod, updatedFileText);
-            methodName = getMethodName(prevMethod, prevContext);
-            if (!getMethodName(updatedMethod, updatedContext).equals(methodName)) {
-                System.out.println("WARNING!");
+
+            String prevMethodName = getMethodName(prevMethod);
+            String updatedMethodName = getMethodName(updatedMethod);
+            if (!getMethodName(updatedMethod).equals(prevMethodName)) {
+                System.err.println("WARNING!");
                 System.out.println("Method name in prev code does not equals to method name in updated code.");
+                System.out.println("Prev method name: " + prevMethodName);
+                System.out.println("Updated method name: " + updatedMethodName);
+                System.out.println("Root: " + root.toAbsolutePath().toString());
             }
+            methodName = prevMethodName;
         }
 
-        private String getNodeText(ITree node, String fileContent) {
+        @Contract(pure = true)
+        private boolean hasMethodChanged() {
+            return !prevMethod.equals(updatedMethod);
+        }
+
+        @NotNull
+        private String getNodeText(@NotNull ITree node, @NotNull String fileContent) {
             return fileContent.substring(node.getPos(), node.getEndPos());
         }
 
-        private String getMethodName(ITree methodNode, TreeContext context) {
+        private String getMethodName(@NotNull ITree methodNode) {
             List<String> methodNames = methodNode.getChildren().stream()
                     .filter(child -> child.getType() == SIMPLE_NAME)
                     .map(ITree::getLabel)
                     .collect(Collectors.toList());
             if (methodNames.size() == 0) {
-                System.out.println("WARNING!");
+                System.err.println("WARNING!");
                 System.out.println("No method name found!");
                 return "NoMethodNameFound_" + methodNode.hashCode();
             }
             else if (methodNames.size() > 1) {
-                System.out.println("WARNING!");
+                System.err.println("WARNING!");
                 System.out.println("More than one method names are found!");
                 System.out.println("Possible names: " + String.join(", ", methodNames) + ".");
                 System.out.println("First variant will be taken.");
