@@ -1,8 +1,11 @@
+import com.github.gumtreediff.actions.ActionGenerator;
+import com.github.gumtreediff.actions.model.Action;
 import com.github.gumtreediff.gen.Generators;
 import com.github.gumtreediff.matchers.Matcher;
 import com.github.gumtreediff.matchers.Matchers;
 import com.github.gumtreediff.tree.ITree;
 import com.github.gumtreediff.tree.TreeContext;
+import com.google.common.collect.Sets;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,7 +13,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
@@ -24,6 +29,7 @@ class DiffExtractor {
     private TreeContext prevContext;
     private TreeContext updatedContext;
     private Matcher matcher;
+    private Set<ITree> changedNodes;
 
     DiffExtractor(@NotNull Path root) throws IOException {
         this.root = root;
@@ -35,6 +41,12 @@ class DiffExtractor {
         updatedContext = Generators.getInstance().getTree(updated.toAbsolutePath().toString());
         matcher = Matchers.getInstance().getMatcher(prevContext.getRoot(), updatedContext.getRoot());
         matcher.match();
+
+        ActionGenerator generator =
+                new ActionGenerator(prevContext.getRoot(), updatedContext.getRoot(), matcher.getMappings());
+        generator.generate();
+        List<Action> actions = generator.getActions();
+        changedNodes = actions.stream().map(Action::getNode).collect(Collectors.toUnmodifiableSet());
     }
 
     @NotNull
@@ -97,7 +109,23 @@ class DiffExtractor {
 
         @Contract(pure = true)
         private boolean hasMethodChanged() {
-            return !prevMethod.equals(updatedMethod);
+            return hasMethodChangedInTermsOfActions();
+        }
+
+        private boolean hasMethodChangedInTermsOfActions() {
+            Set<ITree> allNodesInBothVersions = new HashSet<>();
+            getAllNodes(prevMethod, allNodesInBothVersions);
+            getAllNodes(updatedMethod, allNodesInBothVersions);
+
+            Set<ITree> changedNodesInMethod = Sets.intersection(allNodesInBothVersions, changedNodes);
+            return !changedNodesInMethod.isEmpty();
+        }
+
+        private void getAllNodes(ITree node, @NotNull Set<ITree> result) {
+            result.add(node);
+            for (ITree child: node.getChildren()) {
+                getAllNodes(child, result);
+            }
         }
 
         @NotNull
