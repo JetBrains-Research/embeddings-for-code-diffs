@@ -3,6 +3,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -20,14 +21,22 @@ public class Program {
         Run.initGenerators();
 
         Path root = Paths.get(args[0]);
+        final int[] numberOfFiles = {0, 0}; // [failed to parse, total]
         try {
             List<DiffExtractor> extractors = Files.walk(root).filter(Files::isDirectory).map(dirRoot -> {
+                DiffExtractor diffExtractor = null;
                 try {
-                    return new DiffExtractor(dirRoot);
-                } catch (IOException ignored) {
-                    // Ignored because this exception means that directory does not contain files to process
+                    diffExtractor = new DiffExtractor(dirRoot);
+                } catch (NoSuchFileException ignored) {
+                    return null;
+                } catch (IOException e) {
+                    System.err.println("WARNING!");
+                    System.out.println("Exception occurred during diffing of two files");
+                    System.out.println("Exception: " + e.getMessage());
+                    numberOfFiles[0] += 1;
                 }
-                return null;
+                numberOfFiles[1] += 1;
+                return diffExtractor;
             }).filter(Objects::nonNull).collect(Collectors.toList());
             for (DiffExtractor extractor: extractors) {
                 try {
@@ -43,6 +52,8 @@ public class Program {
             System.out.println("Exception: " + e.getMessage());
             e.printStackTrace();
         }
+        System.out.println("Number of files failed to parse: " +
+                numberOfFiles[0] +" / " + numberOfFiles[1] + " = " + ((double) numberOfFiles[0] / numberOfFiles[1]));
     }
 
     private static void printHelp() {

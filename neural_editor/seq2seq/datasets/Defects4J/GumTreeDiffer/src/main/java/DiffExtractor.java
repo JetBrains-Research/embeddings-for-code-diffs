@@ -37,8 +37,8 @@ class DiffExtractor {
         Path updated = root.resolve("updated.java");
         prevFileText = Files.readString(prev);
         updatedFileText = Files.readString(updated);
-        prevContext = Generators.getInstance().getTree(prev.toAbsolutePath().toString());
-        updatedContext = Generators.getInstance().getTree(updated.toAbsolutePath().toString());
+        prevContext = getContextSafely(prev);
+        updatedContext = getContextSafely(updated);
         matcher = Matchers.getInstance().getMatcher(prevContext.getRoot(), updatedContext.getRoot());
         matcher.match();
 
@@ -47,6 +47,14 @@ class DiffExtractor {
         generator.generate();
         List<Action> actions = generator.getActions();
         changedNodes = actions.stream().map(Action::getNode).collect(Collectors.toUnmodifiableSet());
+    }
+
+    private TreeContext getContextSafely(Path filePath) throws IOException {
+        try {
+            return Generators.getInstance().getTree(filePath.toAbsolutePath().toString());
+        } catch(RuntimeException e) {
+            throw new IOException("Exception during parsing java file " + filePath.toAbsolutePath().toString() + ".", e);
+        }
     }
 
     @NotNull
