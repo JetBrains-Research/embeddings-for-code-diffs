@@ -5,6 +5,8 @@ import subprocess
 from subprocess import PIPE
 from tqdm.auto import tqdm
 
+# TODO: check that <ERROR> is not written
+
 
 class Defects4JAbstracter:
     PREV_METHOD_FILENAME = 'prev_method.java'
@@ -40,15 +42,22 @@ class Defects4JAbstracter:
         completed_process = subprocess.run(abstraction_command, stdout=PIPE, stderr=PIPE)
         if completed_process.returncode != 0 \
                 or not completed_process.stdout.startswith(b'Source Code Abstracted successfully!'):
+            print()
             print(f'Something went wrong during abstraction of'
                   f'{str(prev_method.absolute())} and {str(updated_method.absolute())} pair.')
             print(f'Abstraction program exited with non-zero return code = {completed_process.returncode}')
             print(f'stdout: {completed_process.stdout}')
             print(f'stderr: {completed_process.stderr}')
-        else:
-            mapping_old_file_path = output_dir.joinpath(f'{Defects4JAbstracter.PREV_ABSTRACTED_METHOD_FILENAME}.map')
-            mapping_new_file_path = output_dir.joinpath(Defects4JAbstracter.MAPPING_FILENAME)
-            mapping_old_file_path.rename(mapping_new_file_path)
+            return
+        mapping_old_file_path = output_dir.joinpath(f'{Defects4JAbstracter.PREV_ABSTRACTED_METHOD_FILENAME}.map')
+        mapping_new_file_path = output_dir.joinpath(Defects4JAbstracter.MAPPING_FILENAME)
+        mapping_old_file_path.rename(mapping_new_file_path)
+        if prev_output_file.read_text() == '<ERROR>' or updated_output_file.read_text() == '<ERROR>':
+            print()
+            print(f'<ERROR> is written in abstracted file')
+            print(f'Output dir: {str(output_dir.absolute())}')
+            print(f'Prev file: {str(prev_method.absolute())}')
+            print(f'Updated file: {str(updated_method.absolute())}')
 
 
 def walk_through_dataset_and_abstract_method_pairs(dataset_root: Path, abstracter: Defects4JAbstracter) -> None:
