@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import static org.eclipse.jdt.core.dom.ASTNode.METHOD_DECLARATION;
 import static org.eclipse.jdt.core.dom.ASTNode.SIMPLE_NAME;
+import static org.eclipse.jdt.core.dom.ASTNode.JAVADOC;
 
 
 class DiffExtractor {
@@ -105,8 +106,8 @@ class DiffExtractor {
         private MethodDiff(ITree prevMethod, ITree updatedMethod) {
             this.prevMethod = prevMethod;
             this.updatedMethod = updatedMethod;
-            prev = getNodeText(prevMethod, prevFileText);
-            updated = getNodeText(updatedMethod, updatedFileText);
+            prev = getMethodTextWithoutMethodJavadoc(prevMethod, prevFileText);
+            updated = getMethodTextWithoutMethodJavadoc(updatedMethod, updatedFileText);
 
             String prevMethodName = getMethodName(prevMethod);
             String updatedMethodName = getMethodName(updatedMethod);
@@ -144,6 +145,18 @@ class DiffExtractor {
         @NotNull
         private String getNodeText(@NotNull ITree node, @NotNull String fileContent) {
             return fileContent.substring(node.getPos(), node.getEndPos());
+        }
+
+        @NotNull
+        private String getMethodTextWithoutMethodJavadoc(@NotNull ITree method, @NotNull String fileContent) {
+            if (method.getChild(0).getType() == JAVADOC) {
+                String textWithJavadoc = getNodeText(method, fileContent);
+                ITree javadocNode = method.getChild(0);
+                int endPos = javadocNode.getEndPos() - method.getPos();
+                return textWithJavadoc.substring(endPos);
+            } else {
+                return getNodeText(method, fileContent);
+            }
         }
 
         private String getMethodName(@NotNull ITree methodNode) {

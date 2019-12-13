@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-// TODO: remove comments in the front of methods
 
 public class Program {
     static final String ANSI_RESET = "\u001B[0m";
