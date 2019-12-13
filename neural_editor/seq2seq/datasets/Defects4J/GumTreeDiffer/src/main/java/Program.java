@@ -10,7 +10,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+// TODO: remove comments in the front of methods
+
 public class Program {
+    static final String ANSI_RESET = "\u001B[0m";
+    static final String ANSI_RED = "\u001B[31m";
+
     public static void main(@NotNull String[] args) {
         printHelp();
         if (args.length != 1) {
@@ -21,7 +26,7 @@ public class Program {
         Run.initGenerators();
 
         Path root = Paths.get(args[0]);
-        final int[] numberOfFiles = {0, 0}; // [failed to parse, total]
+        final int[] numberOfFiles = {0, 0, 0}; // [failed to parse, no methods changed, total]
         try {
             List<DiffExtractor> extractors = Files.walk(root).filter(Files::isDirectory).map(dirRoot -> {
                 DiffExtractor diffExtractor = null;
@@ -30,17 +35,23 @@ public class Program {
                 } catch (NoSuchFileException ignored) {
                     return null;
                 } catch (IOException e) {
-                    System.err.println("WARNING!");
+                    System.out.println("\n" + ANSI_RED + "WARNING!" + ANSI_RESET);
                     System.out.println("Exception occurred during diffing of two files");
                     System.out.println("Exception: " + e.getMessage());
                     numberOfFiles[0] += 1;
                 }
-                numberOfFiles[1] += 1;
+                numberOfFiles[2] += 1;
                 return diffExtractor;
             }).filter(Objects::nonNull).collect(Collectors.toList());
             for (DiffExtractor extractor: extractors) {
                 try {
-                    extractor.saveMethodDiffs();
+                    boolean wasSomethingSaved = extractor.saveMethodDiffs();
+                    if (!wasSomethingSaved) {
+                        numberOfFiles[1] += 1;
+                        System.out.println("\n" + ANSI_RED + "WARNING!" + ANSI_RESET);
+                        System.out.println("No methods changed");
+                        System.out.println("Root: " + extractor.getRoot().toAbsolutePath().toString());
+                    }
                 } catch (IOException e) {
                     System.out.println("Program cannot create a directory or write a file or read a source file!");
                     System.out.println("Exception: " + e.getMessage());
@@ -52,8 +63,10 @@ public class Program {
             System.out.println("Exception: " + e.getMessage());
             e.printStackTrace();
         }
-        System.out.println("Number of files failed to parse: " +
-                numberOfFiles[0] +" / " + numberOfFiles[1] + " = " + ((double) numberOfFiles[0] / numberOfFiles[1]));
+        System.out.println("\nNumber of files failed to parse: " +
+                numberOfFiles[0] +" / " + numberOfFiles[2] + " = " + ((double) numberOfFiles[0] / numberOfFiles[2]));
+        System.out.println("Number of files with no methods changed: " +
+                numberOfFiles[1] +" / " + numberOfFiles[2] + " = " + ((double) numberOfFiles[1] / numberOfFiles[2]));
     }
 
     private static void printHelp() {

@@ -74,10 +74,10 @@ class DiffExtractor {
         }
     }
 
-    void saveMethodDiffs() throws IOException {
+    boolean saveMethodDiffs() throws IOException {
         List<MethodDiff> methodDiffs = extractMethodDiffs();
         if (methodDiffs.isEmpty()) {
-            return;
+            return false;
         }
         Path currentDir = root.resolve("method_pairs");
         Files.createDirectories(currentDir);
@@ -87,6 +87,11 @@ class DiffExtractor {
             Files.writeString(dirToWriteFiles.resolve("prev_method.java"), methodDiff.getPrev());
             Files.writeString(dirToWriteFiles.resolve("updated_method.java"), methodDiff.getUpdated());
         }
+        return true;
+    }
+
+    Path getRoot() {
+        return root;
     }
 
     private class MethodDiff {
@@ -106,7 +111,7 @@ class DiffExtractor {
             String prevMethodName = getMethodName(prevMethod);
             String updatedMethodName = getMethodName(updatedMethod);
             if (!getMethodName(updatedMethod).equals(prevMethodName)) {
-                System.err.println("WARNING!");
+                System.out.println("\n" + Program.ANSI_RED + "WARNING!" + Program.ANSI_RESET);
                 System.out.println("Method name in prev code does not equals to method name in updated code.");
                 System.out.println("Prev method name: " + prevMethodName);
                 System.out.println("Updated method name: " + updatedMethodName);
@@ -147,24 +152,17 @@ class DiffExtractor {
                     .map(ITree::getLabel)
                     .collect(Collectors.toList());
             if (methodNames.size() == 0) {
-                System.err.println("WARNING!");
+                System.out.println("\n" + Program.ANSI_RED + "WARNING!" + Program.ANSI_RESET);
                 System.out.println("No method name found!");
                 return "NoMethodNameFound_" + methodNode.hashCode();
             }
             else if (methodNames.size() > 1) {
-                System.err.println("WARNING!");
+                System.out.println("\n" + Program.ANSI_RED + "WARNING!" + Program.ANSI_RESET);
                 System.out.println("More than one method names are found!");
                 System.out.println("Possible names: " + String.join(", ", methodNames) + ".");
                 System.out.println("First variant will be taken.");
             }
             return methodNames.get(0);
-        }
-
-        @Contract(pure = true)
-        private MethodDiff(String methodName, String prev, String updated) {
-            this.methodName = methodName;
-            this.prev = prev;
-            this.updated = updated;
         }
 
         @Contract(pure = true)
