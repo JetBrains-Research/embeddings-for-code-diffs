@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Iterator, List, Dict
 
 import yaml
+import numpy as np
 
 
 class Defects4JFilter:
@@ -82,7 +83,10 @@ def save_filtered_dataset(bugs_descriptions: List[Dict[str, Any]], output_root: 
     prev_file_lines = []
     updated_file_lines = []
     classes_file_lines = []
-    for bug_description in bugs_descriptions:
+
+    sorted_bugs_order = np.argsort(list(map(lambda bug_desc: str(bug_desc['repairPatterns']), bugs_descriptions)))
+    for bug_ind in sorted_bugs_order:
+        bug_description = bugs_descriptions[bug_ind]
         patterns = bug_description['repairPatterns']
         for method_root in bug_description['method_pair_roots']:
             paths_file_lines += [str(method_root.absolute())]
