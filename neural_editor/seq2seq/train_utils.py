@@ -7,6 +7,7 @@ import numpy as np
 import torch
 import torchtext
 from torch import nn
+from torchtext import data
 from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
 
@@ -153,8 +154,10 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
 def remove_eos(batch: np.array, eos_index: int) -> typing.List[np.array]:
     result = []
     for sequence in batch:
-        eos = np.where(sequence == eos_index)[0][0]
-        result.append(sequence[:eos])
+        eos = np.where(sequence == eos_index)[0]
+        if eos.shape[0] > 0:
+            sequence = sequence[:eos[0]]
+        result.append(sequence)
     return result
 
 
@@ -202,4 +205,47 @@ def print_examples(example_iter: typing.Generator, model: EncoderDecoder, max_le
         count += 1
         if count == n:
             break
+
+
+def calculate_accuracy(dataset_iterator: typing.Generator,
+                       model: EncoderDecoder,
+                       max_len: int,
+                       vocab: Vocab) -> float:
+    sos_index = vocab.stoi[CONFIG['SOS_TOKEN']]
+    eos_index = vocab.stoi[CONFIG['EOS_TOKEN']]
+
+    correct = 0
+    total = 0
+    for batch in dataset_iterator:
+        targets = remove_eos(batch.trg_y.cpu().numpy(), eos_index)
+
+        results = greedy_decode(model, batch, max_len, sos_index, eos_index)
+        for i in range(len(targets)):
+            if np.all(targets[i] == results[i]):
+                correct += 1
+            total += 1
+    return correct / total
+
+
+def output_accuracy_on_data(model: EncoderDecoder,
+                            train_data: Dataset, val_data: Dataset, test_data: Dataset,
+                            vocab: Vocab, pad_index: int) -> None:
+    with torch.no_grad():
+        for dataset, label in zip([val_data, train_data, test_data], ['VALIDATION', 'TRAIN', 'TEST']):
+            print_examples_iterator = data.Iterator(dataset, batch_size=1, train=False, sort=False,
+                                                    repeat=False, device=CONFIG['DEVICE'])
+            print(f'==={label} EXAMPLES===')
+            print_examples((rebatch(pad_index, x) for x in print_examples_iterator),
+                           model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'],
+                           vocab, n=3)
+            accuracy_iterator = data.Iterator(dataset, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False,
+                                              sort_within_batch=True,
+                                              sort_key=lambda x: (len(x.src), len(x.trg)),
+                                              repeat=False,
+                                              device=CONFIG['DEVICE'])
+            accuracy = calculate_accuracy((rebatch(pad_index, t) for t in accuracy_iterator),
+                                          model,
+                                          CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'],
+                                          vocab)
+            print(f'Accuracy on {label}: {accuracy}')
 

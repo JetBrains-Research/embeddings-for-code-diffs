@@ -1,13 +1,16 @@
-from typing import List, Generator
+from pathlib import Path
+from typing import List, Tuple
 
 import matplotlib.pyplot as plt
+import torch
+from torchtext import data
+from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
-import numpy as np
-from tqdm.auto import tqdm
 
 from neural_editor.seq2seq import EncoderDecoder
+from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.train_config import CONFIG
-from neural_editor.seq2seq.train_utils import greedy_decode, remove_eos
+from neural_editor.seq2seq.train_utils import print_examples, rebatch, calculate_accuracy
 
 
 def plot_perplexity(perplexities: List[float], labels: List[str]) -> None:
@@ -21,21 +24,30 @@ def plot_perplexity(perplexities: List[float], labels: List[str]) -> None:
     plt.show()
 
 
-def calculate_accuracy(dataset_iterator: List,
-                       model: EncoderDecoder,
-                       max_len: int,
-                       vocab: Vocab) -> float:
-    sos_index = vocab.stoi[CONFIG['SOS_TOKEN']]
-    eos_index = vocab.stoi[CONFIG['EOS_TOKEN']]
+def load_defects4j_dataset(diffs_field: Field) -> Tuple[Dataset, List[str]]:
+    dataset = CodeChangesTokensDataset(CONFIG['DEFECTS4J_PATH'], diffs_field)
+    classes = Path(CONFIG['DEFECTS4J_PATH']).joinpath('classes.txt').read_text().splitlines(keepends=False)
+    return dataset, classes
 
-    correct = 0
-    total = 0
-    for batch in tqdm(dataset_iterator):
-        targets = remove_eos(batch.trg_y.cpu().numpy(), eos_index)
 
-        results = greedy_decode(model, batch, max_len, sos_index, eos_index)
-        for i in range(len(targets)):
-            if np.all(targets[i] == results[i]):
-                correct += 1
-            total += 1
-    return correct / total
+def output_accuracy_on_defects4j(model: EncoderDecoder, defects4j_data: Dataset, diffs_field: Field) -> None:
+    pad_index: int = diffs_field.vocab.stoi[CONFIG['PAD_TOKEN']]
+    vocab: Vocab = diffs_field.vocab
+    model.eval()
+    with torch.no_grad():
+        print_examples_iterator = data.Iterator(defects4j_data, batch_size=1, train=False, sort=False,
+                                                repeat=False, device=CONFIG['DEVICE'])
+        print(f'===Defects4J EXAMPLES===')
+        print_examples((rebatch(pad_index, x) for x in print_examples_iterator),
+                       model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'],
+                       vocab, n=len(print_examples_iterator))
+        accuracy_iterator = data.Iterator(defects4j_data, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False,
+                                          sort_within_batch=True,
+                                          sort_key=lambda x: (len(x.src), len(x.trg)),
+                                          repeat=False,
+                                          device=CONFIG['DEVICE'])
+        accuracy = calculate_accuracy((rebatch(pad_index, t) for t in accuracy_iterator),
+                                      model,
+                                      CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'],
+                                      vocab)
+        print(f'Accuracy on Defects4J: {accuracy}')

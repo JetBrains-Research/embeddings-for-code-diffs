@@ -21,9 +21,8 @@ def get_dataset_path(dataset_suffix: str) -> str:
 
 CONFIG = {
     'IS_TEST': False,
-    'DATASET_ROOT': os.path.abspath(
-        get_dataset_path('java/tufano_bug_fixes/0_50')
-    ),
+    'DATASET_ROOT': os.path.abspath(get_dataset_path('java/tufano_bug_fixes/0_50')),
+    'DEFECTS4J_PATH': os.path.abspath(get_dataset_path('java/Defects4J')),
     'OUTPUT_PATH': os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../embeddings-for-code-diffs-data/')),
     'UNK_TOKEN': "<unk>",
     'PAD_TOKEN': "<pad>",
@@ -32,7 +31,7 @@ CONFIG = {
     'LOWER': False,
     'SEED': 9382,
     'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-    'TOKENS_CODE_CHUNK_MAX_LEN': 50,
+    'TOKENS_CODE_CHUNK_MAX_LEN': 102,
     'TOKEN_MIN_FREQ': 1,
     'LEARNING_RATE': 0.0001,
     'MAX_NUM_OF_EPOCHS': 1000,
@@ -63,7 +62,7 @@ CONFIG = {
 def change_config_for_test():
     CONFIG['IS_TEST'] = True
     CONFIG['DATASET_ROOT'] = get_dataset_path('java/tufano_bug_fixes_test/0_50')
-    CONFIG['MAX_NUM_OF_EPOCHS'] = 2
+    CONFIG['MAX_NUM_OF_EPOCHS'] = 1
 
 
 if CONFIG['SEED'] is not None:

@@ -13,7 +13,7 @@ from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
-from neural_editor.seq2seq.test_utils import calculate_accuracy
+from neural_editor.seq2seq.train_utils import output_accuracy_on_data
 from neural_editor.seq2seq.train_config import CONFIG, change_config_for_test
 from neural_editor.seq2seq.train_utils import print_data_info, make_model, \
     run_epoch, rebatch, print_examples
@@ -98,7 +98,7 @@ def train(model: EncoderDecoder,
         model.eval()
         with torch.no_grad():
             print_examples((rebatch(pad_index, x) for x in val_iter_for_print_examples),
-                           model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
+                           model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'],
                            diffs_field.vocab, n=3)
 
             val_perplexity = run_epoch((rebatch(pad_index, t) for t in val_iter),
@@ -133,9 +133,9 @@ def save_data_on_checkpoint(model: nn.Module, train_perplexities: List[float], v
         pickle.dump(val_perplexities, val_file)
 
 
-def test(model: EncoderDecoder,
-         train_data: Dataset, val_data: Dataset, test_data: Dataset,
-         diffs_field: Field, print_every: int) -> float:
+def test_on_unclassified_data(model: EncoderDecoder,
+                              train_data: Dataset, val_data: Dataset, test_data: Dataset,
+                              diffs_field: Field, print_every: int) -> None:
     """
     :param train_data: train data to print some examples
     :param val_data: validation data to print some examples
@@ -147,7 +147,6 @@ def test(model: EncoderDecoder,
     """
     pad_index: int = diffs_field.vocab.stoi[CONFIG['PAD_TOKEN']]
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
-    # TODO: batch_size 1?
     test_iter = data.Iterator(test_data, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False,
                               sort_within_batch=True,
                               sort_key=lambda x: (len(x.src), len(x.trg)),
@@ -159,28 +158,12 @@ def test(model: EncoderDecoder,
     test_loss_function = SimpleLossCompute(model.generator, criterion, None)
     model.eval()
     with torch.no_grad():
-        for dataset, label in zip([val_data, train_data, test_data], ['VALIDATION', 'TRAIN', 'TEST']):
-            print_examples_iterator = data.Iterator(dataset, batch_size=1, train=False, sort=False,
-                                                    repeat=False, device=CONFIG['DEVICE'])
-            print(f'==={label} EXAMPLES===')
-            print_examples((rebatch(pad_index, x) for x in print_examples_iterator),
-                           model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
-                           diffs_field.vocab, n=3)
-            accuracy_iterator = data.Iterator(dataset, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False,
-                                              sort_within_batch=True,
-                                              sort_key=lambda x: (len(x.src), len(x.trg)),
-                                              repeat=False,
-                                              device=CONFIG['DEVICE'])
-            accuracy = calculate_accuracy([rebatch(pad_index, t) for t in accuracy_iterator],
-                                          model,
-                                          CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'] + 10,
-                                          diffs_field.vocab)
-            print(f'Accuracy on {label}: {accuracy}')
+        output_accuracy_on_data(model, train_data, val_data, test_data, diffs_field.vocab, pad_index)
+    with torch.no_grad():
         test_perplexity = run_epoch((rebatch(pad_index, t) for t in test_iter),
                                     model, test_loss_function,
                                     test_batches_num, print_every=print_every)
         print(f'Test perplexity: {test_perplexity}')
-        return test_perplexity
 
 
 def run_experiment() -> None:
@@ -206,7 +189,7 @@ def run_experiment() -> None:
     save_data_on_checkpoint(model, train_perplexities, val_perplexities)
     # noinspection PyTypeChecker
     # reason: PyCharm doesn't understand that EncoderDecoder is child of nn.Module
-    test(model, train_dataset, val_dataset, test_dataset, diffs_field, print_every=-1)
+    test_on_unclassified_data(model, train_dataset, val_dataset, test_dataset, diffs_field, print_every=-1)
 
 
 if __name__ == "__main__":

@@ -5,15 +5,16 @@ import sys
 
 import torch
 
-from neural_editor.seq2seq.train import load_data, test
-from neural_editor.seq2seq.test_utils import plot_perplexity
+from neural_editor.seq2seq.test_utils import plot_perplexity, load_defects4j_dataset, output_accuracy_on_defects4j
+from neural_editor.seq2seq.train import load_data
 
 
-def load_model_and_test(results_root) -> None:
+def load_model_and_test(results_root: str) -> None:
     train_dataset, val_dataset, test_dataset, diffs_field = load_data(verbose=True)
+    defects4j_dataset, defects4j_classes = load_defects4j_dataset(diffs_field)
     model = torch.load(os.path.join(results_root, 'model.pt'), map_location=torch.device('cpu'))
     model.eval()
-    test(model, train_dataset, val_dataset, test_dataset, diffs_field, print_every=-1)
+    output_accuracy_on_defects4j(model, defects4j_dataset, diffs_field)
 
 
 def print_results(results_root: str) -> None:
@@ -31,8 +32,12 @@ def print_results(results_root: str) -> None:
     plot_perplexity([train_perplexities, val_perplexities], ['train', 'validation'])
 
 
-if __name__ == "__main__":
-    if len(sys.argv) > 2:
-        print("arguments: <results_root_dir>. You passed more than 1 argument")
+def main() -> None:
+    if len(sys.argv) != 2:
+        print("arguments: <results_root_dir>. You passed more or less than 1 argument")
     results_root_dir = sys.argv[1]
     print_results(results_root_dir)
+
+
+if __name__ == "__main__":
+    main()
