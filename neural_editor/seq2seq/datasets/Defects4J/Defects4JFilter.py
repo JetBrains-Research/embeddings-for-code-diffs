@@ -1,7 +1,8 @@
 import json
 import sys
+from collections import defaultdict
 from pathlib import Path
-from typing import Any, Iterator, Tuple, List, Dict
+from typing import Any, Iterator, List, Dict
 
 import yaml
 
@@ -11,31 +12,29 @@ class Defects4JFilter:
         super().__init__()
         self.config = yaml.safe_load(config_file.open('r'))
 
-    def filter(self, dataset_root: Path, bugs_descriptions_filepath: Path) -> Tuple[List[Path], List[Dict[str, Any]]]:
+    def filter(self, dataset_root: Path, bugs_descriptions_filepath: Path) -> List[Dict[str, Any]]:
         """
         :param bugs_descriptions_filepath: json file which contains description of bugs (for example patterns in each bug)
         :param dataset_root: root where dataset is stored
-        :return: [
-            list of paths where each path represents a directory which contains method pair that satisfies filtering conditions,
-            list of bugs descriptions which satisfy filtering conditions
-        ]
+        :return: list of bugs descriptions which satisfy filtering conditions
         """
         with bugs_descriptions_filepath.open('r') as bugs_descriptions_file:
             bugs_descriptions = json.load(bugs_descriptions_file)
         filtered_bugs_descriptions = \
             list(filter(lambda bug_description: self.should_be_taken(bug_description, dataset_root), bugs_descriptions))
-        return Defects4JFilter.get_method_pair_roots(filtered_bugs_descriptions, dataset_root), filtered_bugs_descriptions
+        Defects4JFilter.add_method_pair_roots(filtered_bugs_descriptions, dataset_root)
+        return filtered_bugs_descriptions
 
     @staticmethod
-    def get_method_pair_roots(bugs_descriptions: Iterator[Dict[str, Any]], dataset_root: Path) -> List[Path]:
-        result = []
+    def add_method_pair_roots(bugs_descriptions: Iterator[Dict[str, Any]], dataset_root: Path) -> None:
         for bug_description in bugs_descriptions:
             project_name = bug_description['project']
             bug_id = bug_description['bugId']
             bug_data_path = dataset_root.joinpath(project_name, str(bug_id))
             abstracted_paths = list(bug_data_path.rglob('abstracted'))
-            result += abstracted_paths
-        return result
+            if len(abstracted_paths) == 0:
+                print(f'No abstracted data found for {str(bug_data_path.absolute())}')
+            bug_description['method_pair_roots'] = abstracted_paths
 
     def should_be_taken(self, bug_description: Dict[str, Any], dataset_root: Path) -> bool:
         should_be_taken_bug_description = self.should_be_taken_based_on_bug_description(bug_description)
@@ -73,22 +72,40 @@ class Defects4JFilter:
         return True
 
 
-def save_filtered_dataset(method_roots: List[Path], output_root: Path) -> None:
+def save_filtered_dataset(bugs_descriptions: List[Dict[str, Any]], output_root: Path) -> None:
     paths_file = output_root.joinpath('paths.txt')
     prev_file = output_root.joinpath('prev.txt')
     updated_file = output_root.joinpath('updated.txt')
+    classes_file = output_root.joinpath('classes.txt')
 
     paths_file_lines = []
     prev_file_lines = []
     updated_file_lines = []
-    for method_root in method_roots:
-        paths_file_lines += [str(method_root.absolute())]
-        prev_file_lines += [method_root.joinpath('prev.txt').read_text()]
-        updated_file_lines += [method_root.joinpath('updated.txt').read_text()]
+    classes_file_lines = []
+    for bug_description in bugs_descriptions:
+        patterns = bug_description['repairPatterns']
+        for method_root in bug_description['method_pair_roots']:
+            paths_file_lines += [str(method_root.absolute())]
+            prev_file_lines += [method_root.joinpath('prev.txt').read_text()]
+            updated_file_lines += [method_root.joinpath('updated.txt').read_text()]
+            classes_file_lines += [str(patterns)]
 
     paths_file.write_text('\n'.join(paths_file_lines))
     prev_file.write_text('\n'.join(prev_file_lines))
     updated_file.write_text('\n'.join(updated_file_lines))
+    classes_file.write_text('\n'.join(classes_file_lines))
+
+
+def print_statistics(filtered_bugs_descriptions: List[Dict[str, Any]]) -> None:
+    print(f'Found {len(filtered_bugs_descriptions)} bugs that satisfy filtering conditions')
+    number_of_total_method_pairs = \
+        sum(map(lambda bug_desc: len(bug_desc["method_pair_roots"]), filtered_bugs_descriptions))
+    print(f'Total number of method pairs: {number_of_total_method_pairs}')
+    datapoints_in_each_class = defaultdict(lambda: 0)
+    for bug_description in filtered_bugs_descriptions:
+        datapoints_in_each_class[', '.join(bug_description["repairPatterns"])] += len(bug_description["method_pair_roots"])
+    for pattern in datapoints_in_each_class:
+        print(f'{pattern}: {datapoints_in_each_class[pattern]}')
 
 
 def main() -> None:
@@ -101,10 +118,9 @@ def main() -> None:
     output_root = Path(sys.argv[3])
     filter_config_file = Path(sys.argv[4])
     defects4j_filter = Defects4JFilter(filter_config_file)
-    filtered_method_roots, filtered_bugs_descriptions = defects4j_filter.filter(dataset_root, bugs_description_filepath)
-    save_filtered_dataset(filtered_method_roots, output_root)
-    print(f'Found {len(filtered_bugs_descriptions)} bugs that satisfy filtering conditions')
-    print(f'Total number of method pairs: {len(filtered_method_roots)}')
+    filtered_bugs_descriptions = defects4j_filter.filter(dataset_root, bugs_description_filepath)
+    save_filtered_dataset(filtered_bugs_descriptions, output_root)
+    print_statistics(filtered_bugs_descriptions)
 
 
 if __name__ == "__main__":
