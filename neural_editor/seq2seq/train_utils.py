@@ -126,7 +126,7 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
     # [B, SrcSeqLen], [B, 1, SrcSeqLen], [B]
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
-        edit_output, edit_final, encoder_output, encoder_final = model.encode(batch)
+        edit_final, encoder_output, encoder_final = model.encode(batch)
         prev_y = torch.ones(batch.nseqs, 1).fill_(sos_index).type_as(src)  # [B, 1]
         trg_mask = torch.ones_like(prev_y)  # [B, 1]
 
@@ -170,7 +170,7 @@ def lookup_words(x: np.array, vocab: Vocab) -> typing.List[str]:
     return [vocab.itos[i] for i in x]
 
 
-def print_examples(example_iter: typing.Generator, model: EncoderDecoder, max_len: int, vocab: Vocab, n: int) -> None:
+def print_examples(example_iter: typing.Iterable, model: EncoderDecoder, max_len: int, vocab: Vocab, n: int) -> None:
     """Prints N examples. Assumes batch size of 1."""
 
     model.eval()
@@ -207,7 +207,7 @@ def print_examples(example_iter: typing.Generator, model: EncoderDecoder, max_le
             break
 
 
-def calculate_accuracy(dataset_iterator: typing.Generator,
+def calculate_accuracy(dataset_iterator: typing.Iterable,
                        model: EncoderDecoder,
                        max_len: int,
                        vocab: Vocab) -> float:

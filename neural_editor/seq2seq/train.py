@@ -157,8 +157,7 @@ def test_on_unclassified_data(model: EncoderDecoder,
     # reason: None is not a type of Optimizer
     test_loss_function = SimpleLossCompute(model.generator, criterion, None)
     model.eval()
-    with torch.no_grad():
-        output_accuracy_on_data(model, train_data, val_data, test_data, diffs_field.vocab, pad_index)
+    output_accuracy_on_data(model, train_data, val_data, test_data, diffs_field.vocab, pad_index)
     with torch.no_grad():
         test_perplexity = run_epoch((rebatch(pad_index, t) for t in test_iter),
                                     model, test_loss_function,

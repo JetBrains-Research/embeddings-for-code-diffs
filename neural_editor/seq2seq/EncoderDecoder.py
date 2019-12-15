@@ -18,6 +18,7 @@ class EncoderDecoder(nn.Module):
     def __init__(self, encoder: Encoder, decoder: Decoder, edit_encoder: EditEncoder,
                  embed: nn.Embedding, generator: Generator) -> None:
         super(EncoderDecoder, self).__init__()
+        self.edit_final = None
         self.encoder = encoder
         self.decoder = decoder
         self.edit_encoder = edit_encoder
@@ -32,22 +33,32 @@ class EncoderDecoder(nn.Module):
         :param batch: batch to process
         :return: Tuple[[B, TrgSeqLen, DecoderH], [NumLayers, B, DecoderH], [B, TrgSeqLen, DecoderH]]
         """
-        edit_output, edit_final, encoder_output, encoder_final = self.encode(batch)
+        edit_final, encoder_output, encoder_final = self.encode(batch)
         decoded = self.decode(edit_final, encoder_output,
                               encoder_final, batch.src_mask,
                               batch.trg, batch.trg_mask, None)
         return decoded
 
-    def encode(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
+    def set_edit_representation(self, sample: Batch) -> None:
         """
-        Encodes edits and prev sequences
-        :param batch: batch to process
-        :return: Tuple[
-            [B, AlignedSeqLen, NumDirections * DiffEncoderH],
-            Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]],
-            [B, SrcSeqLen, NumDirections * SrcEncoderH],
-            Tuple[[NumLayers, B, NumDirections * SrcEncoderH], [NumLayers, B, NumDirections * SrcEncoderH]]
-        ]
+        Fixates edit_final vector. Used for one-shot learning.
+        :param sample: sample from which construct edit representation, it is batch with size 1
+        :return: nothing
+        """
+        self.edit_final = self.encode_edit(sample)
+
+    def unset_edit_representation(self) -> None:
+        """
+        Unset edit representation. Turns off one-shot learning mode.
+        :return: nothing
+        """
+        self.edit_final = None
+
+    def encode_edit(self, batch: Batch) -> Tuple[Tensor, Tensor]:
+        """
+        Returns edit representations (edit_final) of samples in the batch.
+        :param batch: batch to encode
+        :return: Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]]
         """
         diff_embedding = torch.cat(
             (self.embed(batch.diff_alignment), self.embed(batch.diff_prev), self.embed(batch.diff_updated)),
@@ -59,13 +70,29 @@ class EncoderDecoder(nn.Module):
         )  # [B, 1, AlignedSeqLen + AlignedSeqLen + AlignedSeqLen]
         # [B, AlignedSeqLen, NumDirections * DiffEncoderH]
         # Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]]
-        edit_output, edit_final = self.edit_encoder(
+        _, edit_final = self.edit_encoder(
             diff_embedding,
             diff_embedding_mask,
             batch.diff_alignment_lengths  # B * 1 * AlignedSeqLen
         )
+        return edit_final
+
+    def encode(self, batch: Batch) -> Tuple[Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
+        """
+        Encodes edits and prev sequences
+        :param batch: batch to process
+        :return: Tuple[
+            Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]],
+            [B, SrcSeqLen, NumDirections * SrcEncoderH],
+            Tuple[[NumLayers, B, NumDirections * SrcEncoderH], [NumLayers, B, NumDirections * SrcEncoderH]]
+        ]
+        """
+        if self.edit_final is None:
+            edit_final = self.encode_edit(batch)
+        else:
+            edit_final = self.edit_final
         encoder_output, encoder_final = self.encoder(self.embed(batch.src), batch.src_mask, batch.src_lengths)
-        return edit_output, edit_final, encoder_output, encoder_final
+        return edit_final, encoder_output, encoder_final
 
     def decode(self, edit_final: Tuple[Tensor, Tensor],
                encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],
