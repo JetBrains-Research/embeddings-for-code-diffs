@@ -1,12 +1,11 @@
 from pathlib import Path
 from typing import List, Tuple, Dict
 
-import numpy as np
 import matplotlib.pyplot as plt
-import torch
-import seaborn as sns
 import pandas as pd
-from sklearn.decomposition import PCA, TruncatedSVD
+import seaborn as sns
+import torch
+from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from torchtext import data
 from torchtext.data import Dataset, Field
@@ -29,8 +28,9 @@ def map_classes_to_colors(classes: List[str]) -> Tuple[List[int], Dict[int, str]
 
 
 def visualize_tsne(representations: torch.Tensor, classes: List[str]) -> None:
-    representations = PCA(n_components=20).fit_transform(representations.numpy())
-    representations_2d = TSNE(n_components=2).fit_transform(representations)
+    representations = representations.numpy()
+    #representations = PCA(n_components=min(50, representations.shape[0]), random_state=CONFIG['SEED']).fit_transform(representations)
+    representations_2d = TSNE(n_components=2, init='pca', random_state=CONFIG['SEED']).fit_transform(representations)
     df = pd.DataFrame(dict(x=representations_2d[:, 0], y=representations_2d[:, 1], classes=classes))
     sns.lmplot('x', 'y', data=df, hue='classes' if classes is not None else None, fit_reg=False)
     plt.show()
