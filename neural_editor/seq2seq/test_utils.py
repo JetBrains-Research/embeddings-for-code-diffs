@@ -1,8 +1,13 @@
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
+import numpy as np
 import matplotlib.pyplot as plt
 import torch
+import seaborn as sns
+import pandas as pd
+from sklearn.decomposition import PCA, TruncatedSVD
+from sklearn.manifold import TSNE
 from torchtext import data
 from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
@@ -11,6 +16,24 @@ from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.train_config import CONFIG
 from neural_editor.seq2seq.train_utils import print_examples, rebatch, calculate_accuracy
+
+
+def map_classes_to_colors(classes: List[str]) -> Tuple[List[int], Dict[int, str]]:
+    dictionary = {}
+    colors = []
+    for cls in classes:
+        if cls not in dictionary:
+            dictionary[cls] = len(dictionary)
+        colors.append(dictionary[cls])
+    return colors, dict([(value, key) for key, value in dictionary.items()])
+
+
+def visualize_tsne(representations: torch.Tensor, classes: List[str]) -> None:
+    representations = PCA(n_components=20).fit_transform(representations.numpy())
+    representations_2d = TSNE(n_components=2).fit_transform(representations)
+    df = pd.DataFrame(dict(x=representations_2d[:, 0], y=representations_2d[:, 1], classes=classes))
+    sns.lmplot('x', 'y', data=df, hue='classes' if classes is not None else None, fit_reg=False)
+    plt.show()
 
 
 def plot_perplexity(perplexities: List[float], labels: List[str]) -> None:
