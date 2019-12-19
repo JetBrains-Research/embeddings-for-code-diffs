@@ -53,6 +53,12 @@ def load_defects4j_dataset(diffs_field: Field) -> Tuple[Dataset, List[str]]:
     return dataset, classes
 
 
+def load_tufano_labeled_dataset(diffs_field: Field) -> Tuple[Dataset, List[str]]:
+    dataset = CodeChangesTokensDataset(CONFIG['TUFANO_LABELED_PATH'], diffs_field)
+    classes = Path(CONFIG['TUFANO_LABELED_PATH']).joinpath('classes.txt').read_text().splitlines(keepends=False)
+    return dataset, classes
+
+
 def output_accuracy_on_defects4j(model: EncoderDecoder, defects4j_data: Dataset, diffs_field: Field) -> None:
     pad_index: int = diffs_field.vocab.stoi[CONFIG['PAD_TOKEN']]
     vocab: Vocab = diffs_field.vocab

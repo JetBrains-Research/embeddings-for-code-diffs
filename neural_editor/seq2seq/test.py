@@ -66,14 +66,18 @@ def one_shot_learning(model: EncoderDecoder, dataset: Dataset, classes: List[str
                 print(f'NEW CLASS: {y}')
                 model.set_edit_representation(batch)
                 current_class = y
-                correct_same_edit_representation += \
-                    calculate_accuracy([batch], model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'], vocab)
+                correct = calculate_accuracy([batch], model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'], vocab)
+                correct_same_edit_representation += correct
                 total_same_edit_representation += 1
             else:
-                correct_other_edit_representation += \
-                    calculate_accuracy([batch], model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'], vocab)
+                correct = calculate_accuracy([batch], model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'], vocab)
+                correct_other_edit_representation += correct
                 total_other_edit_representation += 1
-            print_examples([batch], model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'], vocab, n=1)
+            if correct == 1:
+                color = 'green'
+            else:
+                color = 'red'
+            print_examples([batch], model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'], vocab, n=1, color=color)
         print(f'Accuracy on Defects4J for same edit representations: '
               f'{correct_same_edit_representation} / {total_same_edit_representation} = '
               f'{correct_same_edit_representation / total_same_edit_representation}')

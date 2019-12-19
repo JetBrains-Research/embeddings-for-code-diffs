@@ -2,6 +2,7 @@ import math
 import time
 import typing
 from datetime import timedelta
+from termcolor import colored
 
 import numpy as np
 import torch
@@ -170,7 +171,9 @@ def lookup_words(x: np.array, vocab: Vocab) -> typing.List[str]:
     return [vocab.itos[i] for i in x]
 
 
-def print_examples(example_iter: typing.Iterable, model: EncoderDecoder, max_len: int, vocab: Vocab, n: int) -> None:
+def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
+                   max_len: int, vocab: Vocab, n: int,
+                   color=None) -> None:
     """Prints N examples. Assumes batch size of 1."""
 
     model.eval()
@@ -195,11 +198,11 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder, max_len
 
         result = greedy_decode(model, batch, max_len, sos_index, eos_index)
         result = result[0]
-        print("Example #%d" % (i + 1))
+        print(colored("Example #%d" % (i + 1), color))
         # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
-        print("Src : ", " ".join(lookup_words(src, vocab)))
-        print("Trg : ", " ".join(lookup_words(trg, vocab)))
-        print("Pred: ", " ".join(lookup_words(result, vocab)))
+        print(colored("Src : " + " ".join(lookup_words(src, vocab))))
+        print(colored("Trg : " + " ".join(lookup_words(trg, vocab))))
+        print(colored("Pred: " + " ".join(lookup_words(result, vocab))))
         print()
 
         count += 1
