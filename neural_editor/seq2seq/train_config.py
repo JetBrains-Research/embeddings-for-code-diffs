@@ -23,6 +23,7 @@ CONFIG = {
     'IS_TEST': False,
     'DATASET_ROOT': os.path.abspath(get_dataset_path('java/tufano_bug_fixes/0_50')),
     'DEFECTS4J_PATH': os.path.abspath(get_dataset_path('java/Defects4J')),
+    #'TUFANO_LABELED_PATH': "/home/mikhail/Documents/Development/embeddings-for-code-diffs/tests/data/datasets/java/tufano_code_changes/labeled/0_50",
     'TUFANO_LABELED_PATH': os.path.abspath(get_dataset_path('java/tufano_code_changes/labeled/0_50')),
     'OUTPUT_PATH': os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../embeddings-for-code-diffs-data/')),
     'UNK_TOKEN': "<unk>",

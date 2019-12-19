@@ -175,10 +175,8 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
                    max_len: int, vocab: Vocab, n: int,
                    color=None) -> None:
     """Prints N examples. Assumes batch size of 1."""
-
     model.eval()
     count = 0
-    print()
 
     sos_index = vocab.stoi[CONFIG['SOS_TOKEN']]
     eos_index = vocab.stoi[CONFIG['EOS_TOKEN']]
@@ -203,7 +201,6 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
         print(colored("Src : " + " ".join(lookup_words(src, vocab))))
         print(colored("Trg : " + " ".join(lookup_words(trg, vocab))))
         print(colored("Pred: " + " ".join(lookup_words(result, vocab))))
-        print()
 
         count += 1
         if count == n:
