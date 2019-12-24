@@ -1,18 +1,18 @@
 import math
-from typing import List, Tuple, Type
+from typing import List, Tuple
 
 import torch
 import tqdm
-from torch.nn import functional as F
 
-from mem_transformer import MemTransformerLM
+from neural_editor.seq2seq import EncoderDecoder, Batch
 
 
 class Search(object):
     """
     Class for search algorithms
     Basically user needs to feed log_probs and perform a step several times
-    Results can be found in hypotheses"""
+    Results can be found in hypotheses
+    """
 
     def __init__(self, eos_ids: List[int], vocab_size: int, search_size: int):
         self._eos_ids = eos_ids
@@ -247,22 +247,21 @@ class DiverseBeamSearch(Search):
 
 
 def perform_search(
-        *,
-        model: MemTransformerLM,
-        mems: List[torch.Tensor],
-        log_probs: torch.Tensor,
+        model: EncoderDecoder,
+        batch: Batch,
         num_iterations: int,
+        sos_index: int,
         terminal_id: List[int],
-        verbose: bool = True,
         beam_size: int,
         num_groups: int,
         diversity_strength: float,
+        verbose: bool = False
 ) -> List[List[Tuple[torch.Tensor, float]]]:
     """
-    :param model: trained MemTransformerLM model
-    :param mems: MemTransformerLM memory with context
-    :param log_probs: log probabilities just after context feeding
+    :param model: trained EncoderDecoder model
+    :param batch: batch with size 1
     :param num_iterations: how many iterations should perform
+    :param sos_index: index of start of sentence token
     :param terminal_id: list of tokens, on which hypotheses will terminate
     :param verbose: whether to show progress bar
     :param beam_size: beam width, num performing hypotheses in each group
@@ -270,13 +269,25 @@ def perform_search(
     :param diversity_strength: how strong will be penalty for same tokens between groups
     :returns list of diversity groups, where group is list of hypotheses and their scores
     """
+    src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
+    with torch.no_grad():
+        edit_final, encoder_output, encoder_final = model.encode(batch)
+        prev_y = torch.ones(batch.nseqs, 1).fill_(sos_index).type_as(src)  # [B, 1]
+        trg_mask = torch.ones_like(prev_y)  # [B, 1]
+
+    states = None
+    with torch.no_grad():
+        # pre_output: [B, TrgSeqLen, DecoderH]
+        out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
+                                               src_mask, prev_y, trg_mask, states)
+
+        # we predict from the pre-output layer, which is
+        # a combination of Decoder state, prev emb, and context
+        log_probs = model.generator(pre_output[:, -1])  # [B, V]
 
     assert (
             log_probs.ndimension() == 2 and log_probs.size(0) == 1
     ), f"log_probs must have shape (1, vocab_size), but {log_probs.size()} was given"
-
-    for mem in mems:
-        assert mem.size(1) == 1, f"You must provide mems only for 1 example, but {mem.size(1)} was given"
 
     if verbose:
         print("----------Search info----------")
@@ -302,78 +313,42 @@ def perform_search(
             print("Using Beam search")
         search = BeamSearch(terminal_id, log_probs.size(1), beam_size)
 
-    print("-------------------------------")
+    if verbose:
+        print("-------------------------------")
 
     # expand batch
     log_probs = log_probs.repeat_interleave(search.batch_size, dim=0)
-    mems = [mem.repeat_interleave(search.batch_size, dim=1) for mem in mems]
-
-    # On the first iteration infs are possible
-    possible_infs = True
+    src_mask = src_mask.repeat_interleave(search.batch_size * beam_size, dim=0)
+    trg_mask = trg_mask.repeat_interleave(search.batch_size * beam_size, dim=0)
+    edit_final = (
+        edit_final[0].repeat_interleave(search.batch_size * beam_size, dim=1),
+        edit_final[1].repeat_interleave(search.batch_size * beam_size, dim=1)
+    )
+    encoder_output = encoder_output.repeat_interleave(search.batch_size * beam_size, dim=0)
+    encoder_final = (
+        encoder_final[0].repeat_interleave(search.batch_size * beam_size, dim=1),
+        encoder_final[1].repeat_interleave(search.batch_size * beam_size, dim=1)
+    )
+    states = (
+        states[0].repeat_interleave(search.batch_size * beam_size, dim=1),
+        states[1].repeat_interleave(search.batch_size * beam_size, dim=1)
+    )
 
     for _ in tqdm.trange(num_iterations, disable=not verbose):
-        selected_inds = search.step(log_probs, possible_infs=possible_infs)
-        possible_infs = False
+        selected_inds = search.step(log_probs, possible_infs=False)
 
-        data = search.last_predictions.unsqueeze(0)
-        mems = [mem[:, selected_inds, :] for mem in mems]
+        prev_y = search.last_predictions.unsqueeze(1)
+        # pre_output: [B, TrgSeqLen, DecoderH]
+        out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
+                                               src_mask, prev_y, trg_mask, states)
 
-        predicted_hiddens, mems = predict(model, data, mems)
-        log_probs = hidden_to_softmax(model, predicted_hiddens.squeeze(0), log=True)
+        # we predict from the pre-output layer, which is
+        # a combination of Decoder state, prev emb, and context
+        log_probs = model.generator(pre_output[:, -1])  # [B, V]
 
     return search.hypotheses
 
 
-def predict(model, data, mems):
-    tgt_len = data.size(0)
-    with torch.no_grad():
-        hidden, new_mems = model._forward(data, mems=mems)
-    pred_hid = hidden[-tgt_len:]
-    return pred_hid, new_mems
-
-
-def hidden_to_softmax(model, hidden, temperature=1.0, top_k=0, top_p=0.0, log=False):
-    """Turn a hidden projection into softmax or log softmax.
-    Adapted from utils/proj_adaptive_softmax.py
-    """
-    # pas stands for ProjectedAdaptiveSoftmax
-    pas = model.crit
-    logits = pas._compute_logit(hidden, pas.out_layers[0].weight, pas.out_layers[0].bias, pas.out_projs[0])
-    logits = _top_k_top_p_filtering(logits, top_k=top_k, top_p=top_p)
-
-    logits /= temperature
-    if log:
-        return F.log_softmax(logits, dim=-1)
-    else:
-        return F.softmax(logits, dim=-1)
-
-
-def _top_k_top_p_filtering(logits, top_k=0, top_p=0.0, filter_value=-float("Inf")):
-    """ Filter a distribution of logits using top-k and/or nucleus (top-p) filtering
-    https://gist.github.com/thomwolf/1a5a29f6962089e871b94cbd09daf317
-        Args:
-            logits: logits distribution shape (..., vocabulary size)
-            top_k >0: keep only top k tokens with highest probability (top-k filtering).
-            top_p >0.0: keep the top tokens with cumulative probability >= top_p (nucleus filtering).
-    """
-    top_k = min(top_k, logits.size(-1))  # Safety check
-    if top_k > 0:
-        # Remove all tokens with a probability less than the last token of the top-k
-        indices_to_remove = logits < torch.topk(logits, top_k)[0][..., -1, None]
-        logits[indices_to_remove] = filter_value
-
-    if top_p > 0.0:
-        sorted_logits, sorted_indices = torch.sort(logits, descending=True)
-        cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
-
-        # Remove tokens with cumulative probability above the threshold
-        sorted_indices_to_remove = cumulative_probs >= top_p
-        # Shift the indices to the right to keep also the first token above the threshold
-        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
-        sorted_indices_to_remove[..., 0] = 0
-
-        indices_to_remove = torch.zeros_like(logits, dtype=torch.uint8).scatter_(
-            dim=-1, index=sorted_indices, src=sorted_indices_to_remove
-        )
-        logits[indices_to_remove] = filter_value
-    return logits
+def get_sequence_with_maximum_probability(hypotheses: List[List[Tuple[torch.Tensor, float]]]) -> torch.Tensor:
+    best_in_groups = [hypothesis[0] for hypothesis in hypotheses]
+    return max(best_in_groups, key=lambda hypothesis: hypothesis[1])[0]
