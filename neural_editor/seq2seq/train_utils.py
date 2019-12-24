@@ -121,7 +121,7 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
                   sos_index: int, eos_index: int) -> typing.List[np.array]:
     """
     Greedily decode a sentence.
-    :return: Tuple[[DecodedSeqLenCutWithEos], [1, DecodedSeqLen, SrcSeqLen]]
+    :return: [DecodedSeqLenCutWithEos]
     """
     # TODO: create beam search
     # [B, SrcSeqLen], [B, 1, SrcSeqLen], [B]
@@ -231,7 +231,7 @@ def output_accuracy_on_data(model: EncoderDecoder,
                             train_data: Dataset, val_data: Dataset, test_data: Dataset,
                             vocab: Vocab, pad_index: int) -> None:
     with torch.no_grad():
-        for dataset, label in zip([val_data, train_data, test_data], ['VALIDATION', 'TRAIN', 'TEST']):
+        for dataset, label in zip([test_data, val_data, train_data], ['TEST', 'VALIDATION', 'TRAIN']):
             print_examples_iterator = data.Iterator(dataset, batch_size=1, train=False, sort=False,
                                                     repeat=False, device=CONFIG['DEVICE'])
             print(f'==={label} EXAMPLES===')

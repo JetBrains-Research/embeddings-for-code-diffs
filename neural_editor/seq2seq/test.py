@@ -1,15 +1,13 @@
 from typing import List
 
-import numpy as np
 import torch
 from torchtext import data
 from torchtext.data import Dataset, Field
-from torchtext.vocab import Vocab
 
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.test_utils import visualize_tsne
 from neural_editor.seq2seq.train_config import CONFIG
-from neural_editor.seq2seq.train_utils import print_examples, rebatch, calculate_accuracy
+from neural_editor.seq2seq.train_utils import rebatch
 
 
 def visualization_for_classified_dataset(model: EncoderDecoder, dataset: Dataset, classes: List[str], diffs_field: Field) -> None:

@@ -25,13 +25,17 @@ class EncoderDecoder(nn.Module):
         self.embed = embed
         self.generator = generator
 
-    def forward(self, batch: Batch) -> Tuple[Tensor, Tensor, Tensor]:
+    def forward(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
         """
         Take in and process masked src and target sequences.
         Returns tuple of decoder states, hidden states of decoder, pre-output states.
         Pre-output combines output states with context and embedding of previous token
         :param batch: batch to process
-        :return: Tuple[[B, TrgSeqLen, DecoderH], [NumLayers, B, DecoderH], [B, TrgSeqLen, DecoderH]]
+        :return:  Tuple[
+                 [B, TrgSeqLen, DecoderH],
+                 Tuple[[NumLayers, B, DecoderH], [NumLayers, B, DecoderH]],
+                 [B, TrgSeqLen, DecoderH]
+        ]
         """
         edit_final, encoder_output, encoder_final = self.encode(batch)
         decoded = self.decode(edit_final, encoder_output,
