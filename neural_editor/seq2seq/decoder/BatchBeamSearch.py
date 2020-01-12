@@ -5,11 +5,13 @@ import torch
 from torch import Tensor
 
 from neural_editor.seq2seq import EncoderDecoder, Batch
-from neural_editor.seq2seq.train_config import CONFIG
+from neural_editor.seq2seq.config import Config
 
 
 class BatchedBeamSearch:
-    def __init__(self, beam_size: int, model: EncoderDecoder, sos_index: int, eos_index: int, max_len: int) -> None:
+    def __init__(self, beam_size: int, model: EncoderDecoder,
+                 sos_index: int, eos_index: int, max_len: int,
+                 config: Config) -> None:
         """
         Constructor of beam search that supports decoding by batches.
         :param beam_size: beam search width
@@ -17,6 +19,7 @@ class BatchedBeamSearch:
         :param sos_index: start of sequence symbol
         :param eos_index: end of sequence symbol
         :param max_len: maximum length of sequence
+        :param config: config of execution
         """
         super().__init__()
         self.beam_size = beam_size
@@ -25,6 +28,7 @@ class BatchedBeamSearch:
         self.eos_index = eos_index
         self.max_len = max_len
         self.beam_indexing = torch.arange(self.beam_size)
+        self.config = config
 
     def first_step(self, batch: Batch):
         """
@@ -57,7 +61,7 @@ class BatchedBeamSearch:
 
         edit_final, encoder_final, states = self.reshape_states([edit_final, encoder_final, states])
         encoder_output, prev_y, trg_mask, src_mask = self.reshape_batches([encoder_output, prev_y, trg_mask, src_mask])
-        current_sequences = torch.zeros((batch_size, self.beam_size, self.max_len)).long().to(CONFIG['DEVICE'])
+        current_sequences = torch.zeros((batch_size, self.beam_size, self.max_len)).long().to(self.config['DEVICE'])
         best_probs, next_words = torch.sort(prob, dim=1, descending=True)
         best_probs, next_words = best_probs[:, :self.beam_size], next_words[:, :self.beam_size]
         current_sequences[:, :, 0] = next_words
@@ -65,9 +69,9 @@ class BatchedBeamSearch:
 
         results = [[] for _ in range(batch_size)]
         results_probs = [[] for _ in range(batch_size)]
-        new_best_permutation = torch.zeros(batch_size, self.beam_size).long().to(CONFIG['DEVICE'])
-        new_next_words = torch.zeros(batch_size, self.beam_size).long().to(CONFIG['DEVICE'])
-        new_best_probs = torch.zeros(batch_size, self.beam_size).to(CONFIG['DEVICE'])
+        new_best_permutation = torch.zeros(batch_size, self.beam_size).long().to(self.config['DEVICE'])
+        new_next_words = torch.zeros(batch_size, self.beam_size).long().to(self.config['DEVICE'])
+        new_best_probs = torch.zeros(batch_size, self.beam_size).to(self.config['DEVICE'])
 
         for i in range(1, self.max_len):
             out, states, pre_output = self.model.decode(edit_final, encoder_output, encoder_final,

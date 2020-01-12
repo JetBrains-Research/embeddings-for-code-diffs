@@ -4,13 +4,13 @@ from torchtext import data
 from torchtext.data import Field
 
 from edit_representation.sequence_encoding.Differ import Differ
-from neural_editor.seq2seq.train_config import CONFIG
+from neural_editor.seq2seq.config import Config
 
 
 class CodeChangesTokensDataset(data.Dataset):
     """Defines a dataset for code changes. It parses text files with tokens"""
 
-    def __init__(self, path: str, field: Field, **kwargs) -> None:
+    def __init__(self, path: str, field: Field, config: Config, **kwargs) -> None:
         """Create a TranslationDataset given paths and fields.
 
         Arguments:
@@ -23,9 +23,9 @@ class CodeChangesTokensDataset(data.Dataset):
         fields = [('src', field), ('trg', field),
                   ('diff_alignment', field), ('diff_prev', field), ('diff_updated', field)]
         examples = []
-        differ = Differ(CONFIG['REPLACEMENT_TOKEN'], CONFIG['DELETION_TOKEN'],
-                        CONFIG['ADDITION_TOKEN'], CONFIG['UNCHANGED_TOKEN'],
-                        CONFIG['PADDING_TOKEN'])
+        differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
+                        config['ADDITION_TOKEN'], config['UNCHANGED_TOKEN'],
+                        config['PADDING_TOKEN'])
         with open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
             for prev_line, updated_line in zip(prev, updated):

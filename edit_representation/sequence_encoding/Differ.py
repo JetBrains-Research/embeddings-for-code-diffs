@@ -2,8 +2,6 @@ from typing import List, Dict, Tuple
 
 import Levenshtein as Lvn
 
-# TODO: write unit test with example from vk, problem: '' appears in output
-
 
 def build_vocab(tokens: List[str]) -> Dict[str, chr]:
     max_unseen = 0
@@ -39,9 +37,9 @@ class Differ:
             if opcode[0] == 'delete':
                 # assert(len(range(opcode[1], opcode[2])) > 0)
                 # assert(len(range(opcode[3], opcode[4])) == 0)
-                operations += [self.deletion_token for i in range(opcode[1], opcode[2])]
+                operations += [self.deletion_token for _ in range(opcode[1], opcode[2])]
                 prev_result += [prev[i] for i in range(opcode[1], opcode[2])]
-                updated_result += [self.padding_token for i in range(opcode[1], opcode[2])]
+                updated_result += [self.padding_token for _ in range(opcode[1], opcode[2])]
             elif opcode[0] == 'insert':
                 # assert(len(range(opcode[1], opcode[2])) == 0)
                 # assert(len(range(opcode[3], opcode[4])) > 0)

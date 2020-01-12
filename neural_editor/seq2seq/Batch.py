@@ -2,7 +2,7 @@ from typing import Tuple
 
 from torch import Tensor
 
-from neural_editor.seq2seq.train_config import CONFIG
+from neural_editor.seq2seq.config import Config
 
 
 class Batch:
@@ -13,7 +13,7 @@ class Batch:
     def __init__(self, src: Tuple[Tensor, Tensor], trg: Tuple[Tensor, Tensor],
                  diff_alignment: Tuple[Tensor, Tensor],
                  diff_prev: Tuple[Tensor, Tensor], diff_updated: Tuple[Tensor, Tensor],
-                 pad_index: int) -> None:
+                 pad_index: int, config: Config) -> None:
         src, src_lengths = src  # B * SrcSeqLen, B
 
         self.diff_alignment, self.diff_alignment_lengths = diff_alignment  # B * SeqAlignedLen, B
@@ -44,13 +44,13 @@ class Batch:
             self.trg_mask = (self.trg_y != pad_index)  # B * (TrgSeqLen - 1)
             self.ntokens = (self.trg_y != pad_index).data.sum().item()
 
-        self.src = self.src.to(CONFIG['DEVICE'])
-        self.src_mask = self.src_mask.to(CONFIG['DEVICE'])
+        self.src = self.src.to(config['DEVICE'])
+        self.src_mask = self.src_mask.to(config['DEVICE'])
 
         if trg is not None:
-            self.trg = self.trg.to(CONFIG['DEVICE'])
-            self.trg_y = self.trg_y.to(CONFIG['DEVICE'])
-            self.trg_mask = self.trg_mask.to(CONFIG['DEVICE'])
+            self.trg = self.trg.to(config['DEVICE'])
+            self.trg_y = self.trg_y.to(config['DEVICE'])
+            self.trg_mask = self.trg_mask.to(config['DEVICE'])
 
     def __len__(self) -> int:
         return self.nseqs

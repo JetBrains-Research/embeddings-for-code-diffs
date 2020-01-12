@@ -3,7 +3,7 @@ from pathlib import Path
 
 import numpy as np
 
-from neural_editor.seq2seq.train_config import make_reproducible
+from neural_editor.seq2seq.config import make_reproducible
 
 SEED = 2354
 NUM_WORDS = 11

@@ -97,7 +97,7 @@ def perform_search(
     )
 
     for _ in tqdm.trange(num_iterations, disable=not verbose):
-        selected_inds = search.step(log_probs, possible_infs=False)
+        search.step(log_probs, possible_infs=False)
 
         prev_y = search.last_predictions.unsqueeze(1)
         # pre_output: [B, TrgSeqLen, DecoderH]

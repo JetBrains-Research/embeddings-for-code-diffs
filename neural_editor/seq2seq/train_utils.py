@@ -20,14 +20,15 @@ from neural_editor.seq2seq.EncoderDecoder import EncoderDecoder
 from neural_editor.seq2seq.Generator import Generator
 from neural_editor.seq2seq.decoder.Decoder import Decoder
 from neural_editor.seq2seq.encoder.Encoder import Encoder
-from neural_editor.seq2seq.train_config import CONFIG
+from neural_editor.seq2seq.config import Config
 
 
 def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
                hidden_size_encoder: int, hidden_size_decoder: int,
                num_layers: int,
                dropout: float,
-               use_bridge: bool) -> EncoderDecoder:
+               use_bridge: bool,
+               config: Config) -> EncoderDecoder:
     """Helper: Construct a model from hyperparameters."""
     # TODO_DONE: change hidden size of decoder
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
@@ -41,18 +42,18 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
         EditEncoder(3 * emb_size, edit_representation_size, num_layers, dropout),
         nn.Embedding(vocab_size, emb_size),  # 1 -> Emb
         Generator(hidden_size_decoder, vocab_size))
-    model.to(CONFIG['DEVICE'])
+    model.to(config['DEVICE'])
     return model
 
 
-def rebatch(pad_idx: int, batch: torchtext.data.Batch) -> Batch:
+def rebatch(pad_idx: int, batch: torchtext.data.Batch, config: Config) -> Batch:
     """Wrap torchtext batch into our own Batch class for pre-processing"""
     # These fields are added dynamically by PyTorch
     return Batch(batch.src, batch.trg, batch.diff_alignment,
-                 batch.diff_prev, batch.diff_updated, pad_idx)
+                 batch.diff_prev, batch.diff_updated, pad_idx, config)
 
 
-def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field) -> None:
+def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field, config: Config) -> None:
     """ This prints some useful stuff about our data sets. """
 
     print("Data set sizes (number of sentence pairs):")
@@ -75,9 +76,9 @@ def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset
         '%02d %s' % (i, t) for i, t in enumerate(field.vocab.itos[:10])), "\n")
 
     print("Special words frequency and ids: ")
-    special_tokens = [CONFIG['UNK_TOKEN'], CONFIG['PAD_TOKEN'], CONFIG['SOS_TOKEN'], CONFIG['EOS_TOKEN'],
-                      CONFIG['REPLACEMENT_TOKEN'], CONFIG['DELETION_TOKEN'], CONFIG['ADDITION_TOKEN'],
-                      CONFIG['UNCHANGED_TOKEN'], CONFIG['PADDING_TOKEN']]
+    special_tokens = [config['UNK_TOKEN'], config['PAD_TOKEN'], config['SOS_TOKEN'], config['EOS_TOKEN'],
+                      config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'], config['ADDITION_TOKEN'],
+                      config['UNCHANGED_TOKEN'], config['PADDING_TOKEN']]
     for special_token in special_tokens:
         print(f"{special_token} {field.vocab.freqs[special_token]} {field.vocab.stoi[special_token]}")
 
@@ -172,14 +173,14 @@ def lookup_words(x: np.array, vocab: Vocab) -> typing.List[str]:
 
 
 def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
-                   max_len: int, vocab: Vocab, n: int,
-                   color=None) -> None:
+                   max_len: int, vocab: Vocab, config: Config,
+                   n: int, color=None) -> None:
     """Prints N examples. Assumes batch size of 1."""
     model.eval()
     count = 0
 
-    sos_index = vocab.stoi[CONFIG['SOS_TOKEN']]
-    eos_index = vocab.stoi[CONFIG['EOS_TOKEN']]
+    sos_index = vocab.stoi[config['SOS_TOKEN']]
+    eos_index = vocab.stoi[config['EOS_TOKEN']]
 
     # TODO: find out the best way to deal with <s> and </s>
     for i, batch in enumerate(example_iter):
@@ -210,9 +211,10 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
 def calculate_accuracy(dataset_iterator: typing.Iterable,
                        model: EncoderDecoder,
                        max_len: int,
-                       vocab: Vocab) -> float:
-    sos_index = vocab.stoi[CONFIG['SOS_TOKEN']]
-    eos_index = vocab.stoi[CONFIG['EOS_TOKEN']]
+                       vocab: Vocab,
+                       config: Config) -> float:
+    sos_index = vocab.stoi[config['SOS_TOKEN']]
+    eos_index = vocab.stoi[config['EOS_TOKEN']]
 
     correct = 0
     total = 0
@@ -229,23 +231,23 @@ def calculate_accuracy(dataset_iterator: typing.Iterable,
 
 def output_accuracy_on_data(model: EncoderDecoder,
                             train_data: Dataset, val_data: Dataset, test_data: Dataset,
-                            vocab: Vocab, pad_index: int) -> None:
+                            vocab: Vocab, pad_index: int, config: Config) -> None:
     with torch.no_grad():
         for dataset, label in zip([test_data, val_data, train_data], ['TEST', 'VALIDATION', 'TRAIN']):
             print_examples_iterator = data.Iterator(dataset, batch_size=1, train=False, sort=False,
-                                                    repeat=False, device=CONFIG['DEVICE'])
+                                                    repeat=False, device=config['DEVICE'])
             print(f'==={label} EXAMPLES===')
-            print_examples((rebatch(pad_index, x) for x in print_examples_iterator),
-                           model, CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'],
-                           vocab, n=3)
-            accuracy_iterator = data.Iterator(dataset, batch_size=CONFIG['TEST_BATCH_SIZE'], train=False,
+            print_examples((rebatch(pad_index, x, config) for x in print_examples_iterator),
+                           model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
+                           vocab, config, n=3)
+            accuracy_iterator = data.Iterator(dataset, batch_size=config['TEST_BATCH_SIZE'], train=False,
                                               sort_within_batch=True,
                                               sort_key=lambda x: (len(x.src), len(x.trg)),
                                               repeat=False,
-                                              device=CONFIG['DEVICE'])
-            accuracy = calculate_accuracy((rebatch(pad_index, t) for t in accuracy_iterator),
+                                              device=config['DEVICE'])
+            accuracy = calculate_accuracy((rebatch(pad_index, t, config) for t in accuracy_iterator),
                                           model,
-                                          CONFIG['TOKENS_CODE_CHUNK_MAX_LEN'],
-                                          vocab)
+                                          config['TOKENS_CODE_CHUNK_MAX_LEN'],
+                                          vocab, config)
             print(f'Accuracy on {label}: {accuracy}')
 
