@@ -51,3 +51,6 @@ class Batch:
             self.trg = self.trg.to(CONFIG['DEVICE'])
             self.trg_y = self.trg_y.to(CONFIG['DEVICE'])
             self.trg_mask = self.trg_mask.to(CONFIG['DEVICE'])
+
+    def __len__(self) -> int:
+        return self.nseqs
