@@ -14,6 +14,7 @@ from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
+from neural_editor.seq2seq.test_utils import save_perplexity_plot
 from neural_editor.seq2seq.train_utils import output_accuracy_on_data
 from neural_editor.seq2seq.config import load_config, Config
 from neural_editor.seq2seq.train_utils import print_data_info, make_model, \
@@ -167,7 +168,7 @@ def test_on_unclassified_data(model: EncoderDecoder,
         print(f'Test perplexity: {test_perplexity}')
 
 
-def run_train(config: Config) -> None:
+def run_train(config: Config) -> EncoderDecoder:
     pprint.pprint(config.get_config())
     config.save()
 
@@ -187,6 +188,9 @@ def run_train(config: Config) -> None:
     print(train_perplexities)
     print(val_perplexities)
     save_data_on_checkpoint(model, train_perplexities, val_perplexities, config)
+    save_perplexity_plot([train_perplexities, val_perplexities], ['train', 'validation'], 'loss.png', config)
+    # TODO: consider to return best on validation model
+    return model
 
 
 def main():

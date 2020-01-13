@@ -50,7 +50,8 @@ class BatchedBeamSearch:
 
     def decode(self, batch: Batch) -> List[np.array]:
         """
-        Method decodes a batch and returns list of answers for each example in batch. :param batch: batch to decode.
+        Method decodes a batch and returns list of answers for each example in batch.
+        :param batch: batch to decode.
         :return: list of numpy arrays, each numpy array contains sequences in descending by probability order,
         length of guesses may vary and guesses doesn't contain sos and eos and pad tokens
         """

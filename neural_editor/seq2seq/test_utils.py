@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import List, Tuple, Dict
 
@@ -26,15 +27,16 @@ def map_classes_to_colors(classes: List[str]) -> Tuple[List[int], Dict[int, str]
     return colors, dict([(value, key) for key, value in dictionary.items()])
 
 
-def visualize_tsne(representations: torch.Tensor, classes: List[str], config: Config) -> None:
+def visualize_tsne(representations: torch.Tensor, classes: List[str], filename: str, config: Config) -> None:
     representations = representations.numpy()
     representations_2d = TSNE(n_components=2, init='pca', random_state=config['SEED']).fit_transform(representations)
     df = pd.DataFrame(dict(x=representations_2d[:, 0], y=representations_2d[:, 1], classes=classes))
     sns.lmplot('x', 'y', data=df, hue='classes' if classes is not None else None, fit_reg=False)
-    plt.show()
+    plt.savefig(os.path.join(config['OUTPUT_PATH'], filename))
+    plt.clf()
 
 
-def plot_perplexity(perplexities: List[float], labels: List[str]) -> None:
+def save_perplexity_plot(perplexities: List[List[float]], labels: List[str], filepath: str, config: Config) -> None:
     """plot perplexities"""
     plt.title("Perplexity per Epoch")
     plt.xlabel("Epoch")
@@ -42,7 +44,8 @@ def plot_perplexity(perplexities: List[float], labels: List[str]) -> None:
     for perplexity_values, label in zip(perplexities, labels):
         plt.plot(perplexity_values, label=label)
         plt.legend()
-    plt.show()
+    plt.savefig(os.path.join(config['OUTPUT_PATH'], filepath))
+    plt.clf()
 
 
 def load_defects4j_dataset(diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:

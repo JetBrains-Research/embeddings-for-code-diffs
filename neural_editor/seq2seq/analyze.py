@@ -1,73 +1,122 @@
 import os
-import pickle
 import pprint
 import sys
+import time
+from datetime import timedelta
 from pathlib import Path
 
 import torch
-from torchtext.data import Dataset
 
+from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config, load_config
 from neural_editor.seq2seq.datasets.dataset_utils import take_part_from_dataset
 from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalculation
+from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
 from neural_editor.seq2seq.experiments.OneShotLearning import OneShotLearning
-from neural_editor.seq2seq.test import visualization_for_classified_dataset, visualization_for_unclassified_dataset
-from neural_editor.seq2seq.test_utils import plot_perplexity, load_defects4j_dataset, output_accuracy_on_defects4j, \
-    load_tufano_labeled_dataset
+from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_tufano_labeled_dataset
 from neural_editor.seq2seq.train import load_data
 
 
-def load_model_and_test(results_root: str, config: Config) -> None:
+def measure_experiment_time(func) -> None:
+    start = time.time()
+    func()
+    end = time.time()
+    print(f'Duration: {str(timedelta(seconds=end - start))}')
+    print()
+
+
+def test_model(model: EncoderDecoder, config: Config) -> None:
     train_dataset, val_dataset, test_dataset, diffs_field = load_data(verbose=True, config=config)
     tufano_labeled_dataset, tufano_labeled_classes = load_tufano_labeled_dataset(diffs_field, config)
     defects4j_dataset, defects4j_classes = load_defects4j_dataset(diffs_field, config)
-    model = torch.load(os.path.join(results_root, 'model.pt'), map_location=torch.device('cpu'))
 
     one_shot_learning_experiment = OneShotLearning(model, diffs_field, config)
     accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, config)
+    visualization_experiment = EditRepresentationVisualization(model, diffs_field, config)
 
     model.eval()
     model.unset_edit_representation()
     with torch.no_grad():
-        accuracy_calculation_experiment.conduct_on_single_dataset(
-            take_part_from_dataset(test_dataset, 25), 'Test dataset 25'
+        # Visualization of data
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(tufano_labeled_dataset,
+                                                     'tufano_labeled_2d_representations.png',
+                                                     classes=tufano_labeled_classes)
         )
-        accuracy_calculation_experiment.conduct_on_single_dataset(tufano_labeled_dataset, 'Tufano Labeled Code Changes')
-        accuracy_calculation_experiment.conduct_on_single_dataset(defects4j_dataset, 'Defects4J')
-        accuracy_calculation_experiment.conduct_on_single_dataset(
-            take_part_from_dataset(test_dataset, 300), 'Test dataset 300'
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(defects4j_dataset,
+                                                     'defects4j_2d_representations.png',
+                                                     classes=defects4j_classes)
         )
-        accuracy_calculation_experiment.conduct_on_single_dataset(
-            take_part_from_dataset(val_dataset, 300), 'Validation dataset 300'
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(take_part_from_dataset(test_dataset, 300),
+                                                     'test300_2d_representations.png', classes=None)
         )
-        accuracy_calculation_experiment.conduct_on_single_dataset(
-            take_part_from_dataset(train_dataset, 300), 'Train dataset 300'
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(take_part_from_dataset(val_dataset, 300),
+                                                     'val300_2d_representations.png', classes=None)
         )
-        output_accuracy_on_defects4j(model, defects4j_dataset, diffs_field, config)
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(take_part_from_dataset(train_dataset, 300),
+                                                     'train300_2d_representations.png', classes=None)
+        )
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(test_dataset,
+                                                     'test_2d_representations.png', classes=None)
+        )
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(val_dataset,
+                                                     'val_2d_representations.png', classes=None)
+        )
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(take_part_from_dataset(train_dataset, 5000),
+                                                     'train5000_2d_representations.png', classes=None)
+        )
 
-        one_shot_learning_experiment.conduct(tufano_labeled_dataset, tufano_labeled_classes,
-                                             'Tufano Labeled Code Changes')
-        one_shot_learning_experiment.conduct(defects4j_dataset, defects4j_classes, 'Defects4J')
+        # Accuracy
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(tufano_labeled_dataset,
+                                                            'Tufano Labeled Code Changes')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(defects4j_dataset, 'Defects4J')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(test_dataset, 300), 'Test dataset 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(val_dataset, 300), 'Validation dataset 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(train_dataset, 300), 'Train dataset 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(defects4j_dataset, 'Defects4J Dataset')
+        )
 
-        visualization_for_classified_dataset(model, tufano_labeled_dataset, tufano_labeled_classes, diffs_field, config)
-        visualization_for_classified_dataset(model, defects4j_dataset, defects4j_classes,
-                                             diffs_field, config)
-        visualization_for_unclassified_dataset(model, Dataset(train_dataset[:500], train_dataset.fields),
-                                               diffs_field, config)
-        visualization_for_unclassified_dataset(model, Dataset(val_dataset[:500], val_dataset.fields),
-                                               diffs_field, config)
-        visualization_for_unclassified_dataset(model, Dataset(test_dataset[:500], test_dataset.fields),
-                                               diffs_field, config)
+        # One shot learning
+        measure_experiment_time(
+            lambda: one_shot_learning_experiment.conduct(tufano_labeled_dataset, tufano_labeled_classes,
+                                                         'Tufano Labeled Code Changes')
+        )
+        measure_experiment_time(
+            lambda: one_shot_learning_experiment.conduct(defects4j_dataset, defects4j_classes, 'Defects4J')
+        )
+
+        # Long execution
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                test_dataset, 'Test dataset all')
+        )
 
 
 def print_results(results_root: str, config: Config) -> None:
     pprint.pprint(config.get_config())
-    load_model_and_test(results_root, config)
-    with open(os.path.join(results_root, 'train_perplexities.pkl'), 'rb') as train_file:
-        train_perplexities = pickle.load(train_file)
-    with open(os.path.join(results_root, 'val_perplexities.pkl'), 'rb') as val_file:
-        val_perplexities = pickle.load(val_file)
-    plot_perplexity([train_perplexities, val_perplexities], ['train', 'validation'])
+    model = torch.load(os.path.join(results_root, 'model.pt'), map_location=config['DEVICE'])
+    test_model(model, config)
 
 
 def main() -> None:

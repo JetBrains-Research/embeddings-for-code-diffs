@@ -2,10 +2,27 @@ from typing import List, Tuple
 
 import torch
 import tqdm
-
+import numpy as np
 from neural_editor.seq2seq import EncoderDecoder, Batch
 from neural_editor.seq2seq.decoder.BeamSearch import BeamSearch
 from neural_editor.seq2seq.decoder.DiverseBeamSearch import DiverseBeamSearch
+
+
+def create_decode_method(
+        model: EncoderDecoder,
+        num_iterations: int,
+        sos_index: int,
+        eos_index: int,
+        beam_size: int,
+        num_groups: int,
+        diversity_strength: float,
+        verbose: bool = False
+):
+    def decode(batch) -> List[List[np.array]]:
+        result = perform_search(model, batch, num_iterations, sos_index, [eos_index],
+                                beam_size, num_groups, diversity_strength, verbose)
+        return [flat_map_and_sort_perform_search(result)]
+    return decode
 
 
 def perform_search(
@@ -115,6 +132,13 @@ def perform_search(
         log_probs = model.generator(pre_output[:, -1])  # [B, V]
 
     return search.hypotheses
+
+
+def flat_map_and_sort_perform_search(
+        hypotheses: List[List[Tuple[torch.Tensor, float]]]) -> List[np.array]:
+    flat_mapped = [answer for hypothesis in hypotheses for answer in hypothesis]
+    flat_mapped_and_sorted = sorted(flat_mapped, key=lambda answer: answer[1], reverse=True)
+    return list(map(lambda answer: answer[0].detach().cpu().numpy()[:-1], flat_mapped_and_sorted))
 
 
 def get_sequence_with_maximum_probability(hypotheses: List[List[Tuple[torch.Tensor, float]]]) -> torch.Tensor:

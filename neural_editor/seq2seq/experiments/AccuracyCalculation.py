@@ -5,6 +5,7 @@ from torchtext.vocab import Vocab
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder.BatchBeamSearch import BatchedBeamSearch
+from neural_editor.seq2seq.decoder.search import create_decode_method
 from neural_editor.seq2seq.train_utils import rebatch, calculate_top_k_accuracy
 
 
@@ -18,15 +19,19 @@ class AccuracyCalculation:
         self.eos_index: int = vocab.stoi[config['EOS_TOKEN']]
         self.config = config
         self.beam_size = self.config['BEAM_SIZE']
-        self.beam_search = BatchedBeamSearch(self.beam_size, self.model, sos_index, self.eos_index, self.config)
+        self.topk_values = self.config['TOP_K']
+        num_iterations = self.config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
+        self.beam_search = create_decode_method(self.model, num_iterations, sos_index, self.eos_index, self.beam_size,
+                                                self.config['NUM_GROUPS'], self.config['DIVERSITY_STRENGTH'],
+                                                verbose=False)
 
-    def conduct_on_single_dataset(self, dataset: Dataset, dataset_label: str) -> None:
+    def conduct(self, dataset: Dataset, dataset_label: str) -> None:
         print(f'Start conducting accuracy calculation experiment for {dataset_label}...')
         data_iterator = data.Iterator(dataset, batch_size=1,
                                       sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
-        correct_top_1, correct, total = \
-            calculate_top_k_accuracy(self.beam_size,
+        correct_all_k, total = \
+            calculate_top_k_accuracy(self.topk_values,
                                      [rebatch(self.pad_index, batch, self.config) for batch in data_iterator],
-                                     self.beam_search.decode, self.eos_index)
-        print(f'Top-1 accuracy: {correct_top_1} / {total} = {correct_top_1 / total}')
-        print(f'Top-{self.beam_size} accuracy: {correct} / {total} = {correct / total}')
+                                     self.beam_search, self.eos_index)
+        for correct_top_k, k in zip(correct_all_k, self.topk_values):
+            print(f'Top-{k} accuracy: {correct_top_k} / {total} = {correct_top_k / total}')

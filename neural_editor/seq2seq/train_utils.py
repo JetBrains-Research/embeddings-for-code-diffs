@@ -11,6 +11,7 @@ from torch import nn
 from torchtext import data
 from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
+from tqdm import tqdm
 
 from edit_representation.sequence_encoding.EditEncoder import EditEncoder
 from neural_editor.seq2seq import SimpleLossCompute
@@ -266,24 +267,27 @@ def calculate_accuracy(dataset_iterator: typing.Iterable,
     return correct / total
 
 
-def calculate_top_k_accuracy(k, dataset_iterator, decode_method, eos_index) -> typing.Tuple[float, float, float]:
-    correct_top_1 = 0
-    correct = 0
+def calculate_top_k_accuracy(topk_values: typing.List[int], dataset_iterator: typing.Iterator,
+                             decode_method, eos_index: int) -> typing.Tuple[typing.List[int], int]:
+    correct = [0 for _ in range(len(topk_values))]
+    max_k = topk_values[-1]
     total = 0
     for batch in dataset_iterator:
         targets = remove_eos(batch.trg_y.cpu().numpy(), eos_index)
         results = decode_method(batch)
         for example_id in range(len(results)):
             target = targets[example_id]
-            example_top_k_results = results[example_id][:k]
+            example_top_k_results = results[example_id][:max_k]
+            tail_id = 0
             for i, result in enumerate(example_top_k_results):
+                if i + 1 > topk_values[tail_id]:
+                    tail_id += 1
                 if len(result) == len(target) and np.all(result == target):
-                    if i == 0:
-                        correct_top_1 += 1
-                    correct += 1
+                    for j in range(tail_id, len(correct)):
+                        correct[j] += 1
                     break
         total += len(batch)
-    return correct_top_1, correct, total
+    return correct, total
 
 
 def output_accuracy_on_data(model: EncoderDecoder,
