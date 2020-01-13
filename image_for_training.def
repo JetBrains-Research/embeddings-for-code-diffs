@@ -32,6 +32,7 @@ conda install python=3.7
 conda install docopt tqdm gitpython
 
 conda install pytorch numpy torchvision torchtext cudatoolkit=10.0 -c pytorch
+conda install -c conda-forge matplotlib
 yes | python -m pip install python-Levenshtein
 
 %runscript
