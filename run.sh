@@ -1,1 +1,1 @@
-python3 -m neural_editor.seq2seq.train
+python3 -m neural_editor.seq2seq.main

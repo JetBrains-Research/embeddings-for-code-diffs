@@ -59,20 +59,25 @@ class Config:
 
     _PATH_KEYS = ['DATASET_ROOT', 'DEFECTS4J_PATH', 'TUFANO_LABELED_PATH', 'OUTPUT_PATH']
 
-    def __setitem__(self, key: str, value: Any) -> None:
-        self._CONFIG[key] = value
-
     def __getitem__(self, key: str) -> Any:
         if key in self._PATH_KEYS:
             return os.path.abspath(os.path.join(os.path.dirname(__file__), self._CONFIG[key]))
         return self._CONFIG[key]
 
     def save(self) -> None:
-        with open(os.path.join(self._CONFIG['OUTPUT_PATH'], 'config.pkl'), 'wb') as config_file:
+        with open(os.path.join(self['OUTPUT_PATH'], 'config.pkl'), 'wb') as config_file:
             pickle.dump(self._CONFIG, config_file)
 
     def get_config(self) -> Dict[str, Any]:
         return self._CONFIG.copy()
+
+    def change_config_for_test(self) -> None:
+        self._CONFIG['IS_TEST'] = True
+        self._CONFIG['DATASET_ROOT'] = \
+            '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes_test/0_50'
+        self._CONFIG['TUFANO_LABELED_PATH'] = \
+            '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
+        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 2
 
 
 def load_config(is_test: bool, path_to_config: Path = None) -> Config:
@@ -83,7 +88,7 @@ def load_config(is_test: bool, path_to_config: Path = None) -> Config:
     if config['SEED'] is not None:
         make_reproducible(config['SEED'], config['MAKE_CUDA_REPRODUCIBLE'])
     if is_test:
-        change_config_for_test(config)
+        config.change_config_for_test()
     return config
 
 
@@ -96,10 +101,3 @@ def make_reproducible(seed: int, make_cuda_reproducible: bool) -> None:
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
 
-
-def change_config_for_test(config: Config) -> None:
-    config['IS_TEST'] = True
-    config['DATASET_ROOT'] = '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes_test/0_50'
-    config['TUFANO_LABELED_PATH'] = \
-        '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
-    config['MAX_NUM_OF_EPOCHS'] = 2
