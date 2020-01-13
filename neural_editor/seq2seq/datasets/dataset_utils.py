@@ -49,6 +49,11 @@ def prepare_dataset(dataset_root):
     concat_and_write_tokens_as_string_via_separator(dataset_root)
 
 
+def take_part_from_dataset(dataset: Dataset, n: int) -> Dataset:
+    import torchtext
+    return torchtext.data.Dataset(dataset[:n], dataset.fields)
+
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Args: <path_to_dataset>")

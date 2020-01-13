@@ -172,6 +172,43 @@ def lookup_words(x: np.array, vocab: Vocab) -> typing.List[str]:
     return [vocab.itos[i] for i in x]
 
 
+# TODO: unite this method with print_examples
+def print_examples_decode_method(example_iter: typing.Iterable, model: EncoderDecoder,
+                                 vocab: Vocab, config: Config,
+                                 n: int, color=None, decode_method=None) -> None:
+    """Prints N examples. Assumes batch size of 1."""
+    model.eval()
+    count = 0
+
+    sos_index = vocab.stoi[config['SOS_TOKEN']]
+    eos_index = vocab.stoi[config['EOS_TOKEN']]
+
+    # TODO: find out the best way to deal with <s> and </s>
+    for i, batch in enumerate(example_iter):
+
+        src = batch.src.cpu().numpy()[0, :]
+        trg = batch.trg_y.cpu().numpy()[0, :]
+
+        # remove </s> (if it is there)
+        src = src[:-1] if src[-1] == eos_index else src
+        trg = trg[:-1] if trg[-1] == eos_index else trg
+
+        # remove <s> for src
+        src = src[1:] if src[0] == sos_index else src
+
+        result = decode_method(batch)
+        result = result[0][0]
+        print(colored("Example #%d" % (i + 1), color))
+        # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
+        print(colored("Src : " + " ".join(lookup_words(src, vocab))))
+        print(colored("Trg : " + " ".join(lookup_words(trg, vocab))))
+        print(colored("Pred: " + " ".join(lookup_words(result, vocab))))
+
+        count += 1
+        if count == n:
+            break
+
+
 def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
                    max_len: int, vocab: Vocab, config: Config,
                    n: int, color=None) -> None:
@@ -229,6 +266,26 @@ def calculate_accuracy(dataset_iterator: typing.Iterable,
     return correct / total
 
 
+def calculate_top_k_accuracy(k, dataset_iterator, decode_method, eos_index) -> typing.Tuple[float, float, float]:
+    correct_top_1 = 0
+    correct = 0
+    total = 0
+    for batch in dataset_iterator:
+        targets = remove_eos(batch.trg_y.cpu().numpy(), eos_index)
+        results = decode_method(batch)
+        for example_id in range(len(results)):
+            target = targets[example_id]
+            example_top_k_results = results[example_id][:k]
+            for i, result in enumerate(example_top_k_results):
+                if len(result) == len(target) and np.all(result == target):
+                    if i == 0:
+                        correct_top_1 += 1
+                    correct += 1
+                    break
+        total += len(batch)
+    return correct_top_1, correct, total
+
+
 def output_accuracy_on_data(model: EncoderDecoder,
                             train_data: Dataset, val_data: Dataset, test_data: Dataset,
                             vocab: Vocab, pad_index: int, config: Config) -> None:
@@ -250,4 +307,3 @@ def output_accuracy_on_data(model: EncoderDecoder,
                                           config['TOKENS_CODE_CHUNK_MAX_LEN'],
                                           vocab, config)
             print(f'Accuracy on {label}: {accuracy}')
-
