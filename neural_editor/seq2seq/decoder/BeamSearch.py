@@ -61,8 +61,7 @@ class BeamSearch(Search):
     @property
     def hypotheses(self) -> List[List[Tuple[torch.Tensor, float]]]:
         """List of tuples of terminated hypotheses and theirs scores"""
-        hypotheses = [(hyp, score) for hyp, score in zip(self._hypotheses, self._scores / self._length)]
-        hypotheses += self._terminated_hypotheses
+        hypotheses = self._terminated_hypotheses
         return [sorted(hypotheses, key=lambda x: x[1], reverse=True)]
 
     @property
@@ -113,7 +112,7 @@ class BeamSearch(Search):
 
     def _is_sample_terminates(self, samples: torch.Tensor):
         result = samples == self._eos_tensor.expand(self._eos_tensor.size(0), samples.size(0))
-        return result.sum(dim=0, dtype=torch.uint8)
+        return result.sum(dim=0, dtype=torch.bool)
 
     def _apply_slice_to_state(self, tensor_slice):
         self._scores = self._scores[tensor_slice]

@@ -10,7 +10,7 @@ from neural_editor.seq2seq.config import Config
 
 class BatchedBeamSearch:
     def __init__(self, beam_size: int, model: EncoderDecoder,
-                 sos_index: int, eos_index: int, max_len: int,
+                 sos_index: int, eos_index: int,
                  config: Config) -> None:
         """
         Constructor of beam search that supports decoding by batches.
@@ -18,7 +18,6 @@ class BatchedBeamSearch:
         :param model: seq2seq encoder decoder model
         :param sos_index: start of sequence symbol
         :param eos_index: end of sequence symbol
-        :param max_len: maximum length of sequence
         :param config: config of execution
         """
         super().__init__()
@@ -26,7 +25,7 @@ class BatchedBeamSearch:
         self.model = model
         self.sos_index = sos_index
         self.eos_index = eos_index
-        self.max_len = max_len
+        self.max_len = config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
         self.beam_indexing = torch.arange(self.beam_size)
         self.config = config
 

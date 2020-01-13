@@ -97,10 +97,16 @@ def perform_search(
     )
 
     for _ in tqdm.trange(num_iterations, disable=not verbose):
-        search.step(log_probs, possible_infs=False)
+        mask = search.step(log_probs, possible_infs=False).long()
 
         prev_y = search.last_predictions.unsqueeze(1)
         # pre_output: [B, TrgSeqLen, DecoderH]
+        edit_final = (edit_final[0][:, mask, :], edit_final[1][:, mask, :])
+        encoder_output = encoder_output[mask]
+        encoder_final = (encoder_final[0][:, mask, :], encoder_final[1][:, mask, :])
+        src_mask = src_mask[mask]
+        trg_mask = trg_mask[mask]
+        states = (states[0][:, mask, :], states[1][:, mask, :])
         out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
                                                src_mask, prev_y, trg_mask, states)
 
