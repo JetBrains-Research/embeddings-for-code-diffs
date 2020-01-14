@@ -9,7 +9,7 @@ from neural_editor.seq2seq.decoder.Search import Search
 class BeamSearch(Search):
     """Beam search algorithm with normalized by length scores"""
 
-    def __init__(self, eos_ids: List[int], vocab_size: int, beam_size: int):
+    def __init__(self, eos_ids: List[int], vocab_size: int, beam_size: int, alpha=.0):
         super().__init__(eos_ids, vocab_size, beam_size)
 
         self._length = 1.0
@@ -18,6 +18,7 @@ class BeamSearch(Search):
         self._terminated_hypotheses = []
         self._sort_mask = None
         self._eos_tensor = None
+        self.alpha = alpha
 
     def _init_state(self, dtype: torch.dtype, device: torch.device):
         self._device = device
@@ -93,7 +94,7 @@ class BeamSearch(Search):
         # We want to stash tokens only from the first search_size
         to_stash = self._is_sample_terminates(samples[:self._search_size])
 
-        scores = self._scores / self._length
+        scores = self._scores / (self._length ** self.alpha)
         for terminated_hypothesis, score in zip(
                 self._hypotheses[: self._search_size][to_stash], scores[: self._search_size][to_stash]
         ):
