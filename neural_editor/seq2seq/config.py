@@ -15,7 +15,7 @@ def get_dataset_path(dataset_suffix: str) -> str:
 class Config:
     _CONFIG = {
         'IS_TEST': False,
-        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
+        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/0_50',
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',
@@ -30,7 +30,7 @@ class Config:
         'TOKEN_MIN_FREQ': 1,
         'LEARNING_RATE': 0.0001,
         'MAX_NUM_OF_EPOCHS': 1000,
-        'EDIT_REPRESENTATION_SIZE': 512,
+        'EDIT_REPRESENTATION_SIZE': 16,
         'WORD_EMBEDDING_SIZE': 128,
         'ENCODER_HIDDEN_SIZE': 128,
         'DECODER_HIDDEN_SIZE': 256,
