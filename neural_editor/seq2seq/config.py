@@ -16,7 +16,7 @@ class Config:
     _CONFIG = {
         'IS_TEST': False,
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
-        'TOKENS_CODE_CHUNK_MAX_LEN': 50,
+        'TOKENS_CODE_CHUNK_MAX_LEN': 100,
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',

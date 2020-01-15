@@ -111,7 +111,9 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
             lambda: one_shot_learning_experiment.conduct(defects4j_dataset, defects4j_classes, 'Defects4J')
         )
 
-        # Long execution
+        print('Starting long experiments', flush=True)
+
+        # Whole test accuracy
         measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(
                 test_dataset, 'Test dataset all')
