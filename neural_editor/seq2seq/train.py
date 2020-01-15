@@ -41,6 +41,12 @@ def load_data(verbose: bool, config: Config) -> Tuple[Dataset, Dataset, Dataset,
     return train_data, val_data, test_data, diffs_field
 
 
+def load_tufano_dataset(path: str, diffs_field: Field, config: Config) -> Tuple[Dataset, Dataset, Dataset]:
+    train_dataset, val_dataset, test_dataset = load_datasets(CodeChangesTokensDataset,
+                                                             path, diffs_field, config)
+    return train_dataset, val_dataset, test_dataset
+
+
 def train(model: EncoderDecoder,
           train_data: Dataset, val_data: Dataset, diffs_field: Field, config: Config) -> Tuple[List[float], List[float]]:
     """

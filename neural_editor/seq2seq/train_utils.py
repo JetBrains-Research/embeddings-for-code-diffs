@@ -2,16 +2,15 @@ import math
 import time
 import typing
 from datetime import timedelta
-from termcolor import colored
 
 import numpy as np
 import torch
 import torchtext
+from termcolor import colored
 from torch import nn
 from torchtext import data
 from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
-from tqdm import tqdm
 
 from edit_representation.sequence_encoding.EditEncoder import EditEncoder
 from neural_editor.seq2seq import SimpleLossCompute
@@ -19,9 +18,9 @@ from neural_editor.seq2seq.BahdanauAttention import BahdanauAttention
 from neural_editor.seq2seq.Batch import Batch
 from neural_editor.seq2seq.EncoderDecoder import EncoderDecoder
 from neural_editor.seq2seq.Generator import Generator
+from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder.Decoder import Decoder
 from neural_editor.seq2seq.encoder.Encoder import Encoder
-from neural_editor.seq2seq.config import Config
 
 
 def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
@@ -39,7 +38,8 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
         Decoder(emb_size, edit_representation_size,
                 hidden_size_encoder, hidden_size_decoder,
                 attention,
-                num_layers=num_layers, dropout=dropout, bridge=use_bridge),
+                num_layers=num_layers, dropout=dropout, bridge=use_bridge,
+                use_edit_representation=config['USE_EDIT_REPRESENTATION']),
         EditEncoder(3 * emb_size, edit_representation_size, num_layers, dropout),
         nn.Embedding(vocab_size, emb_size),  # 1 -> Emb
         Generator(hidden_size_decoder, vocab_size))

@@ -15,10 +15,15 @@ def get_dataset_path(dataset_suffix: str) -> str:
 class Config:
     _CONFIG = {
         'IS_TEST': False,
-        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/0_50',
+        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
+        'TOKENS_CODE_CHUNK_MAX_LEN': 50,
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',
+        'TUFANO_BUG_FIXES_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
+        'TUFANO_BUG_FIXES_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/50_100',
+        'TUFANO_CODE_CHANGES_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/0_50',
+        'TUFANO_CODE_CHANGES_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/50_100',
         'UNK_TOKEN': "<unk>",
         'PAD_TOKEN': "<pad>",
         'SOS_TOKEN': "<s>",
@@ -26,15 +31,15 @@ class Config:
         'LOWER': False,
         'SEED': 9382,
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-        'TOKENS_CODE_CHUNK_MAX_LEN': 50,
         'TOKEN_MIN_FREQ': 1,
         'LEARNING_RATE': 0.0001,
         'MAX_NUM_OF_EPOCHS': 1000,
-        'EDIT_REPRESENTATION_SIZE': 16,
+        'EDIT_REPRESENTATION_SIZE': 512,
         'WORD_EMBEDDING_SIZE': 128,
         'ENCODER_HIDDEN_SIZE': 128,
         'DECODER_HIDDEN_SIZE': 256,
         'NUM_LAYERS': 2,
+        'USE_EDIT_REPRESENTATION': True,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
         'EARLY_STOPPING_ROUNDS': 10,
@@ -57,7 +62,9 @@ class Config:
         'MAKE_CUDA_REPRODUCIBLE': False,
     }
 
-    _PATH_KEYS = ['DATASET_ROOT', 'DEFECTS4J_PATH', 'TUFANO_LABELED_PATH', 'OUTPUT_PATH']
+    _PATH_KEYS = ['DATASET_ROOT', 'DEFECTS4J_PATH', 'TUFANO_LABELED_PATH', 'OUTPUT_PATH',
+                  'TUFANO_BUG_FIXES_0_50_PATH', 'TUFANO_BUG_FIXES_50_100_PATH',
+                  'TUFANO_CODE_CHANGES_0_50_PATH', 'TUFANO_CODE_CHANGES_50_100_PATH']
 
     def __getitem__(self, key: str) -> Any:
         if key in self._PATH_KEYS:

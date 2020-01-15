@@ -17,13 +17,15 @@ class Decoder(nn.Module):
     def __init__(self, emb_size: int, edit_representation_size: int,
                  hidden_size_encoder: int, hidden_size: int,
                  attention: BahdanauAttention,
-                 num_layers: int, dropout: float, bridge: bool) -> None:
+                 num_layers: int, dropout: float,
+                 bridge: bool, use_edit_representation: bool) -> None:
         super(Decoder, self).__init__()
 
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.attention = attention
         self.dropout = dropout
+        self.use_edit_representation = use_edit_representation
 
         self.rnn = nn.LSTM(emb_size + 2 * hidden_size_encoder + 2 * edit_representation_size, hidden_size,
                            num_layers, bidirectional=False,  # TODO_DONE: bidirectional=False?
@@ -100,6 +102,9 @@ class Decoder(nn.Module):
 
         # initialize decoder hidden state
         (edit_hidden, edit_cell) = edit_final  # Tuple of [NumLayers, B, NumDirections * DiffEncoderH]
+        if not self.use_edit_representation:
+            edit_hidden = torch.zeros_like(edit_hidden, requires_grad=False)
+            edit_cell = torch.zeros_like(edit_cell, requires_grad=False)
         (encoder_hidden, encoder_cell) = encoder_final  # Tuple of [NumLayers, B, NumDirections * SrcEncoderH]
 
         if states_to_initialize is None:

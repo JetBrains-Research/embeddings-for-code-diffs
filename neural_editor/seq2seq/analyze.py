@@ -14,7 +14,7 @@ from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalcul
 from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
 from neural_editor.seq2seq.experiments.OneShotLearning import OneShotLearning
 from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_tufano_labeled_dataset
-from neural_editor.seq2seq.train import load_data
+from neural_editor.seq2seq.train import load_data, load_tufano_dataset
 
 
 def measure_experiment_time(func) -> None:
@@ -29,6 +29,14 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
     train_dataset, val_dataset, test_dataset, diffs_field = load_data(verbose=True, config=config)
     tufano_labeled_dataset, tufano_labeled_classes = load_tufano_labeled_dataset(diffs_field, config)
     defects4j_dataset, defects4j_classes = load_defects4j_dataset(diffs_field, config)
+    tufano_bug_fixes_0_50_dataset_train, tufano_bug_fixes_0_50_dataset_val, tufano_bug_fixes_0_50_dataset_test = \
+        load_tufano_dataset(config['TUFANO_BUG_FIXES_0_50_PATH'], diffs_field, config)
+    tufano_bug_fixes_50_100_dataset_train, tufano_bug_fixes_50_100_dataset_val, tufano_bug_fixes_50_100_dataset_test = \
+        load_tufano_dataset(config['TUFANO_BUG_FIXES_50_100_PATH'], diffs_field, config)
+    tufano_code_changes_0_50_dataset_train, tufano_code_changes_0_50_dataset_val, tufano_code_changes_0_50_dataset_test = \
+        load_tufano_dataset(config['TUFANO_CODE_CHANGES_0_50_PATH'], diffs_field, config)
+    tufano_code_changes_50_100_dataset_train, tufano_code_changes_50_100_dataset_val, tufano_code_changes_50_100_dataset_test = \
+        load_tufano_dataset(config['TUFANO_CODE_CHANGES_50_100_PATH'], diffs_field, config)
 
     one_shot_learning_experiment = OneShotLearning(model, diffs_field, config)
     accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, config)
@@ -107,6 +115,89 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
         measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(
                 test_dataset, 'Test dataset all')
+        )
+
+        # Tufano accuracy evaluation
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_bug_fixes_0_50_dataset_train, 300),
+                'Tufano bug fixes 0 50 dataset train 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_bug_fixes_0_50_dataset_val, 300),
+                'Tufano bug fixes 0 50 dataset val 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_bug_fixes_0_50_dataset_test, 300),
+                'Tufano bug fixes 0 50 dataset test 300')
+        )
+
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_bug_fixes_50_100_dataset_train, 300),
+                'Tufano bug fixes 50 100 dataset train 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_bug_fixes_50_100_dataset_val, 300),
+                'Tufano bug fixes 50 100 dataset val 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_bug_fixes_50_100_dataset_test, 300),
+                'Tufano bug fixes 50 100 dataset test 300')
+        )
+
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_code_changes_0_50_dataset_train, 300),
+                'Tufano code changes 0 50 dataset train 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_code_changes_0_50_dataset_val, 300),
+                'Tufano code changes 0 50 dataset val 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_code_changes_0_50_dataset_test, 300),
+                'Tufano code changes 0 50 dataset test 300')
+        )
+
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_code_changes_50_100_dataset_train, 300),
+                'Tufano code changes 50 100 dataset train 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_code_changes_50_100_dataset_val, 300),
+                'Tufano code changes 50 100 dataset val 300')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                take_part_from_dataset(tufano_code_changes_50_100_dataset_test, 300),
+                'Tufano code changes 50 100 dataset test 300')
+        )
+
+        # All test data Tufano dataset evaluation
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                tufano_bug_fixes_0_50_dataset_test, 'Tufano bug fixes 0 50 dataset test')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                tufano_bug_fixes_50_100_dataset_test, 'Tufano bug fixes 50 100 dataset test')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                tufano_code_changes_0_50_dataset_test, 'Tufano code changes 0 50 dataset test')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(
+                tufano_code_changes_50_100_dataset_test, 'Tufano code changes 50 100 dataset test')
         )
 
 
