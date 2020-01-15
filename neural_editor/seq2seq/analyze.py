@@ -93,9 +93,6 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
             lambda: accuracy_calculation_experiment.conduct(
                 take_part_from_dataset(train_dataset, 300), 'Train dataset 300')
         )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(defects4j_dataset, 'Defects4J Dataset')
-        )
 
         # One shot learning
         measure_experiment_time(
@@ -126,7 +123,6 @@ def main() -> None:
     is_test = len(sys.argv) > 2 and sys.argv[2] == 'test'
     config_path = Path(results_root_dir).joinpath('config.pkl')
     config = load_config(is_test, config_path)
-    config = Config()
     print_results(results_root_dir, config)
 
 

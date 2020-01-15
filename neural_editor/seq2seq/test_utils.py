@@ -32,7 +32,7 @@ def visualize_tsne(representations: torch.Tensor, classes: List[str], filename: 
     representations_2d = TSNE(n_components=2, init='pca', random_state=config['SEED']).fit_transform(representations)
     df = pd.DataFrame(dict(x=representations_2d[:, 0], y=representations_2d[:, 1], classes=classes))
     sns.lmplot('x', 'y', data=df, hue='classes' if classes is not None else None, fit_reg=False)
-    plt.savefig(os.path.join(config['OUTPUT_PATH'], filename))
+    plt.savefig(os.path.join(config['OUTPUT_PATH'], filename), bbox_inches='tight')
     plt.clf()
 
 
