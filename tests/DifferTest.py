@@ -45,7 +45,7 @@ class DifferTest(unittest.TestCase):
                          '. Equal ( LITERAL , VAR8 . VAR4 [ 0 ] . VAR5 ) ; Assert . False ( VAR8 . IsUnique ) ; Assert . ' \
                          'Null ( VAR8 . GetFilter ( ) ) ; Assert . Equal ( new object [ ] { 1 , - 1 } , VAR1 . GetSeedData ( ' \
                          ') . VAR6 ( ) . Values ) ; Assert . Equal ( nameof ( VAR9 ) , VAR1 . GetTableName ( ) ) ; '.split()
-        diff = self.differ.diff_tokens_fast_lvn(prev_tokens, updated_tokens)
+        diff = self.differ.diff_tokens_fast_lvn_all_aligned(prev_tokens, updated_tokens)
         self.assertFalse('' in diff[0])
         self.assertFalse('' in diff[1])
         self.assertFalse('' in diff[2])
@@ -55,7 +55,7 @@ class DifferTest(unittest.TestCase):
         prev_tokens = []
         updated_tokens = []
         diff_expected = ([], [], [])
-        diff = self.differ.diff_tokens_fast_lvn(prev_tokens, updated_tokens)
+        diff = self.differ.diff_tokens_fast_lvn_all_aligned(prev_tokens, updated_tokens)
         self.assertEqual(diff_expected, diff)
 
     def test_real_example_from_dataset(self):
@@ -71,7 +71,7 @@ class DifferTest(unittest.TestCase):
             prev_tokens,
             updated_tokens[:8] + [PADDING_TOKEN for _ in range(13)] + updated_tokens[8:]
         )
-        diff = self.differ.diff_tokens_fast_lvn(prev_tokens, updated_tokens)
+        diff = self.differ.diff_tokens_fast_lvn_all_aligned(prev_tokens, updated_tokens)
         self.assertEqual(diff_expected, diff)
 
     def test_from_article(self):
@@ -83,7 +83,7 @@ class DifferTest(unittest.TestCase):
             ['v', '.', 'F', '=', 'x', '+', 'x', PADDING_TOKEN],
             [PADDING_TOKEN, PADDING_TOKEN, 'u', '=', 'x', '+', 'x', ';']
         )
-        diff = self.differ.diff_tokens_fast_lvn(prev_tokens, updated_tokens)
+        diff = self.differ.diff_tokens_fast_lvn_all_aligned(prev_tokens, updated_tokens)
         self.assertEqual(diff_expected, diff)
 
 

@@ -31,7 +31,8 @@ class CodeChangesTokensDataset(data.Dataset):
             for prev_line, updated_line in zip(prev, updated):
                 prev_line, updated_line = prev_line.strip(), updated_line.strip()
                 if prev_line != '' and updated_line != '':
-                    diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '))
+                    diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
+                                                       leave_only_changed=config['LEAVE_ONLY_CHANGED'])
                     examples.append(data.Example.fromlist(
                         [prev_line, updated_line, diff[0], diff[1], diff[2]], fields))
         super(CodeChangesTokensDataset, self).__init__(examples, fields, **kwargs)

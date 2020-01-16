@@ -58,7 +58,13 @@ class Differ:
                 updated_result += [updated[i] for i in range(opcode[3], opcode[4])]
         return operations, prev_result, updated_result
 
-    def diff_tokens_fast_lvn(self, prev: List[str], updated: List[str]) -> Tuple[List[str], List[str], List[str]]:
+    def diff_tokens_fast_lvn(self, prev: List[str], updated: List[str], leave_only_changed: bool) -> \
+            Tuple[List[str], List[str], List[str]]:
+        return self.diff_tokens_fast_lvn_leave_only_changed(prev, updated) \
+            if leave_only_changed else self.diff_tokens_fast_lvn_all_aligned(prev, updated)
+
+    def diff_tokens_fast_lvn_all_aligned(self, prev: List[str], updated: List[str]) -> \
+            Tuple[List[str], List[str], List[str]]:
         """
         :param prev: previous token sequence
         :param updated: updated token sequence
@@ -70,10 +76,31 @@ class Differ:
         opcodes = Lvn.opcodes(prev_ids, updated_ids)
         return self.create_aligned_sequences(prev, updated, opcodes)
 
+    def diff_tokens_fast_lvn_leave_only_changed(self, prev: List[str], updated: List[str]) -> \
+            Tuple[List[str], List[str], List[str]]:
+        """
+        Aligns two sequences and returns only changed tokens.
+        :param prev: previous token sequence
+        :param updated: updated token sequence
+        :return: aligned sequences as triple (operations, prev aligned, updated aligned)
+        """
+        out_1, out_2, out_3 = self.diff_tokens_fast_lvn_all_aligned(prev, updated)
+        zipped_out = zip(out_1, out_2, out_3)
+        diff_alignment, diff_prev, diff_updated = [], [], []
+        for alignment_token, prev_token, updated_token in zipped_out:
+            if alignment_token != self.equal_token:
+                diff_alignment.append(alignment_token)
+                diff_prev.append(prev_token)
+                diff_updated.append(updated_token)
+        return diff_alignment, diff_prev, diff_updated
+
 
 if __name__ == "__main__":
     prev_tokens = ['v', '.', 'F', '=', 'x', '+', 'x']
     updated_tokens = ['u', '=', 'x', '+', 'x', ';']
-    diff = Differ('↔', '−', '+', '=', '∅').diff_tokens_fast_lvn(prev_tokens, updated_tokens)
+    diff = Differ('↔', '−', '+', '=', '∅').diff_tokens_fast_lvn(prev_tokens, updated_tokens, leave_only_changed=False)
+    for line in diff:
+        print(line)
+    diff = Differ('↔', '−', '+', '=', '∅').diff_tokens_fast_lvn(prev_tokens, updated_tokens, leave_only_changed=True)
     for line in diff:
         print(line)
