@@ -54,9 +54,9 @@ def load_defects4j_dataset(diffs_field: Field, config: Config) -> Tuple[Dataset,
     return dataset, classes
 
 
-def load_tufano_labeled_dataset(diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:
-    dataset = CodeChangesTokensDataset(config['TUFANO_LABELED_PATH'], diffs_field, config)
-    classes = Path(config['TUFANO_LABELED_PATH']).joinpath('classes.txt').read_text().splitlines(keepends=False)
+def load_labeled_dataset(path: str, diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:
+    dataset = CodeChangesTokensDataset(path, diffs_field, config)
+    classes = Path(path).joinpath('classes.txt').read_text().splitlines(keepends=False)
     return dataset, classes
 
 

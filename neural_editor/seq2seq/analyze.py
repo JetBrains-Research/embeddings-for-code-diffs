@@ -13,7 +13,7 @@ from neural_editor.seq2seq.datasets.dataset_utils import take_part_from_dataset
 from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalculation
 from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
 from neural_editor.seq2seq.experiments.OneShotLearning import OneShotLearning
-from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_tufano_labeled_dataset
+from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_labeled_dataset
 from neural_editor.seq2seq.train import load_data, load_tufano_dataset
 
 
@@ -27,7 +27,10 @@ def measure_experiment_time(func) -> None:
 
 def test_model(model: EncoderDecoder, config: Config) -> None:
     train_dataset, val_dataset, test_dataset, diffs_field = load_data(verbose=True, config=config)
-    tufano_labeled_dataset, tufano_labeled_classes = load_tufano_labeled_dataset(diffs_field, config)
+    tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes = \
+        load_labeled_dataset(config['TUFANO_LABELED_0_50_PATH'], diffs_field, config)
+    tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes = \
+        load_labeled_dataset(config['TUFANO_LABELED_50_100_PATH'], diffs_field, config)
     defects4j_dataset, defects4j_classes = load_defects4j_dataset(diffs_field, config)
     tufano_bug_fixes_0_50_dataset_train, tufano_bug_fixes_0_50_dataset_val, tufano_bug_fixes_0_50_dataset_test = \
         load_tufano_dataset(config['TUFANO_BUG_FIXES_0_50_PATH'], diffs_field, config)
@@ -47,9 +50,14 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
     with torch.no_grad():
         # Visualization of data
         measure_experiment_time(
-            lambda: visualization_experiment.conduct(tufano_labeled_dataset,
-                                                     'tufano_labeled_2d_representations.png',
-                                                     classes=tufano_labeled_classes)
+            lambda: visualization_experiment.conduct(tufano_labeled_0_50_dataset,
+                                                     'tufano_labeled_0_50_2d_representations.png',
+                                                     classes=tufano_labeled_0_50_classes)
+        )
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(tufano_labeled_50_100_dataset,
+                                                     'tufano_labeled_50_100_2d_representations.png',
+                                                     classes=tufano_labeled_50_100_classes)
         )
         measure_experiment_time(
             lambda: visualization_experiment.conduct(defects4j_dataset,
@@ -83,8 +91,12 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
 
         # Accuracy
         measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(tufano_labeled_dataset,
-                                                            'Tufano Labeled Code Changes')
+            lambda: accuracy_calculation_experiment.conduct(tufano_labeled_0_50_dataset,
+                                                            'Tufano Labeled 0 50 Code Changes')
+        )
+        measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(tufano_labeled_50_100_dataset,
+                                                            'Tufano Labeled 50 100 Code Changes')
         )
         measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(defects4j_dataset, 'Defects4J')
@@ -104,8 +116,12 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
 
         # One shot learning
         measure_experiment_time(
-            lambda: one_shot_learning_experiment.conduct(tufano_labeled_dataset, tufano_labeled_classes,
-                                                         'Tufano Labeled Code Changes')
+            lambda: one_shot_learning_experiment.conduct(tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes,
+                                                         'Tufano Labeled 0 50 Code Changes')
+        )
+        measure_experiment_time(
+            lambda: one_shot_learning_experiment.conduct(tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes,
+                                                         'Tufano Labeled 50 100 Code Changes')
         )
         measure_experiment_time(
             lambda: one_shot_learning_experiment.conduct(defects4j_dataset, defects4j_classes, 'Defects4J')

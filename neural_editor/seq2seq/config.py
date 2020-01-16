@@ -18,7 +18,8 @@ class Config:
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
-        'TUFANO_LABELED_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
+        'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
+        'TUFANO_LABELED_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/50_100',
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',
         'TUFANO_BUG_FIXES_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
         'TUFANO_BUG_FIXES_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/50_100',
@@ -62,7 +63,9 @@ class Config:
         'MAKE_CUDA_REPRODUCIBLE': False,
     }
 
-    _PATH_KEYS = ['DATASET_ROOT', 'DEFECTS4J_PATH', 'TUFANO_LABELED_PATH', 'OUTPUT_PATH',
+    _PATH_KEYS = ['DATASET_ROOT', 'DEFECTS4J_PATH',
+                  'TUFANO_LABELED_0_50_PATH', 'TUFANO_LABELED_50_100_PATH',
+                  'OUTPUT_PATH',
                   'TUFANO_BUG_FIXES_0_50_PATH', 'TUFANO_BUG_FIXES_50_100_PATH',
                   'TUFANO_CODE_CHANGES_0_50_PATH', 'TUFANO_CODE_CHANGES_50_100_PATH']
 
