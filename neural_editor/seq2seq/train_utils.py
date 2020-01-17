@@ -33,17 +33,19 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
     # TODO_DONE: change hidden size of decoder
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
+    generator = Generator(hidden_size_decoder, vocab_size)
+    embedding = nn.Embedding(vocab_size, emb_size)
     model: EncoderDecoder = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
-        Decoder(emb_size, edit_representation_size,
+        Decoder(generator, embedding, emb_size, edit_representation_size,
                 hidden_size_encoder, hidden_size_decoder,
                 attention,
                 num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
                 dropout=dropout, bridge=use_bridge,
                 use_edit_representation=config['USE_EDIT_REPRESENTATION']),
         EditEncoder(3 * emb_size, edit_representation_size, num_layers, dropout),
-        nn.Embedding(vocab_size, emb_size),  # 1 -> Emb
-        Generator(hidden_size_decoder, vocab_size))
+        embedding,  # 1 -> Emb
+        generator)
     model.to(config['DEVICE'])
     return model
 

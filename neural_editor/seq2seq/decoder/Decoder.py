@@ -1,8 +1,12 @@
+import random
 from typing import Tuple
 
 import torch
 from torch import nn, Tensor
-from neural_editor.seq2seq import BahdanauAttention
+from torch.nn import Embedding
+
+from neural_editor.seq2seq import BahdanauAttention, Generator
+
 
 # DONE_TODO: initialization = encoder output concatenate with edit representation.
 # DONE_TODO: feed edit representation as input to decoder LSTM at each time step.
@@ -14,18 +18,22 @@ from neural_editor.seq2seq import BahdanauAttention
 class Decoder(nn.Module):
     """A conditional RNN decoder with attention."""
 
-    def __init__(self, emb_size: int, edit_representation_size: int,
+    def __init__(self, generator: Generator, embedding: Embedding, emb_size: int, edit_representation_size: int,
                  hidden_size_encoder: int, hidden_size: int,
                  attention: BahdanauAttention,
+                 teacher_forcing_ratio: float,
                  num_layers: int, dropout: float,
                  bridge: bool, use_edit_representation: bool) -> None:
         super(Decoder, self).__init__()
 
+        self.generator = generator
+        self.embedding = embedding
         self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.attention = attention
         self.dropout = dropout
         self.use_edit_representation = use_edit_representation
+        self.teacher_forcing_ratio = teacher_forcing_ratio
 
         self.rnn = nn.LSTM(emb_size + 2 * hidden_size_encoder + 2 * edit_representation_size, hidden_size,
                            num_layers, bidirectional=False,  # TODO_DONE: bidirectional=False?
@@ -96,6 +104,7 @@ class Decoder(nn.Module):
                  [B, TrgSeqLen, DecoderH]
         ]
         """
+        use_teacher_forcing = True if random.random() < self.teacher_forcing_ratio else False
 
         # the maximum number of steps to unroll the RNN
         max_len = trg_mask.size(-1)
@@ -124,7 +133,11 @@ class Decoder(nn.Module):
 
         # unroll the decoder RNN for max_len steps
         for i in range(max_len):
-            prev_embed = trg_embed[:, i].unsqueeze(1)  # [B, 1, EmbCode]
+            if use_teacher_forcing or i == 0:
+                prev_embed = trg_embed[:, i].unsqueeze(1)  # [B, 1, EmbCode]
+            else:
+                _, top_i = self.generator(pre_output_vectors[-1]).squeeze().topk(1)
+                prev_embed = self.embedding(top_i)  # TODO: stop decoding if EOS token? seems to me we should continue
             # [B, 1, DecoderH], [NumLayers, B, DecoderH], [NumLayers, B, DecoderH], [B, 1, DecoderH]
             output, hidden, cell, pre_output = self.forward_step(
                 edit_hidden, prev_embed, encoder_output, src_mask, projection_key, hidden, cell)

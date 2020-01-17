@@ -41,6 +41,7 @@ class Config:
         'DECODER_HIDDEN_SIZE': 256,
         'NUM_LAYERS': 2,
         'USE_EDIT_REPRESENTATION': True,
+        'TEACHER_FORCING_RATIO': 0,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
         'EARLY_STOPPING_ROUNDS': 10,
