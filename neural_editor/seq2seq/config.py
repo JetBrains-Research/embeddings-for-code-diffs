@@ -53,7 +53,7 @@ class Config:
         'ADDITION_TOKEN': 'добавление',
         'UNCHANGED_TOKEN': 'равенство',
         'PADDING_TOKEN': 'паддинг',
-        'LEAVE_ONLY_CHANGED': True,
+        'LEAVE_ONLY_CHANGED': False,
         'VERBOSE': True,
         'BATCH_SIZE': 64,
         'TSNE_BATCH_SIZE': 1024,
