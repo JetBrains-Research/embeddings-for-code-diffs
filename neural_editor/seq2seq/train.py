@@ -132,6 +132,10 @@ def save_model(model: nn.Module, model_suffix: str, config: Config) -> None:
     print(f'Model saved {model_suffix}!')
 
 
+def load_weights_of_best_model_on_validation(model: nn.Module, config: Config) -> None:
+    model.load_state_dict(torch.load(os.path.join(config['OUTPUT_PATH'], f'model_state_dict_best_on_validation.pt')))
+
+
 def save_data_on_checkpoint(model: nn.Module,
                             train_perplexities: List[float], val_perplexities: List[float],
                             config: Config) -> None:
@@ -195,7 +199,7 @@ def run_train(config: Config) -> EncoderDecoder:
     print(val_perplexities)
     save_data_on_checkpoint(model, train_perplexities, val_perplexities, config)
     save_perplexity_plot([train_perplexities, val_perplexities], ['train', 'validation'], 'loss.png', config)
-    # TODO: consider to return best on validation model
+    load_weights_of_best_model_on_validation(model, config)
     return model
 
 
