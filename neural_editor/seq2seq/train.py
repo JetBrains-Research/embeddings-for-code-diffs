@@ -108,6 +108,7 @@ def train(model: EncoderDecoder,
                            model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
                            diffs_field.vocab, config, n=3)
 
+            # TODO: consider if we should or not use teacher forcing on validation
             val_perplexity = run_epoch((rebatch(pad_index, t, config) for t in val_iter),
                                        model, val_loss_function,
                                        val_batches_num, print_every=config['PRINT_EVERY_iTH_BATCH'])

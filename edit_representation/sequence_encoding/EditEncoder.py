@@ -42,4 +42,5 @@ class EditEncoder(nn.Module):
         bwd_cell = c_n[1:c_n.size(0):2]  # [NumLayers, B, DiffEncoderH]
         c_n = torch.cat([fwd_cell, bwd_cell], dim=2)  # [NumLayers, B, NumDirections * DiffEncoderH]
 
-        return output, (h_n, c_n)
+        lengths_mask_reverse = torch.argsort(lengths_mask)
+        return output[lengths_mask_reverse, :], (h_n[:, lengths_mask_reverse, :], c_n[:, lengths_mask_reverse, :])
