@@ -87,8 +87,10 @@ class Config:
         self._CONFIG['IS_TEST'] = True
         self._CONFIG['DATASET_ROOT'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes_test/0_50'
-        self._CONFIG['TUFANO_LABELED_PATH'] = \
+        self._CONFIG['TUFANO_LABELED_0_50_PATH'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
+        self._CONFIG['TUFANO_LABELED_50_100_PATH'] = \
+            '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/50_100'
         self._CONFIG['MAX_NUM_OF_EPOCHS'] = 2
 
 
