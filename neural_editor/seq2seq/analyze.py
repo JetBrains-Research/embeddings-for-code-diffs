@@ -55,9 +55,21 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
                                                      classes=tufano_labeled_0_50_classes)
         )
         measure_experiment_time(
+            lambda: visualization_experiment.conduct(tufano_labeled_0_50_dataset,
+                                                     'tufano_labeled_0_50_2d_representations_8_threshold.png',
+                                                     classes=tufano_labeled_0_50_classes,
+                                                     threshold=8)
+        )
+        measure_experiment_time(
             lambda: visualization_experiment.conduct(tufano_labeled_50_100_dataset,
                                                      'tufano_labeled_50_100_2d_representations.png',
                                                      classes=tufano_labeled_50_100_classes)
+        )
+        measure_experiment_time(
+            lambda: visualization_experiment.conduct(tufano_labeled_50_100_dataset,
+                                                     'tufano_labeled_50_100_2d_representations_8_threshold.png',
+                                                     classes=tufano_labeled_50_100_classes,
+                                                     threshold=8)
         )
         measure_experiment_time(
             lambda: visualization_experiment.conduct(defects4j_dataset,
@@ -221,7 +233,7 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
 
 def print_results(results_root: str, config: Config) -> None:
     pprint.pprint(config.get_config())
-    model = torch.load(os.path.join(results_root, 'model.pt'), map_location=config['DEVICE'])
+    model = torch.load(os.path.join(results_root, 'model_best_on_validation.pt'), map_location=config['DEVICE'])
     test_model(model, config)
 
 

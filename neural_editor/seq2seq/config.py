@@ -97,6 +97,7 @@ def load_config(is_test: bool, path_to_config: Path = None) -> Config:
     if path_to_config is not None:
         with path_to_config.open(mode='rb') as config_file:
             config._CONFIG = pickle.load(config_file)
+            config._CONFIG['DEVICE'] = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     if config['SEED'] is not None:
         make_reproducible(config['SEED'], config['MAKE_CUDA_REPRODUCIBLE'])
     if is_test:

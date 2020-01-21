@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import List
 
 import torch
@@ -19,18 +20,27 @@ class EditRepresentationVisualization:
         self.config = config
         self.pad_index: int = diffs_field.vocab.stoi[self.config['PAD_TOKEN']]
 
-    def conduct(self, dataset: Dataset, filename: str, classes: List[str]):
+    def conduct(self, dataset: Dataset, filename: str, classes: List[str], threshold=0):
         print(f'Starting conducting edit representation visualization experiment for {filename}...')
         if classes is None:
             self.visualization_for_unclassified_dataset(dataset, filename)
         else:
-            self.visualization_for_classified_dataset(dataset, filename, classes)
+            self.visualization_for_classified_dataset(dataset, filename, classes, threshold)
 
-    def visualization_for_classified_dataset(self, dataset: Dataset, filename: str, classes: List[str]) -> None:
+    def visualization_for_classified_dataset(self, dataset: Dataset, filename: str, classes: List[str], threshold) -> None:
         iterator = data.Iterator(dataset, batch_size=1,
                                  sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
         representations = self.get_representations(iterator, len(dataset))
-        visualize_tsne(representations, classes, filename, self.config)
+        classes_counter = defaultdict(lambda: 0)
+        for cls in classes:
+            classes_counter[cls] += 1
+        select_ind = []
+        new_classes = []
+        for i, cls in enumerate(classes):
+            if classes_counter[cls] > threshold:
+                select_ind.append(i)
+                new_classes.append(cls)
+        visualize_tsne(representations[select_ind], new_classes, filename, self.config)
 
     def visualization_for_unclassified_dataset(self, dataset: Dataset, filename: str) -> None:
         def batch_to_comparable_element(x):
