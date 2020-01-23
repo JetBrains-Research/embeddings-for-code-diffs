@@ -95,7 +95,7 @@ def train(model: EncoderDecoder,
 
         print(f'Epoch {epoch} / {epochs_num}')
         model.train()
-        train_perplexity = run_epoch((rebatch(pad_index, b, config) for b in train_iter),
+        train_perplexity = run_epoch((rebatch(pad_index, b, train_data, config) for b in train_iter),
                                      model, train_loss_function,
                                      train_batches_num,
                                      print_every=config['PRINT_EVERY_iTH_BATCH'])
@@ -104,12 +104,12 @@ def train(model: EncoderDecoder,
 
         model.eval()
         with torch.no_grad():
-            print_examples((rebatch(pad_index, x, config) for x in val_iter_for_print_examples),
+            print_examples((rebatch(pad_index, x, val_data, config) for x in val_iter_for_print_examples),
                            model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
                            diffs_field.vocab, config, n=3)
 
             # TODO: consider if we should or not use teacher forcing on validation
-            val_perplexity = run_epoch((rebatch(pad_index, t, config) for t in val_iter),
+            val_perplexity = run_epoch((rebatch(pad_index, t, val_data, config) for t in val_iter),
                                        model, val_loss_function,
                                        val_batches_num, print_every=config['PRINT_EVERY_iTH_BATCH'])
             print(f'Validation perplexity: {val_perplexity}')
@@ -184,7 +184,7 @@ def run_train(config: Config) -> EncoderDecoder:
     config.save()
 
     train_dataset, val_dataset, test_dataset, diffs_field = load_data(config['VERBOSE'], config)
-    model: EncoderDecoder = make_model(len(diffs_field.vocab),
+    model: EncoderDecoder = make_model(diffs_field.vocab,
                                        edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
                                        emb_size=config['WORD_EMBEDDING_SIZE'],
                                        hidden_size_encoder=config['ENCODER_HIDDEN_SIZE'],

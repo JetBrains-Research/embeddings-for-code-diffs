@@ -25,7 +25,8 @@ class OneShotLearning:
         self.beam_size = self.config['BEAM_SIZE']
         self.topk_values = self.config['TOP_K']
         num_iterations = self.config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
-        self.beam_search = create_decode_method(self.model, num_iterations, sos_index, self.eos_index, self.beam_size,
+        self.beam_search = create_decode_method(self.model, num_iterations, sos_index, self.eos_index,
+                                                self.vocab.unk_index, len(self.vocab), self.beam_size,
                                                 self.config['NUM_GROUPS'], self.config['DIVERSITY_STRENGTH'],
                                                 verbose=False)
 
@@ -42,7 +43,7 @@ class OneShotLearning:
         correct_examples = []
         incorrect_examples = []
         for i, batch in enumerate(data_iterator):
-            batch = rebatch(self.pad_index, batch, self.config)
+            batch = rebatch(self.pad_index, batch, dataset, self.config)
             y = classes[i]
             if y != current_class:
                 self.model.set_edit_representation(batch)

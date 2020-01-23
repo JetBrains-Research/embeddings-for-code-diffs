@@ -21,7 +21,8 @@ class AccuracyCalculation:
         self.beam_size = self.config['BEAM_SIZE']
         self.topk_values = self.config['TOP_K']
         num_iterations = self.config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
-        self.beam_search = create_decode_method(self.model, num_iterations, sos_index, self.eos_index, self.beam_size,
+        self.beam_search = create_decode_method(self.model, num_iterations, sos_index, self.eos_index,
+                                                vocab.unk_index, len(vocab), self.beam_size,
                                                 self.config['NUM_GROUPS'], self.config['DIVERSITY_STRENGTH'],
                                                 verbose=False)
 
@@ -31,7 +32,7 @@ class AccuracyCalculation:
                                       sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
         correct_all_k, total = \
             calculate_top_k_accuracy(self.topk_values,
-                                     [rebatch(self.pad_index, batch, self.config) for batch in data_iterator],
+                                     [rebatch(self.pad_index, batch, dataset, self.config) for batch in data_iterator],
                                      self.beam_search, self.eos_index)
         for correct_top_k, k in zip(correct_all_k, self.topk_values):
             print(f'Top-{k} accuracy: {correct_top_k} / {total} = {correct_top_k / total}')

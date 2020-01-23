@@ -30,7 +30,7 @@ class EditRepresentationVisualization:
     def visualization_for_classified_dataset(self, dataset: Dataset, filename: str, classes: List[str], threshold) -> None:
         iterator = data.Iterator(dataset, batch_size=1,
                                  sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
-        representations = self.get_representations(iterator, len(dataset))
+        representations = self.get_representations(iterator, dataset)
         classes_counter = defaultdict(lambda: 0)
         for cls in classes:
             classes_counter[cls] += 1
@@ -51,14 +51,14 @@ class EditRepresentationVisualization:
                                  sort_within_batch=True,
                                  sort_key=batch_to_comparable_element, shuffle=False, device=self.config['DEVICE'])
 
-        representations = self.get_representations(iterator, len(dataset))
+        representations = self.get_representations(iterator, dataset)
         visualize_tsne(representations, None, filename, self.config)
 
-    def get_representations(self, iterator, dataset_size) -> torch.Tensor:
-        representations = torch.zeros(dataset_size, self.config['EDIT_REPRESENTATION_SIZE'] * 2)
+    def get_representations(self, iterator, dataset) -> torch.Tensor:
+        representations = torch.zeros(len(dataset), self.config['EDIT_REPRESENTATION_SIZE'] * 2)
         cur_pos = 0
         for batch in iterator:
-            batch = rebatch(self.pad_index, batch, self.config)
+            batch = rebatch(self.pad_index, batch, dataset, self.config)
             representations[cur_pos: cur_pos + len(batch)] = self.model.encode_edit(batch)[0][-1, :]  # hidden, last layer, all batches
             cur_pos += len(batch)
         return representations

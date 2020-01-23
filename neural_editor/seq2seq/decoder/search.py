@@ -13,13 +13,15 @@ def create_decode_method(
         num_iterations: int,
         sos_index: int,
         eos_index: int,
+        unk_index: int,
+        vocab_size: int,
         beam_size: int,
         num_groups: int,
         diversity_strength: float,
         verbose: bool = False
 ):
     def decode(batch) -> List[List[np.array]]:
-        result = perform_search(model, batch, num_iterations, sos_index, [eos_index],
+        result = perform_search(model, batch, num_iterations, sos_index, [eos_index], unk_index, vocab_size,
                                 beam_size, num_groups, diversity_strength, verbose)
         return [flat_map_and_sort_perform_search(result)]
     return decode
@@ -31,6 +33,8 @@ def perform_search(
         num_iterations: int,
         sos_index: int,
         terminal_id: List[int],
+        unk_index: int,
+        vocab_size: int,
         beam_size: int,
         num_groups: int,
         diversity_strength: float,
@@ -57,12 +61,12 @@ def perform_search(
     states = None
     with torch.no_grad():
         # pre_output: [B, TrgSeqLen, DecoderH]
-        out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
-                                               src_mask, prev_y, trg_mask, states)
+        out, states, pre_output, p_gen, attn_probs = model.decode(batch, edit_final, encoder_output, encoder_final,
+                                                                  src_mask, prev_y, trg_mask, states)
 
         # we predict from the pre-output layer, which is
         # a combination of Decoder state, prev emb, and context
-        log_probs = model.generator(pre_output[:, -1])  # [B, V]
+        log_probs = model.generator((pre_output, p_gen, attn_probs), batch)[:, -1]  # [B, V]
 
     assert (
             log_probs.ndimension() == 2 and log_probs.size(0) == 1
@@ -117,6 +121,7 @@ def perform_search(
         mask = search.step(log_probs, possible_infs=False).long()
 
         prev_y = search.last_predictions.unsqueeze(1)
+        prev_y[prev_y >= vocab_size] = unk_index
         # pre_output: [B, TrgSeqLen, DecoderH]
         edit_final = (edit_final[0][:, mask, :], edit_final[1][:, mask, :])
         encoder_output = encoder_output[mask]
@@ -124,12 +129,12 @@ def perform_search(
         src_mask = src_mask[mask]
         trg_mask = trg_mask[mask]
         states = (states[0][:, mask, :], states[1][:, mask, :])
-        out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
-                                               src_mask, prev_y, trg_mask, states)
+        out, states, pre_output, p_gen, attn_probs = model.decode(batch, edit_final, encoder_output, encoder_final,
+                                                                  src_mask, prev_y, trg_mask, states)
 
         # we predict from the pre-output layer, which is
         # a combination of Decoder state, prev emb, and context
-        log_probs = model.generator(pre_output[:, -1])  # [B, V]
+        log_probs = model.generator((pre_output, p_gen, attn_probs), batch)[:, -1]  # [B, V]
 
     return search.hypotheses
 
@@ -156,9 +161,11 @@ def greedy_decode(
         batch: Batch,
         num_iterations: int,
         sos_index: int,
-        terminal_id: List[int],
+        terminal_ids: List[int],
+        unk_index: int,
+        vocab_size: int,
         verbose: bool = False
 ) -> torch.Tensor:
-    hypotheses = perform_search(model, batch, num_iterations, sos_index, terminal_id,
+    hypotheses = perform_search(model, batch, num_iterations, sos_index, terminal_ids, unk_index, vocab_size,
                                 beam_size=1, num_groups=1, diversity_strength=None, verbose=verbose)
     return get_shortest_sequence(hypotheses)

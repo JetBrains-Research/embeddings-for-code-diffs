@@ -23,7 +23,7 @@ from neural_editor.seq2seq.decoder.Decoder import Decoder
 from neural_editor.seq2seq.encoder.Encoder import Encoder
 
 
-def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
+def make_model(vocab: Vocab, edit_representation_size: int, emb_size: int,
                hidden_size_encoder: int, hidden_size_decoder: int,
                num_layers: int,
                dropout: float,
@@ -33,16 +33,18 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
     # TODO_DONE: change hidden size of decoder
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
+    vocab_size = len(vocab)
     generator = Generator(hidden_size_decoder, vocab_size)
     embedding = nn.Embedding(vocab_size, emb_size)
     model: EncoderDecoder = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
         Decoder(generator, embedding, emb_size, edit_representation_size,
-                hidden_size_encoder, hidden_size_decoder,
+                hidden_size_encoder, hidden_size_decoder, vocab_size, vocab.unk_index,
                 attention,
                 num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
                 dropout=dropout, bridge=use_bridge,
-                use_edit_representation=config['USE_EDIT_REPRESENTATION']),
+                use_edit_representation=config['USE_EDIT_REPRESENTATION'],
+                use_copying_mechanism=config['USE_COPYING_MECHANISM']),
         EditEncoder(3 * emb_size, edit_representation_size, num_layers, dropout),
         embedding,  # 1 -> Emb
         generator)
@@ -50,11 +52,11 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
     return model
 
 
-def rebatch(pad_idx: int, batch: torchtext.data.Batch, config: Config) -> Batch:
+def rebatch(pad_idx: int, batch: torchtext.data.Batch, dataset: Dataset, config: Config) -> Batch:
     """Wrap torchtext batch into our own Batch class for pre-processing"""
     # These fields are added dynamically by PyTorch
     return Batch(batch.src, batch.trg, batch.diff_alignment,
-                 batch.diff_prev, batch.diff_updated, pad_idx, config)
+                 batch.diff_prev, batch.diff_updated, batch.ids, dataset, pad_idx, config)
 
 
 def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field, config: Config) -> None:
@@ -103,8 +105,8 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
     print_tokens = 0
 
     for i, batch in enumerate(data_iter, 1):
-        out, _, pre_output = model.forward(batch)
-        loss = loss_compute(pre_output, batch.trg_y, batch.nseqs)
+        out, _, pre_output, p_gen, attn_probs = model.forward(batch)
+        loss = loss_compute((pre_output, p_gen, attn_probs), batch, batch.nseqs)
         total_loss += loss
         total_tokens += batch.ntokens
         print_tokens += batch.ntokens
@@ -123,7 +125,8 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
 
 def greedy_decode(model: EncoderDecoder, batch: Batch,
                   max_len: int,
-                  sos_index: int, eos_index: int) -> typing.List[np.array]:
+                  sos_index: int, eos_index: int,
+                  unk_index: int, vocab_size: int) -> typing.List[np.array]:
     """
     Greedily decode a sentence.
     :return: [DecodedSeqLenCutWithEos]
@@ -142,16 +145,17 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
     for i in range(max_len):
         with torch.no_grad():
             # pre_output: [B, TrgSeqLen, DecoderH]
-            out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
-                                                   src_mask, prev_y, trg_mask, states)
+            out, states, pre_output, p_gen, attn_probs = model.decode(batch, edit_final, encoder_output, encoder_final,
+                                                                      src_mask, prev_y, trg_mask, states)
 
             # we predict from the pre-output layer, which is
             # a combination of Decoder state, prev emb, and context
-            prob = model.generator(pre_output[:, -1])  # [B, V]
+            prob = model.generator((pre_output, p_gen, attn_probs), batch)[:, -1]  # [B, V]
 
         _, next_words = torch.max(prob, dim=1)
         output[:, i] = next_words
         prev_y[:, 0] = next_words
+        prev_y[prev_y >= vocab_size] = unk_index
 
     output = output.cpu().long().numpy()
     return remove_eos(output, eos_index)
@@ -167,13 +171,14 @@ def remove_eos(batch: np.array, eos_index: int) -> typing.List[np.array]:
     return result
 
 
-def lookup_words(x: np.array, vocab: Vocab) -> typing.List[str]:
+def lookup_words(x: np.array, vocab: Vocab, oov_vocab_reverse: typing.Dict[int, str]) -> typing.List[str]:
     """
     :param x: [SeqLen]
     :param vocab: torchtext vocabulary
     :return: list of words
     """
-    return [vocab.itos[i] for i in x]
+    lookup_table = {**{i: el for i, el in enumerate(vocab.itos)}, **oov_vocab_reverse}
+    return [lookup_table[i] for i in x]
 
 
 # TODO: unite this method with print_examples
@@ -190,8 +195,8 @@ def print_examples_decode_method(example_iter: typing.Iterable, model: EncoderDe
     # TODO: find out the best way to deal with <s> and </s>
     for i, batch in enumerate(example_iter):
 
-        src = batch.src.cpu().numpy()[0, :]
-        trg = batch.trg_y.cpu().numpy()[0, :]
+        src = batch.scatter_indices.cpu().numpy()[0, :]
+        trg = batch.trg_y_extended_vocab.cpu().numpy()[0, :]
 
         # remove </s> (if it is there)
         src = src[:-1] if src[-1] == eos_index else src
@@ -204,9 +209,9 @@ def print_examples_decode_method(example_iter: typing.Iterable, model: EncoderDe
         result = result[0][0]
         print(colored("Example #%d" % (i + 1), color))
         # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
-        print(colored("Src : " + " ".join(lookup_words(src, vocab))))
-        print(colored("Trg : " + " ".join(lookup_words(trg, vocab))))
-        print(colored("Pred: " + " ".join(lookup_words(result, vocab))))
+        print(colored("Src : " + " ".join(lookup_words(src, vocab, batch.oov_vocab_reverse))))
+        print(colored("Trg : " + " ".join(lookup_words(trg, vocab, batch.oov_vocab_reverse))))
+        print(colored("Pred: " + " ".join(lookup_words(result, vocab, batch.oov_vocab_reverse))))
 
         count += 1
         if count == n:
@@ -226,8 +231,8 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
     # TODO: find out the best way to deal with <s> and </s>
     for i, batch in enumerate(example_iter):
 
-        src = batch.src.cpu().numpy()[0, :]
-        trg = batch.trg_y.cpu().numpy()[0, :]
+        src = batch.scatter_indices.cpu().numpy()[0, :]
+        trg = batch.trg_y_extended_vocab.cpu().numpy()[0, :]
 
         # remove </s> (if it is there)
         src = src[:-1] if src[-1] == eos_index else src
@@ -236,13 +241,13 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
         # remove <s> for src
         src = src[1:] if src[0] == sos_index else src
 
-        result = greedy_decode(model, batch, max_len, sos_index, eos_index)
+        result = greedy_decode(model, batch, max_len, sos_index, eos_index, vocab.unk_index, len(vocab))
         result = result[0]
         print(colored("Example #%d" % (i + 1), color))
         # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
-        print(colored("Src : " + " ".join(lookup_words(src, vocab))))
-        print(colored("Trg : " + " ".join(lookup_words(trg, vocab))))
-        print(colored("Pred: " + " ".join(lookup_words(result, vocab))))
+        print(colored("Src : " + " ".join(lookup_words(src, vocab, batch.oov_vocab_reverse))))
+        print(colored("Trg : " + " ".join(lookup_words(trg, vocab, batch.oov_vocab_reverse))))
+        print(colored("Pred: " + " ".join(lookup_words(result, vocab, batch.oov_vocab_reverse))))
 
         count += 1
         if count == n:
@@ -260,9 +265,9 @@ def calculate_accuracy(dataset_iterator: typing.Iterable,
     correct = 0
     total = 0
     for batch in dataset_iterator:
-        targets = remove_eos(batch.trg_y.cpu().numpy(), eos_index)
+        targets = remove_eos(batch.trg_y_extended_vocab.cpu().numpy(), eos_index)
 
-        results = greedy_decode(model, batch, max_len, sos_index, eos_index)
+        results = greedy_decode(model, batch, max_len, sos_index, eos_index, vocab.unk_index, len(vocab))
         for i in range(len(targets)):
             if np.all(targets[i] == results[i]):
                 correct += 1
@@ -276,7 +281,7 @@ def calculate_top_k_accuracy(topk_values: typing.List[int], dataset_iterator: ty
     max_k = topk_values[-1]
     total = 0
     for batch in dataset_iterator:
-        targets = remove_eos(batch.trg_y.cpu().numpy(), eos_index)
+        targets = remove_eos(batch.trg_y_extended_vocab.cpu().numpy(), eos_index)
         results = decode_method(batch)
         for example_id in range(len(results)):
             target = targets[example_id]

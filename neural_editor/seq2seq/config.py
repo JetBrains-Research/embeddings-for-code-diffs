@@ -32,7 +32,7 @@ class Config:
         'LOWER': False,
         'SEED': 9382,
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-        'TOKEN_MIN_FREQ': 1,
+        'TOKEN_MIN_FREQ': 50,
         'LEARNING_RATE': 0.0001,
         'MAX_NUM_OF_EPOCHS': 1000,
         'EDIT_REPRESENTATION_SIZE': 16,
@@ -41,6 +41,7 @@ class Config:
         'DECODER_HIDDEN_SIZE': 256,
         'NUM_LAYERS': 2,
         'USE_EDIT_REPRESENTATION': True,
+        'USE_COPYING_MECHANISM': True,
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
@@ -91,7 +92,7 @@ class Config:
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
         self._CONFIG['TUFANO_LABELED_50_100_PATH'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/50_100'
-        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 2
+        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 20
 
 
 def load_config(is_test: bool, path_to_config: Path = None) -> Config:
