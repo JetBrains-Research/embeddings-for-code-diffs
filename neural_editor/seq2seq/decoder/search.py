@@ -118,7 +118,7 @@ def perform_search(
     )
 
     for _ in tqdm.trange(num_iterations, disable=not verbose):
-        mask = search.step(log_probs, possible_infs=False).long()
+        mask = search.step(log_probs, possible_infs=True).long()
 
         prev_y = search.last_predictions.unsqueeze(1)
         prev_y[prev_y >= vocab_size] = unk_index
