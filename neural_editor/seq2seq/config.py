@@ -32,7 +32,7 @@ class Config:
         'LOWER': False,
         'SEED': 9382,
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-        'TOKEN_MIN_FREQ': 50,
+        'TOKEN_MIN_FREQ': 1,
         'LEARNING_RATE': 0.0001,
         'MAX_NUM_OF_EPOCHS': 1000,
         'EDIT_REPRESENTATION_SIZE': 16,

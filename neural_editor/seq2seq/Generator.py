@@ -25,7 +25,9 @@ class Generator(nn.Module):
         vocab_dist = p_gen * F.softmax(self.vocab_projection(x[0]), dim=-1)
         copy_dist = (1 - p_gen) * x[2]
 
-        final_dist = torch.cat((vocab_dist, torch.zeros(vocab_dist.shape[0], vocab_dist.shape[1], batch.oov_num)), dim=-1)
+        final_dist = torch.cat((vocab_dist,
+                                torch.zeros(vocab_dist.shape[0], vocab_dist.shape[1], batch.oov_num).to(x[0].device)),
+                               dim=-1)
         final_dist.scatter_add_(dim=-1,
                                 index=batch.scatter_indices.unsqueeze(1).repeat((1, copy_dist.shape[1], 1)).long(),
                                 src=copy_dist)

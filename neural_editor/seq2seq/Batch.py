@@ -13,7 +13,7 @@ class Batch:
     """
 
     @staticmethod
-    def create_oov_vocab(ids: Tensor, dataset: Dataset) -> Tuple[Dict[str, int], Tensor]:
+    def create_oov_vocab(ids: Tensor, dataset: Dataset, config: Config) -> Tuple[Dict[str, int], Tensor]:
         vocab = dataset.fields['src'].vocab
         examples = [dataset[i] for i in ids]
         src_oov_vocab = {}
@@ -26,7 +26,7 @@ class Batch:
                         src_oov_vocab[src_token] = cur_id
                         cur_id += 1
                     oov_indices.append(src_oov_vocab[src_token])
-        return src_oov_vocab, torch.tensor(oov_indices).long()
+        return src_oov_vocab, torch.tensor(oov_indices).long().to(config['DEVICE'])
 
     @staticmethod
     def get_extended_target(trg_y: Tensor, ids: Tensor, dataset: Dataset, oov_vocab: Dict[str, int]) -> Tensor:
@@ -55,7 +55,7 @@ class Batch:
                  pad_index: int, config: Config) -> None:
         src, src_lengths = src  # B * SrcSeqLen, B
 
-        self.oov_vocab, self.oov_indices = Batch.create_oov_vocab(ids, dataset)
+        self.oov_vocab, self.oov_indices = Batch.create_oov_vocab(ids, dataset, config)
         self.oov_vocab_reverse = {value: key for key, value in self.oov_vocab.items()}
         self.oov_num = len(self.oov_vocab)
         self.scatter_indices = Batch.create_scatter_indices(src, self.oov_indices, dataset)
