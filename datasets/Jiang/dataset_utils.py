@@ -15,6 +15,8 @@ def partition_dataset(data_root):
 
 def generate_and_save_prev_and_updated_versions(data_root: Path) -> None:
     for data_dir in data_root.iterdir():
+        if data_dir.is_file():
+            continue
         diff_file = data_dir.joinpath('diff.txt')
         diffs = diff_file.read_text().splitlines()
         prev_and_updated = GitDiffOutputProcessor.get_prev_and_updated_for_diffs(diffs)
