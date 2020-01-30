@@ -1,6 +1,8 @@
 import itertools
 from typing import Tuple, List
 
+from datasets.Jiang.utils import tokenize_git_diff_output_string
+
 
 class GitDiffOutputProcessor:
     """
@@ -14,15 +16,7 @@ class GitDiffOutputProcessor:
         :param git_diff_output: output of git diff command
         :return: [prev, updated]
         """
-        tokens = git_diff_output.split()
-        tokens_per_line = [[]]
-        for token in tokens:
-            if token == '<nl>':
-                tokens_per_line.append([])
-            else:
-                tokens_per_line[-1].append(token)
-        if len(tokens_per_line[-1]) == 0:
-            tokens_per_line = tokens_per_line[:-1]
+        tokens_per_line = tokenize_git_diff_output_string(git_diff_output)
 
         prev_lines, updated_lines = [], []
         for tokens_in_line in tokens_per_line:
@@ -30,9 +24,9 @@ class GitDiffOutputProcessor:
                 prev_lines.append(tokens_in_line)
             elif tokens_in_line[0] == 'ppp':
                 updated_lines.append(tokens_in_line)
-            elif tokens_in_line[:2] == ['new', 'file']:
+            elif tokens_in_line[:3] == ['new', 'file', 'mode']:
                 prev_lines.append(tokens_in_line)
-            elif tokens_in_line[0] == 'deleted':
+            elif tokens_in_line[:3] == ['deleted', 'file', 'mode']:
                 updated_lines.append(tokens_in_line)
             elif tokens_in_line[0] == '-':
                 prev_lines.append(tokens_in_line[1:])
