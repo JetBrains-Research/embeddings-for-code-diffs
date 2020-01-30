@@ -12,8 +12,8 @@ from torchtext.data import Field, Dataset
 
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
-from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
-from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
+from datasets.CodeChangesDataset import CodeChangesTokensDataset
+from datasets.dataset_utils import load_datasets
 from neural_editor.seq2seq.test_utils import save_perplexity_plot
 from neural_editor.seq2seq.train_utils import output_accuracy_on_data
 from neural_editor.seq2seq.config import load_config, Config

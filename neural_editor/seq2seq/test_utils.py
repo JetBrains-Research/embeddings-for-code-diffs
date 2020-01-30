@@ -12,7 +12,7 @@ from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
 
 from neural_editor.seq2seq import EncoderDecoder
-from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
+from datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.train_utils import print_examples, rebatch, calculate_accuracy
 

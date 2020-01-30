@@ -9,7 +9,7 @@ import torch
 
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config, load_config
-from neural_editor.seq2seq.datasets.dataset_utils import take_part_from_dataset
+from datasets.dataset_utils import take_part_from_dataset
 from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalculation
 from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
 from neural_editor.seq2seq.experiments.OneShotLearning import OneShotLearning
