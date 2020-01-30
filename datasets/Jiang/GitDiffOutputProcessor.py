@@ -19,20 +19,31 @@ class GitDiffOutputProcessor:
         tokens_per_line = tokenize_git_diff_output_string(git_diff_output)
 
         prev_lines, updated_lines = [], []
+        was_special_keyword_modification = False
         for tokens_in_line in tokens_per_line:
             if tokens_in_line[0] == 'mmm':
                 prev_lines.append(tokens_in_line)
+                was_special_keyword_modification = True
             elif tokens_in_line[0] == 'ppp':
                 updated_lines.append(tokens_in_line)
+                was_special_keyword_modification = True
             elif tokens_in_line[:3] == ['new', 'file', 'mode']:
                 prev_lines.append(tokens_in_line)
+                was_special_keyword_modification = True
             elif tokens_in_line[:3] == ['deleted', 'file', 'mode']:
                 updated_lines.append(tokens_in_line)
+                was_special_keyword_modification = True
+            elif tokens_in_line[:2] == ['rename', 'from']:
+                prev_lines.append(tokens_in_line)
+                was_special_keyword_modification = True
+            elif tokens_in_line[:2] == ['rename', 'to']:
+                updated_lines.append(tokens_in_line)
+                was_special_keyword_modification = True
             elif tokens_in_line[0] == '-':
                 prev_lines.append(tokens_in_line[1:])
             elif tokens_in_line[0] == '+':
                 updated_lines.append(tokens_in_line[1:])
-            elif tokens_in_line[0] == 'index':
+            elif tokens_in_line[0] == 'index' or tokens_in_line[:2] == ['similarity', 'index']:
                 continue
             else:
                 prev_lines.append(tokens_in_line)
@@ -42,6 +53,7 @@ class GitDiffOutputProcessor:
         prev = ' '.join(itertools.chain(*[line + ['<nl>'] for line in prev_lines]))
         updated = ' '.join(itertools.chain(*[line + ['<nl>'] for line in updated_lines]))
 
+        assert was_special_keyword_modification
         assert (prev != updated)
         return prev, updated
 

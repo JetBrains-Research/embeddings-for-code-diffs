@@ -68,7 +68,7 @@ def main() -> None:
         print("Correct Arguments: <path to folder containing Jiang dataset diffs and messages>")
         return
     data_root = Path(sys.argv[1])
-    filter_dataset(data_root)
+    generate_and_save_prev_and_updated_versions(data_root)
 
 
 if __name__ == "__main__":

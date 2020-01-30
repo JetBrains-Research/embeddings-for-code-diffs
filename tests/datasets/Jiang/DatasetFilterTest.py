@@ -23,6 +23,10 @@ class DatasetFilterTest(unittest.TestCase):
         diff = 'mmm a / CHANGELOG . md <nl> ppp b / CHANGELOG . md <nl> Changelog <nl> * Added * WRITE_CALENDAR * permissions to calendar restriction <nl> * Updated XposedBridge to version 54 ( Xposed version 2 . 6 is required now ) <nl> + * Show all usage data ( [ issue ] ( / . . / . . / issues / 1695 ) ) <nl> [ Open issues ] ( https : / / github . com / M66B / XPrivacy / issues ? state = open ) <nl>'
         self.assertTrue(DatasetFilter.validate(diff, ''))
 
+    def test_rename_file(self):
+        diff = 'similarity index 96 % <nl> rename from fml - src - 3 . 0 . 58 . 278 . zip <nl> rename to fml - src - 3 . 0 . 60 . 279 . zip <nl> Binary files a / fml - src - 3 . 0 . 58 . 278 . zip and b / fml - src - 3 . 0 . 60 . 279 . zip differ <nl>'
+        self.assertFalse(DatasetFilter.validate(diff, ''))
+
     def test_file_addition(self):
         diff = 'new file mode 100644 <nl> index 0000000 . . 8b79786 <nl> Binary files / dev / null and b / third_party / truth / truth - 0 . 28 . jar differ <nl>'
         self.assertFalse(DatasetFilter.validate(diff, ''))
