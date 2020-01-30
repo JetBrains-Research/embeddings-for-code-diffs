@@ -47,6 +47,14 @@ class GitDiffOutputProcessorTest(unittest.TestCase):
         self.assertEqual(prev_expected, prev_actual)
         self.assertEqual(updated_expected, updated_actual)
 
+    def test_file_mode_change(self):
+        diff = 'old mode 100644 <nl> new mode 100755 <nl> old mode 100644 <nl> new mode 100755 <nl>'
+        prev_expected = 'old mode 100644 <nl> old mode 100644 <nl>'
+        updated_expected = 'new mode 100755 <nl> new mode 100755 <nl>'
+        prev_actual, updated_actual = GitDiffOutputProcessor.get_prev_and_updated(diff)
+        self.assertEqual(prev_expected, prev_actual)
+        self.assertEqual(updated_expected, updated_actual)
+
     def test_file_addition(self):
         diff = 'new file mode 100644 <nl> index 0000000 . . 8b79786 <nl> Binary files / dev / null and b / third_party / truth / truth - 0 . 28 . jar differ <nl>'
         prev_expected = 'new file mode 100644 <nl> Binary files / dev / null and b / third_party / truth / truth - 0 . 28 . jar differ <nl>'

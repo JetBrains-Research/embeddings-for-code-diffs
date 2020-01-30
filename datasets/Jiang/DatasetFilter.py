@@ -8,7 +8,10 @@ class DatasetFilter:
     @staticmethod
     def validate(git_diff_output: str, msg: str) -> bool:
         tokens_per_line = tokenize_git_diff_output_string(git_diff_output)
-        counters = {'mmm': 0, 'ppp': 0, 'deleted file mode': 0, 'new file mode': 0, 'rename from': 0, 'rename to': 0}
+        counters = {'mmm': 0, 'ppp': 0,
+                    'deleted file mode': 0, 'new file mode': 0,
+                    'rename from': 0, 'rename to': 0,
+                    'old mode': 0, 'new mode': 0}
         max_prefix_len = 3
         for tokens_in_line in tokens_per_line:
             for i in range(1, max_prefix_len + 1):

@@ -39,6 +39,12 @@ class GitDiffOutputProcessor:
             elif tokens_in_line[:2] == ['rename', 'to']:
                 updated_lines.append(tokens_in_line)
                 was_special_keyword_modification = True
+            elif tokens_in_line[:2] == ['old', 'mode']:
+                prev_lines.append(tokens_in_line)
+                was_special_keyword_modification = True
+            elif tokens_in_line[:2] == ['new', 'mode']:
+                updated_lines.append(tokens_in_line)
+                was_special_keyword_modification = True
             elif tokens_in_line[0] == '-':
                 prev_lines.append(tokens_in_line[1:])
             elif tokens_in_line[0] == '+':
@@ -53,8 +59,10 @@ class GitDiffOutputProcessor:
         prev = ' '.join(itertools.chain(*[line + ['<nl>'] for line in prev_lines]))
         updated = ' '.join(itertools.chain(*[line + ['<nl>'] for line in updated_lines]))
 
-        assert was_special_keyword_modification
-        assert (prev != updated)
+        if not was_special_keyword_modification:
+            print(f'No special keyword found for diff: {git_diff_output}')
+        if prev == updated:
+            print(f'Prev and updated are the same for diff: {git_diff_output}')
         return prev, updated
 
     @staticmethod
