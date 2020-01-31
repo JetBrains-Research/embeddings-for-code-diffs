@@ -65,6 +65,11 @@ def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset
     print('valid', len(valid_data))
     print('test', len(test_data), "\n")
 
+    max_seq_len = max((
+        max((len(example.src), len(example.trg), len(example.diff_alignment)))
+        for dataset in (train_data, valid_data, test_data) for example in dataset))
+    print(f'Max sequence length in tokens: {max_seq_len}', '\n')
+
     print("First training example:")
     print("src:", " ".join(vars(train_data[0])['src']))
     print("trg:", " ".join(vars(train_data[0])['trg']))
