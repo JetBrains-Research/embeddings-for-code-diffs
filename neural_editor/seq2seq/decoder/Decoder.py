@@ -37,7 +37,8 @@ class Decoder(nn.Module):
         self.use_edit_representation = use_edit_representation
         self.teacher_forcing_ratio = teacher_forcing_ratio
         self.p_gen_network = nn.Sequential(nn.Linear(2 * hidden_size_encoder + hidden_size + emb_size, 1, bias=True),
-                                           nn.Sigmoid()) if use_copying_mechanism else (lambda x: 1)
+                                           nn.Sigmoid())
+        self.use_copying_mechanism = use_copying_mechanism
 
         self.rnn = nn.LSTM(emb_size + 2 * hidden_size_encoder + 2 * edit_representation_size, hidden_size,
                            num_layers, bidirectional=False,  # TODO_DONE: bidirectional=False?
@@ -87,7 +88,10 @@ class Decoder(nn.Module):
         pre_output = self.pre_output_layer(pre_output)  # [B, 1, DecoderH]
 
         # [B, 1], TODO: hidden[-1] or output?
-        p_gen = self.p_gen_network(torch.cat([context.squeeze(dim=1), hidden[-1], prev_embed.squeeze(dim=1)], dim=1))
+        if self.use_copying_mechanism:
+            p_gen = self.p_gen_network(torch.cat([context.squeeze(dim=1), hidden[-1], prev_embed.squeeze(dim=1)], dim=1))
+        else:
+            p_gen = torch.ones((pre_output.shape[0], 1), device=pre_output.device, requires_grad=False)
 
         return output, hidden, cell, pre_output, p_gen, attn_probs
 
