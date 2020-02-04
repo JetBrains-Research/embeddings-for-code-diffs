@@ -36,5 +36,5 @@ class Generator(nn.Module):
         # and src1 doesn't. But trg1 contains 'sync' and
         # when we compute loss we have probability zero for 'synchronized'
         # because src1 didn't contain this word. Should we set <unk> as target token or just add eps for probability?
-        # final_dist[final_dist == 0] += 1e-10
+        final_dist[final_dist == 0] += 1e-20
         return torch.log(final_dist)

@@ -41,7 +41,7 @@ class Config:
         'DECODER_HIDDEN_SIZE': 256,
         'NUM_LAYERS': 2,
         'USE_EDIT_REPRESENTATION': True,
-        'USE_COPYING_MECHANISM': True,
+        'USE_COPYING_MECHANISM': False,
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
