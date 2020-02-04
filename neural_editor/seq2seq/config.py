@@ -2,20 +2,19 @@ import os
 import pickle
 import random
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import numpy as np
 import torch.backends.cudnn
 
 
-def get_dataset_path(dataset_suffix: str) -> str:
-    return os.path.join(os.path.dirname(__file__), '../../../embeddings-for-code-diffs-data/datasets', dataset_suffix)
-
-
 class Config:
     _CONFIG = {
         'IS_TEST': False,
+        'IS_COMMIT_GENERATION': True,
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset/partitioned/neural_editor',
+        'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset/partitioned/commit_message_generator',
+        'FREEZE_EDIT_ENCODER_WEIGHTS': True,
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
@@ -30,6 +29,7 @@ class Config:
         'SOS_TOKEN': "<s>",
         'EOS_TOKEN': "</s>",
         'LOWER': False,
+        'LOWER_COMMIT_MSG': True,
         'SEED': 9382,
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
         'TOKEN_MIN_FREQ': 1,
@@ -41,6 +41,10 @@ class Config:
         'DECODER_HIDDEN_SIZE': 256,
         'NUM_LAYERS': 2,
         'USE_EDIT_REPRESENTATION': True,
+        'WORD_EMBEDDING_SIZE_COMMIT': 128,
+        'ENCODER_HIDDEN_SIZE_COMMIT': 128,
+        'DECODER_HIDDEN_SIZE_COMMIT': 256,
+        'NUM_LAYERS_COMMIT': 2,
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
@@ -65,7 +69,7 @@ class Config:
         'MAKE_CUDA_REPRODUCIBLE': False,
     }
 
-    _PATH_KEYS = ['DATASET_ROOT', 'DEFECTS4J_PATH',
+    _PATH_KEYS = ['DATASET_ROOT', 'DATASET_ROOT_COMMIT', 'DEFECTS4J_PATH',
                   'TUFANO_LABELED_0_50_PATH', 'TUFANO_LABELED_50_100_PATH',
                   'OUTPUT_PATH',
                   'TUFANO_BUG_FIXES_0_50_PATH', 'TUFANO_BUG_FIXES_50_100_PATH',
@@ -87,6 +91,8 @@ class Config:
         self._CONFIG['IS_TEST'] = True
         self._CONFIG['DATASET_ROOT'] = \
             '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset_test/partitioned/neural_editor'
+        self._CONFIG['DATASET_ROOT_COMMIT'] = \
+            '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset_test/partitioned/commit_message_generator'
         self._CONFIG['TUFANO_LABELED_0_50_PATH'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
         self._CONFIG['TUFANO_LABELED_50_100_PATH'] = \

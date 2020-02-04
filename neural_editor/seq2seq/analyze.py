@@ -7,14 +7,14 @@ from pathlib import Path
 
 import torch
 
+from datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config, load_config
-from datasets.dataset_utils import take_part_from_dataset
+from datasets.dataset_utils import take_part_from_dataset, load_tufano_dataset
 from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalculation
 from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
 from neural_editor.seq2seq.experiments.OneShotLearning import OneShotLearning
 from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_labeled_dataset
-from neural_editor.seq2seq.train import load_data, load_tufano_dataset
 
 
 def measure_experiment_time(func) -> None:
@@ -26,7 +26,8 @@ def measure_experiment_time(func) -> None:
 
 
 def test_model(model: EncoderDecoder, config: Config) -> None:
-    train_dataset, val_dataset, test_dataset, diffs_field = load_data(verbose=True, config=config)
+    train_dataset, val_dataset, test_dataset, diffs_field = \
+        CodeChangesTokensDataset.load_data(verbose=True, config=config)
     tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes = \
         load_labeled_dataset(config['TUFANO_LABELED_0_50_PATH'], diffs_field, config)
     tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes = \

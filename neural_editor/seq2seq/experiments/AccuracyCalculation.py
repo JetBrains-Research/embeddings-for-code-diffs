@@ -4,7 +4,6 @@ from torchtext.vocab import Vocab
 
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config
-from neural_editor.seq2seq.decoder.BatchBeamSearch import BatchedBeamSearch
 from neural_editor.seq2seq.decoder.search import create_decode_method
 from neural_editor.seq2seq.train_utils import rebatch, calculate_top_k_accuracy
 

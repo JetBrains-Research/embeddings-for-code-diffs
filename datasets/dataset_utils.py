@@ -1,11 +1,12 @@
 import json
 import os
 import sys
-from typing import Tuple
+from typing import Tuple, List
 
 import numpy as np
 from torchtext.data import Dataset, Field
 
+from datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.config import Config
 
 
@@ -35,15 +36,6 @@ def concat_and_write_tokens_as_string_via_separator(root: str, sep: str = ' ') -
                 updated_tokens_text_file.write(updated_tokens_string + "\n")
 
 
-def load_datasets(dataset_cls: Dataset.__class__, path: str, field: Field, config: Config,
-                  train: str = 'train', val: str = 'val', test: str = 'test',
-                  **kwargs) -> Tuple[Dataset, ...]:
-    train_data: Dataset = dataset_cls(os.path.join(path, train), field, config, **kwargs)
-    val_data: Dataset = dataset_cls(os.path.join(path, val), field, config, **kwargs)
-    test_data: Dataset = dataset_cls(os.path.join(path, test), field, config, **kwargs)
-    return tuple(d for d in (train_data, val_data, test_data))
-
-
 def prepare_dataset(dataset_root):
     split_train_val_test(dataset_root)
     concat_and_write_tokens_as_string_via_separator(dataset_root)
@@ -58,3 +50,8 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Args: <path_to_dataset>")
     prepare_dataset(sys.argv[1])
+
+
+def load_tufano_dataset(path: str, diffs_field: Field, config: Config) -> Tuple[Dataset, Dataset, Dataset]:
+    train_dataset, val_dataset, test_dataset = CodeChangesTokensDataset.load_datasets(path, diffs_field, config)
+    return train_dataset, val_dataset, test_dataset

@@ -64,22 +64,7 @@ class EncoderDecoder(nn.Module):
         :param batch: batch to encode
         :return: Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]]
         """
-        diff_embedding = torch.cat(
-            (self.embed(batch.diff_alignment), self.embed(batch.diff_prev), self.embed(batch.diff_updated)),
-            dim=2
-        )  # [B, SeqAlignedLen, EmbDiff + EmbDiff + EmbDiff]
-        diff_embedding_mask = torch.cat(
-            (batch.diff_alignment_mask, batch.diff_prev_mask, batch.diff_updated_mask),
-            dim=2
-        )  # [B, 1, AlignedSeqLen + AlignedSeqLen + AlignedSeqLen]
-        # [B, AlignedSeqLen, NumDirections * DiffEncoderH]
-        # Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]]
-        _, edit_final = self.edit_encoder(
-            diff_embedding,
-            diff_embedding_mask,
-            batch.diff_alignment_lengths  # B * 1 * AlignedSeqLen
-        )
-        return edit_final
+        return self.edit_encoder.encode_edit(batch)
 
     def encode(self, batch: Batch) -> Tuple[Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
         """

@@ -9,7 +9,7 @@ import torchtext
 from termcolor import colored
 from torch import nn
 from torchtext import data
-from torchtext.data import Dataset, Field
+from torchtext.data import Dataset
 from torchtext.vocab import Vocab
 
 from edit_representation.sequence_encoding.EditEncoder import EditEncoder
@@ -23,18 +23,23 @@ from neural_editor.seq2seq.decoder.Decoder import Decoder
 from neural_editor.seq2seq.encoder.Encoder import Encoder
 
 
-def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
+def make_model(src_vocab_size: int, trg_vocab_size: int,
+               edit_encoder: EditEncoder, edit_representation_size: int,
+               emb_size: int,
                hidden_size_encoder: int, hidden_size_decoder: int,
                num_layers: int,
                dropout: float,
                use_bridge: bool,
                config: Config) -> EncoderDecoder:
     """Helper: Construct a model from hyperparameters."""
-    # TODO_DONE: change hidden size of decoder
+    if edit_encoder is not None and config['FREEZE_EDIT_ENCODER_WEIGHTS']:
+        edit_encoder.freeze_weights()
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
-    generator = Generator(hidden_size_decoder, vocab_size)
-    embedding = nn.Embedding(vocab_size, emb_size)
+    generator = Generator(hidden_size_decoder, trg_vocab_size)
+    embedding = nn.Embedding(src_vocab_size, emb_size)
+    if edit_encoder is None:
+        edit_encoder = EditEncoder(embedding, 3 * emb_size, edit_representation_size, num_layers, dropout)
     model: EncoderDecoder = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
         Decoder(generator, embedding, emb_size, edit_representation_size,
@@ -43,7 +48,7 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
                 num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
                 dropout=dropout, bridge=use_bridge,
                 use_edit_representation=config['USE_EDIT_REPRESENTATION']),
-        EditEncoder(3 * emb_size, edit_representation_size, num_layers, dropout),
+        edit_encoder,
         embedding,  # 1 -> Emb
         generator)
     model.to(config['DEVICE'])
@@ -55,43 +60,6 @@ def rebatch(pad_idx: int, batch: torchtext.data.Batch, config: Config) -> Batch:
     # These fields are added dynamically by PyTorch
     return Batch(batch.src, batch.trg, batch.diff_alignment,
                  batch.diff_prev, batch.diff_updated, pad_idx, config)
-
-
-def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field, config: Config) -> None:
-    """ This prints some useful stuff about our data sets. """
-
-    print("Data set sizes (number of sentence pairs):")
-    print('train', len(train_data))
-    print('valid', len(valid_data))
-    print('test', len(test_data), "\n")
-
-    max_seq_len = max((
-        max((len(example.src), len(example.trg), len(example.diff_alignment)))
-        for dataset in (train_data, valid_data, test_data) for example in dataset))
-    print(f'Max sequence length in tokens: {max_seq_len}', '\n')
-
-    print("First training example:")
-    print("src:", " ".join(vars(train_data[0])['src']))
-    print("trg:", " ".join(vars(train_data[0])['trg']))
-    print("diff_alignment:", " ".join(vars(train_data[0])['diff_alignment']))
-    print("diff_prev:", " ".join(vars(train_data[0])['diff_prev']))
-    print("diff_updated:", " ".join(vars(train_data[0])['diff_updated']), '\n')
-
-    print("Most common words:")
-    print("\n".join(["%10s %10d" % x for x in field.vocab.freqs.most_common(10)]), "\n")
-
-    print("First 10 words:")
-    print("\n".join(
-        '%02d %s' % (i, t) for i, t in enumerate(field.vocab.itos[:10])), "\n")
-
-    print("Special words frequency and ids: ")
-    special_tokens = [config['UNK_TOKEN'], config['PAD_TOKEN'], config['SOS_TOKEN'], config['EOS_TOKEN'],
-                      config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'], config['ADDITION_TOKEN'],
-                      config['UNCHANGED_TOKEN'], config['PADDING_TOKEN']]
-    for special_token in special_tokens:
-        print(f"{special_token} {field.vocab.freqs[special_token]} {field.vocab.stoi[special_token]}")
-
-    print("Number of words (types):", len(field.vocab))
 
 
 def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: SimpleLossCompute,
@@ -224,14 +192,16 @@ def print_examples_decode_method(example_iter: typing.Iterable, model: EncoderDe
 
 
 def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
-                   max_len: int, vocab: Vocab, config: Config,
+                   max_len: int, src_vocab: Vocab, trg_vocab: Vocab, config: Config,
                    n: int, color=None) -> None:
     """Prints N examples. Assumes batch size of 1."""
     model.eval()
     count = 0
 
-    sos_index = vocab.stoi[config['SOS_TOKEN']]
-    eos_index = vocab.stoi[config['EOS_TOKEN']]
+    assert(src_vocab.stoi[config['SOS_TOKEN']] == trg_vocab.stoi[config['SOS_TOKEN']])
+    assert (src_vocab.stoi[config['EOS_TOKEN']] == trg_vocab.stoi[config['EOS_TOKEN']])
+    sos_index = src_vocab.stoi[config['SOS_TOKEN']]
+    eos_index = src_vocab.stoi[config['EOS_TOKEN']]
 
     # TODO: find out the best way to deal with <s> and </s>
     for i, batch in enumerate(example_iter):
@@ -250,9 +220,9 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
         result = result[0]
         print(colored("Example #%d" % (i + 1), color))
         # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
-        print(colored("Src : " + " ".join(lookup_words(src, vocab))))
-        print(colored("Trg : " + " ".join(lookup_words(trg, vocab))))
-        print(colored("Pred: " + " ".join(lookup_words(result, vocab))))
+        print(colored("Src : " + " ".join(lookup_words(src, src_vocab))))
+        print(colored("Trg : " + " ".join(lookup_words(trg, trg_vocab))))
+        print(colored("Pred: " + " ".join(lookup_words(result, trg_vocab))))
 
         count += 1
         if count == n:
@@ -313,7 +283,7 @@ def output_accuracy_on_data(model: EncoderDecoder,
             print(f'==={label} EXAMPLES===')
             print_examples((rebatch(pad_index, x, config) for x in print_examples_iterator),
                            model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
-                           vocab, config, n=3)
+                           vocab, vocab, config, n=3)
             accuracy_iterator = data.Iterator(dataset, batch_size=config['TEST_BATCH_SIZE'], train=False,
                                               sort_within_batch=True,
                                               sort_key=lambda x: (len(x.src), len(x.trg)),
