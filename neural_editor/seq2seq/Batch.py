@@ -15,8 +15,8 @@ class Batch:
                  diff_prev: Tuple[Tensor, Tensor], diff_updated: Tuple[Tensor, Tensor],
                  pad_index: int, config: Config) -> None:
         src, src_lengths = src  # B * SrcSeqLen, B
-        src = src[:, 1:]
-        src_lengths = src_lengths - 1
+        # src = src[:, 1:]
+        # src_lengths = src_lengths - 1
 
         self.diff_alignment, self.diff_alignment_lengths = diff_alignment  # B * SeqAlignedLen, B
         self.diff_alignment_mask = (self.diff_alignment != pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
