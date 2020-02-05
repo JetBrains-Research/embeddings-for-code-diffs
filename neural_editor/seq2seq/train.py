@@ -61,7 +61,7 @@ def train(model: EncoderDecoder,
     # optionally add label smoothing; see the Annotated Transformer
     pad_index: int = diffs_field.vocab.stoi[config['PAD_TOKEN']]
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
-    optimizer = torch.optim.Adam(model.parameters(), lr=config['LEARNING_RATE'])
+    optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=config['LEARNING_RATE'])
 
     train_iter = data.BucketIterator(train_data, batch_size=config['BATCH_SIZE'], train=True,
                                      shuffle=True,
