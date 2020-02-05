@@ -15,7 +15,7 @@ def get_dataset_path(dataset_suffix: str) -> str:
 class Config:
     _CONFIG = {
         'IS_TEST': False,
-        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
+        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset/partitioned/neural_editor',
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
@@ -41,7 +41,8 @@ class Config:
         'DECODER_HIDDEN_SIZE': 256,
         'NUM_LAYERS': 2,
         'USE_EDIT_REPRESENTATION': True,
-        'USE_COPYING_MECHANISM': False,
+        'USE_COPYING_MECHANISM': True,
+        'CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J': False,
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
@@ -60,7 +61,7 @@ class Config:
         'BATCH_SIZE': 64,
         'TSNE_BATCH_SIZE': 1024,
         'VAL_BATCH_SIZE': 64,
-        'TEST_BATCH_SIZE': 64,  # TODO: find out why changing batch size for dataloader changes perplexity
+        'TEST_BATCH_SIZE': 64,
         'SAVE_MODEL_EVERY': 5,
         'PRINT_EVERY_iTH_BATCH': 5,
         'MAKE_CUDA_REPRODUCIBLE': False,
@@ -87,12 +88,12 @@ class Config:
     def change_config_for_test(self) -> None:
         self._CONFIG['IS_TEST'] = True
         self._CONFIG['DATASET_ROOT'] = \
-            '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes_test/0_50'
+            '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset_test/partitioned/neural_editor'
         self._CONFIG['TUFANO_LABELED_0_50_PATH'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
         self._CONFIG['TUFANO_LABELED_50_100_PATH'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/50_100'
-        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 20
+        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 2
 
 
 def load_config(is_test: bool, path_to_config: Path = None) -> Config:

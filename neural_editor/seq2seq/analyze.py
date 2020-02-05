@@ -102,17 +102,18 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
         )
 
         # Accuracy
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(tufano_labeled_0_50_dataset,
-                                                            'Tufano Labeled 0 50 Code Changes')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(tufano_labeled_50_100_dataset,
-                                                            'Tufano Labeled 50 100 Code Changes')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(defects4j_dataset, 'Defects4J')
-        )
+        if config['CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J']:
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(tufano_labeled_0_50_dataset,
+                                                                'Tufano Labeled 0 50 Code Changes')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(tufano_labeled_50_100_dataset,
+                                                                'Tufano Labeled 50 100 Code Changes')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(defects4j_dataset, 'Defects4J')
+            )
         measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(
                 take_part_from_dataset(test_dataset, 300), 'Test dataset 300')
@@ -127,17 +128,18 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
         )
 
         # One shot learning
-        measure_experiment_time(
-            lambda: one_shot_learning_experiment.conduct(tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes,
-                                                         'Tufano Labeled 0 50 Code Changes')
-        )
-        measure_experiment_time(
-            lambda: one_shot_learning_experiment.conduct(tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes,
-                                                         'Tufano Labeled 50 100 Code Changes')
-        )
-        measure_experiment_time(
-            lambda: one_shot_learning_experiment.conduct(defects4j_dataset, defects4j_classes, 'Defects4J')
-        )
+        if config['CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J']:
+            measure_experiment_time(
+                lambda: one_shot_learning_experiment.conduct(tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes,
+                                                             'Tufano Labeled 0 50 Code Changes')
+            )
+            measure_experiment_time(
+                lambda: one_shot_learning_experiment.conduct(tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes,
+                                                             'Tufano Labeled 50 100 Code Changes')
+            )
+            measure_experiment_time(
+                lambda: one_shot_learning_experiment.conduct(defects4j_dataset, defects4j_classes, 'Defects4J')
+            )
 
         print('Starting long experiments', flush=True)
 
@@ -148,87 +150,89 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
         )
 
         # Tufano accuracy evaluation
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_bug_fixes_0_50_dataset_train, 300),
-                'Tufano bug fixes 0 50 dataset train 300')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_bug_fixes_0_50_dataset_val, 300),
-                'Tufano bug fixes 0 50 dataset val 300')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_bug_fixes_0_50_dataset_test, 300),
-                'Tufano bug fixes 0 50 dataset test 300')
-        )
+        if config['CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J']:
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_bug_fixes_0_50_dataset_train, 300),
+                    'Tufano bug fixes 0 50 dataset train 300')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_bug_fixes_0_50_dataset_val, 300),
+                    'Tufano bug fixes 0 50 dataset val 300')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_bug_fixes_0_50_dataset_test, 300),
+                    'Tufano bug fixes 0 50 dataset test 300')
+            )
 
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_bug_fixes_50_100_dataset_train, 300),
-                'Tufano bug fixes 50 100 dataset train 300')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_bug_fixes_50_100_dataset_val, 300),
-                'Tufano bug fixes 50 100 dataset val 300')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_bug_fixes_50_100_dataset_test, 300),
-                'Tufano bug fixes 50 100 dataset test 300')
-        )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_bug_fixes_50_100_dataset_train, 300),
+                    'Tufano bug fixes 50 100 dataset train 300')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_bug_fixes_50_100_dataset_val, 300),
+                    'Tufano bug fixes 50 100 dataset val 300')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_bug_fixes_50_100_dataset_test, 300),
+                    'Tufano bug fixes 50 100 dataset test 300')
+            )
 
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_code_changes_0_50_dataset_train, 300),
-                'Tufano code changes 0 50 dataset train 300')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_code_changes_0_50_dataset_val, 300),
-                'Tufano code changes 0 50 dataset val 300')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_code_changes_0_50_dataset_test, 300),
-                'Tufano code changes 0 50 dataset test 300')
-        )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_code_changes_0_50_dataset_train, 300),
+                    'Tufano code changes 0 50 dataset train 300')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_code_changes_0_50_dataset_val, 300),
+                    'Tufano code changes 0 50 dataset val 300')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_code_changes_0_50_dataset_test, 300),
+                    'Tufano code changes 0 50 dataset test 300')
+            )
 
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_code_changes_50_100_dataset_train, 300),
-                'Tufano code changes 50 100 dataset train 300')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_code_changes_50_100_dataset_val, 300),
-                'Tufano code changes 50 100 dataset val 300')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(tufano_code_changes_50_100_dataset_test, 300),
-                'Tufano code changes 50 100 dataset test 300')
-        )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_code_changes_50_100_dataset_train, 300),
+                    'Tufano code changes 50 100 dataset train 300')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_code_changes_50_100_dataset_val, 300),
+                    'Tufano code changes 50 100 dataset val 300')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    take_part_from_dataset(tufano_code_changes_50_100_dataset_test, 300),
+                    'Tufano code changes 50 100 dataset test 300')
+            )
 
         # All test data Tufano dataset evaluation
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                tufano_bug_fixes_0_50_dataset_test, 'Tufano bug fixes 0 50 dataset test')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                tufano_bug_fixes_50_100_dataset_test, 'Tufano bug fixes 50 100 dataset test')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                tufano_code_changes_0_50_dataset_test, 'Tufano code changes 0 50 dataset test')
-        )
-        measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                tufano_code_changes_50_100_dataset_test, 'Tufano code changes 50 100 dataset test')
-        )
+        if config['CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J']:
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    tufano_bug_fixes_0_50_dataset_test, 'Tufano bug fixes 0 50 dataset test')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    tufano_bug_fixes_50_100_dataset_test, 'Tufano bug fixes 50 100 dataset test')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    tufano_code_changes_0_50_dataset_test, 'Tufano code changes 0 50 dataset test')
+            )
+            measure_experiment_time(
+                lambda: accuracy_calculation_experiment.conduct(
+                    tufano_code_changes_50_100_dataset_test, 'Tufano code changes 50 100 dataset test')
+            )
 
 
 def print_results(results_root: str, config: Config) -> None:
