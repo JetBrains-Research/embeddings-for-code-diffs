@@ -41,6 +41,7 @@ class CommitMessageGenerationDataset(data.Dataset):
     @staticmethod
     def load_data(diffs_field: Field,
                   verbose: bool, config: Config) -> Tuple[Dataset, Dataset, Dataset, Tuple[Field, Field, Field]]:
+        # TODO: is src_field = diffs_field?
         src_field: Field = data.Field(batch_first=True, lower=config['LOWER'], include_lengths=True,
                                       unk_token=config['UNK_TOKEN'], pad_token=config['PAD_TOKEN'],
                                       init_token=config['SOS_TOKEN'],

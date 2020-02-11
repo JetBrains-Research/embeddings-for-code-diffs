@@ -9,10 +9,10 @@ from neural_editor.seq2seq.train_utils import rebatch, calculate_top_k_accuracy
 
 
 class AccuracyCalculation:
-    def __init__(self, model: EncoderDecoder, diffs_field: Field, config: Config) -> None:
+    def __init__(self, model: EncoderDecoder, target_field: Field, config: Config) -> None:
         super().__init__()
         self.model = model
-        vocab: Vocab = diffs_field.vocab
+        vocab: Vocab = target_field.vocab
         self.pad_index: int = vocab.stoi[config['PAD_TOKEN']]
         sos_index: int = vocab.stoi[config['SOS_TOKEN']]
         self.eos_index: int = vocab.stoi[config['EOS_TOKEN']]
