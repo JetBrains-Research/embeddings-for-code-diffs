@@ -149,7 +149,7 @@ class Decoder(nn.Module):
             if use_teacher_forcing or i == 0:
                 prev_embed = trg_embed[:, i].unsqueeze(1)  # [B, 1, EmbCode]
             else:
-                _, top_i = self.generator((pre_output_vectors[-1], p_gen_probs[-1], attn_probs_vectors[-1]), batch).squeeze().topk(1)
+                _, top_i = self.generator((pre_output_vectors[-1], p_gen_probs[-1], attn_probs_vectors[-1]), batch).squeeze(1).topk(1)
                 top_i[top_i >= self.vocab_size] = self.unk_index
                 prev_embed = self.embedding(top_i)  # TODO: stop decoding if EOS token? seems to me we should continue
             # [B, 1, DecoderH], [NumLayers, B, DecoderH], [NumLayers, B, DecoderH], [B, 1, DecoderH]
