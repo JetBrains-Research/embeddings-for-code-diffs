@@ -25,7 +25,7 @@ class EncoderDecoder(nn.Module):
         self.embed = embed
         self.generator = generator
 
-    def forward(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
+    def forward(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor, Tensor, Tensor]:
         """
         Take in and process masked src and target sequences.
         Returns tuple of decoder states, hidden states of decoder, pre-output states.
@@ -38,7 +38,7 @@ class EncoderDecoder(nn.Module):
         ]
         """
         edit_final, encoder_output, encoder_final = self.encode(batch)
-        decoded = self.decode(edit_final, encoder_output,
+        decoded = self.decode(batch, edit_final, encoder_output,
                               encoder_final, batch.src_mask,
                               batch.trg, batch.trg_mask, None)
         return decoded
@@ -83,10 +83,10 @@ class EncoderDecoder(nn.Module):
         encoder_output, encoder_final = self.encoder(self.embed(batch.src), batch.src_mask, batch.src_lengths)
         return edit_final, encoder_output, encoder_final
 
-    def decode(self, edit_final: Tuple[Tensor, Tensor],
+    def decode(self, batch: Batch, edit_final: Tuple[Tensor, Tensor],
                encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],
                src_mask: Tensor, trg: Tensor, trg_mask: Tensor,
-               states_to_initialize: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
+               states_to_initialize: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor, Tensor, Tensor]:
         """
         :param edit_final: Tuple[
             [NumLayers, B, NumDirections * DiffEncoderH],
@@ -107,5 +107,5 @@ class EncoderDecoder(nn.Module):
                  [B, TrgSeqLen, DecoderH]
         ]
         """
-        return self.decoder(self.embed(trg), edit_final, encoder_output, encoder_final,
+        return self.decoder(batch, self.embed(trg), edit_final, encoder_output, encoder_final,
                             src_mask, trg_mask, states_to_initialize)

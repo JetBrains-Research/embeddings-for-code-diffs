@@ -45,6 +45,8 @@ class Config:
         'ENCODER_HIDDEN_SIZE_COMMIT': 128,
         'DECODER_HIDDEN_SIZE_COMMIT': 256,
         'NUM_LAYERS_COMMIT': 2,
+        'USE_COPYING_MECHANISM': True,
+        'CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J': False,
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,

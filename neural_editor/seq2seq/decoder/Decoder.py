@@ -5,7 +5,7 @@ import torch
 from torch import nn, Tensor
 from torch.nn import Embedding
 
-from neural_editor.seq2seq import BahdanauAttention, Generator
+from neural_editor.seq2seq import BahdanauAttention, Generator, Batch
 
 
 # DONE_TODO: initialization = encoder output concatenate with edit representation.
@@ -19,21 +19,26 @@ class Decoder(nn.Module):
     """A conditional RNN decoder with attention."""
 
     def __init__(self, generator: Generator, embedding: Embedding, emb_size: int, edit_representation_size: int,
-                 hidden_size_encoder: int, hidden_size: int,
+                 hidden_size_encoder: int, hidden_size: int, vocab_size: int, unk_index: int,
                  attention: BahdanauAttention,
                  teacher_forcing_ratio: float,
                  num_layers: int, dropout: float,
-                 bridge: bool, use_edit_representation: bool) -> None:
+                 bridge: bool, use_edit_representation: bool, use_copying_mechanism: bool) -> None:
         super(Decoder, self).__init__()
 
         self.generator = generator
         self.embedding = embedding
         self.hidden_size = hidden_size
+        self.vocab_size = vocab_size
+        self.unk_index = unk_index
         self.num_layers = num_layers
         self.attention = attention
         self.dropout = dropout
         self.use_edit_representation = use_edit_representation
         self.teacher_forcing_ratio = teacher_forcing_ratio
+        self.p_gen_network = nn.Sequential(nn.Linear(2 * hidden_size_encoder + hidden_size + emb_size, 1, bias=True),
+                                           nn.Sigmoid())
+        self.use_copying_mechanism = use_copying_mechanism
 
         self.rnn = nn.LSTM(emb_size + 2 * hidden_size_encoder + 2 * edit_representation_size, hidden_size,
                            num_layers, bidirectional=False,  # TODO_DONE: bidirectional=False?
@@ -49,7 +54,7 @@ class Decoder(nn.Module):
 
     def forward_step(self, edit_hidden: Tensor, prev_embed: Tensor, encoder_output: Tensor,
                      src_mask: Tensor, projection_key: Tensor,
-                     hidden: Tensor, cell: Tensor) -> Tuple[Tensor, Tensor, Tensor, Tensor]:
+                     hidden: Tensor, cell: Tensor) -> Tuple[Tensor, Tensor, Tensor, Tensor, Tensor, Tensor]:
         """
         Perform a single decoder step (1 word)
         :arg edit_hidden: [NumLayers, B, NumDirections * DiffEncoderH]
@@ -82,13 +87,19 @@ class Decoder(nn.Module):
         pre_output = self.dropout_layer(pre_output)
         pre_output = self.pre_output_layer(pre_output)  # [B, 1, DecoderH]
 
-        return output, hidden, cell, pre_output
+        # [B, 1], TODO: hidden[-1] or output?
+        if self.use_copying_mechanism:
+            p_gen = self.p_gen_network(torch.cat([context.squeeze(dim=1), hidden[-1], prev_embed.squeeze(dim=1)], dim=1))
+        else:
+            p_gen = torch.ones((pre_output.shape[0], 1), device=pre_output.device, requires_grad=False)
 
-    def forward(self, trg_embed: Tensor,
+        return output, hidden, cell, pre_output, p_gen, attn_probs
+
+    def forward(self, batch: Batch, trg_embed: Tensor,
                 edit_final: Tuple[Tensor, Tensor],
                 encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],
                 src_mask: Tensor, trg_mask: Tensor,
-                states_to_initialize: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
+                states_to_initialize: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor, Tensor, Tensor]:
         """
         Unroll the decoder one step at a time.
         :param trg_embed: [B, TrgSeqLen, EmbCode]
@@ -130,23 +141,30 @@ class Decoder(nn.Module):
         # here we store all intermediate hidden states and pre-output vectors
         decoder_states = []
         pre_output_vectors = []
+        p_gen_probs = []
+        attn_probs_vectors = []
 
         # unroll the decoder RNN for max_len steps
         for i in range(max_len):
             if use_teacher_forcing or i == 0:
                 prev_embed = trg_embed[:, i].unsqueeze(1)  # [B, 1, EmbCode]
             else:
-                _, top_i = self.generator(pre_output_vectors[-1]).squeeze().topk(1)
+                _, top_i = self.generator((pre_output_vectors[-1], p_gen_probs[-1], attn_probs_vectors[-1]), batch).squeeze().topk(1)
+                top_i[top_i >= self.vocab_size] = self.unk_index
                 prev_embed = self.embedding(top_i)  # TODO: stop decoding if EOS token? seems to me we should continue
             # [B, 1, DecoderH], [NumLayers, B, DecoderH], [NumLayers, B, DecoderH], [B, 1, DecoderH]
-            output, hidden, cell, pre_output = self.forward_step(
+            output, hidden, cell, pre_output, p_gen, attn_probs = self.forward_step(
                 edit_hidden, prev_embed, encoder_output, src_mask, projection_key, hidden, cell)
             decoder_states.append(output)
             pre_output_vectors.append(pre_output)
+            p_gen_probs.append(p_gen)
+            attn_probs_vectors.append(attn_probs)
 
         decoder_states = torch.cat(decoder_states, dim=1)  # [B, TrgSeqLen, DecoderH]
         pre_output_vectors = torch.cat(pre_output_vectors, dim=1)  # [B, TrgSeqLen, DecoderH]
-        return decoder_states, (hidden, cell), pre_output_vectors  # [B, N, D]
+        p_gen_probs = torch.cat(p_gen_probs, dim=1)
+        attn_probs_vectors = torch.cat(attn_probs_vectors, dim=1)
+        return decoder_states, (hidden, cell), pre_output_vectors, p_gen_probs, attn_probs_vectors  # [B, N, D]
 
     def init_hidden(self, edit_final: Tensor, encoder_final: Tensor) -> Tensor:
         """
