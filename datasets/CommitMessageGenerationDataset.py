@@ -33,11 +33,14 @@ class CommitMessageGenerationDataset(data.Dataset):
                 open(os.path.join(path, 'msg.txt'), mode='r', encoding='utf-8') as msg, \
                 open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
-            for i, zipped in enumerate(zip(diff, msg, prev, updated)):
-                diff_line, msg_line, prev_line, updated_line = zipped
+            for diff_line, msg_line, prev_line, updated_line in zip(diff, msg, prev, updated):
+                diff_line, msg_line, prev_line, updated_line = \
+                    diff_line.strip(), msg_line.strip(), prev_line.strip(), updated_line.strip()
+                # TODO: add our filter filter
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
                                                    leave_only_changed=config['LEAVE_ONLY_CHANGED'])
-                examples.append(data.Example.fromlist([diff_line, msg_line, diff[0], diff[1], diff[2], i], fields))
+                examples.append(data.Example.fromlist(
+                    [diff_line, msg_line, diff[0], diff[1], diff[2], len(examples)], fields))
         super(CommitMessageGenerationDataset, self).__init__(examples, fields, **kwargs)
 
     @staticmethod
