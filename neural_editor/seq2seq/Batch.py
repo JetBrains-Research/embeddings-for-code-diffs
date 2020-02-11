@@ -43,12 +43,16 @@ class Batch:
 
     @staticmethod
     def create_scatter_indices(src: Tensor, ids: Tensor, oov_indices: Tensor, pad_index: int, dataset: Dataset) -> Tensor:
+        # TODO: optimizer and get rid of this method
+        # TODO: consider to exclude from scatter_indices <s> and </s> (but it looks like a bad idea)
         trg_vocab = dataset.fields['trg'].vocab
         examples = [dataset[i] for i in ids]
         scatter_indices = torch.zeros_like(src).fill_(pad_index)
+        scatter_indices[:, 0] = src[:, 0]  # <s> token
+        scatter_indices[:, -1] = src[:, -1]  # </s> token
         for i, example in enumerate(examples):
             for j, src_token in enumerate(example.src):
-                scatter_indices[i][j] = trg_vocab.stoi[src_token]
+                scatter_indices[i][j + 1] = trg_vocab.stoi[src_token]  # j + 1 to mitigate <s> token
         scatter_indices[scatter_indices == trg_vocab.unk_index] = oov_indices
         return scatter_indices
 
@@ -58,7 +62,7 @@ class Batch:
                  ids: Tensor, dataset: Dataset,
                  pad_index: int, config: Config) -> None:
         src, src_lengths = src  # B * SrcSeqLen, B
-        # TODO: remove first sos token
+        # TODO_DONE: remove first sos token, it makes results worse
         # src = src[1:]
         # src_lengths = src_lengths - 1
 
