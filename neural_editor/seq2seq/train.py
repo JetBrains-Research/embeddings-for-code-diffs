@@ -165,12 +165,13 @@ def test_on_unclassified_data(model: EncoderDecoder,
 def run_train(train_dataset: Dataset, val_dataset: Dataset,
               fields: Tuple[Field, Field, Field],
               suffix_for_saving: str,
-              edit_encoder: EditEncoder, config: Config) -> EncoderDecoder:
+              edit_encoder: EditEncoder, config: Config, only_make_model=False) -> EncoderDecoder:
     pprint.pprint(config.get_config())
     config.save()
 
     model: EncoderDecoder = make_model(len(fields[0].vocab),
                                        len(fields[1].vocab),
+                                       fields[1].vocab.unk_index,
                                        edit_encoder=edit_encoder,
                                        edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
                                        emb_size=config['WORD_EMBEDDING_SIZE'],
@@ -182,6 +183,9 @@ def run_train(train_dataset: Dataset, val_dataset: Dataset,
                                        config=config)
     # noinspection PyTypeChecker
     # reason: PyCharm doesn't understand that EncoderDecoder is child of nn.Module
+    if only_make_model:
+        # for debugging purposes only
+        return model
     train_perplexities, val_perplexities = train(model, train_dataset, val_dataset, fields, suffix_for_saving, config)
     print(train_perplexities)
     print(val_perplexities)

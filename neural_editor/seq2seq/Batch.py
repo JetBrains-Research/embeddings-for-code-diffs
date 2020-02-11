@@ -14,14 +14,14 @@ class Batch:
 
     @staticmethod
     def create_oov_vocab(ids: Tensor, dataset: Dataset, config: Config) -> Tuple[Dict[str, int], Tensor]:
-        vocab = dataset.fields['src'].vocab
+        trg_vocab = dataset.fields['trg'].vocab
         examples = [dataset[i] for i in ids]
         src_oov_vocab = {}
-        cur_id = len(vocab)
+        cur_id = len(trg_vocab)
         oov_indices = []
         for example in examples:
             for src_token in example.src:
-                if vocab.stoi[src_token] == vocab.unk_index:
+                if trg_vocab.stoi[src_token] == trg_vocab.unk_index:
                     if src_token not in src_oov_vocab:
                         src_oov_vocab[src_token] = cur_id
                         cur_id += 1
@@ -30,7 +30,7 @@ class Batch:
 
     @staticmethod
     def get_extended_target(trg_y: Tensor, ids: Tensor, dataset: Dataset, oov_vocab: Dict[str, int]) -> Tensor:
-        unk_index = dataset.fields['src'].vocab.unk_index
+        unk_index = dataset.fields['trg'].vocab.unk_index
         trg = trg_y.clone().detach()
         for i in range(trg_y.shape[0]):
             sequence = dataset[ids[i]].trg
@@ -42,10 +42,14 @@ class Batch:
         return trg
 
     @staticmethod
-    def create_scatter_indices(src: Tensor, oov_indices: Tensor, dataset: Dataset) -> Tensor:
-        unk_index = dataset.fields['src'].vocab.unk_index
-        scatter_indices = src.clone().detach()
-        scatter_indices[scatter_indices == unk_index] = oov_indices
+    def create_scatter_indices(src: Tensor, ids: Tensor, oov_indices: Tensor, pad_index: int, dataset: Dataset) -> Tensor:
+        trg_vocab = dataset.fields['trg'].vocab
+        examples = [dataset[i] for i in ids]
+        scatter_indices = torch.zeros_like(src).fill_(pad_index)
+        for i, example in enumerate(examples):
+            for j, src_token in enumerate(example.src):
+                scatter_indices[i][j] = trg_vocab.stoi[src_token]
+        scatter_indices[scatter_indices == trg_vocab.unk_index] = oov_indices
         return scatter_indices
 
     def __init__(self, src: Tuple[Tensor, Tensor], trg: Tuple[Tensor, Tensor],
@@ -61,7 +65,7 @@ class Batch:
         self.oov_vocab, self.oov_indices = Batch.create_oov_vocab(ids, dataset, config)
         self.oov_vocab_reverse = {value: key for key, value in self.oov_vocab.items()}
         self.oov_num = len(self.oov_vocab)
-        self.scatter_indices = Batch.create_scatter_indices(src, self.oov_indices, dataset)
+        self.scatter_indices = Batch.create_scatter_indices(src, ids, self.oov_indices, pad_index, dataset)
 
         self.diff_alignment, self.diff_alignment_lengths = diff_alignment  # B * SeqAlignedLen, B
         self.diff_alignment_mask = (self.diff_alignment != pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen

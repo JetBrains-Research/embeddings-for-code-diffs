@@ -23,7 +23,7 @@ from neural_editor.seq2seq.decoder.Decoder import Decoder
 from neural_editor.seq2seq.encoder.Encoder import Encoder
 
 
-def make_model(src_vocab_size: int, trg_vocab_size: int,
+def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
                edit_encoder: EditEncoder, edit_representation_size: int,
                emb_size: int,
                hidden_size_encoder: int, hidden_size_decoder: int,
@@ -43,7 +43,7 @@ def make_model(src_vocab_size: int, trg_vocab_size: int,
     model: EncoderDecoder = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
         Decoder(generator, embedding, emb_size, edit_representation_size,
-                hidden_size_encoder, hidden_size_decoder, vocab_size, vocab.unk_index,
+                hidden_size_encoder, hidden_size_decoder, trg_vocab_size, trg_unk_index,
                 attention,
                 num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
                 dropout=dropout, bridge=use_bridge,
@@ -220,7 +220,7 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
         # remove <s> for src
         src = src[1:] if src[0] == sos_index else src
 
-        result = greedy_decode(model, batch, max_len, sos_index, eos_index, vocab.unk_index, len(vocab))
+        result = greedy_decode(model, batch, max_len, sos_index, eos_index, trg_vocab.unk_index, len(trg_vocab))
         result = result[0]
         print(colored("Example #%d" % (i + 1), color))
         # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
