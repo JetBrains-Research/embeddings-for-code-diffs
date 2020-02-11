@@ -224,7 +224,7 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
         result = result[0]
         print(colored("Example #%d" % (i + 1), color))
         # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
-        print(colored("Src : " + " ".join(lookup_words(src, src_vocab, batch.oov_vocab_reverse))))
+        print(colored("Src : " + " ".join(lookup_words(src, trg_vocab, batch.oov_vocab_reverse))))
         print(colored("Trg : " + " ".join(lookup_words(trg, trg_vocab, batch.oov_vocab_reverse))))
         print(colored("Pred: " + " ".join(lookup_words(result, trg_vocab, batch.oov_vocab_reverse))))
 
