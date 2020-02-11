@@ -38,11 +38,10 @@ def train(model: EncoderDecoder,
     src_pad_index: int = fields[0].vocab.stoi[config['PAD_TOKEN']]
     trg_pad_index: int = fields[1].vocab.stoi[config['PAD_TOKEN']]
     diff_pad_index: int = fields[2].vocab.stoi[config['PAD_TOKEN']]
-    assert(src_pad_index == trg_pad_index)
-    assert(trg_pad_index == diff_pad_index)
+    assert (src_pad_index == trg_pad_index)
+    assert (trg_pad_index == diff_pad_index)
     pad_index = src_pad_index
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
-    # TODO: check with filter(lambda p: p.requires_grad, model.parameters()) and without when USE_EDIT_REPRESENTATION = False
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=config['LEARNING_RATE'])
 
     train_iter = data.BucketIterator(train_data, batch_size=config['BATCH_SIZE'], train=True,
@@ -204,8 +203,9 @@ def main():
                               'neural_editor', edit_encoder=None, config=config)
     train_dataset_commit, val_dataset_commit, test_dataset_commit, fields_commit = \
         CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
-    run_train(train_dataset_commit, val_dataset_commit, fields_commit,
-              'commit_msg_generator', neural_editor.edit_encoder, config=config)
+    commit_message_generator = run_train(train_dataset_commit, val_dataset_commit, fields_commit,
+                                         'commit_msg_generator', neural_editor.edit_encoder, config=config)
+    return neural_editor, commit_message_generator
 
 
 if __name__ == "__main__":

@@ -25,7 +25,12 @@ def measure_experiment_time(func) -> None:
     print()
 
 
-def test_model(model: EncoderDecoder, config: Config) -> None:
+def test_commit_message_generation_model(model: EncoderDecoder, config: Config) -> None:
+    # TODO: implement testing of commit message generation model
+    pass
+
+
+def test_neural_editor_model(model: EncoderDecoder, config: Config) -> None:
     train_dataset, val_dataset, test_dataset, diffs_field = \
         CodeChangesTokensDataset.load_data(verbose=True, config=config)
     tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes = \
@@ -234,8 +239,14 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
 
 def print_results(results_root: str, config: Config) -> None:
     pprint.pprint(config.get_config())
-    model = torch.load(os.path.join(results_root, 'model_best_on_validation.pt'), map_location=config['DEVICE'])
-    test_model(model, config)
+    print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
+    neural_editor = torch.load(os.path.join(results_root, 'model_best_on_validation_neural_editor.pt'),
+                               map_location=config['DEVICE'])
+    test_neural_editor_model(neural_editor, config)
+    print('\n====STARTING COMMIT MSG GENERATOR EVALUATIONN====\n', end='')
+    commit_msg_generator = torch.load(os.path.join(results_root, 'model_best_on_validation_commit_msg_generator.pt'),
+                                      map_location=config['DEVICE'])
+    test_commit_message_generation_model(commit_msg_generator, config)
 
 
 def main() -> None:
