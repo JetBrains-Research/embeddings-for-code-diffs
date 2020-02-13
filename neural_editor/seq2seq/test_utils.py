@@ -11,6 +11,7 @@ from torchtext import data
 from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
 
+from datasets.dataset_utils import create_filter_predicate_on_length
 from neural_editor.seq2seq import EncoderDecoder
 from datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.config import Config
@@ -49,13 +50,15 @@ def save_perplexity_plot(perplexities: List[List[float]], labels: List[str], fil
 
 
 def load_defects4j_dataset(diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:
-    dataset = CodeChangesTokensDataset(config['DEFECTS4J_PATH'], diffs_field, config)
+    filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
+    dataset = CodeChangesTokensDataset(config['DEFECTS4J_PATH'], diffs_field, config, filter_predicate)
     classes = Path(config['DEFECTS4J_PATH']).joinpath('classes.txt').read_text().splitlines(keepends=False)
     return dataset, classes
 
 
 def load_labeled_dataset(path: str, diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:
-    dataset = CodeChangesTokensDataset(path, diffs_field, config)
+    filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
+    dataset = CodeChangesTokensDataset(path, diffs_field, config, filter_predicate)
     classes = Path(path).joinpath('classes.txt').read_text().splitlines(keepends=False)
     return dataset, classes
 
