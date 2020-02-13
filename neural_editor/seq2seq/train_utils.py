@@ -255,13 +255,17 @@ def calculate_accuracy(dataset_iterator: typing.Iterable,
 
 
 def calculate_top_k_accuracy(topk_values: typing.List[int], dataset_iterator: typing.Iterator,
-                             decode_method, eos_index: int) -> typing.Tuple[typing.List[int], int]:
+                             decode_method, trg_vocab: Vocab, eos_index: int) \
+        -> typing.Tuple[typing.List[int], int, typing.List[typing.List[typing.List[str]]]]:
     correct = [0 for _ in range(len(topk_values))]
     max_k = topk_values[-1]
     total = 0
+    max_top_k_results = []
     for batch in dataset_iterator:
         targets = remove_eos(batch.trg_y_extended_vocab.cpu().numpy(), eos_index)
         results = decode_method(batch)
+        decoded_tokens = [[lookup_words(top_k_result, trg_vocab, batch.oov_vocab_reverse) for top_k_result in result] for result in results]
+        max_top_k_results += decoded_tokens
         for example_id in range(len(results)):
             target = targets[example_id]
             example_top_k_results = results[example_id][:max_k]
@@ -274,7 +278,7 @@ def calculate_top_k_accuracy(topk_values: typing.List[int], dataset_iterator: ty
                         correct[j] += 1
                     break
         total += len(batch)
-    return correct, total
+    return correct, total, max_top_k_results
 
 
 def output_accuracy_on_data(model: EncoderDecoder,

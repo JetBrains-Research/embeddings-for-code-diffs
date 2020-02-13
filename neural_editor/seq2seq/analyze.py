@@ -4,6 +4,7 @@ import sys
 import time
 from datetime import timedelta
 from pathlib import Path
+from typing import Any, List, Tuple
 
 import torch
 from torchtext.data import Field
@@ -14,16 +15,36 @@ from datasets.dataset_utils import take_part_from_dataset
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config, load_config
 from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalculation
+from neural_editor.seq2seq.experiments.BleuCalculation import BleuCalculation
 from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
 from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_labeled_dataset
 
 
-def measure_experiment_time(func) -> None:
+def measure_experiment_time(func) -> Any:
     start = time.time()
-    func()
+    ret = func()
     end = time.time()
     print(f'Duration: {str(timedelta(seconds=end - start))}')
     print()
+    return ret
+
+
+def save_predicted(max_top_k_predicted: List[List[List[str]]], dataset_name: str, config: Config) -> Tuple[str, str]:
+    top_1_file_lines = []
+    top_k_file_lines = []
+    max_k = config['TOP_K'][-1]
+    for predictions in max_top_k_predicted:
+        top_1_file_lines.append("" if len(predictions) == 0 else ' '.join(predictions[0]))
+        top_k_file_lines.append('====NEW EXAMPLE====')
+        for prediction in predictions[:max_k]:
+            top_k_file_lines.append(' '.join(prediction))
+
+    top_1_path = os.path.join(config['OUTPUT_PATH'], f'{dataset_name}_predicted_top_1.txt')
+    top_k_path = os.path.join(config['OUTPUT_PATH'], f'{dataset_name}_predicted_top_{max_k}.txt')
+    with open(top_1_path, 'w') as top_1_file, open(top_k_path, 'w') as top_k_file:
+        top_1_file.write('\n'.join(top_1_file_lines))
+        top_k_file.write('\n'.join(top_k_file_lines))
+    return top_1_path, top_k_path
 
 
 def test_commit_message_generation_model(model: EncoderDecoder, config: Config, diffs_field: Field) -> None:
@@ -35,16 +56,19 @@ def test_commit_message_generation_model(model: EncoderDecoder, config: Config, 
     model.eval()
     model.unset_edit_representation()
     with torch.no_grad():
-        measure_experiment_time(
+        test_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(test_dataset, 'Test dataset')
         )
-        measure_experiment_time(
+        save_predicted(test_max_top_k_predicted, dataset_name='test_dataset_commit_message_generator', config=config)
+        val_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(val_dataset, 'Validation dataset')
         )
-        measure_experiment_time(
+        save_predicted(val_max_top_k_predicted, dataset_name='val_dataset_commit_message_generator', config=config)
+        train_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(
                 take_part_from_dataset(train_dataset, len(test_dataset)), f'Train dataset (test size approximation)')
         )
+        save_predicted(train_max_top_k_predicted, dataset_name='train_dataset_commit_message_generator', config=config)
 
 
 def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
@@ -63,16 +87,20 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
     model.unset_edit_representation()
     with torch.no_grad():
         # Accuracy
-        measure_experiment_time(
+        test_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(test_dataset, 'Test dataset')
         )
-        measure_experiment_time(
+        test_top_1_predicted_path, _ = save_predicted(test_max_top_k_predicted,
+                                                      dataset_name='test_dataset_neural_editor', config=config)
+        val_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(val_dataset, 'Validation dataset')
         )
-        measure_experiment_time(
+        save_predicted(val_max_top_k_predicted, dataset_name='val_dataset_neural_editor', config=config)
+        train_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(
                 take_part_from_dataset(train_dataset, len(test_dataset)), f'Train dataset (test size approximation)')
         )
+        save_predicted(train_max_top_k_predicted, dataset_name='train_dataset_neural_editor', config=config)
 
         # Visualization of data
         measure_experiment_time(
