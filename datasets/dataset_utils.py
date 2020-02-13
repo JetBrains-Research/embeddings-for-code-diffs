@@ -6,8 +6,18 @@ from typing import Tuple, List
 import numpy as np
 from torchtext.data import Dataset, Field
 
-from datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.config import Config
+
+
+def create_filter_predicate_on_length(max_length):
+    def filter_predicate(example_data):
+        for i, element in enumerate(example_data):
+            if len(element) <= max_length:
+                return True, None
+            else:
+                return False, \
+                       f"{i}th element of example has length {len(element)} > {max_length}"
+    return filter_predicate
 
 
 def split_train_val_test(root: str, train: float = 0.6, val: float = 0.2, test: float = 0.2) -> None:
@@ -53,5 +63,6 @@ if __name__ == "__main__":
 
 
 def load_tufano_dataset(path: str, diffs_field: Field, config: Config) -> Tuple[Dataset, Dataset, Dataset]:
+    from datasets.CodeChangesDataset import CodeChangesTokensDataset
     train_dataset, val_dataset, test_dataset = CodeChangesTokensDataset.load_datasets(path, diffs_field, config)
     return train_dataset, val_dataset, test_dataset

@@ -1,9 +1,11 @@
 import os
+import sys
 from typing import Tuple
 
 from torchtext import data
 from torchtext.data import Field, Dataset
 
+from datasets.dataset_utils import create_filter_predicate_on_length
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
 
@@ -12,7 +14,7 @@ class CommitMessageGenerationDataset(data.Dataset):
     """Defines a dataset for commit message generation. It parses text files with tokens"""
 
     def __init__(self, path: str, src_field: Field, trg_field: Field, diffs_field: Field,
-                 config: Config, **kwargs) -> None:
+                 config: Config, filter_pred) -> None:
         """Create a TranslationDataset given paths and fields.
 
         Arguments:
@@ -36,12 +38,16 @@ class CommitMessageGenerationDataset(data.Dataset):
             for diff_line, msg_line, prev_line, updated_line in zip(diff, msg, prev, updated):
                 diff_line, msg_line, prev_line, updated_line = \
                     diff_line.strip(), msg_line.strip(), prev_line.strip(), updated_line.strip()
-                # TODO: add our filter filter
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
                                                    leave_only_changed=config['LEAVE_ONLY_CHANGED'])
+                is_correct, error = filter_pred((diff_line.split(' '), msg_line.split(' '),
+                                                 diff[0], diff[1], diff[2]))
+                if not is_correct:
+                    print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
+                    continue
                 examples.append(data.Example.fromlist(
                     [diff_line, msg_line, diff[0], diff[1], diff[2], len(examples)], fields))
-        super(CommitMessageGenerationDataset, self).__init__(examples, fields, **kwargs)
+        super(CommitMessageGenerationDataset, self).__init__(examples, fields)
 
     @staticmethod
     def load_data(diffs_field: Field,
@@ -56,10 +62,7 @@ class CommitMessageGenerationDataset(data.Dataset):
                                       init_token=config['SOS_TOKEN'],
                                       eos_token=config['EOS_TOKEN'])
 
-        def filter_predicate(x):
-            return len(vars(x)['src']) <= config['TOKENS_CODE_CHUNK_MAX_LEN'] and \
-                   len(vars(x)['trg']) <= config['TOKENS_CODE_CHUNK_MAX_LEN']
-
+        filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
         train_data = CommitMessageGenerationDataset(os.path.join(config['DATASET_ROOT_COMMIT'], 'train'),
                                                     src_field, trg_field, diffs_field,
                                                     config, filter_pred=filter_predicate)

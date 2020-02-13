@@ -1,10 +1,12 @@
 import os
+import sys
 from typing import Tuple
 
 from torch.utils.data import Dataset
 from torchtext import data
 from torchtext.data import Field, Dataset
 
+from datasets.dataset_utils import create_filter_predicate_on_length
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
 
@@ -12,7 +14,7 @@ from neural_editor.seq2seq.config import Config
 class CodeChangesTokensDataset(data.Dataset):
     """Defines a dataset for code changes. It parses text files with tokens"""
 
-    def __init__(self, path: str, field: Field, config: Config, **kwargs) -> None:
+    def __init__(self, path: str, field: Field, config: Config, filter_pred) -> None:
         """Create a TranslationDataset given paths and fields.
 
         Arguments:
@@ -33,20 +35,24 @@ class CodeChangesTokensDataset(data.Dataset):
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
             for prev_line, updated_line in zip(prev, updated):
                 prev_line, updated_line = prev_line.strip(), updated_line.strip()
-                # TODO: add our filter filter
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
                                                    leave_only_changed=config['LEAVE_ONLY_CHANGED'])
+                is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
+                                                 diff[0], diff[1], diff[2]))
+                if not is_correct:
+                    print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
+                    continue
                 examples.append(data.Example.fromlist(
                     [prev_line, updated_line, diff[0], diff[1], diff[2], len(examples)], fields))
-        super(CodeChangesTokensDataset, self).__init__(examples, fields, **kwargs)
+        super(CodeChangesTokensDataset, self).__init__(examples, fields)
 
     @staticmethod
     def load_datasets(path: str, field: Field, config: Config,
-                      train: str = 'train', val: str = 'val', test: str = 'test',
-                      **kwargs) -> Tuple[Dataset, Dataset, Dataset]:
-        train_data: Dataset = CodeChangesTokensDataset(os.path.join(path, train), field, config, **kwargs)
-        val_data: Dataset = CodeChangesTokensDataset(os.path.join(path, val), field, config, **kwargs)
-        test_data: Dataset = CodeChangesTokensDataset(os.path.join(path, test), field, config, **kwargs)
+                      train: str = 'train', val: str = 'val', test: str = 'test') -> Tuple[Dataset, Dataset, Dataset]:
+        filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
+        train_data: Dataset = CodeChangesTokensDataset(os.path.join(path, train), field, config, filter_predicate)
+        val_data: Dataset = CodeChangesTokensDataset(os.path.join(path, val), field, config, filter_predicate)
+        test_data: Dataset = CodeChangesTokensDataset(os.path.join(path, test), field, config, filter_predicate)
         return train_data, val_data, test_data
 
     @staticmethod
@@ -56,12 +62,8 @@ class CodeChangesTokensDataset(data.Dataset):
                                         init_token=config['SOS_TOKEN'],
                                         eos_token=config['EOS_TOKEN'])  # TODO: init_token=None?
 
-        def filter_predicate(x):
-            return len(vars(x)['src']) <= config['TOKENS_CODE_CHUNK_MAX_LEN'] and \
-                   len(vars(x)['trg']) <= config['TOKENS_CODE_CHUNK_MAX_LEN']
-
         train_data, val_data, test_data = CodeChangesTokensDataset.load_datasets(config['DATASET_ROOT'], diffs_field,
-                                                                                 config, filter_pred=filter_predicate)
+                                                                                 config)
         diffs_field.build_vocab(train_data.src, train_data.trg,
                                 train_data.diff_alignment, train_data.diff_prev,
                                 train_data.diff_updated, min_freq=config['TOKEN_MIN_FREQ'])
