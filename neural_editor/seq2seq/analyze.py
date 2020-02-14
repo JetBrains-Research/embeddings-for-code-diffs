@@ -4,7 +4,7 @@ import sys
 import time
 from datetime import timedelta
 from pathlib import Path
-from typing import Any, List, Tuple
+from typing import Any, List
 
 import torch
 from torchtext.data import Field
@@ -29,7 +29,7 @@ def measure_experiment_time(func) -> Any:
     return ret
 
 
-def save_predicted(max_top_k_predicted: List[List[List[str]]], dataset_name: str, config: Config) -> Tuple[str, str]:
+def save_predicted(max_top_k_predicted: List[List[List[str]]], dataset_name: str, config: Config) -> None:
     top_1_file_lines = []
     top_k_file_lines = []
     max_k = config['TOP_K'][-1]
@@ -44,12 +44,12 @@ def save_predicted(max_top_k_predicted: List[List[List[str]]], dataset_name: str
     with open(top_1_path, 'w') as top_1_file, open(top_k_path, 'w') as top_k_file:
         top_1_file.write('\n'.join(top_1_file_lines))
         top_k_file.write('\n'.join(top_k_file_lines))
-    return top_1_path, top_k_path
 
 
 def test_commit_message_generation_model(model: EncoderDecoder, config: Config, diffs_field: Field) -> None:
     train_dataset, val_dataset, test_dataset, fields_commit = \
         CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
+    train_dataset_test_size_part = take_part_from_dataset(train_dataset, len(test_dataset))
     accuracy_calculation_experiment = AccuracyCalculation(model, fields_commit[1], config)
     bleu_calculation_experiment = BleuCalculation(config)
 
@@ -59,33 +59,36 @@ def test_commit_message_generation_model(model: EncoderDecoder, config: Config, 
         test_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(test_dataset, 'Test dataset')
         )
-        test_top_1_predicted_path, _ = save_predicted(test_max_top_k_predicted,
-                                                      dataset_name='test_dataset_commit_message_generator', config=config)
-        bleu_calculation_experiment.conduct(test_top_1_predicted_path,
-                                            os.path.join(config['DATASET_ROOT_COMMIT'], 'test', 'msg.txt'),
-                                            'test_dataset_commit_message_generator')
+        save_predicted(test_max_top_k_predicted, dataset_name='test_dataset_commit_message_generator', config=config)
+        measure_experiment_time(
+            lambda: bleu_calculation_experiment.conduct(test_max_top_k_predicted, test_dataset,
+                                                        'Test dataset')
+        )
+
         val_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(val_dataset, 'Validation dataset')
         )
-        val_top_1_predicted_path, _ = save_predicted(val_max_top_k_predicted,
-                                                     dataset_name='val_dataset_commit_message_generator', config=config)
-        bleu_calculation_experiment.conduct(val_top_1_predicted_path,
-                                            os.path.join(config['DATASET_ROOT_COMMIT'], 'val', 'msg.txt'),
-                                            'val_dataset_commit_message_generator')
-        train_max_top_k_predicted = measure_experiment_time(
-            lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(train_dataset, len(test_dataset)), f'Train dataset (test size approximation)')
+        save_predicted(val_max_top_k_predicted, dataset_name='val_dataset_commit_message_generator', config=config)
+        measure_experiment_time(
+            lambda: bleu_calculation_experiment.conduct(val_max_top_k_predicted, val_dataset,
+                                                        'Validation dataset')
         )
-        train_top_1_predicted_path, _ = save_predicted(train_max_top_k_predicted,
-                                                       dataset_name='train_dataset_commit_message_generator', config=config)
-        bleu_calculation_experiment.conduct(train_top_1_predicted_path,
-                                            os.path.join(config['DATASET_ROOT_COMMIT'], 'train', 'msg.txt'),
-                                            'train_dataset_commit_message_generator')
+
+        train_max_top_k_predicted = measure_experiment_time(
+            lambda: accuracy_calculation_experiment.conduct(train_dataset_test_size_part,
+                                                            f'Train dataset (test size approximation)')
+        )
+        save_predicted(train_max_top_k_predicted, dataset_name='train_dataset_commit_message_generator', config=config)
+        measure_experiment_time(
+            lambda: bleu_calculation_experiment.conduct(train_max_top_k_predicted, train_dataset_test_size_part,
+                                                        'Train dataset (test size approximation)')
+        )
 
 
 def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
     train_dataset, val_dataset, test_dataset, diffs_field = \
         CodeChangesTokensDataset.load_data(verbose=True, config=config)
+    train_dataset_test_size_part = take_part_from_dataset(train_dataset, len(test_dataset))
     tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes = \
         load_labeled_dataset(config['TUFANO_LABELED_0_50_PATH'], diffs_field, config)
     tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes = \
@@ -103,28 +106,27 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
         test_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(test_dataset, 'Test dataset')
         )
-        test_top_1_predicted_path, _ = save_predicted(test_max_top_k_predicted,
-                                                      dataset_name='test_dataset_neural_editor', config=config)
-        bleu_calculation_experiment.conduct(test_top_1_predicted_path,
-                                            os.path.join(config['DATASET_ROOT'], 'test', 'msg.txt'),
-                                            'test_dataset_neural_editor')
+        save_predicted(test_max_top_k_predicted, dataset_name='test_dataset_neural_editor', config=config)
+        measure_experiment_time(
+            lambda: bleu_calculation_experiment.conduct(test_max_top_k_predicted, test_dataset,
+                                                        'Test dataset'))
+
         val_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(val_dataset, 'Validation dataset')
         )
-        val_top_1_predicted_path, _ = save_predicted(val_max_top_k_predicted,
-                                                     dataset_name='val_dataset_neural_editor', config=config)
-        bleu_calculation_experiment.conduct(val_top_1_predicted_path,
-                                            os.path.join(config['DATASET_ROOT'], 'val', 'msg.txt'),
-                                            'val_dataset_neural_editor')
+        save_predicted(val_max_top_k_predicted, dataset_name='val_dataset_neural_editor', config=config)
+        measure_experiment_time(
+            lambda: bleu_calculation_experiment.conduct(val_max_top_k_predicted, val_dataset,
+                                                        'Validation dataset'))
+
         train_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(
-                take_part_from_dataset(train_dataset, len(test_dataset)), f'Train dataset (test size approximation)')
+                train_dataset_test_size_part, f'Train dataset (test size approximation)')
         )
-        train_top_1_predicted_path, _ = save_predicted(train_max_top_k_predicted,
-                                                       dataset_name='train_dataset_neural_editor', config=config)
-        bleu_calculation_experiment.conduct(train_top_1_predicted_path,
-                                            os.path.join(config['DATASET_ROOT'], 'train', 'msg.txt'),
-                                            'train_dataset_neural_editor')
+        save_predicted(train_max_top_k_predicted, dataset_name='train_dataset_neural_editor', config=config)
+        measure_experiment_time(
+            lambda: bleu_calculation_experiment.conduct(train_max_top_k_predicted, train_dataset_test_size_part,
+                                                        'Train dataset (test size approximation)'))
 
         # Visualization of data
         measure_experiment_time(
