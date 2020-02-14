@@ -24,6 +24,7 @@ class Config:
         'TUFANO_BUG_FIXES_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/50_100',
         'TUFANO_CODE_CHANGES_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/0_50',
         'TUFANO_CODE_CHANGES_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/50_100',
+        'BLEU_PERL_SCRIPT_PATH': './experiments/multi-bleu.perl',  # Path to BLEU script calculator
         'UNK_TOKEN': "<unk>",
         'PAD_TOKEN': "<pad>",
         'SOS_TOKEN': "<s>",
@@ -75,7 +76,8 @@ class Config:
                   'TUFANO_LABELED_0_50_PATH', 'TUFANO_LABELED_50_100_PATH',
                   'OUTPUT_PATH',
                   'TUFANO_BUG_FIXES_0_50_PATH', 'TUFANO_BUG_FIXES_50_100_PATH',
-                  'TUFANO_CODE_CHANGES_0_50_PATH', 'TUFANO_CODE_CHANGES_50_100_PATH']
+                  'TUFANO_CODE_CHANGES_0_50_PATH', 'TUFANO_CODE_CHANGES_50_100_PATH',
+                  'BLEU_PERL_SCRIPT_PATH']
 
     def __getitem__(self, key: str) -> Any:
         if key in self._PATH_KEYS:
