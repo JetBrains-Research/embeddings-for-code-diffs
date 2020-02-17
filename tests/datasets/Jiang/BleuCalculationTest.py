@@ -58,6 +58,16 @@ class BleuChecking(unittest.TestCase):
         ]
         BleuChecking.BLEU_CALCULATION_EXPERIMENT.conduct(predictions, dataset, 'test')
 
+    def test_no_predictions(self):
+        predictions = [
+            [], []
+        ]
+        dataset = [
+            Example('Fix android_media_AudioSystem_getMasterMute return type .'.split()),
+            Example('Fix typo'.split())
+        ]
+        BleuChecking.BLEU_CALCULATION_EXPERIMENT.conduct(predictions, dataset, 'test')
+
 
 if __name__ == '__main__':
     unittest.main()
