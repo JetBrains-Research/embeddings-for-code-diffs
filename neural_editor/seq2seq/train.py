@@ -205,7 +205,8 @@ def main():
         CodeChangesTokensDataset.load_data(config['VERBOSE'], config)
     fields = (diffs_field, diffs_field, diffs_field)
     neural_editor = run_train(train_dataset, val_dataset, fields,
-                              'neural_editor', edit_encoder=None, config=config)
+                              'neural_editor', edit_encoder=None, config=config,
+                              only_make_model=not config['USE_EDIT_REPRESENTATION'])
     print('\n====STARTING TRAINING OF COMMIT MESSAGE GENERATOR====\n', end='')
     train_dataset_commit, val_dataset_commit, test_dataset_commit, fields_commit = \
         CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)

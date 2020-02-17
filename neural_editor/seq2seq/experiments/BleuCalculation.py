@@ -13,7 +13,7 @@ class BleuCalculation:
         self.config = config
 
     def conduct(self, predictions: List[List[List[str]]], dataset: Dataset, dataset_label: str) -> None:
-        top_1_predictions = [' '.join(prediction[0]) for prediction in predictions]
+        top_1_predictions = ['' if len(prediction) == 0 else ' '.join(prediction[0]) for prediction in predictions]
         targets = [' '.join(example.trg) for example in dataset]
         with tempfile.NamedTemporaryFile(mode='w') as file_with_targets:
             file_with_targets.write('\n'.join(targets))
