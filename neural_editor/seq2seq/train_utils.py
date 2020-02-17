@@ -264,11 +264,12 @@ def calculate_top_k_accuracy(topk_values: typing.List[int], dataset_iterator: ty
     for batch in dataset_iterator:
         targets = remove_eos(batch.trg_y_extended_vocab.cpu().numpy(), eos_index)
         results = decode_method(batch)
-        decoded_tokens = [[lookup_words(top_k_result, trg_vocab, batch.oov_vocab_reverse) for top_k_result in result] for result in results]
-        max_top_k_results += decoded_tokens
         for example_id in range(len(results)):
             target = targets[example_id]
             example_top_k_results = results[example_id][:max_k]
+            decoded_tokens = [lookup_words(result, trg_vocab, batch.oov_vocab_reverse)
+                              for result in example_top_k_results]
+            max_top_k_results.append(decoded_tokens)
             tail_id = 0
             for i, result in enumerate(example_top_k_results):
                 if i + 1 > topk_values[tail_id]:
