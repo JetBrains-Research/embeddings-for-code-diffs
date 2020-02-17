@@ -88,6 +88,9 @@ def test_commit_message_generation_model(model: EncoderDecoder, config: Config, 
 def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
     train_dataset, val_dataset, test_dataset, diffs_field = \
         CodeChangesTokensDataset.load_data(verbose=True, config=config)
+    if not config['USE_EDIT_REPRESENTATION']:
+        print('Neural editor will not be tested because edit representations are not used.')
+        return diffs_field
     train_dataset_test_size_part = take_part_from_dataset(train_dataset, len(test_dataset))
     tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes = \
         load_labeled_dataset(config['TUFANO_LABELED_0_50_PATH'], diffs_field, config)
@@ -187,8 +190,10 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
 def print_results(results_root: str, config: Config) -> None:
     pprint.pprint(config.get_config())
     print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
-    neural_editor = torch.load(os.path.join(results_root, 'model_best_on_validation_neural_editor.pt'),
-                               map_location=config['DEVICE'])
+    neural_editor = None
+    if config['USE_EDIT_REPRESENTATION']:
+        neural_editor = torch.load(os.path.join(results_root, 'model_best_on_validation_neural_editor.pt'),
+                                   map_location=config['DEVICE'])
     diffs_field = test_neural_editor_model(neural_editor, config)
     print('\n====STARTING COMMIT MSG GENERATOR EVALUATION====\n', end='')
     commit_msg_generator = torch.load(os.path.join(results_root, 'model_best_on_validation_commit_msg_generator.pt'),

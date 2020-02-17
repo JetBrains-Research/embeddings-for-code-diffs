@@ -28,8 +28,7 @@ def main():
     commit_message_generator = run_train(train_dataset_commit, val_dataset_commit, fields_commit,
                                          'commit_msg_generator', neural_editor.edit_encoder, config=config)
     print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
-    if config['USE_EDIT_REPRESENTATION']:
-        test_neural_editor_model(neural_editor, config)
+    test_neural_editor_model(neural_editor, config)
     print('\n====STARTING COMMIT MSG GENERATOR EVALUATION====\n', end='')
     test_commit_message_generation_model(commit_message_generator, config, diffs_field)
 

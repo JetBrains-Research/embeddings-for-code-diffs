@@ -12,6 +12,7 @@ from neural_editor.seq2seq.train_utils import rebatch, calculate_top_k_accuracy
 
 class AccuracyCalculation:
     def __init__(self, model: EncoderDecoder, target_field: Field, config: Config) -> None:
+        # TODO: add different max tokens length for commit messages and for source code
         super().__init__()
         self.model = model
         self.trg_vocab: Vocab = target_field.vocab
