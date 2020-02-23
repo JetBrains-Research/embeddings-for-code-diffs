@@ -3,7 +3,7 @@ import pickle
 import pprint
 import sys
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 
 import torch
 from torch import nn
@@ -15,8 +15,10 @@ from edit_representation.sequence_encoding import EditEncoder
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from datasets.CodeChangesDataset import CodeChangesTokensDataset
-from neural_editor.seq2seq.test_utils import save_perplexity_plot
-from neural_editor.seq2seq.train_utils import output_accuracy_on_data
+from neural_editor.seq2seq.experiments.BleuCalculation import BleuCalculation
+from neural_editor.seq2seq.test_utils import save_perplexity_plot, save_metric_plot
+from neural_editor.seq2seq.train_utils import output_accuracy_on_data, create_greedy_decode_method_with_batch_support, \
+    calculate_top_k_accuracy
 from neural_editor.seq2seq.config import load_config, Config
 from neural_editor.seq2seq.train_utils import make_model, \
     run_epoch, rebatch, print_examples
@@ -25,7 +27,7 @@ from neural_editor.seq2seq.train_utils import make_model, \
 def train(model: EncoderDecoder,
           train_data: Dataset, val_data: Dataset,
           fields: Tuple[Field, Field, Field],
-          suffix_for_saving: str, config: Config) -> Tuple[List[float], List[float]]:
+          suffix_for_saving: str, config: Config) -> Dict[str, List[float]]:
     """
     :param model: model to train
     :param train_data: train data
@@ -41,6 +43,7 @@ def train(model: EncoderDecoder,
     assert (src_pad_index == trg_pad_index)
     assert (trg_pad_index == diff_pad_index)
     pad_index = src_pad_index
+    trg_vocab = fields[1].vocab
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=config['LEARNING_RATE'])
 
@@ -51,7 +54,6 @@ def train(model: EncoderDecoder,
                                      device=config['DEVICE'])
     train_batches_num: int = len(train_iter)
     train_loss_function = SimpleLossCompute(model.generator, criterion, optimizer)
-    train_perplexities = []
 
     val_iter = data.Iterator(val_data, batch_size=config['VAL_BATCH_SIZE'], train=False,
                              sort_within_batch=True,
@@ -63,10 +65,23 @@ def train(model: EncoderDecoder,
     # noinspection PyTypeChecker
     # reason: None is not a type of Optimizer
     val_loss_function = SimpleLossCompute(model.generator, criterion, None)
-    val_perplexities = []
+    train_logs = {
+        'train_ppl': [],
+        'val_ppl': [],
+        'val_bleu': [],
+        'val_acc': []
+    }
+    decode_method = create_greedy_decode_method_with_batch_support(
+        model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
+        trg_vocab.stoi[config['SOS_TOKEN']],
+        trg_vocab.stoi[config['EOS_TOKEN']],
+        trg_vocab.stoi[config['UNK_TOKEN']],
+        len(trg_vocab)
+    )
+    bleu_caclculator = BleuCalculation(config)
 
     epochs_num: int = config['MAX_NUM_OF_EPOCHS']
-    min_val_perplexity: float = 1000000
+    best_metric_value: float = -1000000
     num_not_decreasing_steps: int = 0
     early_stopping_rounds: int = config['EARLY_STOPPING_ROUNDS']
     for epoch in range(epochs_num):
@@ -81,7 +96,7 @@ def train(model: EncoderDecoder,
                                      train_batches_num,
                                      print_every=config['PRINT_EVERY_iTH_BATCH'])
         print(f'Train perplexity: {train_perplexity}')
-        train_perplexities.append(train_perplexity)
+        train_logs['train_ppl'].append(train_perplexity)
 
         model.eval()
         with torch.no_grad():
@@ -93,19 +108,35 @@ def train(model: EncoderDecoder,
             val_perplexity = run_epoch((rebatch(pad_index, t, val_data, config) for t in val_iter),
                                        model, val_loss_function,
                                        val_batches_num, print_every=config['PRINT_EVERY_iTH_BATCH'])
-            print(f'Validation perplexity: {val_perplexity}')
-            val_perplexities.append(val_perplexity)
-            if val_perplexity < min_val_perplexity:
+            correct_all_k, total, max_top_k_predicted = calculate_top_k_accuracy([1],
+                                                                                 [rebatch(pad_index, batch, val_data,
+                                                                                          config) for batch in
+                                                                                  val_iter],
+                                                                                 decode_method, trg_vocab,
+                                                                                 trg_vocab.stoi[config['EOS_TOKEN']])
+            train_logs['val_ppl'].append(val_perplexity)
+            train_logs['val_acc'].append(correct_all_k[0] / total)
+            train_logs['val_bleu'].append(bleu_caclculator.get_bleu_score(max_top_k_predicted, val_data))
+            print(f"Validation perplexity: {train_logs['val_ppl'][-1]}")
+            print(f"Validation accuracy: {train_logs['val_acc'][-1]}")
+            print(f"Validation BLEU: {train_logs['val_bleu'][-1]}")
+            if config['BEST_ON'] == 'PPL':
+                value_to_check = -train_logs['val_ppl'][-1]
+            elif config['BEST_ON'] == 'BLEU':
+                value_to_check = train_logs['val_bleu'][-1]
+            else:
+                value_to_check = train_logs['val_acc'][-1]
+            if value_to_check > best_metric_value:
                 save_model(model, f'best_on_validation_{suffix_for_saving}', config)
-                min_val_perplexity = val_perplexity
+                best_metric_value = value_to_check
                 num_not_decreasing_steps = 0
             else:
                 num_not_decreasing_steps += 1
 
         if epoch % config['SAVE_MODEL_EVERY'] == 0:
-            save_data_on_checkpoint(model, train_perplexities, val_perplexities, suffix_for_saving, config)
+            save_data_on_checkpoint(model, train_logs, suffix_for_saving, config)
 
-    return train_perplexities, val_perplexities
+    return train_logs
 
 
 def save_model(model: nn.Module, model_suffix: str, config: Config) -> None:
@@ -120,14 +151,12 @@ def load_weights_of_best_model_on_validation(model: nn.Module, suffix: str, conf
 
 
 def save_data_on_checkpoint(model: nn.Module,
-                            train_perplexities: List[float], val_perplexities: List[float],
+                            train_logs: Dict[str, List[float]],
                             suffix: str,
                             config: Config) -> None:
     save_model(model, f'checkpoint_{suffix}', config)
-    with open(os.path.join(config['OUTPUT_PATH'], f'train_perplexities_{suffix}.pkl'), 'wb') as train_file:
-        pickle.dump(train_perplexities, train_file)
-    with open(os.path.join(config['OUTPUT_PATH'], f'val_perplexities_{suffix}.pkl'), 'wb') as val_file:
-        pickle.dump(val_perplexities, val_file)
+    with open(os.path.join(config['OUTPUT_PATH'], f'train_logs_{suffix}.pkl'), 'wb') as train_logs_file:
+        pickle.dump(train_logs, train_logs_file)
 
 
 def test_on_unclassified_data(model: EncoderDecoder,
@@ -186,12 +215,15 @@ def run_train(train_dataset: Dataset, val_dataset: Dataset,
     if only_make_model:
         # for debugging purposes only
         return model
-    train_perplexities, val_perplexities = train(model, train_dataset, val_dataset, fields, suffix_for_saving, config)
-    print(train_perplexities)
-    print(val_perplexities)
-    save_data_on_checkpoint(model, train_perplexities, val_perplexities, suffix_for_saving, config)
-    save_perplexity_plot([train_perplexities, val_perplexities], ['train', 'validation'],
+    train_logs = train(model, train_dataset, val_dataset, fields, suffix_for_saving, config)
+    print(train_logs)
+    save_data_on_checkpoint(model, train_logs, suffix_for_saving, config)
+    save_perplexity_plot([train_logs['train_ppl'], train_logs['val_ppl']], ['train', 'validation'],
                          f'loss_{suffix_for_saving}.png', config)
+    save_metric_plot(train_logs['val_bleu'], 'bleu',
+                         f'bleu_{suffix_for_saving}.png', config)
+    save_metric_plot(train_logs['val_acc'], 'accuracy',
+                     f'accuracy_{suffix_for_saving}.png', config)
     load_weights_of_best_model_on_validation(model, suffix_for_saving, config)
     return model
 

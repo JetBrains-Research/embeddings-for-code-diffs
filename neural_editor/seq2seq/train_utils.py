@@ -95,6 +95,16 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
     return math.exp(total_loss / float(total_tokens))
 
 
+def create_greedy_decode_method_with_batch_support(model: EncoderDecoder,
+                  max_len: int,
+                  sos_index: int, eos_index: int,
+                  unk_index: int, vocab_size: int):
+    def decode(batch: Batch) -> typing.List[typing.List[np.array]]:
+        predicted = greedy_decode(model, batch, max_len, sos_index, eos_index, unk_index, vocab_size)
+        return [[el] for el in predicted]
+    return decode
+
+
 def greedy_decode(model: EncoderDecoder, batch: Batch,
                   max_len: int,
                   sos_index: int, eos_index: int,
