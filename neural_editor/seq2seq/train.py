@@ -120,18 +120,19 @@ def train(model: EncoderDecoder,
             print(f"Validation perplexity: {train_logs['val_ppl'][-1]}")
             print(f"Validation accuracy: {train_logs['val_acc'][-1]}")
             print(f"Validation BLEU: {train_logs['val_bleu'][-1]}")
-            if config['BEST_ON'] == 'PPL':
-                value_to_check = -train_logs['val_ppl'][-1]
-            elif config['BEST_ON'] == 'BLEU':
-                value_to_check = train_logs['val_bleu'][-1]
-            else:
-                value_to_check = train_logs['val_acc'][-1]
-            if value_to_check > best_metric_value:
-                save_model(model, f'best_on_validation_{suffix_for_saving}', config)
-                best_metric_value = value_to_check
-                num_not_decreasing_steps = 0
-            else:
-                num_not_decreasing_steps += 1
+            if (epoch + 1) >= config['START_BEST_FROM_EPOCH']:
+                if config['BEST_ON'] == 'PPL':
+                    value_to_check = -train_logs['val_ppl'][-1]
+                elif config['BEST_ON'] == 'BLEU':
+                    value_to_check = train_logs['val_bleu'][-1]
+                else:
+                    value_to_check = train_logs['val_acc'][-1]
+                if value_to_check > best_metric_value:
+                    save_model(model, f'best_on_validation_{suffix_for_saving}', config)
+                    best_metric_value = value_to_check
+                    num_not_decreasing_steps = 0
+                else:
+                    num_not_decreasing_steps += 1
 
         if epoch % config['SAVE_MODEL_EVERY'] == 0:
             save_data_on_checkpoint(model, train_logs, suffix_for_saving, config)
