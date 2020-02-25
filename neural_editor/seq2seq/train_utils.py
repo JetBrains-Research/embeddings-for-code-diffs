@@ -113,7 +113,6 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
     Greedily decode a sentence.
     :return: [DecodedSeqLenCutWithEos]
     """
-    # TODO: create beam search
     # [B, SrcSeqLen], [B, 1, SrcSeqLen], [B]
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():

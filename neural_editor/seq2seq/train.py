@@ -72,7 +72,7 @@ def train(model: EncoderDecoder,
         'val_acc': []
     }
     decode_method = create_greedy_decode_method_with_batch_support(
-        model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
+        model, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
         trg_vocab.stoi[config['SOS_TOKEN']],
         trg_vocab.stoi[config['EOS_TOKEN']],
         trg_vocab.stoi[config['UNK_TOKEN']],
@@ -101,7 +101,7 @@ def train(model: EncoderDecoder,
         model.eval()
         with torch.no_grad():
             print_examples((rebatch(pad_index, x, val_data, config) for x in val_iter_for_print_examples),
-                           model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
+                           model, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
                            fields[0].vocab, fields[1].vocab, config, n=3)
 
             # TODO: consider if we should or not use teacher forcing on validation

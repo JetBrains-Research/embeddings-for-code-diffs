@@ -84,7 +84,7 @@ def output_accuracy_on_defects4j(model: EncoderDecoder, defects4j_data: Dataset,
                                                 repeat=False, device=config['DEVICE'])
         print(f'===Defects4J EXAMPLES===')
         print_examples((rebatch(pad_index, x, config) for x in print_examples_iterator),
-                       model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
+                       model, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
                        vocab, vocab, config, n=len(print_examples_iterator))
         accuracy_iterator = data.Iterator(defects4j_data, batch_size=config['TEST_BATCH_SIZE'], train=False,
                                           sort_within_batch=True,
@@ -93,6 +93,6 @@ def output_accuracy_on_defects4j(model: EncoderDecoder, defects4j_data: Dataset,
                                           device=config['DEVICE'])
         accuracy = calculate_accuracy((rebatch(pad_index, t, config) for t in accuracy_iterator),
                                       model,
-                                      config['TOKENS_CODE_CHUNK_MAX_LEN'],
+                                      config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
                                       vocab, config)
         print(f'Accuracy on Defects4J: {accuracy}')
