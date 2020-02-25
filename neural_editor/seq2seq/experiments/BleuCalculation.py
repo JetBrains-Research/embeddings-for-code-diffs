@@ -20,6 +20,12 @@ class BleuCalculation:
         super().__init__()
         self.config = config
 
+    def add_not_empty_string(self, predictions: List[str]):
+        if any(predictions):
+            return predictions
+        else:
+            return ['.'] + predictions[1:]
+
     def get_bleu_script_output(self, predictions, dataset) -> Tuple[str, str]:
         top_1_predictions = ['' if len(prediction) == 0 else ' '.join(prediction[0]) for prediction in predictions]
         targets = [' '.join(example.trg) for example in dataset]
