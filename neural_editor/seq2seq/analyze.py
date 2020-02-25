@@ -46,11 +46,12 @@ def save_predicted(max_top_k_predicted: List[List[List[str]]], dataset_name: str
         top_k_file.write('\n'.join(top_k_file_lines))
 
 
-def test_commit_message_generation_model(model: EncoderDecoder, config: Config, diffs_field: Field) -> None:
+def test_commit_message_generation_model(model: EncoderDecoder, config: Config, diffs_field: Field, greedy: bool) -> None:
     train_dataset, val_dataset, test_dataset, fields_commit = \
         CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
     train_dataset_test_size_part = take_part_from_dataset(train_dataset, len(test_dataset))
-    accuracy_calculation_experiment = AccuracyCalculation(model, fields_commit[1], config)
+    accuracy_calculation_experiment = AccuracyCalculation(model, fields_commit[1],
+                                                          config['MSG_MAX_LEN'] + 1, greedy, config)
     bleu_calculation_experiment = BleuCalculation(config)
 
     model.eval()
@@ -198,7 +199,10 @@ def print_results(results_root: str, config: Config) -> None:
     print('\n====STARTING COMMIT MSG GENERATOR EVALUATION====\n', end='')
     commit_msg_generator = torch.load(os.path.join(results_root, 'model_best_on_validation_commit_msg_generator.pt'),
                                       map_location=config['DEVICE'])
-    test_commit_message_generation_model(commit_msg_generator, config, diffs_field)
+    print('\n====GREEDY====\n')
+    test_commit_message_generation_model(commit_msg_generator, config, diffs_field, greedy=True)
+    print('\n====BEAM SEARCH====\n')
+    test_commit_message_generation_model(commit_msg_generator, config, diffs_field, greedy=False)
 
 
 def main() -> None:

@@ -16,6 +16,7 @@ class Config:
         'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/full',
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
         'TOKENS_CODE_CHUNK_MAX_LEN': 121,
+        'MSG_MAX_LEN': 30,
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
         'TUFANO_LABELED_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/50_100',
