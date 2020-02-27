@@ -32,4 +32,5 @@ class SimpleLossCompute:
             self.optimizer.step()
             self.optimizer.zero_grad()
 
-        return loss.data.item() * norm
+        losses_per_sample = [self.criterion(x[i], batch.trg_y_extended_vocab[i]).data.item() for i in range(len(x))]
+        return losses_per_sample

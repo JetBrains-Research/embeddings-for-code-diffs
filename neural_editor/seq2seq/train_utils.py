@@ -74,23 +74,32 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
     epoch_start = start
     total_tokens = 0
     total_loss = 0
+    losses = []
     print_tokens = 0
 
     for i, batch in enumerate(data_iter, 1):
         out, _, pre_output, p_gen, attn_probs = model.forward(batch)
-        loss = loss_compute((pre_output, p_gen, attn_probs), batch, batch.nseqs)
-        total_loss += loss
+        current_losses = loss_compute((pre_output, p_gen, attn_probs), batch, batch.nseqs)
+        losses += current_losses
+        total_loss += np.sum(current_losses)
         total_tokens += batch.ntokens
         print_tokens += batch.ntokens
 
-        if model.training and i % print_every == 0:
+        if i % print_every == 0:
             elapsed = time.time() - start
+            loss_mean = np.mean(current_losses)
+            loss_std = np.std(current_losses)
             print(f'Epoch Step: {i} / {batches_num} '
-                  f'Loss: {loss / batch.nseqs} '
+                  f'Loss (mean): {loss_mean} '
+                  f'Loss (std): {loss_std} '
+                  f'Loss ratio: {loss_std / loss_mean} '
                   f'Tokens per Sec: {print_tokens / elapsed}')
             start = time.time()
             print_tokens = 0
     epoch_duration = time.time() - epoch_start
+    losses_mean = np.mean(losses)
+    losses_std = np.std(losses)
+    print(f'Mean loss per sample: {losses_mean} Std loss per sample: {losses_std} ratio: {losses_std / losses_mean}')
     print(f'Epoch ended with duration {str(timedelta(seconds=epoch_duration))}')
     return math.exp(total_loss / float(total_tokens))
 
