@@ -30,7 +30,10 @@ def main():
     print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
     test_neural_editor_model(neural_editor, config)
     print('\n====STARTING COMMIT MSG GENERATOR EVALUATION====\n', end='')
-    test_commit_message_generation_model(commit_message_generator, config, diffs_field)
+    print('\n====BEAM SEARCH====\n')
+    test_commit_message_generation_model(commit_message_generator, config, diffs_field, greedy=False)
+    print('\n====GREEDY====\n')
+    test_commit_message_generation_model(commit_message_generator, config, diffs_field, greedy=True)
 
 
 if __name__ == "__main__":
