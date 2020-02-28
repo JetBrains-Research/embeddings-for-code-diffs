@@ -1,7 +1,9 @@
+import os
 import random
 import sys
 from distutils.dir_util import copy_tree
 from pathlib import Path
+import string
 
 from more_itertools import unzip
 
@@ -101,12 +103,50 @@ def strip_dataset(data_root: Path) -> None:
         strip_file(data_dir.joinpath('msg.txt'))
 
 
+def remove_punctuation(data_root: Path) -> None:
+    remove_tokens(data_root, lambda t: t not in string.punctuation, 'removed_punctuation')
+
+
+def remove_numbers(data_root: Path) -> None:
+    def is_not_int(s):
+        try:
+            int(s)
+            return False
+        except ValueError:
+            return True
+    remove_tokens(data_root, is_not_int, 'removed_numbers')
+
+
+def remove_tokens(data_root: Path, predicate, suffix: str) -> None:
+    prev_name = data_root.name
+    new_data_root = data_root.parent.joinpath(f'{prev_name}_{suffix}')
+    new_data_root.mkdir()
+    copy_tree(str(data_root.absolute()), str(new_data_root.absolute()))
+    remove_tokens_inplace(new_data_root, predicate)
+
+
+def remove_tokens_inplace(data_root: Path, predicate) -> None:
+    for subdir, dirs, files in os.walk(str(data_root.absolute())):
+        for msg_file in files:
+            if msg_file != 'msg.txt':
+                continue
+            msg_file = Path(os.path.join(subdir, msg_file))
+            msgs = msg_file.read_text().splitlines()
+            msgs_without_punctuations = [' '.join([t for t in msg.split() if predicate(t)]) for msg in msgs]
+
+            msg_file.write_text('\n'.join(msgs_without_punctuations))
+            print(f'total number of tokens before: {sum([len(msg.split())for msg in msgs])}, '
+                  f'total number of tokens after: {sum([len(msg.split())for msg in msgs_without_punctuations])},'
+                  f' after / before: '
+                  f'{sum([len(msg.split())for msg in msgs_without_punctuations]) / sum([len(msg.split()) for msg in msgs])}')
+
+
 def main() -> None:
     if len(sys.argv) != 2:
         print("Correct Arguments: <path to folder containing Jiang dataset diffs and messages>")
         return
     data_root = Path(sys.argv[1])
-    generate_and_save_prev_and_updated_versions(data_root)
+    remove_numbers(data_root)
 
 
 if __name__ == "__main__":
