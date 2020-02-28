@@ -52,7 +52,7 @@ class Config:
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
-        'EARLY_STOPPING_ROUNDS': 25,
+        'EARLY_STOPPING_ROUNDS': 100,
         'BEAM_SIZE': 50,
         'NUM_GROUPS': 1,
         'DIVERSITY_STRENGTH': None,

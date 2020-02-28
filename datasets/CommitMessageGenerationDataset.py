@@ -126,11 +126,13 @@ class CommitMessageGenerationDataset(data.Dataset):
         print("Special words frequency and ids in src vocabulary: ")
         for special_token in special_tokens:
             print(f"{special_token} {src_field.vocab.freqs[special_token]} {src_field.vocab.stoi[special_token]}")
+        print("Special words frequency and ids in trg vocabulary: ")
         for special_token in special_tokens:
             print(f"{special_token} {trg_field.vocab.freqs[special_token]} {trg_field.vocab.stoi[special_token]}")
         special_tokens = [config['UNK_TOKEN'], config['PAD_TOKEN'], config['SOS_TOKEN'], config['EOS_TOKEN'],
                           config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'], config['ADDITION_TOKEN'],
                           config['UNCHANGED_TOKEN'], config['PADDING_TOKEN']]
+        print("Special words frequency and ids in diffs_field vocabulary: ")
         for special_token in special_tokens:
             print(f"{special_token} {diffs_field.vocab.freqs[special_token]} {diffs_field.vocab.stoi[special_token]}")
 
