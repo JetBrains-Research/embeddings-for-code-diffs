@@ -9,8 +9,8 @@ from tqdm.auto import tqdm
 
 
 class Defects4JAbstracter:
-    PREV_METHOD_FILENAME = 'prev_method.java'
-    UPDATED_METHOD_FILENAME = 'updated_method.java'
+    PREV_METHOD_FILENAME = 'before.java'
+    UPDATED_METHOD_FILENAME = 'after.java'
     PREV_ABSTRACTED_METHOD_FILENAME = 'prev.txt'
     UPDATED_ABSTRACTED_METHOD_FILENAME = 'updated.txt'
     MAPPING_FILENAME = 'mapping.txt'
