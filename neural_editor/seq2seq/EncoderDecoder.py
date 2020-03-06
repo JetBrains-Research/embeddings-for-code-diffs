@@ -16,13 +16,14 @@ class EncoderDecoder(nn.Module):
     """
 
     def __init__(self, encoder: Encoder, decoder: Decoder, edit_encoder: EditEncoder,
-                 embed: nn.Embedding, generator: Generator) -> None:
+                 embed: nn.Embedding, target_embed: nn.Embedding, generator: Generator) -> None:
         super(EncoderDecoder, self).__init__()
         self.edit_final = None
         self.encoder = encoder
         self.decoder = decoder
         self.edit_encoder = edit_encoder
         self.embed = embed
+        self.target_embed = target_embed
         self.generator = generator
 
     def forward(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor, Tensor, Tensor]:
@@ -107,5 +108,5 @@ class EncoderDecoder(nn.Module):
                  [B, TrgSeqLen, DecoderH]
         ]
         """
-        return self.decoder(batch, self.embed(trg), edit_final, encoder_output, encoder_final,
+        return self.decoder(batch, self.target_embed(trg), edit_final, encoder_output, encoder_final,
                             src_mask, trg_mask, states_to_initialize)

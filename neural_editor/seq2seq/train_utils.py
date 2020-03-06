@@ -38,11 +38,14 @@ def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
 
     generator = Generator(hidden_size_decoder, trg_vocab_size)
     embedding = nn.Embedding(src_vocab_size, emb_size)
+    target_embedding = nn.Embedding(trg_vocab_size, emb_size)
     if edit_encoder is None:
         edit_encoder = EditEncoder(embedding, 3 * emb_size, edit_representation_size, num_layers, dropout)
+        # TODO: maybe always use different embeddings?
+        target_embedding = embedding
     model: EncoderDecoder = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
-        Decoder(generator, embedding, emb_size, edit_representation_size,
+        Decoder(generator, target_embedding, emb_size, edit_representation_size,
                 hidden_size_encoder, hidden_size_decoder, trg_vocab_size, trg_unk_index,
                 attention,
                 num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
@@ -51,6 +54,7 @@ def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
                 use_copying_mechanism=config['USE_COPYING_MECHANISM']),
         edit_encoder,
         embedding,  # 1 -> Emb
+        target_embedding,
         generator)
     model.to(config['DEVICE'])
     return model
