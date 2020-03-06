@@ -5,7 +5,7 @@ from typing import Tuple
 from torchtext import data
 from torchtext.data import Field, Dataset
 
-from datasets.dataset_utils import create_filter_predicate_on_length
+from datasets.dataset_utils import create_filter_predicate_on_length, create_filter_predicate_on_code_and_msg
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
 
@@ -62,7 +62,7 @@ class CommitMessageGenerationDataset(data.Dataset):
                                       init_token=config['SOS_TOKEN'],
                                       eos_token=config['EOS_TOKEN'])
 
-        filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
+        filter_predicate = create_filter_predicate_on_code_and_msg(config['TOKENS_CODE_CHUNK_MAX_LEN'], config['MSG_MAX_LEN'])
         train_data = CommitMessageGenerationDataset(os.path.join(config['DATASET_ROOT_COMMIT'], 'train'),
                                                     src_field, trg_field, diffs_field,
                                                     config, filter_pred=filter_predicate)

@@ -12,11 +12,25 @@ from neural_editor.seq2seq.config import Config
 def create_filter_predicate_on_length(max_length):
     def filter_predicate(example_data):
         for i, element in enumerate(example_data):
-            if len(element) <= max_length:
-                return True, None
-            else:
+            if len(element) > max_length:
                 return False, \
                        f"{i}th element of example has length {len(element)} > {max_length}"
+        return True, None
+    return filter_predicate
+
+
+def create_filter_predicate_on_code_and_msg(max_length_code, max_length_msg):
+    def filter_predicate(example_data):
+        for i, element in enumerate(example_data):
+            if i == 1:
+                if len(element) > max_length_msg:
+                    return False, \
+                           f"{i}th element of example has length {len(element)} > {max_length_msg}"
+            else:
+                if len(element) > max_length_code:
+                    return False, \
+                           f"{i}th element of example has length {len(element)} > {max_length_code}"
+        return True, None
     return filter_predicate
 
 
