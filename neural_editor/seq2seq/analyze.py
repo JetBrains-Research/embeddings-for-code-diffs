@@ -100,7 +100,8 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
         load_labeled_dataset(config['TUFANO_LABELED_50_100_PATH'], diffs_field, config)
     defects4j_dataset, defects4j_classes = load_defects4j_dataset(diffs_field, config)
 
-    accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, config)
+    accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
+                                                          greedy=False, config=config)
     bleu_calculation_experiment = BleuCalculation(config)
     visualization_experiment = EditRepresentationVisualization(model, diffs_field, config)
 
