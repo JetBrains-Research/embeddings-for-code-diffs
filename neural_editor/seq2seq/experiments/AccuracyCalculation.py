@@ -35,24 +35,19 @@ class AccuracyCalculation:
                 verbose=False
             )
         self.batch_size = self.config['TEST_BATCH_SIZE'] if greedy else 1
-        self.greedy = greedy
 
     def conduct(self, dataset: Dataset, dataset_label: str) -> List[List[List[str]]]:
         print(f'Start conducting accuracy calculation experiment for {dataset_label}...')
-        if self.greedy:
-            # TODO: deal with iterators and shuffling and BLEU calculation
-            data_iterator = data.Iterator(dataset, batch_size=self.batch_size, train=False,
-                                          shuffle=False,
-                                          sort_within_batch=True,
-                                          sort_key=lambda x: (len(x.src), len(x.trg)),
-                                          device=self.config['DEVICE'])
-        else:
-            data_iterator = data.Iterator(dataset, batch_size=self.batch_size,
-                                          sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
+        data_iterator = data.Iterator(dataset, batch_size=self.batch_size, train=False,
+                                      shuffle=False,
+                                      sort=False,
+                                      sort_within_batch=True,
+                                      sort_key=lambda x: (len(x.src), len(x.trg)),
+                                      device=self.config['DEVICE'])
         correct_all_k, total, max_top_k_predicted = \
             calculate_top_k_accuracy(self.topk_values,
                                      [rebatch(self.pad_index, batch, dataset, self.config) for batch in data_iterator],
-                                     self.decode_method, self.trg_vocab, self.eos_index)
+                                     self.decode_method, self.trg_vocab, self.eos_index, len(dataset))
         for correct_top_k, k in zip(correct_all_k, self.topk_values):
             print(f'Top-{k} accuracy: {correct_top_k} / {total} = {correct_top_k / total}')
         return max_top_k_predicted

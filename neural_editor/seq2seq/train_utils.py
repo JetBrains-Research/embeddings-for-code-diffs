@@ -277,21 +277,22 @@ def calculate_accuracy(dataset_iterator: typing.Iterable,
 
 
 def calculate_top_k_accuracy(topk_values: typing.List[int], dataset_iterator: typing.Iterator,
-                             decode_method, trg_vocab: Vocab, eos_index: int) \
+                             decode_method, trg_vocab: Vocab, eos_index: int, dataset_len: int) \
         -> typing.Tuple[typing.List[int], int, typing.List[typing.List[typing.List[str]]]]:
     correct = [0 for _ in range(len(topk_values))]
     max_k = topk_values[-1]
     total = 0
-    max_top_k_results = []
+    max_top_k_results: typing.List[typing.Optional[typing.List[typing.List[str]]]] = [None for _ in range(dataset_len)]
     for batch in dataset_iterator:
         targets = remove_eos(batch.trg_y_extended_vocab.cpu().numpy(), eos_index)
         results = decode_method(batch)
-        for example_id in range(len(results)):
-            target = targets[example_id]
-            example_top_k_results = results[example_id][:max_k]
+        for example_idx_in_batch in range(len(results)):
+            example_id = batch.ids[example_idx_in_batch].item()
+            target = targets[example_idx_in_batch]
+            example_top_k_results = results[example_idx_in_batch][:max_k]
             decoded_tokens = [lookup_words(result, trg_vocab, batch.oov_vocab_reverse)
                               for result in example_top_k_results]
-            max_top_k_results.append(decoded_tokens)
+            max_top_k_results[example_id] = decoded_tokens
             tail_id = 0
             for i, result in enumerate(example_top_k_results):
                 if i + 1 > topk_values[tail_id]:

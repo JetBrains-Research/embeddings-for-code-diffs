@@ -65,7 +65,7 @@ class Batch:
         # TODO_DONE: remove first sos token, it makes results worse
         # src = src[1:]
         # src_lengths = src_lengths - 1
-
+        self.ids = ids
         self.oov_vocab, self.oov_indices = Batch.create_oov_vocab(ids, dataset, config)
         self.oov_vocab_reverse = {value: key for key, value in self.oov_vocab.items()}
         self.oov_num = len(self.oov_vocab)

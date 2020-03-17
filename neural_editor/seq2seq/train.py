@@ -78,7 +78,7 @@ def train(model: EncoderDecoder,
         trg_vocab.stoi[config['UNK_TOKEN']],
         len(trg_vocab)
     )
-    bleu_caclculator = BleuCalculation(config)
+    bleu_calculator = BleuCalculation(config)
 
     epochs_num: int = config['MAX_NUM_OF_EPOCHS']
     best_metric_value: float = -1000000
@@ -113,10 +113,11 @@ def train(model: EncoderDecoder,
                                                                                           config) for batch in
                                                                                   val_iter],
                                                                                  decode_method, trg_vocab,
-                                                                                 trg_vocab.stoi[config['EOS_TOKEN']])
+                                                                                 trg_vocab.stoi[config['EOS_TOKEN']],
+                                                                                 len(val_data))
             train_logs['val_ppl'].append(val_perplexity)
             train_logs['val_acc'].append(correct_all_k[0] / total)
-            train_logs['val_bleu'].append(bleu_caclculator.get_bleu_score(max_top_k_predicted, val_data))
+            train_logs['val_bleu'].append(bleu_calculator.get_bleu_score(max_top_k_predicted, val_data))
             print(f"Validation perplexity: {train_logs['val_ppl'][-1]}")
             print(f"Validation accuracy: {train_logs['val_acc'][-1]}")
             print(f"Validation BLEU: {train_logs['val_bleu'][-1]}")
