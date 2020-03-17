@@ -13,7 +13,6 @@ from neural_editor.seq2seq.train_utils import rebatch, calculate_top_k_accuracy,
 
 class AccuracyCalculation:
     def __init__(self, model: EncoderDecoder, target_field: Field, max_len: int, greedy: bool, config: Config) -> None:
-        # TODO: add different max tokens length for commit messages and for source code
         super().__init__()
         self.model = model
         self.trg_vocab: Vocab = target_field.vocab
@@ -36,13 +35,20 @@ class AccuracyCalculation:
                 verbose=False
             )
         self.batch_size = self.config['TEST_BATCH_SIZE'] if greedy else 1
+        self.greedy = greedy
 
     def conduct(self, dataset: Dataset, dataset_label: str) -> List[List[List[str]]]:
         print(f'Start conducting accuracy calculation experiment for {dataset_label}...')
-        data_iterator = data.Iterator(dataset, batch_size=self.batch_size, train=False,
-                                      sort_within_batch=True,
-                                      sort_key=lambda x: (len(x.src), len(x.trg)),
-                                      device=self.config['DEVICE'])
+        if self.greedy:
+            # TODO: deal with iterators and shuffling and BLEU calculation
+            data_iterator = data.Iterator(dataset, batch_size=self.batch_size, train=False,
+                                          shuffle=False,
+                                          sort_within_batch=True,
+                                          sort_key=lambda x: (len(x.src), len(x.trg)),
+                                          device=self.config['DEVICE'])
+        else:
+            data_iterator = data.Iterator(dataset, batch_size=self.batch_size,
+                                          sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
         correct_all_k, total, max_top_k_predicted = \
             calculate_top_k_accuracy(self.topk_values,
                                      [rebatch(self.pad_index, batch, dataset, self.config) for batch in data_iterator],
