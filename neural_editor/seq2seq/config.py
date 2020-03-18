@@ -30,7 +30,7 @@ class Config:
         'PAD_TOKEN': "<pad>",
         'SOS_TOKEN': "<s>",
         'EOS_TOKEN': "</s>",
-        'LOWER': False,
+        'LOWER': True, # TODO: find out correlation between copying mechanism and lowering msg, it is tricky parameter
         'LOWER_COMMIT_MSG': True,
         'SEED': 9382,
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
