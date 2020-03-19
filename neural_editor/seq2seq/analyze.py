@@ -135,6 +135,7 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
                                                         'Train dataset (test size approximation)'))
 
         # Visualization of data
+        """
         measure_experiment_time(
             lambda: visualization_experiment.conduct(tufano_labeled_0_50_dataset,
                                                      'tufano_labeled_0_50_2d_representations.png',
@@ -186,6 +187,7 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
             lambda: visualization_experiment.conduct(take_part_from_dataset(train_dataset, 5000),
                                                      'train5000_2d_representations.png', classes=None)
         )
+        """
 
     return diffs_field
 

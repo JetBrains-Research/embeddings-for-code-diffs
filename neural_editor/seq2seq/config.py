@@ -30,7 +30,7 @@ class Config:
         'PAD_TOKEN': "<pad>",
         'SOS_TOKEN': "<s>",
         'EOS_TOKEN': "</s>",
-        'LOWER': True, # TODO: find out correlation between copying mechanism and lowering msg, it is tricky parameter
+        'LOWER': True,  # TODO: find out correlation between copying mechanism and lowering msg, it is tricky parameter
         'LOWER_COMMIT_MSG': True,
         'SEED': 9382,
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
@@ -42,12 +42,12 @@ class Config:
         'ENCODER_HIDDEN_SIZE': 128,
         'DECODER_HIDDEN_SIZE': 256,
         'NUM_LAYERS': 2,
-        'USE_EDIT_REPRESENTATION': False,
+        'USE_EDIT_REPRESENTATION': True,
         'WORD_EMBEDDING_SIZE_COMMIT': 128,
         'ENCODER_HIDDEN_SIZE_COMMIT': 128,
         'DECODER_HIDDEN_SIZE_COMMIT': 256,
         'NUM_LAYERS_COMMIT': 2,
-        'USE_COPYING_MECHANISM': False,
+        'USE_COPYING_MECHANISM': True,
         'CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J': False,
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
