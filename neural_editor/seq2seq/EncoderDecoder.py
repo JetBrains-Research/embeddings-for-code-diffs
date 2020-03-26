@@ -16,13 +16,12 @@ class EncoderDecoder(nn.Module):
     """
 
     def __init__(self, encoder: Encoder, decoder: Decoder, edit_encoder: EditEncoder,
-                 embed: nn.Embedding, target_embed: nn.Embedding, generator: Generator) -> None:
+                 target_embed: nn.Embedding, generator: Generator) -> None:
         super(EncoderDecoder, self).__init__()
         self.edit_final = None
         self.encoder = encoder
         self.decoder = decoder
         self.edit_encoder = edit_encoder
-        self.embed = embed
         self.target_embed = target_embed
         self.generator = generator
 
@@ -81,7 +80,7 @@ class EncoderDecoder(nn.Module):
             edit_final = self.encode_edit(batch)
         else:
             edit_final = self.edit_final
-        encoder_output, encoder_final = self.encoder(self.embed(batch.src), batch.src_mask, batch.src_lengths)
+        encoder_output, encoder_final = self.encoder(batch)
         return edit_final, encoder_output, encoder_final
 
     def decode(self, batch: Batch, edit_final: Tuple[Tensor, Tensor],

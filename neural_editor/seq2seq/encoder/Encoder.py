@@ -4,17 +4,20 @@ import torch
 from torch import nn, Tensor
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
+from neural_editor.seq2seq import Batch
+
 
 class Encoder(nn.Module):
     """Encodes a sequence of word embeddings"""
 
-    def __init__(self, input_size: int, hidden_size: int, num_layers: int, dropout: float) -> None:
+    def __init__(self, embed: nn.Embedding, input_size: int, hidden_size: int, num_layers: int, dropout: float) -> None:
         super(Encoder, self).__init__()
         self.num_layers = num_layers
+        self.embed = embed
         self.rnn = nn.LSTM(input_size, hidden_size, num_layers,
                            batch_first=True, bidirectional=True, dropout=dropout)
 
-    def forward(self, x: Tensor, mask: Tensor, lengths: Tensor) -> Tuple[Tensor, Tuple[Tensor, Tensor]]:
+    def forward(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor]]:
         """
         Applies a bidirectional LSTM to sequence of embeddings x.
         The input mini-batch x needs to be sorted by length.
@@ -27,6 +30,7 @@ class Encoder(nn.Module):
             Tuple[[NumLayers, B, NumDirections * SrcEncoderH], [NumLayers, B, NumDirections * SrcEncoderH]]
         ]
         """
+        x, mask, lengths = self.embed(batch.src), batch.src_mask, batch.src_lengths
         packed = pack_padded_sequence(x, lengths, batch_first=True)  # [RealTokenNumberWithoutPad, SecSeqLen]
         # packed seq, [NumLayers * NumDirections, B, SrcEncoderH], [NumLayers * NumDirections, B, SrcEncoderH]
         output, (h_n, c_n) = self.rnn(packed)

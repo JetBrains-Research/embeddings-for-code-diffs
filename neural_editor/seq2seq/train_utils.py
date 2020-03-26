@@ -24,7 +24,8 @@ from neural_editor.seq2seq.encoder.Encoder import Encoder
 
 
 def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
-               edit_encoder: EditEncoder, edit_representation_size: int,
+               edit_encoder: EditEncoder, encoder: Encoder,
+               edit_representation_size: int,
                emb_size: int,
                hidden_size_encoder: int, hidden_size_decoder: int,
                num_layers: int,
@@ -32,19 +33,22 @@ def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
                use_bridge: bool,
                config: Config) -> EncoderDecoder:
     """Helper: Construct a model from hyperparameters."""
+    assert((encoder is None and edit_encoder is None) or (encoder is not None and edit_encoder is not None))
+
     if edit_encoder is not None and config['FREEZE_EDIT_ENCODER_WEIGHTS']:
-        edit_encoder.freeze_weights()
+        freeze_weights(edit_encoder)
+        freeze_weights(encoder)
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
     generator = Generator(hidden_size_decoder, trg_vocab_size)
-    embedding = nn.Embedding(src_vocab_size, emb_size)
     target_embedding = nn.Embedding(trg_vocab_size, emb_size)
     if edit_encoder is None:
+        embedding = nn.Embedding(src_vocab_size, emb_size)
         edit_encoder = EditEncoder(embedding, 3 * emb_size, edit_representation_size, num_layers, dropout)
-        # TODO: maybe always use different embeddings?
+        encoder = Encoder(embedding, emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout)
         target_embedding = embedding
     model: EncoderDecoder = EncoderDecoder(
-        Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
+        encoder,
         Decoder(generator, target_embedding, emb_size, edit_representation_size,
                 hidden_size_encoder, hidden_size_decoder, trg_vocab_size, trg_unk_index,
                 attention,
@@ -53,11 +57,15 @@ def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
                 use_edit_representation=config['USE_EDIT_REPRESENTATION'],
                 use_copying_mechanism=config['USE_COPYING_MECHANISM']),
         edit_encoder,
-        embedding,  # 1 -> Emb
         target_embedding,
         generator)
     model.to(config['DEVICE'])
     return model
+
+
+def freeze_weights(model) -> None:
+    for param in model.parameters():
+        param.requires_grad = False
 
 
 def rebatch(pad_idx: int, batch: torchtext.data.Batch, dataset: Dataset, config: Config) -> Batch:

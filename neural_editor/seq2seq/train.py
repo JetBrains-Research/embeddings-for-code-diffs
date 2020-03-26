@@ -15,6 +15,7 @@ from edit_representation.sequence_encoding import EditEncoder
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from datasets.CodeChangesDataset import CodeChangesTokensDataset
+from neural_editor.seq2seq.encoder import Encoder
 from neural_editor.seq2seq.experiments.BleuCalculation import BleuCalculation
 from neural_editor.seq2seq.test_utils import save_perplexity_plot, save_metric_plot
 from neural_editor.seq2seq.train_utils import output_accuracy_on_data, create_greedy_decode_method_with_batch_support, \
@@ -196,7 +197,8 @@ def test_on_unclassified_data(model: EncoderDecoder,
 def run_train(train_dataset: Dataset, val_dataset: Dataset,
               fields: Tuple[Field, Field, Field],
               suffix_for_saving: str,
-              edit_encoder: EditEncoder, config: Config, only_make_model=False) -> EncoderDecoder:
+              edit_encoder: EditEncoder, encoder: Encoder,
+              config: Config, only_make_model=False) -> EncoderDecoder:
     pprint.pprint(config.get_config())
     config.save()
 
@@ -204,6 +206,7 @@ def run_train(train_dataset: Dataset, val_dataset: Dataset,
                                        len(fields[1].vocab),
                                        fields[1].vocab.unk_index,
                                        edit_encoder=edit_encoder,
+                                       encoder=encoder,
                                        edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
                                        emb_size=config['WORD_EMBEDDING_SIZE'],
                                        hidden_size_encoder=config['ENCODER_HIDDEN_SIZE'],
@@ -239,13 +242,13 @@ def main():
         CodeChangesTokensDataset.load_data(config['VERBOSE'], config)
     fields = (diffs_field, diffs_field, diffs_field)
     neural_editor = run_train(train_dataset, val_dataset, fields,
-                              'neural_editor', edit_encoder=None, config=config,
+                              'neural_editor', edit_encoder=None, encoder=None, config=config,
                               only_make_model=not config['USE_EDIT_REPRESENTATION'])
     print('\n====STARTING TRAINING OF COMMIT MESSAGE GENERATOR====\n', end='')
     train_dataset_commit, val_dataset_commit, test_dataset_commit, fields_commit = \
         CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
     commit_message_generator = run_train(train_dataset_commit, val_dataset_commit, fields_commit,
-                                         'commit_msg_generator', neural_editor.edit_encoder, config=config)
+                                         'commit_msg_generator', neural_editor.edit_encoder, neural_editor.encoder, config=config)
     return neural_editor, commit_message_generator
 
 

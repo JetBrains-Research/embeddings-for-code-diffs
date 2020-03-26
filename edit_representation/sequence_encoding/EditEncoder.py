@@ -71,7 +71,3 @@ class EditEncoder(nn.Module):
             batch.diff_alignment_lengths  # B * 1 * AlignedSeqLen
         )
         return edit_final
-
-    def freeze_weights(self) -> None:
-        for param in self.parameters():
-            param.requires_grad = False
