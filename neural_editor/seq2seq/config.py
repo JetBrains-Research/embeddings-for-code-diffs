@@ -11,7 +11,7 @@ import torch.backends.cudnn
 class Config:
     _CONFIG = {
         'IS_TEST': False,
-        'IS_COMMIT_GENERATION': True,
+        'IS_COMMIT_GENERATION': False,
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_100',
         'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Tufano',
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
@@ -36,7 +36,7 @@ class Config:
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
         'TOKEN_MIN_FREQ': 1,
         'LEARNING_RATE': 0.0001,
-        'MAX_NUM_OF_EPOCHS': 1000,
+        'MAX_NUM_OF_EPOCHS': {'ne': 1000, 'cmg': 5000},
         'EDIT_REPRESENTATION_SIZE': 1,
         'WORD_EMBEDDING_SIZE': 128,
         'ENCODER_HIDDEN_SIZE': 128,
@@ -52,12 +52,12 @@ class Config:
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
-        'EARLY_STOPPING_ROUNDS': 100,
+        'EARLY_STOPPING_ROUNDS': {'ne': 100, 'cmg': 80},
         'BEAM_SIZE': 50,
         'NUM_GROUPS': 1,
         'DIVERSITY_STRENGTH': None,
         'TOP_K': [1, 3, 5, 10, 50],
-        'BEST_ON': 'PPL',
+        'BEST_ON': {'ne': 'PPL', 'cmg': 'BLEU'},
         'START_BEST_FROM_EPOCH': 0,
         'REPLACEMENT_TOKEN': 'замена',
         'DELETION_TOKEN': 'удаление',
@@ -85,7 +85,12 @@ class Config:
     def __getitem__(self, key: str) -> Any:
         if key in self._PATH_KEYS:
             return os.path.abspath(os.path.join(os.path.dirname(__file__), self._CONFIG[key]))
+        if isinstance(self._CONFIG[key], dict) and 'ne' in self._CONFIG[key] and 'cmg' in self._CONFIG[key]:
+            return self._CONFIG[key]['cmg' if self._CONFIG['IS_COMMIT_GENERATION'] else 'ne']
         return self._CONFIG[key]
+
+    def set_cmg_mode(self, is_cmg_mode):
+        self._CONFIG['IS_COMMIT_GENERATION'] = is_cmg_mode
 
     def save(self) -> None:
         with open(os.path.join(self['OUTPUT_PATH'], 'config.pkl'), 'wb') as config_file:
@@ -104,7 +109,7 @@ class Config:
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
         self._CONFIG['TUFANO_LABELED_50_100_PATH'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/50_100'
-        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 2
+        self._CONFIG['MAX_NUM_OF_EPOCHS'] = {'ne': 2, 'cmg': 3}
 
 
 def load_config(is_test: bool, path_to_config: Path = None) -> Config:
