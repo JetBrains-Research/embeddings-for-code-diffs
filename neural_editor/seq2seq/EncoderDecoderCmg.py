@@ -5,20 +5,19 @@ from torch import nn
 from torch import Tensor
 
 from edit_representation.sequence_encoding import EditEncoder
-from neural_editor.seq2seq import Generator, Batch
+from neural_editor.seq2seq import Generator, Batch, EncoderDecoder
 from neural_editor.seq2seq.decoder import Decoder
 from neural_editor.seq2seq.encoder import Encoder
 
 
-class EncoderDecoder(nn.Module):
+class EncoderDecoderCmg(nn.Module):
     """
     A standard Encoder-Decoder architecture. Base for this and many other models.
     """
 
-    def __init__(self, encoder: Encoder, decoder: Decoder, edit_encoder: EditEncoder,
+    def __init__(self, encoder: Encoder, decoder: Decoder, edit_encoder: EncoderDecoder,
                  embed: nn.Embedding, target_embed: nn.Embedding, generator: Generator) -> None:
-        super(EncoderDecoder, self).__init__()
-        self.edit_final = None
+        super(EncoderDecoderCmg, self).__init__()
         self.encoder = encoder
         self.decoder = decoder
         self.edit_encoder = edit_encoder
@@ -44,35 +43,7 @@ class EncoderDecoder(nn.Module):
                               batch.trg, batch.trg_mask, None)
         return decoded
 
-    def set_edit_representation(self, sample: Batch) -> None:
-        """
-        Fixates edit_final vector. Used for one-shot learning.
-        :param sample: sample from which construct edit representation, it is batch with size 1
-        :return: nothing
-        """
-        self.edit_final = self.encode_edit(sample)
-
-    def unset_edit_representation(self) -> None:
-        """
-        Unset edit representation. Turns off one-shot learning mode.
-        :return: nothing
-        """
-        self.edit_final = None
-
-    def encode_edit(self, batch: Batch) -> Tuple[Tensor, Tensor]:
-        """
-        Returns edit representations (edit_final) of samples in the batch.
-        :param batch: batch to encode
-        :return: Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]]
-        """
-        return self.edit_encoder.encode_edit(batch)
-
-    def encode_features(self, batch: Batch) -> Tuple[Tensor, Tensor]:
-        edit_final, _, encoder_final = self.encode(batch, edit_src=True)
-        return torch.cat((encoder_final[0], edit_final[0]), dim=-1), \
-               torch.cat((encoder_final[1], edit_final[1]), dim=-1)
-
-    def encode(self, batch: Batch, edit_src=False) -> Tuple[Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
+    def encode(self, batch: Batch) -> Tuple[Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
         """
         Encodes edits and prev sequences
         :param batch: batch to process
@@ -82,15 +53,12 @@ class EncoderDecoder(nn.Module):
             Tuple[[NumLayers, B, NumDirections * SrcEncoderH], [NumLayers, B, NumDirections * SrcEncoderH]]
         ]
         """
-        if self.edit_final is None:
-            edit_final = self.encode_edit(batch)
-        else:
-            edit_final = self.edit_final
-        if edit_src:
-            encoder_output, encoder_final = self.encoder(self.embed(batch.edit_src), batch.edit_src_mask, batch.edit_src_lengths, sort=True)
-        else:
-            encoder_output, encoder_final = self.encoder(self.embed(batch.src), batch.src_mask, batch.src_lengths)
+        edit_final = self.edit_encoder.encode_features(batch)
+        encoder_output, encoder_final = self.encoder(self.embed(batch.src), batch.src_mask, batch.src_lengths)
         return edit_final, encoder_output, encoder_final
+
+    def unset_edit_representation(self) -> None:
+        self.edit_encoder.unset_edit_representation()
 
     def decode(self, batch: Batch, edit_final: Tuple[Tensor, Tensor],
                encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],

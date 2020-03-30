@@ -25,6 +25,7 @@ class CodeChangesTokensDataset(data.Dataset):
                 data.Dataset.
         """
         fields = [('src', field), ('trg', field),
+                  ('edit_src', field),
                   ('diff_alignment', field), ('diff_prev', field), ('diff_updated', field),
                   ('ids', Field(sequential=False, use_vocab=False))]
         examples = []
@@ -43,7 +44,7 @@ class CodeChangesTokensDataset(data.Dataset):
                     print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
-                    [prev_line, updated_line, diff[0], diff[1], diff[2], len(examples)], fields))
+                    [prev_line, updated_line, prev_line, diff[0], diff[1], diff[2], len(examples)], fields))
         super(CodeChangesTokensDataset, self).__init__(examples, fields)
 
     @staticmethod

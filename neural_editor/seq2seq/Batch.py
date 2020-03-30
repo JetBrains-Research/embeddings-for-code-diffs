@@ -57,6 +57,7 @@ class Batch:
         return scatter_indices
 
     def __init__(self, src: Tuple[Tensor, Tensor], trg: Tuple[Tensor, Tensor],
+                 edit_src: Tuple[Tensor, Tensor],
                  diff_alignment: Tuple[Tensor, Tensor],
                  diff_prev: Tuple[Tensor, Tensor], diff_updated: Tuple[Tensor, Tensor],
                  ids: Tensor, dataset: Dataset,
@@ -71,6 +72,8 @@ class Batch:
         self.oov_num = len(self.oov_vocab)
         self.scatter_indices = Batch.create_scatter_indices(src, ids, self.oov_indices, pad_index, dataset)
 
+        self.edit_src, self.edit_src_lengths = edit_src
+        self.edit_src_mask = (self.edit_src != pad_index).unsqueeze(-2)
         self.diff_alignment, self.diff_alignment_lengths = diff_alignment  # B * SeqAlignedLen, B
         self.diff_alignment_mask = (self.diff_alignment != pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
         self.diff_prev, self.diff_prev_lengths = diff_prev  # B * SeqAlignedLen, B

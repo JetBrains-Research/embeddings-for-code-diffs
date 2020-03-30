@@ -17,6 +17,7 @@ from neural_editor.seq2seq import SimpleLossCompute
 from neural_editor.seq2seq.BahdanauAttention import BahdanauAttention
 from neural_editor.seq2seq.Batch import Batch
 from neural_editor.seq2seq.EncoderDecoder import EncoderDecoder
+from neural_editor.seq2seq.EncoderDecoderCmg import EncoderDecoderCmg
 from neural_editor.seq2seq.Generator import Generator
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder.Decoder import Decoder
@@ -24,7 +25,7 @@ from neural_editor.seq2seq.encoder.Encoder import Encoder
 
 
 def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
-               edit_encoder: EditEncoder, edit_representation_size: int,
+               edit_encoder: EncoderDecoder, edit_representation_size: int,
                emb_size: int,
                hidden_size_encoder: int, hidden_size_decoder: int,
                num_layers: int,
@@ -33,7 +34,7 @@ def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
                config: Config) -> EncoderDecoder:
     """Helper: Construct a model from hyperparameters."""
     if edit_encoder is not None and config['FREEZE_EDIT_ENCODER_WEIGHTS']:
-        edit_encoder.freeze_weights()
+        freeze_weights(edit_encoder)
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
 
     generator = Generator(hidden_size_decoder, trg_vocab_size)
@@ -43,27 +44,46 @@ def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
         edit_encoder = EditEncoder(embedding, 3 * emb_size, edit_representation_size, num_layers, dropout)
         # TODO: maybe always use different embeddings?
         target_embedding = embedding
-    model: EncoderDecoder = EncoderDecoder(
-        Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
-        Decoder(generator, target_embedding, emb_size, edit_representation_size,
-                hidden_size_encoder, hidden_size_decoder, trg_vocab_size, trg_unk_index,
-                attention,
-                num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
-                dropout=dropout, bridge=use_bridge,
-                use_edit_representation=config['USE_EDIT_REPRESENTATION'],
-                use_copying_mechanism=config['USE_COPYING_MECHANISM']),
-        edit_encoder,
-        embedding,  # 1 -> Emb
-        target_embedding,
-        generator)
+        model: EncoderDecoder = EncoderDecoder(
+            Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
+            Decoder(generator, target_embedding, emb_size, edit_representation_size,
+                    hidden_size_encoder, hidden_size_decoder, trg_vocab_size, trg_unk_index,
+                    attention,
+                    num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
+                    dropout=dropout, bridge=use_bridge,
+                    use_edit_representation=config['USE_EDIT_REPRESENTATION'],
+                    use_copying_mechanism=config['USE_COPYING_MECHANISM']),
+            edit_encoder,
+            embedding,  # 1 -> Emb
+            target_embedding,
+            generator)
+    else:
+        model: EncoderDecoderCmg = EncoderDecoderCmg(
+            Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
+            Decoder(generator, target_embedding, emb_size, emb_size + edit_representation_size,
+                    hidden_size_encoder, hidden_size_decoder, trg_vocab_size, trg_unk_index,
+                    attention,
+                    num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
+                    dropout=dropout, bridge=use_bridge,
+                    use_edit_representation=config['USE_EDIT_REPRESENTATION'],
+                    use_copying_mechanism=config['USE_COPYING_MECHANISM']),
+            edit_encoder,
+            embedding,  # 1 -> Emb
+            target_embedding,
+            generator)
     model.to(config['DEVICE'])
     return model
+
+
+def freeze_weights(model) -> None:
+    for param in model.parameters():
+        param.requires_grad = False
 
 
 def rebatch(pad_idx: int, batch: torchtext.data.Batch, dataset: Dataset, config: Config) -> Batch:
     """Wrap torchtext batch into our own Batch class for pre-processing"""
     # These fields are added dynamically by PyTorch
-    return Batch(batch.src, batch.trg, batch.diff_alignment,
+    return Batch(batch.src, batch.trg, batch.edit_src, batch.diff_alignment,
                  batch.diff_prev, batch.diff_updated, batch.ids, dataset, pad_idx, config)
 
 

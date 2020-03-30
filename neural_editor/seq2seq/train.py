@@ -247,7 +247,7 @@ def main():
     train_dataset_commit, val_dataset_commit, test_dataset_commit, fields_commit = \
         CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
     commit_message_generator = run_train(train_dataset_commit, val_dataset_commit, fields_commit,
-                                         'commit_msg_generator', neural_editor.edit_encoder, config=config)
+                                         'commit_msg_generator', neural_editor, config=config)
     return neural_editor, commit_message_generator
 
 

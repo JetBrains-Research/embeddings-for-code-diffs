@@ -25,17 +25,18 @@ class CommitMessageGenerationDataset(data.Dataset):
                 data.Dataset.
         """
         fields = [('src', src_field), ('trg', trg_field),
+                  ('edit_src', diffs_field),
                   ('diff_alignment', diffs_field), ('diff_prev', diffs_field), ('diff_updated', diffs_field),
                   ('ids', Field(sequential=False, use_vocab=False))]
         examples = []
         differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
                         config['ADDITION_TOKEN'], config['UNCHANGED_TOKEN'],
                         config['PADDING_TOKEN'])
-        with open(os.path.join(path, 'diff.txt'), mode='r', encoding='utf-8') as diff, \
+        with open(os.path.join(path, 'diff.txt'), mode='r', encoding='utf-8') as git_diff, \
                 open(os.path.join(path, 'msg.txt'), mode='r', encoding='utf-8') as msg, \
                 open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
-            for diff_line, msg_line, prev_line, updated_line in zip(diff, msg, prev, updated):
+            for diff_line, msg_line, prev_line, updated_line in zip(git_diff, msg, prev, updated):
                 diff_line, msg_line, prev_line, updated_line = \
                     diff_line.strip(), msg_line.strip(), prev_line.strip(), updated_line.strip()
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
@@ -46,7 +47,7 @@ class CommitMessageGenerationDataset(data.Dataset):
                     print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
-                    [diff_line, msg_line, diff[0], diff[1], diff[2], len(examples)], fields))
+                    [diff_line, msg_line, prev_line, diff[0], diff[1], diff[2], len(examples)], fields))
         super(CommitMessageGenerationDataset, self).__init__(examples, fields)
 
     @staticmethod
