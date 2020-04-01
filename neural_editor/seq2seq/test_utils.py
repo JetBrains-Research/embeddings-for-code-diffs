@@ -18,6 +18,23 @@ from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.train_utils import print_examples, rebatch, calculate_accuracy
 
 
+def save_predicted(max_top_k_predicted: List[List[List[str]]], dataset_name: str, config: Config) -> None:
+    top_1_file_lines = []
+    top_k_file_lines = []
+    max_k = config['TOP_K'][-1]
+    for predictions in max_top_k_predicted:
+        top_1_file_lines.append("" if len(predictions) == 0 else ' '.join(predictions[0]))
+        top_k_file_lines.append('====NEW EXAMPLE====')
+        for prediction in predictions[:max_k]:
+            top_k_file_lines.append(' '.join(prediction))
+
+    top_1_path = os.path.join(config['OUTPUT_PATH'], f'{dataset_name}_predicted_top_1.txt')
+    top_k_path = os.path.join(config['OUTPUT_PATH'], f'{dataset_name}_predicted_top_{max_k}.txt')
+    with open(top_1_path, 'w') as top_1_file, open(top_k_path, 'w') as top_k_file:
+        top_1_file.write('\n'.join(top_1_file_lines))
+        top_k_file.write('\n'.join(top_k_file_lines))
+
+
 def map_classes_to_colors(classes: List[str]) -> Tuple[List[int], Dict[int, str]]:
     dictionary = {}
     colors = []

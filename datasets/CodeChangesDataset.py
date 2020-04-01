@@ -26,15 +26,17 @@ class CodeChangesTokensDataset(data.Dataset):
         """
         fields = [('src', field), ('trg', field),
                   ('diff_alignment', field), ('diff_prev', field), ('diff_updated', field),
+                  ('msg', field),
                   ('ids', Field(sequential=False, use_vocab=False))]
         examples = []
         differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
                         config['ADDITION_TOKEN'], config['UNCHANGED_TOKEN'],
                         config['PADDING_TOKEN'])
         with open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
-                open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
-            for prev_line, updated_line in zip(prev, updated):
-                prev_line, updated_line = prev_line.strip(), updated_line.strip()
+                open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated, \
+                open(os.path.join(path, 'msg.txt'), mode='r', encoding='utf-8') as msg:
+            for prev_line, updated_line, msg_line in zip(prev, updated, msg):
+                prev_line, updated_line, msg_line = prev_line.strip(), updated_line.strip(), msg_line.strip()
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
                                                    leave_only_changed=config['LEAVE_ONLY_CHANGED'])
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
@@ -43,7 +45,7 @@ class CodeChangesTokensDataset(data.Dataset):
                     print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
-                    [prev_line, updated_line, diff[0], diff[1], diff[2], len(examples)], fields))
+                    [prev_line, updated_line, diff[0], diff[1], diff[2], msg_line, len(examples)], fields))
         super(CodeChangesTokensDataset, self).__init__(examples, fields)
 
     @staticmethod

@@ -29,6 +29,9 @@ class BleuCalculation:
     def get_bleu_script_output(self, predictions, dataset) -> Tuple[str, str]:
         top_1_predictions = ['' if len(prediction) == 0 else ' '.join(prediction[0]) for prediction in predictions]
         targets = [' '.join(example.trg) for example in dataset]
+        return self.run_script(top_1_predictions, targets)
+
+    def run_script(self, top_1_predictions, targets) -> Tuple[str, str]:
         with tempfile.NamedTemporaryFile(mode='w') as file_with_targets:
             file_with_targets.write('\n'.join(targets))
             file_with_targets.flush()

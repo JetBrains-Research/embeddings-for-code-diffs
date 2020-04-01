@@ -26,6 +26,7 @@ class CommitMessageGenerationDataset(data.Dataset):
         """
         fields = [('src', src_field), ('trg', trg_field),
                   ('diff_alignment', diffs_field), ('diff_prev', diffs_field), ('diff_updated', diffs_field),
+                  ('msg', trg_field),
                   ('ids', Field(sequential=False, use_vocab=False))]
         examples = []
         differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
@@ -46,7 +47,7 @@ class CommitMessageGenerationDataset(data.Dataset):
                     print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
-                    [prev_line, msg_line, diff[0], diff[1], diff[2], len(examples)], fields))
+                    [prev_line, msg_line, diff[0], diff[1], diff[2], msg_line, len(examples)], fields))
         super(CommitMessageGenerationDataset, self).__init__(examples, fields)
 
     @staticmethod

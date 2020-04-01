@@ -17,7 +17,8 @@ from neural_editor.seq2seq.config import Config, load_config
 from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalculation
 from neural_editor.seq2seq.experiments.BleuCalculation import BleuCalculation
 from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
-from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_labeled_dataset
+from neural_editor.seq2seq.experiments.NearestNeighbors import NearestNeighbors, FeaturesType
+from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_labeled_dataset, save_predicted
 
 
 def measure_experiment_time(func) -> Any:
@@ -27,23 +28,6 @@ def measure_experiment_time(func) -> Any:
     print(f'Duration: {str(timedelta(seconds=end - start))}')
     print()
     return ret
-
-
-def save_predicted(max_top_k_predicted: List[List[List[str]]], dataset_name: str, config: Config) -> None:
-    top_1_file_lines = []
-    top_k_file_lines = []
-    max_k = config['TOP_K'][-1]
-    for predictions in max_top_k_predicted:
-        top_1_file_lines.append("" if len(predictions) == 0 else ' '.join(predictions[0]))
-        top_k_file_lines.append('====NEW EXAMPLE====')
-        for prediction in predictions[:max_k]:
-            top_k_file_lines.append(' '.join(prediction))
-
-    top_1_path = os.path.join(config['OUTPUT_PATH'], f'{dataset_name}_predicted_top_1.txt')
-    top_k_path = os.path.join(config['OUTPUT_PATH'], f'{dataset_name}_predicted_top_{max_k}.txt')
-    with open(top_1_path, 'w') as top_1_file, open(top_k_path, 'w') as top_k_file:
-        top_1_file.write('\n'.join(top_1_file_lines))
-        top_k_file.write('\n'.join(top_k_file_lines))
 
 
 def test_commit_message_generation_model(model: EncoderDecoder, config: Config, diffs_field: Field, greedy: bool) -> None:
@@ -192,13 +176,82 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
     return diffs_field
 
 
+def test_nearest_neighbors(model: EncoderDecoder, config: Config) -> None:
+    train_dataset_ne, val_dataset_ne, test_dataset_ne, diffs_field = \
+        CodeChangesTokensDataset.load_data(verbose=True, config=config)
+    train_dataset_cmg, val_dataset_cmg, test_dataset_cmg, fields_commit = \
+        CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
+    nearest_neighbors_experiment = NearestNeighbors(model, fields_commit[1], config)
+
+    model.eval()
+    model.unset_edit_representation()
+    with torch.no_grad():
+        measure_experiment_time(
+            lambda: nearest_neighbors_experiment.conduct([val_dataset_cmg],
+                                                         {'val_dataset_cmg': val_dataset_cmg,
+                                                          'test_dataset_cmg': test_dataset_cmg},
+                                                         FeaturesType.SRC_AND_EDIT,
+                                                         'val_cmg')
+        )
+
+        measure_experiment_time(
+            lambda: nearest_neighbors_experiment.conduct([val_dataset_ne],
+                                                         {'val_dataset_cmg': val_dataset_cmg,
+                                                          'test_dataset_cmg': test_dataset_cmg},
+                                                         FeaturesType.SRC_AND_EDIT,
+                                                         'val_ne')
+        )
+
+        measure_experiment_time(
+            lambda: nearest_neighbors_experiment.conduct([train_dataset_cmg],
+                                                         {'val_dataset_cmg': val_dataset_cmg,
+                                                          'test_dataset_cmg': test_dataset_cmg},
+                                                         FeaturesType.SRC_AND_EDIT,
+                                                         'train_cmg')
+        )
+
+        measure_experiment_time(
+            lambda: nearest_neighbors_experiment.conduct([train_dataset_ne],
+                                                         {'val_dataset_cmg': val_dataset_cmg,
+                                                          'test_dataset_cmg': test_dataset_cmg},
+                                                         FeaturesType.SRC_AND_EDIT,
+                                                         'train_ne')
+        )
+
+        measure_experiment_time(
+            lambda: nearest_neighbors_experiment.conduct([train_dataset_ne, val_dataset_ne],
+                                                         {'val_dataset_cmg': val_dataset_cmg,
+                                                          'test_dataset_cmg': test_dataset_cmg},
+                                                         FeaturesType.SRC_AND_EDIT,
+                                                         'train_ne_and_val_ne')
+        )
+
+        measure_experiment_time(
+            lambda: nearest_neighbors_experiment.conduct([train_dataset_ne, val_dataset_ne, train_dataset_cmg],
+                                                         {'val_dataset_cmg': val_dataset_cmg,
+                                                          'test_dataset_cmg': test_dataset_cmg},
+                                                         FeaturesType.SRC_AND_EDIT,
+                                                         'train_ne_and_val_ne_and_train_cmg')
+        )
+
+        measure_experiment_time(
+            lambda: nearest_neighbors_experiment.conduct([train_dataset_ne, val_dataset_ne, train_dataset_cmg, val_dataset_cmg],
+                                                         {'val_dataset_cmg': val_dataset_cmg,
+                                                          'test_dataset_cmg': test_dataset_cmg},
+                                                         FeaturesType.SRC_AND_EDIT,
+                                                         'train_ne_and_val_ne_and_train_cmg_and_val_cmg')
+        )
+
+
 def print_results(results_root: str, config: Config) -> None:
     pprint.pprint(config.get_config())
-    print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
     neural_editor = None
     if config['USE_EDIT_REPRESENTATION']:
         neural_editor = torch.load(os.path.join(results_root, 'model_best_on_validation_neural_editor.pt'),
                                    map_location=config['DEVICE'])
+    print('\n====STARTING NEAREST NEIGHBORS EVALUATION====\n', end='')
+    test_nearest_neighbors(neural_editor, config)
+    print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
     diffs_field = test_neural_editor_model(neural_editor, config)
     print('\n====STARTING COMMIT MSG GENERATOR EVALUATION====\n', end='')
     commit_msg_generator = torch.load(os.path.join(results_root, 'model_best_on_validation_commit_msg_generator.pt'),
