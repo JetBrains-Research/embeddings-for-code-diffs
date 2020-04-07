@@ -22,6 +22,10 @@ class FeaturesType(Enum):
     SRC_AND_EDIT = 3
 
 
+def metric(x: np.ndarray, y: np.ndarray) -> float:
+    return (x != y).sum()
+
+
 class NearestNeighbors:
     def __init__(self, model: EncoderDecoder, target_field: Field, config: Config) -> None:
         super().__init__()
@@ -59,6 +63,28 @@ class NearestNeighbors:
         prediction = np.array(prediction)
         targets = np.array(targets)
         return (prediction == targets).sum(), len(prediction)
+
+    def extract_features_src(self, datasets: List[Dataset], features_type: FeaturesType) -> Tuple[np.ndarray, List[List[str]]]:
+        features = []
+        targets = []
+        for dataset in datasets:
+            targets += [example.msg for example in dataset.examples]
+            dataset_features = None
+            data_iterator = data.Iterator(dataset, batch_size=len(dataset), train=False,
+                                          shuffle=False,
+                                          sort=False,
+                                          sort_within_batch=True,
+                                          sort_key=lambda x: (len(x.src), len(x.trg)),
+                                          device=self.config['DEVICE'])
+            data_iterator = (rebatch(self.pad_index, batch, dataset, self.config) for batch in data_iterator)
+            for batch in data_iterator:
+                batch_features = batch.src.detach().numpy()
+                if dataset_features is None:
+                    dataset_features = np.empty((len(dataset), self.config['TOKENS_CODE_CHUNK_MAX_LEN'])).astype(batch_features.dtype)
+                    dataset_features.fill(self.pad_index)
+                dataset_features[batch.ids, :batch_features.shape[1]] = batch_features
+            features.append(dataset_features)
+        return np.concatenate(features, axis=0), targets
 
     def extract_features(self, datasets: List[Dataset], features_type: FeaturesType) -> Tuple[np.ndarray, List[List[str]]]:
         features = []
