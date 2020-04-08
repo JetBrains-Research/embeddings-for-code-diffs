@@ -22,8 +22,8 @@ class FeaturesType(Enum):
     SRC_AND_EDIT = 3
 
 
-def metric(x: np.ndarray, y: np.ndarray) -> float:
-    return (x != y).sum()
+def sequence_equality(x: np.ndarray, y: np.ndarray) -> float:
+    return (np.abs(x - y) > 1e-10).sum()
 
 
 class NearestNeighbors:
@@ -39,7 +39,7 @@ class NearestNeighbors:
                 features_type: FeaturesType, training_label: str) -> None:
         print(f'Conducting Nearest Neighbors experiment with training on {training_label}')
         train_X, train_Y = self.extract_features(train_datasets, features_type)
-        nbrs = sklearn.neighbors.NearestNeighbors(n_neighbors=1, algorithm='brute').fit(train_X)
+        nbrs = sklearn.neighbors.NearestNeighbors(n_neighbors=1, algorithm='brute', metric=sequence_equality).fit(train_X)
         for dataset_name, dataset in test_datasets.items():
             print(f'Evalution on {dataset_name}...')
             test_X, test_Y = self.extract_features([dataset], features_type)
