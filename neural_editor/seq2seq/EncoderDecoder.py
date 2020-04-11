@@ -73,7 +73,7 @@ class EncoderDecoder(nn.Module):
         encoded_train['edit_cell'] = torch.cat(encoded_train['edit_cell'], dim=1)
         encoded_train['nbrs'] = \
             NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2) \
-                .fit(encoded_train['src_hidden'].detach().numpy())
+                .fit(encoded_train['src_hidden'].detach().cpu().numpy())
         self.encoded_train = encoded_train
 
     def unset_training_vectors(self) -> None:
