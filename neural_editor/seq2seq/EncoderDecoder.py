@@ -80,7 +80,7 @@ class EncoderDecoder(nn.Module):
         self.encoded_train = None
 
     def get_edit_final_from_train(self, src: Tensor) -> Tuple[Tensor, Tensor]:
-        src = src.detach().numpy()
+        src = src.detach().cpu().numpy()
         indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
         indices = indices[:, 0]
         return self.encoded_train['edit_hidden'][:, indices, :], self.encoded_train['edit_cell'][:, indices, :]
