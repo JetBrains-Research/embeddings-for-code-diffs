@@ -104,7 +104,7 @@ class Decoder(nn.Module):
                  [B, TrgSeqLen, DecoderH]
         ]
         """
-        use_teacher_forcing = True if random.random() < self.teacher_forcing_ratio else False  # TODO: turn off teacher forcing if evaluation mode
+        use_teacher_forcing = True if random.random() < self.teacher_forcing_ratio else False
 
         # the maximum number of steps to unroll the RNN
         max_len = trg_mask.size(-1)
