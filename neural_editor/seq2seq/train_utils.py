@@ -50,6 +50,15 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
     return model
 
 
+def set_training_vectors(model: EncoderDecoder, train_dataset: Dataset, pad_index: int, config: Config) -> None:
+    data_iterator = data.Iterator(train_dataset, batch_size=config['BATCH_SIZE'], train=False,
+                                  sort_within_batch=True,
+                                  sort_key=lambda x: (len(x.src), len(x.trg)), repeat=False,
+                                  device=config['DEVICE'])
+    data_iterator = [rebatch(pad_index, batch, config) for batch in data_iterator]
+    model.set_training_vectors(data_iterator)
+
+
 def rebatch(pad_idx: int, batch: torchtext.data.Batch, config: Config) -> Batch:
     """Wrap torchtext batch into our own Batch class for pre-processing"""
     # These fields are added dynamically by PyTorch

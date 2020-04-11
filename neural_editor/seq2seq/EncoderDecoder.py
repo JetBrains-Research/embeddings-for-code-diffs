@@ -1,8 +1,10 @@
 from typing import Tuple
 
 import torch
+from sklearn.neighbors import NearestNeighbors
 from torch import nn
 from torch import Tensor
+from torchtext import data
 
 from edit_representation.sequence_encoding import EditEncoder
 from neural_editor.seq2seq import Generator, Batch
@@ -19,6 +21,7 @@ class EncoderDecoder(nn.Module):
                  embed: nn.Embedding, generator: Generator) -> None:
         super(EncoderDecoder, self).__init__()
         self.edit_final = None
+        self.encoded_train = None
         self.encoder = encoder
         self.decoder = decoder
         self.edit_encoder = edit_encoder
@@ -58,6 +61,30 @@ class EncoderDecoder(nn.Module):
         """
         self.edit_final = None
 
+    def set_training_vectors(self, data_iterator: data.Iterator) -> None:
+        encoded_train = {'src_hidden': [], 'edit_hidden': [], 'edit_cell': []}
+        for batch in data_iterator:
+            (edit_hidden, edit_cell), _, (encoder_hidden, _) = self.encode(batch)
+            encoded_train['src_hidden'].append(encoder_hidden[-1])
+            encoded_train['edit_hidden'].append(edit_hidden)
+            encoded_train['edit_cell'].append(edit_cell)
+        encoded_train['src_hidden'] = torch.cat(encoded_train['src_hidden'], dim=0)
+        encoded_train['edit_hidden'] = torch.cat(encoded_train['edit_hidden'], dim=1)
+        encoded_train['edit_cell'] = torch.cat(encoded_train['edit_cell'], dim=1)
+        encoded_train['nbrs'] = \
+            NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2) \
+                .fit(encoded_train['src_hidden'].detach().numpy())
+        self.encoded_train = encoded_train
+
+    def unset_training_vectors(self) -> None:
+        self.encoded_train = None
+
+    def get_edit_final_from_train(self, src: Tensor) -> Tuple[Tensor, Tensor]:
+        src = src.detach().numpy()
+        indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
+        indices = indices[:, 0]
+        return self.encoded_train['edit_hidden'][:, indices, :], self.encoded_train['edit_cell'][:, indices, :]
+
     def encode_edit(self, batch: Batch) -> Tuple[Tensor, Tensor]:
         """
         Returns edit representations (edit_final) of samples in the batch.
@@ -91,11 +118,13 @@ class EncoderDecoder(nn.Module):
             Tuple[[NumLayers, B, NumDirections * SrcEncoderH], [NumLayers, B, NumDirections * SrcEncoderH]]
         ]
         """
-        if self.edit_final is None:
-            edit_final = self.encode_edit(batch)
-        else:
-            edit_final = self.edit_final
         encoder_output, encoder_final = self.encoder(self.embed(batch.src), batch.src_mask, batch.src_lengths)
+        if self.edit_final is not None:
+            edit_final = self.edit_final
+        elif self.encoded_train is not None:
+            edit_final = self.get_edit_final_from_train(encoder_final[0][-1])
+        else:
+            edit_final = self.encode_edit(batch)
         return edit_final, encoder_output, encoder_final
 
     def decode(self, edit_final: Tuple[Tensor, Tensor],

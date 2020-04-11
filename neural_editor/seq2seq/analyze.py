@@ -42,7 +42,7 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
         load_tufano_dataset(config['TUFANO_CODE_CHANGES_50_100_PATH'], diffs_field, config)
 
     one_shot_learning_experiment = OneShotLearning(model, diffs_field, config)
-    accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, config)
+    accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, train_dataset, config)
     visualization_experiment = EditRepresentationVisualization(model, diffs_field, config)
 
     model.eval()
