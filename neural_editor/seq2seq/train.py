@@ -28,6 +28,7 @@ def load_data(verbose: bool, config: Config) -> Tuple[Dataset, Dataset, Dataset,
                                     eos_token=config['EOS_TOKEN'])  # TODO: init_token=None?
     train_data, val_data, test_data = load_datasets(CodeChangesTokensDataset,
                                                     config['DATASET_ROOT'], diffs_field, config,
+                                                    train_reverse_examples_ratio=config['ADD_REVERSE_EXAMPLES_FOR_TRAIN_RATIO'],
                                                     filter_pred=lambda x: len(vars(x)['src']) <= config[
                                                         'TOKENS_CODE_CHUNK_MAX_LEN'] and
                                                                           len(vars(x)['trg']) <= config[
@@ -43,7 +44,8 @@ def load_data(verbose: bool, config: Config) -> Tuple[Dataset, Dataset, Dataset,
 
 def load_tufano_dataset(path: str, diffs_field: Field, config: Config) -> Tuple[Dataset, Dataset, Dataset]:
     train_dataset, val_dataset, test_dataset = load_datasets(CodeChangesTokensDataset,
-                                                             path, diffs_field, config)
+                                                             path, diffs_field, config,
+                                                             train_reverse_examples_ratio=0.0)
     return train_dataset, val_dataset, test_dataset
 
 

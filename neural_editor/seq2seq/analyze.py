@@ -49,6 +49,7 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
     model.unset_edit_representation()
     with torch.no_grad():
         # Visualization of data
+        """
         measure_experiment_time(
             lambda: visualization_experiment.conduct(tufano_labeled_0_50_dataset,
                                                      'tufano_labeled_0_50_2d_representations.png',
@@ -100,6 +101,7 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
             lambda: visualization_experiment.conduct(take_part_from_dataset(train_dataset, 5000),
                                                      'train5000_2d_representations.png', classes=None)
         )
+        """
 
         # Accuracy
         measure_experiment_time(
@@ -146,6 +148,8 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
             lambda: accuracy_calculation_experiment.conduct(
                 test_dataset, 'Test dataset all')
         )
+
+        print('Starting all Tufano variations experiments', flush=True)
 
         # Tufano accuracy evaluation
         measure_experiment_time(

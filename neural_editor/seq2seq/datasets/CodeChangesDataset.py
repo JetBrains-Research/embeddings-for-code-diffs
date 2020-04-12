@@ -1,4 +1,5 @@
 import os
+import random
 
 from torchtext import data
 from torchtext.data import Field
@@ -10,7 +11,7 @@ from neural_editor.seq2seq.config import Config
 class CodeChangesTokensDataset(data.Dataset):
     """Defines a dataset for code changes. It parses text files with tokens"""
 
-    def __init__(self, path: str, field: Field, config: Config, **kwargs) -> None:
+    def __init__(self, path: str, field: Field, add_reverse_examples_ratio: float, config: Config, **kwargs) -> None:
         """Create a TranslationDataset given paths and fields.
 
         Arguments:
@@ -31,8 +32,14 @@ class CodeChangesTokensDataset(data.Dataset):
             for prev_line, updated_line in zip(prev, updated):
                 prev_line, updated_line = prev_line.strip(), updated_line.strip()
                 if prev_line != '' and updated_line != '':
-                    diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
-                                                       leave_only_changed=config['LEAVE_ONLY_CHANGED'])
-                    examples.append(data.Example.fromlist(
-                        [prev_line, updated_line, diff[0], diff[1], diff[2]], fields))
+                    self.add_example(config, differ, examples, fields, prev_line, updated_line)
+                    add_reverse_example = random.random() < add_reverse_examples_ratio
+                    if add_reverse_example:
+                        self.add_example(config, differ, examples, fields, updated_line, prev_line)
         super(CodeChangesTokensDataset, self).__init__(examples, fields, **kwargs)
+
+    def add_example(self, config, differ, examples, fields, prev_line, updated_line):
+        diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
+                                           leave_only_changed=config['LEAVE_ONLY_CHANGED'])
+        examples.append(data.Example.fromlist(
+            [prev_line, updated_line, diff[0], diff[1], diff[2]], fields))

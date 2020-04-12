@@ -49,13 +49,14 @@ def save_perplexity_plot(perplexities: List[List[float]], labels: List[str], fil
 
 
 def load_defects4j_dataset(diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:
-    dataset = CodeChangesTokensDataset(config['DEFECTS4J_PATH'], diffs_field, config)
+    dataset = CodeChangesTokensDataset(config['DEFECTS4J_PATH'], diffs_field,
+                                       add_reverse_examples_ratio=0, config=config)
     classes = Path(config['DEFECTS4J_PATH']).joinpath('classes.txt').read_text().splitlines(keepends=False)
     return dataset, classes
 
 
 def load_labeled_dataset(path: str, diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:
-    dataset = CodeChangesTokensDataset(path, diffs_field, config)
+    dataset = CodeChangesTokensDataset(path, diffs_field, add_reverse_examples_ratio=0, config=config)
     classes = Path(path).joinpath('classes.txt').read_text().splitlines(keepends=False)
     return dataset, classes
 

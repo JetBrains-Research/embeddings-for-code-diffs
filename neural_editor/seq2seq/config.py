@@ -55,6 +55,7 @@ class Config:
         'UNCHANGED_TOKEN': 'равенство',
         'PADDING_TOKEN': 'паддинг',
         'LEAVE_ONLY_CHANGED': True,
+        'ADD_REVERSE_EXAMPLES_FOR_TRAIN_RATIO': 1.0,
         'VERBOSE': True,
         'BATCH_SIZE': 64,
         'TSNE_BATCH_SIZE': 1024,

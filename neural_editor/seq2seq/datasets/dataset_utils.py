@@ -36,11 +36,12 @@ def concat_and_write_tokens_as_string_via_separator(root: str, sep: str = ' ') -
 
 
 def load_datasets(dataset_cls: Dataset.__class__, path: str, field: Field, config: Config,
+                  train_reverse_examples_ratio: float,
                   train: str = 'train', val: str = 'val', test: str = 'test',
                   **kwargs) -> Tuple[Dataset, ...]:
-    train_data: Dataset = dataset_cls(os.path.join(path, train), field, config, **kwargs)
-    val_data: Dataset = dataset_cls(os.path.join(path, val), field, config, **kwargs)
-    test_data: Dataset = dataset_cls(os.path.join(path, test), field, config, **kwargs)
+    train_data: Dataset = dataset_cls(os.path.join(path, train), field, train_reverse_examples_ratio, config, **kwargs)
+    val_data: Dataset = dataset_cls(os.path.join(path, val), field, 0, config, **kwargs)
+    test_data: Dataset = dataset_cls(os.path.join(path, test), field, 0, config, **kwargs)
     return tuple(d for d in (train_data, val_data, test_data))
 
 
