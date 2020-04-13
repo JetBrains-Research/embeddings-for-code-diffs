@@ -47,6 +47,7 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
 
     model.eval()
     model.unset_edit_representation()
+    model.unset_training_vectors()
     with torch.no_grad():
         # Visualization of data
         """

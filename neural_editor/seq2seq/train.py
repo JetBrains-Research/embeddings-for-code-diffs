@@ -15,7 +15,7 @@ from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
 from neural_editor.seq2seq.test_utils import save_perplexity_plot
-from neural_editor.seq2seq.train_utils import output_accuracy_on_data
+from neural_editor.seq2seq.train_utils import output_accuracy_on_data, set_training_vectors
 from neural_editor.seq2seq.config import load_config, Config
 from neural_editor.seq2seq.train_utils import print_data_info, make_model, \
     run_epoch, rebatch, print_examples
@@ -97,10 +97,14 @@ def train(model: EncoderDecoder,
 
         print(f'Epoch {epoch} / {epochs_num}')
         model.train()
-        train_perplexity = run_epoch((rebatch(pad_index, b, config) for b in train_iter),
+
+        if epoch % config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH'] == 0:
+            set_training_vectors(model, train_data, pad_index, config)
+
+        train_perplexity = run_epoch([rebatch(pad_index, b, config) for b in train_iter],
                                      model, train_loss_function,
-                                     train_batches_num,
-                                     print_every=config['PRINT_EVERY_iTH_BATCH'])
+                                     epoch, train_batches_num,
+                                     print_every=config['PRINT_EVERY_iTH_BATCH'], config=config)
         print(f'Train perplexity: {train_perplexity}')
         train_perplexities.append(train_perplexity)
 
@@ -111,9 +115,10 @@ def train(model: EncoderDecoder,
                            diffs_field.vocab, config, n=3)
 
             # TODO: consider if we should or not use teacher forcing on validation
-            val_perplexity = run_epoch((rebatch(pad_index, t, config) for t in val_iter),
+            val_perplexity = run_epoch([rebatch(pad_index, t, config) for t in val_iter],
                                        model, val_loss_function,
-                                       val_batches_num, print_every=config['PRINT_EVERY_iTH_BATCH'])
+                                       epoch, val_batches_num, print_every=config['PRINT_EVERY_iTH_BATCH'],
+                                       config=config)
             print(f'Validation perplexity: {val_perplexity}')
             val_perplexities.append(val_perplexity)
             if val_perplexity < min_val_perplexity:
@@ -126,6 +131,7 @@ def train(model: EncoderDecoder,
         if epoch % config['SAVE_MODEL_EVERY'] == 0:
             save_data_on_checkpoint(model, train_perplexities, val_perplexities, config)
 
+    model.unset_training_vectors()
     return train_perplexities, val_perplexities
 
 
@@ -175,9 +181,9 @@ def test_on_unclassified_data(model: EncoderDecoder,
     model.eval()
     output_accuracy_on_data(model, train_data, val_data, test_data, diffs_field.vocab, pad_index, config)
     with torch.no_grad():
-        test_perplexity = run_epoch((rebatch(pad_index, t, config) for t in test_iter),
+        test_perplexity = run_epoch([rebatch(pad_index, t, config) for t in test_iter],
                                     model, test_loss_function,
-                                    test_batches_num, print_every=-1)
+                                    0, test_batches_num, print_every=-1, config=config)
         print(f'Test perplexity: {test_perplexity}')
 
 

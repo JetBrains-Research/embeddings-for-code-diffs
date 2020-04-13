@@ -1,4 +1,5 @@
 import math
+import random
 import time
 import typing
 from datetime import timedelta
@@ -98,25 +99,73 @@ def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset
     print("Number of words (types):", len(field.vocab))
 
 
-def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: SimpleLossCompute,
-              batches_num: int, print_every: int) -> float:
+def run_epoch(data_iter: typing.List, model: EncoderDecoder, loss_compute: SimpleLossCompute,
+              epoch: int, batches_num: int, print_every: int, config: Config) -> float:
     """
     Standard Training and Logging Function
     :return: loss per token
     """
+    epoch_start = time.time()
+    total_loss, total_tokens = 0, 0
+    if config['LOSS_FUNCTION_PARAMS']['measure'] == 'epochs':
+        if config['LOSS_FUNCTION_PARAMS']['default_loss_period'] != 0 and \
+                epoch % config['LOSS_FUNCTION_PARAMS']['default_loss_period'] == 0:
+            total_default_loss, total_tokens_default_loss = iterate_over_all_data(batches_num, data_iter,
+                                                                                  loss_compute, model,
+                                                                                  print_every,
+                                                                                  ratios=(1, 0))
+            total_loss += total_default_loss
+            total_tokens += total_tokens_default_loss
+        if config['LOSS_FUNCTION_PARAMS']['bug_fixing_loss_period'] != 0 and \
+                epoch % config['LOSS_FUNCTION_PARAMS']['bug_fixing_loss_period'] == 0:
+            total_bug_fixing_loss, total_tokens_bug_fixing_loss = iterate_over_all_data(batches_num, data_iter,
+                                                                                        loss_compute, model,
+                                                                                        print_every,
+                                                                                        ratios=(0, 1))
+            total_loss += total_bug_fixing_loss
+            total_tokens += total_tokens_bug_fixing_loss
+    elif config['LOSS_FUNCTION_PARAMS']['measure'] == 'batches':
+        loss, tokens = iterate_over_all_data(batches_num, data_iter,
+                                             loss_compute, model,
+                                             print_every,
+                                             ratios=(config['LOSS_FUNCTION_PARAMS']['default_loss_period'],
+                                                     config['LOSS_FUNCTION_PARAMS']['bug_fixing_loss_period']))
+        total_loss += loss
+        total_tokens += tokens
+    else:
+        raise Exception('Unsupported measure fro LOSS_FUNCTION_PARAMS')
+    epoch_duration = time.time() - epoch_start
+    print(f'Epoch ended with duration {str(timedelta(seconds=epoch_duration))}')
+    return math.exp(total_loss / float(total_tokens))
 
+
+def iterate_over_all_data(batches_num, data_iter, loss_compute, model, print_every, ratios):
     start = time.time()
-    epoch_start = start
     total_tokens = 0
     total_loss = 0
     print_tokens = 0
-
     for i, batch in enumerate(data_iter, 1):
-        out, _, pre_output = model.forward(batch)
-        loss = loss_compute(pre_output, batch.trg_y, batch.nseqs)
+        do_default_loss = random.random() < ratios[0]
+        do_bug_fixing_loss = random.random() < ratios[1]
+        pre_output_default_loss = None
+        pre_output_bug_fixing_loss = None
+        if do_default_loss:
+            _, _, pre_output_default_loss = model.forward(batch, ignore_encoded_train=True)
+            total_tokens += batch.ntokens
+            print_tokens += batch.ntokens
+        if do_bug_fixing_loss:
+            _, _, pre_output_bug_fixing_loss = model.forward(batch, ignore_encoded_train=False)
+            total_tokens += batch.ntokens
+            print_tokens += batch.ntokens
+        if pre_output_default_loss is None and pre_output_bug_fixing_loss is None:
+            loss = 0
+        elif pre_output_default_loss is None:
+            loss = loss_compute(pre_output_bug_fixing_loss, batch.trg_y, batch.nseqs)
+        elif pre_output_bug_fixing_loss is None:
+            loss = loss_compute(pre_output_default_loss, batch.trg_y, batch.nseqs)
+        else:
+            loss = loss_compute(pre_output_default_loss, batch.trg_y, batch.nseqs, pre_output_bug_fixing_loss)
         total_loss += loss
-        total_tokens += batch.ntokens
-        print_tokens += batch.ntokens
 
         if model.training and i % print_every == 0:
             elapsed = time.time() - start
@@ -125,9 +174,7 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
                   f'Tokens per Sec: {print_tokens / elapsed}')
             start = time.time()
             print_tokens = 0
-    epoch_duration = time.time() - epoch_start
-    print(f'Epoch ended with duration {str(timedelta(seconds=epoch_duration))}')
-    return math.exp(total_loss / float(total_tokens))
+    return total_loss, total_tokens
 
 
 def greedy_decode(model: EncoderDecoder, batch: Batch,

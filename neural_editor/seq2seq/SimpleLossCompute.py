@@ -1,3 +1,5 @@
+from typing import Optional
+
 from torch import Tensor
 from torch.nn.modules.loss import _Loss
 from torch.optim.optimizer import Optimizer
@@ -13,16 +15,16 @@ class SimpleLossCompute:
         self.criterion = criterion
         self.optimizer = optimizer
 
-    def __call__(self, x: Tensor, y: Tensor, norm: int) -> float:
+    def __call__(self, x: Tensor, y: Tensor, norm: int, x2: Optional[Tensor] = None) -> float:
         """
         :param x: [B, TrgSeqLen, DecoderH]
         :param y: [B, TrgSeqLen]
         :param norm: normalizing coefficient (usually batch size)
         :return: float
         """
-        x = self.generator(x)  # [B, TrgSeqLen, V]
-        loss = self.criterion(x.contiguous().view(-1, x.size(-1)),
-                              y.contiguous().view(-1))  # [1]
+        loss = self.get_loss(x, y)
+        if x2 is not None:
+            loss += self.get_loss(x2, y)
         loss = loss / norm
 
         if self.optimizer is not None:
@@ -31,3 +33,9 @@ class SimpleLossCompute:
             self.optimizer.zero_grad()
 
         return loss.data.item() * norm
+
+    def get_loss(self, x, y) -> Tensor:
+        x = self.generator(x)  # [B, TrgSeqLen, V]
+        loss = self.criterion(x.contiguous().view(-1, x.size(-1)),
+                              y.contiguous().view(-1))  # [1]
+        return loss

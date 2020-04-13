@@ -28,11 +28,12 @@ class EncoderDecoder(nn.Module):
         self.embed = embed
         self.generator = generator
 
-    def forward(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
+    def forward(self, batch: Batch, ignore_encoded_train) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
         """
         Take in and process masked src and target sequences.
         Returns tuple of decoder states, hidden states of decoder, pre-output states.
         Pre-output combines output states with context and embedding of previous token
+        :param ignore_encoded_train: if we should ignore encoded train
         :param batch: batch to process
         :return:  Tuple[
                  [B, TrgSeqLen, DecoderH],
@@ -40,7 +41,7 @@ class EncoderDecoder(nn.Module):
                  [B, TrgSeqLen, DecoderH]
         ]
         """
-        edit_final, encoder_output, encoder_final = self.encode(batch)
+        edit_final, encoder_output, encoder_final = self.encode(batch, ignore_encoded_train)
         decoded = self.decode(edit_final, encoder_output,
                               encoder_final, batch.src_mask,
                               batch.trg, batch.trg_mask, None)
@@ -62,18 +63,20 @@ class EncoderDecoder(nn.Module):
         self.edit_final = None
 
     def set_training_vectors(self, data_iterator: data.Iterator) -> None:
+        self.unset_training_vectors()
         encoded_train = {'src_hidden': [], 'edit_hidden': [], 'edit_cell': []}
         for batch in data_iterator:
-            (edit_hidden, edit_cell), _, (encoder_hidden, _) = self.encode(batch)
+            (edit_hidden, edit_cell), _, (encoder_hidden, _) = self.encode(batch, ignore_encoded_train=True)
             encoded_train['src_hidden'].append(encoder_hidden[-1])
             encoded_train['edit_hidden'].append(edit_hidden)
             encoded_train['edit_cell'].append(edit_cell)
         encoded_train['src_hidden'] = torch.cat(encoded_train['src_hidden'], dim=0)
-        encoded_train['edit_hidden'] = torch.cat(encoded_train['edit_hidden'], dim=1)
-        encoded_train['edit_cell'] = torch.cat(encoded_train['edit_cell'], dim=1)
+        encoded_train['edit_hidden'] = torch.cat(encoded_train['edit_hidden'], dim=1).detach()
+        encoded_train['edit_cell'] = torch.cat(encoded_train['edit_cell'], dim=1).detach()
         encoded_train['nbrs'] = \
-            NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2) \
+            NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2, n_jobs=-1) \
                 .fit(encoded_train['src_hidden'].detach().cpu().numpy())
+        del encoded_train['src_hidden']
         self.encoded_train = encoded_train
 
     def unset_training_vectors(self) -> None:
@@ -81,8 +84,13 @@ class EncoderDecoder(nn.Module):
 
     def get_edit_final_from_train(self, src: Tensor) -> Tuple[Tensor, Tensor]:
         src = src.detach().cpu().numpy()
-        indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
-        indices = indices[:, 0]
+        # TODO: get rid of "if" by filtering on batch.ids
+        if self.training:
+            indices = self.encoded_train['nbrs'].kneighbors(src, n_neighbors=2, return_distance=False)
+            indices = indices[:, 1]
+        else:
+            indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
+            indices = indices[:, 0]
         return self.encoded_train['edit_hidden'][:, indices, :], self.encoded_train['edit_cell'][:, indices, :]
 
     def encode_edit(self, batch: Batch) -> Tuple[Tensor, Tensor]:
@@ -108,9 +116,11 @@ class EncoderDecoder(nn.Module):
         )
         return edit_final
 
-    def encode(self, batch: Batch) -> Tuple[Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
+    def encode(self, batch: Batch, ignore_encoded_train=False) -> Tuple[
+        Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
         """
         Encodes edits and prev sequences
+        :param ignore_encoded_train: if we should ignore encoded train
         :param batch: batch to process
         :return: Tuple[
             Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]],
@@ -121,7 +131,7 @@ class EncoderDecoder(nn.Module):
         encoder_output, encoder_final = self.encoder(self.embed(batch.src), batch.src_mask, batch.src_lengths)
         if self.edit_final is not None:
             edit_final = self.edit_final
-        elif self.encoded_train is not None:
+        elif self.encoded_train is not None and not ignore_encoded_train:
             edit_final = self.get_edit_final_from_train(encoder_final[0][-1])
         else:
             edit_final = self.encode_edit(batch)
