@@ -57,7 +57,7 @@ class Config:
         'LEAVE_ONLY_CHANGED': True,
         'ADD_REVERSE_EXAMPLES_FOR_TRAIN_RATIO': 0.0,
         'UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH': 5,
-        'LOSS_FUNCTION_PARAMS': {'measure': 'batches', 'default_loss_period': 1, 'bug_fixing_loss_period': 1},
+        'LOSS_FUNCTION_PARAMS': {'measure': 'batches', 'default_loss_period': 0.0, 'bug_fixing_loss_period': 1.0},
         'VERBOSE': True,
         'BATCH_SIZE': 64,
         'TSNE_BATCH_SIZE': 1024,
@@ -94,7 +94,7 @@ class Config:
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
         self._CONFIG['TUFANO_LABELED_50_100_PATH'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/50_100'
-        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 2
+        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 4
 
 
 def load_config(is_test: bool, path_to_config: Path = None) -> Config:

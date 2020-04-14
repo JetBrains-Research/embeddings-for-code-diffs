@@ -8,6 +8,7 @@ from torchtext import data
 
 from edit_representation.sequence_encoding import EditEncoder
 from neural_editor.seq2seq import Generator, Batch
+from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder import Decoder
 from neural_editor.seq2seq.encoder import Encoder
 
@@ -18,7 +19,7 @@ class EncoderDecoder(nn.Module):
     """
 
     def __init__(self, encoder: Encoder, decoder: Decoder, edit_encoder: EditEncoder,
-                 embed: nn.Embedding, generator: Generator) -> None:
+                 embed: nn.Embedding, generator: Generator, config: Config) -> None:
         super(EncoderDecoder, self).__init__()
         self.edit_final = None
         self.encoded_train = None
@@ -27,6 +28,7 @@ class EncoderDecoder(nn.Module):
         self.edit_encoder = edit_encoder
         self.embed = embed
         self.generator = generator
+        self.config = config
 
     def forward(self, batch: Batch, ignore_encoded_train) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
         """
@@ -67,21 +69,24 @@ class EncoderDecoder(nn.Module):
         encoded_train = {'src_hidden': [], 'edit_hidden': [], 'edit_cell': [], 'ids': []}
         for batch in data_iterator:
             (edit_hidden, edit_cell), _, (encoder_hidden, _) = self.encode(batch, ignore_encoded_train=True)
-            encoded_train['src_hidden'].append(encoder_hidden[-1])
-            encoded_train['edit_hidden'].append(edit_hidden)
-            encoded_train['edit_cell'].append(edit_cell)
-            encoded_train['ids'].append(batch.ids)
+            encoded_train['src_hidden'].append(encoder_hidden[-1].detach().cpu())
+            encoded_train['edit_hidden'].append(edit_hidden.detach().cpu())
+            encoded_train['edit_cell'].append(edit_cell.detach().cpu())
+            encoded_train['ids'].append(batch.ids.detach().cpu())
         encoded_train['src_hidden'] = torch.cat(encoded_train['src_hidden'], dim=0)
-        encoded_train['edit_hidden'] = torch.cat(encoded_train['edit_hidden'], dim=1).detach()
-        encoded_train['edit_cell'] = torch.cat(encoded_train['edit_cell'], dim=1).detach()
-        encoded_train['ids'] = torch.cat(encoded_train['ids'], dim=0).detach()
+        encoded_train['edit_hidden'] = torch.cat(encoded_train['edit_hidden'], dim=1)
+        encoded_train['edit_cell'] = torch.cat(encoded_train['edit_cell'], dim=1)
+        encoded_train['ids'] = torch.cat(encoded_train['ids'], dim=0)
+
         encoded_train['src_hidden'][encoded_train['ids'], :] = encoded_train['src_hidden']
         encoded_train['edit_hidden'][:, encoded_train['ids'], :] = encoded_train['edit_hidden']
         encoded_train['edit_cell'][:, encoded_train['ids'], :] = encoded_train['edit_cell']
+
         encoded_train['nbrs'] = \
             NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2, n_jobs=-1) \
-                .fit(encoded_train['src_hidden'].detach().cpu().numpy())
+                .fit(encoded_train['src_hidden'].numpy())
         del encoded_train['src_hidden']
+
         self.encoded_train = encoded_train
 
     def unset_training_vectors(self) -> None:
@@ -100,7 +105,8 @@ class EncoderDecoder(nn.Module):
         else:
             indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
             indices = indices[:, 0]
-        return self.encoded_train['edit_hidden'][:, indices, :], self.encoded_train['edit_cell'][:, indices, :]
+        return self.encoded_train['edit_hidden'][:, indices, :].to(self.config['DEVICE']), \
+               self.encoded_train['edit_cell'][:, indices, :].to(self.config['DEVICE'])
 
     def encode_edit(self, batch: Batch) -> Tuple[Tensor, Tensor]:
         """

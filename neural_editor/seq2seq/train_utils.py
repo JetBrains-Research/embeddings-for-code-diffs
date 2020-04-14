@@ -45,8 +45,7 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
                 dropout=dropout, bridge=use_bridge,
                 use_edit_representation=config['USE_EDIT_REPRESENTATION']),
         EditEncoder(3 * emb_size, edit_representation_size, num_layers, dropout),
-        embedding,  # 1 -> Emb
-        generator)
+        embedding, generator, config)
     model.to(config['DEVICE'])
     return model
 
