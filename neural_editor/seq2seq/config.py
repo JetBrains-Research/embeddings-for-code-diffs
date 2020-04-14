@@ -56,7 +56,7 @@ class Config:
         'PADDING_TOKEN': 'паддинг',
         'LEAVE_ONLY_CHANGED': True,
         'ADD_REVERSE_EXAMPLES_FOR_TRAIN_RATIO': 0.0,
-        'UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH': 5,
+        'UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH': {'measure': 'batches', 'period': 2},
         'LOSS_FUNCTION_PARAMS': {'measure': 'batches', 'default_loss_period': 0.0, 'bug_fixing_loss_period': 1.0},
         'VERBOSE': True,
         'BATCH_SIZE': 64,

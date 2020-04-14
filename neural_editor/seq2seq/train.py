@@ -98,8 +98,10 @@ def train(model: EncoderDecoder,
         print(f'Epoch {epoch} / {epochs_num}')
         model.train()
 
-        if epoch % config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH'] == 0:
-            set_training_vectors(model, train_data, pad_index, config, data_iterator=train_iter)
+        if config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['measure'] == 'epochs' and \
+                config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['period'] != 0 and \
+                epoch % config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['period'] == 0:
+            model.set_training_vectors([rebatch(pad_index, b, config) for b in train_iter])
 
         train_perplexity = run_epoch([rebatch(pad_index, b, config) for b in train_iter],
                                      model, train_loss_function,

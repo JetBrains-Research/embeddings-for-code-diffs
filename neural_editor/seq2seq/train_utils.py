@@ -113,7 +113,8 @@ def run_epoch(data_iter: typing.List, model: EncoderDecoder, loss_compute: Simpl
             total_default_loss, total_tokens_default_loss = iterate_over_all_data(batches_num, data_iter,
                                                                                   loss_compute, model,
                                                                                   print_every,
-                                                                                  ratios=(1, 0))
+                                                                                  ratios=(1, 0),
+                                                                                  config=config)
             total_loss += total_default_loss
             total_tokens += total_tokens_default_loss
         if config['LOSS_FUNCTION_PARAMS']['bug_fixing_loss_period'] != 0 and \
@@ -121,7 +122,8 @@ def run_epoch(data_iter: typing.List, model: EncoderDecoder, loss_compute: Simpl
             total_bug_fixing_loss, total_tokens_bug_fixing_loss = iterate_over_all_data(batches_num, data_iter,
                                                                                         loss_compute, model,
                                                                                         print_every,
-                                                                                        ratios=(0, 1))
+                                                                                        ratios=(0, 1),
+                                                                                        config=config)
             total_loss += total_bug_fixing_loss
             total_tokens += total_tokens_bug_fixing_loss
     elif config['LOSS_FUNCTION_PARAMS']['measure'] == 'batches':
@@ -129,7 +131,8 @@ def run_epoch(data_iter: typing.List, model: EncoderDecoder, loss_compute: Simpl
                                              loss_compute, model,
                                              print_every,
                                              ratios=(config['LOSS_FUNCTION_PARAMS']['default_loss_period'],
-                                                     config['LOSS_FUNCTION_PARAMS']['bug_fixing_loss_period']))
+                                                     config['LOSS_FUNCTION_PARAMS']['bug_fixing_loss_period']),
+                                             config=config)
         total_loss += loss
         total_tokens += tokens
     else:
@@ -139,12 +142,16 @@ def run_epoch(data_iter: typing.List, model: EncoderDecoder, loss_compute: Simpl
     return math.exp(total_loss / float(total_tokens))
 
 
-def iterate_over_all_data(batches_num, data_iter, loss_compute, model, print_every, ratios):
+def iterate_over_all_data(batches_num, data_iter, loss_compute, model, print_every, ratios, config: Config):
     start = time.time()
     total_tokens = 0
     total_loss = 0
     print_tokens = 0
     for i, batch in enumerate(data_iter, 1):
+        if config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['measure'] == 'batches' and \
+                config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['period'] != 0 and \
+                (i - 1) % config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['period'] == 0:
+            model.set_training_vectors(data_iter)
         do_default_loss = random.random() < ratios[0]
         do_bug_fixing_loss = random.random() < ratios[1]
         pre_output_default_loss = None
