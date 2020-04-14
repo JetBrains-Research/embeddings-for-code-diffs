@@ -99,7 +99,7 @@ def train(model: EncoderDecoder,
         model.train()
 
         if epoch % config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH'] == 0:
-            set_training_vectors(model, train_data, pad_index, config)
+            set_training_vectors(model, train_data, pad_index, config, data_iterator=train_iter)
 
         train_perplexity = run_epoch([rebatch(pad_index, b, config) for b in train_iter],
                                      model, train_loss_function,

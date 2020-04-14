@@ -64,15 +64,20 @@ class EncoderDecoder(nn.Module):
 
     def set_training_vectors(self, data_iterator: data.Iterator) -> None:
         self.unset_training_vectors()
-        encoded_train = {'src_hidden': [], 'edit_hidden': [], 'edit_cell': []}
+        encoded_train = {'src_hidden': [], 'edit_hidden': [], 'edit_cell': [], 'ids': []}
         for batch in data_iterator:
             (edit_hidden, edit_cell), _, (encoder_hidden, _) = self.encode(batch, ignore_encoded_train=True)
             encoded_train['src_hidden'].append(encoder_hidden[-1])
             encoded_train['edit_hidden'].append(edit_hidden)
             encoded_train['edit_cell'].append(edit_cell)
+            encoded_train['ids'].append(batch.ids)
         encoded_train['src_hidden'] = torch.cat(encoded_train['src_hidden'], dim=0)
         encoded_train['edit_hidden'] = torch.cat(encoded_train['edit_hidden'], dim=1).detach()
         encoded_train['edit_cell'] = torch.cat(encoded_train['edit_cell'], dim=1).detach()
+        encoded_train['ids'] = torch.cat(encoded_train['ids'], dim=0).detach()
+        encoded_train['src_hidden'][encoded_train['ids'], :] = encoded_train['src_hidden']
+        encoded_train['edit_hidden'][:, encoded_train['ids'], :] = encoded_train['edit_hidden']
+        encoded_train['edit_cell'][:, encoded_train['ids'], :] = encoded_train['edit_cell']
         encoded_train['nbrs'] = \
             NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2, n_jobs=-1) \
                 .fit(encoded_train['src_hidden'].detach().cpu().numpy())
@@ -85,6 +90,10 @@ class EncoderDecoder(nn.Module):
     def get_edit_final_from_train(self, src: Tensor) -> Tuple[Tensor, Tensor]:
         src = src.detach().cpu().numpy()
         # TODO: get rid of "if" by filtering on batch.ids
+        # TODO_DONE: find out why distances are not zeros, reason: dropout in LSTM introduces randomness
+        # TODO: but still some examples from the very first batch
+        #   doesn't match (difference between encoders outputs is < 1e-2), therefore maybe it is just calculation
+        #   errors, such examples are rare (~6 from 64)
         if self.training:
             indices = self.encoded_train['nbrs'].kneighbors(src, n_neighbors=2, return_distance=False)
             indices = indices[:, 1]

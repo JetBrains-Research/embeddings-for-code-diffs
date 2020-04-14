@@ -13,11 +13,13 @@ class Batch:
     def __init__(self, src: Tuple[Tensor, Tensor], trg: Tuple[Tensor, Tensor],
                  diff_alignment: Tuple[Tensor, Tensor],
                  diff_prev: Tuple[Tensor, Tensor], diff_updated: Tuple[Tensor, Tensor],
+                 ids: Tensor,
                  pad_index: int, config: Config) -> None:
         src, src_lengths = src  # B * SrcSeqLen, B
         # src = src[:, 1:]
         # src_lengths = src_lengths - 1
 
+        self.ids = ids
         self.diff_alignment, self.diff_alignment_lengths = diff_alignment  # B * SeqAlignedLen, B
         self.diff_alignment_mask = (self.diff_alignment != pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
         self.diff_prev, self.diff_prev_lengths = diff_prev  # B * SeqAlignedLen, B
