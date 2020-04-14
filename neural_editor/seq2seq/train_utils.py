@@ -263,13 +263,18 @@ def print_examples_decode_method(example_iter: typing.Iterable, model: EncoderDe
         # remove <s> for src
         src = src[1:] if src[0] == sos_index else src
 
-        result = decode_method(batch)
-        result = result[0][0]
         print(colored("Example #%d" % (i + 1), color))
         # TODO_DONE: why does it have <unk>? because vocab isn't build from validation data
         print(colored("Src : " + " ".join(lookup_words(src, vocab))))
         print(colored("Trg : " + " ".join(lookup_words(trg, vocab))))
-        print(colored("Pred: " + " ".join(lookup_words(result, vocab))))
+
+        result = decode_method(batch)
+        if len(result[0]) == 0:
+            # this if can be true if none of the sequences didn't terminate
+            print(colored("Pred: "))
+        else:
+            result = result[0][0]
+            print(colored("Pred: " + " ".join(lookup_words(result, vocab))))
 
         count += 1
         if count == n:
