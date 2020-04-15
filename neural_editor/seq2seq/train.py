@@ -3,7 +3,7 @@ import pickle
 import pprint
 import sys
 from pathlib import Path
-from typing import Tuple, List
+from typing import Tuple, List, Any
 
 import torch
 from torch import nn
@@ -15,10 +15,11 @@ from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
 from neural_editor.seq2seq.test_utils import save_perplexity_plot
-from neural_editor.seq2seq.train_utils import output_accuracy_on_data, set_training_vectors
+from neural_editor.seq2seq.train_utils import output_accuracy_on_data
 from neural_editor.seq2seq.config import load_config, Config
 from neural_editor.seq2seq.train_utils import print_data_info, make_model, \
-    run_epoch, rebatch, print_examples
+    run_epoch, print_examples
+from neural_editor.seq2seq.Batch import rebatch
 
 
 def load_data(verbose: bool, config: Config) -> Tuple[Dataset, Dataset, Dataset, Field]:
@@ -65,6 +66,7 @@ def train(model: EncoderDecoder,
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=config['LEARNING_RATE'])
 
+    model.set_training_data(train_data, pad_index)
     train_iter = data.BucketIterator(train_data, batch_size=config['BATCH_SIZE'], train=True,
                                      shuffle=True,
                                      sort_within_batch=True,
@@ -101,7 +103,7 @@ def train(model: EncoderDecoder,
         if config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['measure'] == 'epochs' and \
                 config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['period'] != 0 and \
                 epoch % config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['period'] == 0:
-            model.set_training_vectors([rebatch(pad_index, b, config) for b in train_iter])
+            model.update_training_vectors()
 
         train_perplexity = run_epoch([rebatch(pad_index, b, config) for b in train_iter],
                                      model, train_loss_function,
@@ -133,13 +135,13 @@ def train(model: EncoderDecoder,
         if epoch % config['SAVE_MODEL_EVERY'] == 0:
             save_data_on_checkpoint(model, train_perplexities, val_perplexities, config)
 
-    model.unset_training_vectors()
+    model.unset_training_data()
     return train_perplexities, val_perplexities
 
 
 def save_model(model: nn.Module, model_suffix: str, config: Config) -> None:
     torch.save(model.state_dict(), os.path.join(config['OUTPUT_PATH'], f'model_state_dict_{model_suffix}.pt'))
-    torch.save(model, os.path.join(config['OUTPUT_PATH'], f'model_{model_suffix}.pt'))
+    # torch.save(model, os.path.join(config['OUTPUT_PATH'], f'model_{model_suffix}.pt'))
     print(f'Model saved {model_suffix}!')
 
 
@@ -189,7 +191,7 @@ def test_on_unclassified_data(model: EncoderDecoder,
         print(f'Test perplexity: {test_perplexity}')
 
 
-def run_train(config: Config) -> EncoderDecoder:
+def run_train(config: Config):
     pprint.pprint(config.get_config())
     config.save()
 
@@ -211,7 +213,7 @@ def run_train(config: Config) -> EncoderDecoder:
     save_data_on_checkpoint(model, train_perplexities, val_perplexities, config)
     save_perplexity_plot([train_perplexities, val_perplexities], ['train', 'validation'], 'loss.png', config)
     load_weights_of_best_model_on_validation(model, config)
-    return model
+    return model, (train_dataset, val_dataset, test_dataset, diffs_field)
 
 
 def main():

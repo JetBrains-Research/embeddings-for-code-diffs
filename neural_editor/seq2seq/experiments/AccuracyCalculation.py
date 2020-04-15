@@ -7,7 +7,8 @@ from torchtext.vocab import Vocab
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder.search import create_decode_method
-from neural_editor.seq2seq.train_utils import rebatch, calculate_top_k_accuracy, set_training_vectors
+from neural_editor.seq2seq.train_utils import calculate_top_k_accuracy
+from neural_editor.seq2seq.Batch import rebatch
 
 
 class AccuracyCalculation:
@@ -32,9 +33,9 @@ class AccuracyCalculation:
         data_iterator = data.Iterator(dataset, batch_size=1,
                                       sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
         print('BUG FIXING ACCURACY')
-        set_training_vectors(self.model, self.train_dataset, self.pad_index, self.config)
+        self.model.set_training_data(self.train_dataset, self.pad_index)
         self.run(data_iterator)
-        self.model.unset_training_vectors()
+        self.model.unset_training_data()
         print('TRAINING OBJECTIVE ACCURACY')
         self.run(data_iterator)
 

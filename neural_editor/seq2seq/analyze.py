@@ -6,6 +6,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import torch
+from torch import nn
 
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config, load_config
@@ -15,6 +16,7 @@ from neural_editor.seq2seq.experiments.EditRepresentationVisualization import Ed
 from neural_editor.seq2seq.experiments.OneShotLearning import OneShotLearning
 from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_labeled_dataset
 from neural_editor.seq2seq.train import load_data, load_tufano_dataset
+from neural_editor.seq2seq.train_utils import make_model
 
 
 def measure_experiment_time(func) -> None:
@@ -25,8 +27,8 @@ def measure_experiment_time(func) -> None:
     print()
 
 
-def test_model(model: EncoderDecoder, config: Config) -> None:
-    train_dataset, val_dataset, test_dataset, diffs_field = load_data(verbose=True, config=config)
+def test_model(model: EncoderDecoder, data, config: Config) -> None:
+    train_dataset, val_dataset, test_dataset, diffs_field = data
     tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes = \
         load_labeled_dataset(config['TUFANO_LABELED_0_50_PATH'], diffs_field, config)
     tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes = \
@@ -47,7 +49,7 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
 
     model.eval()
     model.unset_edit_representation()
-    model.unset_training_vectors()
+    model.unset_training_data()
     with torch.no_grad():
         # Visualization of data
         """
@@ -236,10 +238,26 @@ def test_model(model: EncoderDecoder, config: Config) -> None:
         )
 
 
+def load_model(results_root: str, vocab_size: int, config: Config) -> nn.Module:
+    model = make_model(vocab_size,
+                       edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
+                       emb_size=config['WORD_EMBEDDING_SIZE'],
+                       hidden_size_encoder=config['ENCODER_HIDDEN_SIZE'],
+                       hidden_size_decoder=config['DECODER_HIDDEN_SIZE'],
+                       num_layers=config['NUM_LAYERS'],
+                       dropout=config['DROPOUT'],
+                       use_bridge=config['USE_BRIDGE'],
+                       config=config)
+    model.load_state_dict(torch.load(os.path.join(results_root, 'model_state_dict_best_on_validation.pt'),
+                                     map_location=config['DEVICE']))
+    return model
+
+
 def print_results(results_root: str, config: Config) -> None:
     pprint.pprint(config.get_config())
-    model = torch.load(os.path.join(results_root, 'model_best_on_validation.pt'), map_location=config['DEVICE'])
-    test_model(model, config)
+    data = load_data(verbose=True, config=config)
+    model = load_model(results_root, len(data[3].vocab), config)
+    test_model(model, data, config)
 
 
 def main() -> None:

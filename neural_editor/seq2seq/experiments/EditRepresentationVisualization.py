@@ -8,7 +8,7 @@ from torchtext.data import Field, Dataset
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.test_utils import visualize_tsne
-from neural_editor.seq2seq.train_utils import rebatch
+from neural_editor.seq2seq.Batch import rebatch
 
 
 class EditRepresentationVisualization:

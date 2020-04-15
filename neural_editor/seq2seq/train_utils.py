@@ -6,7 +6,6 @@ from datetime import timedelta
 
 import numpy as np
 import torch
-import torchtext
 from termcolor import colored
 from torch import nn
 from torchtext import data
@@ -16,7 +15,7 @@ from torchtext.vocab import Vocab
 from edit_representation.sequence_encoding.EditEncoder import EditEncoder
 from neural_editor.seq2seq import SimpleLossCompute
 from neural_editor.seq2seq.BahdanauAttention import BahdanauAttention
-from neural_editor.seq2seq.Batch import Batch
+from neural_editor.seq2seq.Batch import Batch, rebatch
 from neural_editor.seq2seq.EncoderDecoder import EncoderDecoder
 from neural_editor.seq2seq.Generator import Generator
 from neural_editor.seq2seq.config import Config
@@ -48,23 +47,6 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
         embedding, generator, config)
     model.to(config['DEVICE'])
     return model
-
-
-def set_training_vectors(model: EncoderDecoder, train_dataset: Dataset, pad_index: int, config: Config, data_iterator=None) -> None:
-    if data_iterator is None:
-        data_iterator = data.Iterator(train_dataset, batch_size=config['BATCH_SIZE'], train=False,
-                                      sort_within_batch=True,
-                                      sort_key=lambda x: (len(x.src), len(x.trg)), repeat=False,
-                                      device=config['DEVICE'])
-    data_iterator = [rebatch(pad_index, batch, config) for batch in data_iterator]
-    model.set_training_vectors(data_iterator)
-
-
-def rebatch(pad_idx: int, batch: torchtext.data.Batch, config: Config) -> Batch:
-    """Wrap torchtext batch into our own Batch class for pre-processing"""
-    # These fields are added dynamically by PyTorch
-    return Batch(batch.src, batch.trg, batch.diff_alignment,
-                 batch.diff_prev, batch.diff_updated, batch.ids, pad_idx, config)
 
 
 def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field, config: Config) -> None:
@@ -151,7 +133,7 @@ def iterate_over_all_data(batches_num, data_iter, loss_compute, model, print_eve
         if config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['measure'] == 'batches' and \
                 config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['period'] != 0 and \
                 (i - 1) % config['UPDATE_TRAIN_VECTORS_EVERY_iTH_EPOCH']['period'] == 0:
-            model.set_training_vectors(data_iter)
+            model.update_training_vectors()
         do_default_loss = random.random() < ratios[0]
         do_bug_fixing_loss = random.random() < ratios[1]
         pre_output_default_loss = None

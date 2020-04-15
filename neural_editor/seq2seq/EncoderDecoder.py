@@ -9,8 +9,10 @@ from torchtext import data
 from edit_representation.sequence_encoding import EditEncoder
 from neural_editor.seq2seq import Generator, Batch
 from neural_editor.seq2seq.config import Config
+from neural_editor.seq2seq.datasets.dataset_utils import take_subset_from_dataset
 from neural_editor.seq2seq.decoder import Decoder
 from neural_editor.seq2seq.encoder import Encoder
+from neural_editor.seq2seq.Batch import rebatch
 
 
 class EncoderDecoder(nn.Module):
@@ -29,6 +31,8 @@ class EncoderDecoder(nn.Module):
         self.embed = embed
         self.generator = generator
         self.config = config
+        self.train_dataset = None
+        self.pad_index = None
 
     def forward(self, batch: Batch, ignore_encoded_train) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
         """
@@ -64,9 +68,19 @@ class EncoderDecoder(nn.Module):
         """
         self.edit_final = None
 
-    def set_training_vectors(self, data_iterator: data.Iterator) -> None:
-        self.unset_training_vectors()
+    def set_training_data(self, train_dataset: data.Dataset, pad_index: int):
+        self.train_dataset = train_dataset
+        self.pad_index = pad_index
+        self.update_training_vectors()
+
+    def update_training_vectors(self) -> None:
         encoded_train = {'src_hidden': [], 'edit_hidden': [], 'edit_cell': [], 'ids': []}
+        data_iterator = data.Iterator(self.train_dataset, batch_size=self.config['BATCH_SIZE'], train=False,
+                                      sort_within_batch=True,
+                                      sort_key=lambda x: (len(x.src), len(x.trg)), repeat=False,
+                                      device=self.config['DEVICE'])
+        data_iterator = [rebatch(self.pad_index, batch, self.config) for batch in data_iterator]
+
         for batch in data_iterator:
             (edit_hidden, edit_cell), _, (encoder_hidden, _) = self.encode(batch, ignore_encoded_train=True)
             encoded_train['src_hidden'].append(encoder_hidden[-1].detach().cpu())
@@ -89,8 +103,10 @@ class EncoderDecoder(nn.Module):
 
         self.encoded_train = encoded_train
 
-    def unset_training_vectors(self) -> None:
+    def unset_training_data(self) -> None:
         self.encoded_train = None
+        self.train_dataset = None
+        self.pad_index = None
 
     def get_edit_final_from_train(self, src: Tensor) -> Tuple[Tensor, Tensor]:
         src = src.detach().cpu().numpy()
@@ -105,8 +121,19 @@ class EncoderDecoder(nn.Module):
         else:
             indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
             indices = indices[:, 0]
-        return self.encoded_train['edit_hidden'][:, indices, :].to(self.config['DEVICE']), \
-               self.encoded_train['edit_cell'][:, indices, :].to(self.config['DEVICE'])
+        if not self.config['BUILD_EDIT_VECTORS_EACH_QUERY']:
+            return self.encoded_train['edit_hidden'][:, indices, :].to(self.config['DEVICE']), \
+                   self.encoded_train['edit_cell'][:, indices, :].to(self.config['DEVICE'])
+        return self.encode_edit(self.get_batch_from_ids(indices))
+
+    def get_batch_from_ids(self, indices):
+        dataset = take_subset_from_dataset(self.train_dataset, indices)
+        data_iterator = data.Iterator(dataset, batch_size=len(dataset), train=False,
+                                      sort_within_batch=False,
+                                      sort=False, repeat=False,
+                                      device=self.config['DEVICE'])
+        data_iterator = [rebatch(self.pad_index, batch, self.config) for batch in data_iterator]
+        return data_iterator[0]
 
     def encode_edit(self, batch: Batch) -> Tuple[Tensor, Tensor]:
         """

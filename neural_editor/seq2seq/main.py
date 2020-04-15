@@ -14,9 +14,9 @@ def main():
     config_path = None if len(sys.argv) < 3 else Path(sys.argv[2])
     config = load_config(is_test, config_path)
     print('\n====STARTING TRAINING====\n', end='')
-    model = run_train(config)
+    model, data = run_train(config)
     print('\n====STARTING EVALUATION====\n', end='')
-    test_model(model, config)
+    test_model(model, data, config)
 
 
 if __name__ == "__main__":
