@@ -1,0 +1,21 @@
+Training neural editor + commit message generator. Config is the same as in 44, but no copying mechanism (this version is before merging copying mechanism branch into it) and also commit message generator is added.
+Expectations: experiment is needed to check commit message generator accuracy. neural editor performance must be the same as in 43.
+
+Comparison with 43 experiment.
+Observations:
+loss for neural editor plot is different which is strange. t-SNE is similar but still different which is also strange.
+51 neural editor vs 43:
+best_val_perplexity: 8.97 vs 15.41 (better)
+last_train_perplexity: 1.34 vs 1.31 (worse)
+test_acc: 0.03 vs 0.027 (better)
+train_acc_test_size vs train_acc_300: 0.33 vs 0.44 (better! closer to test acc)
+train_acc_test_size vs train_acc_300 top-50: 0.62 vs 0.66 (better! closer to test acc)
+
+commit message generator:
+best_val_perplexity: 49.84
+last_train_perplexity: 10.15
+test_acc: 0.064
+train_acc_test_size: 0.08
+train_acc_test_size top-50: 0.24
+
+Conclusions: neural editor performance is almost the same as in 43. commit message generator performance has strange moments, perplexity is bit enough but accuracy is higher. We see strong overfit in loss plot but acc on test and train is comparable. Probably copying mechanism can help.

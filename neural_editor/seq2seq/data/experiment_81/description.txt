@@ -1,0 +1,32 @@
+Same as 79, but bug with greedy BLEU is fixed.
+
+Observations:
+neural editor plots are good enough
+BLEU and acc for cmg sharply goes up.
+Cmg Duration: only 50 epochs
+Model cannot generalize, val ppl doesn't go down.
+TODO: inspect predictions manually, CRASHED
+81 vs 80
+
+neural editor
+best_val_perplexity: 1.2 (on epoch 64)
+last_train_perplexity: 1.21
+test_acc: 0.40
+train_acc_test_size: 0.30
+train_acc_test_size top-5: 0.33
+BLEU test: 91.11
+BLEU train: 91.60
+hyp_len / ref_len (on test): 0.976
+
+commit message generator
+greedy bleu: 0.61
+best_val_perplexity: 552.13 (on epoch 27) vs 511.47 (on epoch 18)
+last_train_perplexity: 45.64 vs 87.99
+test_acc: vs 0.0015
+train_acc_test_size: vs 0.0015
+train_acc_test_size top-5: vs 0.006
+BLEU test: vs 0
+BLEU train: vs 0
+hyp_len / ref_len (on test): vs 0.313
+
+Conclusions: strange error happened, cannot reproduce it. also strange behaviour of bleu sharply goes up from 0 to 0.61 and simuletanusely 0 to 0.0015

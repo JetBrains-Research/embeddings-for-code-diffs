@@ -1,0 +1,1 @@
+private TYPE_1 METHOD_1 ( final int VAR_1 , boolean VAR_2 ) { TYPE_1 VAR_3 = null ; int start = METHOD_2 ( ) ; for ( int i = start ; i < METHOD_3 ( ) ; i ++ ) { if ( TYPE_2 . equals ( METHOD_4 ( i , VAR_1 ) , 1.0 , VAR_4 ) && ( VAR_3 == null ) ) { VAR_3 = i ; } else if ( ! TYPE_2 . equals ( METHOD_4 ( i , VAR_1 ) , 0.0 , VAR_4 ) ) { return null ; } } return VAR_3 ; }

@@ -1,0 +1,1 @@
+public static double METHOD_1 ( int [ ] VAR_1 , int [ ] VAR_2 ) { int sum = 0 ; for ( int i = 0 ; i < VAR_1 . length ; i ++ ) { final int VAR_3 = VAR_1 [ i ] - VAR_2 [ i ] ; sum += VAR_3 * VAR_3 ; } return TYPE_1 . METHOD_2 ( sum ) ; }

@@ -1,0 +1,15 @@
+Experimental run of model2.5 (encoder freezed + edit encoder freezed + copying mechanism) on Jiang filtered part.
+
+Comparison with model2
+107 vs 108:
+ne
+early stopped on: 155 vs 204
+best val ppl: 12.15 vs 2.76 (epoch 130 vs 179)
+
+cmg
+early stopped on: 701 vs 695
+best val BLEU: 42.4 vs 40.6 (epoch 601 vs 595)
+acc (on best val BLEU): 0.244 vs 0.235
+ppl (on best val BLEU): 796.09 vs 173.57 (MAIN DIFFERENCE)
+
+Conclusions: main difference in plots and metrics is ppl on validation for cmg. NE was trained better in 108 and CMG was trained worse in 108 in terms of BLEU. Worse BLEU is because PPL doesn't grow as in 107. This can be because of inablity to copy from code after change or because NE is trained too good (??). IDK...

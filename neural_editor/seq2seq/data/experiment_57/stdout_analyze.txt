@@ -1,0 +1,265 @@
+{'ADDITION_TOKEN': 'добавление',
+ 'BATCH_SIZE': 64,
+ 'BEAM_SIZE': 50,
+ 'BLEU_PERL_SCRIPT_PATH': './experiments/multi-bleu.perl',
+ 'CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J': False,
+ 'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset/partitioned/neural_editor',
+ 'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset/partitioned/commit_message_generator',
+ 'DECODER_HIDDEN_SIZE': 256,
+ 'DECODER_HIDDEN_SIZE_COMMIT': 256,
+ 'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
+ 'DELETION_TOKEN': 'удаление',
+ 'DEVICE': device(type='cuda', index=0),
+ 'DIVERSITY_STRENGTH': None,
+ 'DROPOUT': 0.2,
+ 'EARLY_STOPPING_ROUNDS': 25,
+ 'EDIT_REPRESENTATION_SIZE': 16,
+ 'ENCODER_HIDDEN_SIZE': 128,
+ 'ENCODER_HIDDEN_SIZE_COMMIT': 128,
+ 'EOS_TOKEN': '</s>',
+ 'FREEZE_EDIT_ENCODER_WEIGHTS': True,
+ 'IS_COMMIT_GENERATION': True,
+ 'IS_TEST': False,
+ 'LEARNING_RATE': 0.0001,
+ 'LEAVE_ONLY_CHANGED': True,
+ 'LOWER': False,
+ 'LOWER_COMMIT_MSG': True,
+ 'MAKE_CUDA_REPRODUCIBLE': False,
+ 'MAX_NUM_OF_EPOCHS': 1000,
+ 'NUM_GROUPS': 1,
+ 'NUM_LAYERS': 2,
+ 'NUM_LAYERS_COMMIT': 2,
+ 'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/experiment_57/',
+ 'PADDING_TOKEN': 'паддинг',
+ 'PAD_TOKEN': '<pad>',
+ 'PRINT_EVERY_iTH_BATCH': 5,
+ 'REPLACEMENT_TOKEN': 'замена',
+ 'SAVE_MODEL_EVERY': 5,
+ 'SEED': 9382,
+ 'SOS_TOKEN': '<s>',
+ 'TEACHER_FORCING_RATIO': 0.9,
+ 'TEST_BATCH_SIZE': 64,
+ 'TOKENS_CODE_CHUNK_MAX_LEN': 104,
+ 'TOKEN_MIN_FREQ': 1,
+ 'TOP_K': [1, 3, 5, 10, 50],
+ 'TSNE_BATCH_SIZE': 1024,
+ 'TUFANO_BUG_FIXES_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
+ 'TUFANO_BUG_FIXES_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/50_100',
+ 'TUFANO_CODE_CHANGES_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/0_50',
+ 'TUFANO_CODE_CHANGES_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/50_100',
+ 'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
+ 'TUFANO_LABELED_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/50_100',
+ 'UNCHANGED_TOKEN': 'равенство',
+ 'UNK_TOKEN': '<unk>',
+ 'USE_BRIDGE': True,
+ 'USE_COPYING_MECHANISM': True,
+ 'USE_EDIT_REPRESENTATION': False,
+ 'VAL_BATCH_SIZE': 64,
+ 'VERBOSE': True,
+ 'WORD_EMBEDDING_SIZE': 128,
+ 'WORD_EMBEDDING_SIZE_COMMIT': 128}
+
+====STARTING NEURAL EDITOR EVALUATION====
+Data set sizes (number of sentence pairs):
+train 10402
+valid 1214
+test 1160 
+
+Max sequence length in tokens: 94 
+
+First training example:
+src: mmm a / CHANGELOG . md <nl> * STORM - 464 : Simulated time advanced after test cluster exits causes intermittent test failures <nl> * STORM - 463 : added static version of metrics helpers for Config <nl> * STORM - 376 : Add compression to serialization <nl> # # 0 . 9 . 2 - incubating <nl> * STORM - 66 : send taskid on initial handshake <nl>
+trg: ppp b / CHANGELOG . md <nl> * STORM - 464 : Simulated time advanced after test cluster exits causes intermittent test failures <nl> * STORM - 463 : added static version of metrics helpers for Config <nl> * STORM - 376 : Add compression to serialization <nl> * STORM - 437 : Enforce utf - 8 when multilang reads from stdin <nl> # # 0 . 9 . 2 - incubating <nl> * STORM - 66 : send taskid on initial handshake <nl>
+diff_alignment: замена замена добавление добавление добавление добавление добавление добавление добавление добавление добавление добавление добавление добавление добавление добавление добавление
+diff_prev: mmm a паддинг паддинг паддинг паддинг паддинг паддинг паддинг паддинг паддинг паддинг паддинг паддинг паддинг паддинг паддинг
+diff_updated: ppp b <nl> * STORM - 437 : Enforce utf - 8 when multilang reads from stdin 
+
+Most common words:
+      <nl>     157824
+         /     107466
+         .      76478
+   паддинг      65112
+добавление      45630
+         =      37056
+         -      35334
+    замена      31876
+         a      21916
+         b      20918 
+
+First 10 words:
+00 <unk>
+01 <pad>
+02 <s>
+03 </s>
+04 <nl>
+05 /
+06 .
+07 паддинг
+08 добавление
+09 = 
+
+Special words frequency and ids: 
+<unk> 0 0
+<pad> 0 1
+<s> 0 2
+</s> 0 3
+замена 31876 11
+удаление 19482 17
+добавление 45630 8
+равенство 0 0
+паддинг 65112 7
+Number of words (types): 37176
+Neural editor will not be tested because edit representations are not used.
+
+====STARTING COMMIT MSG GENERATOR EVALUATION====
+Data set sizes (number of sentence pairs):
+train 10403
+valid 1215
+test 1161 
+
+Max src sequence length in tokens: 102
+Max trg sequence length in tokens: 30
+Max diff sequence length in tokens: 68 
+
+First training example:
+src: mmm a / modules / apps / foundation / portal - scheduler / . gitrepo <nl> ppp b / modules / apps / foundation / portal - scheduler / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl> - commit = 7495702b9e0c1ed26cd9e99a029e63ea34463245 <nl> + commit = ecfc76fa14a34359ac940f76dbb71388d1de77ad <nl> mode = push <nl> - parent = e48ff9193f8932fc19647e7f7b18fce5d898c8e1 <nl> + parent = 5a8692e1348dbf702e0a0e19b91dbb0057ef3600 <nl> remote = git @ github . com : liferay / com - liferay - portal - scheduler . git <nl> \ No newline at end of file <nl>
+trg: ignore update ' modules / apps / foundation / portal - scheduler / .
+diff_alignment: замена замена замена замена
+diff_prev: mmm a 7495702b9e0c1ed26cd9e99a029e63ea34463245 e48ff9193f8932fc19647e7f7b18fce5d898c8e1
+diff_updated: ppp b ecfc76fa14a34359ac940f76dbb71388d1de77ad 5a8692e1348dbf702e0a0e19b91dbb0057ef3600
+Most common words in src vocabulary:
+      <nl>      97667
+         /      92939
+         .      52693
+         -      32612
+         =      22174
+         +      15304
+         :      10999
+         a      10991
+         >      10741
+         <      10462 
+
+
+Most common words in trg vocabulary:
+         /       6457
+         .       5843
+         -       3034
+        to       2260
+         '       2081
+    update       1966
+    ignore       1845
+   modules       1588
+      apps       1579
+       the       1132 
+
+
+Most common words in diff vocabulary:
+      <nl>     157824
+         /     107466
+         .      76478
+   паддинг      65112
+добавление      45630
+         =      37056
+         -      35334
+    замена      31876
+         a      21916
+         b      20918 
+
+First 10 words in src vocabulary:
+00 <unk>
+01 <pad>
+02 <s>
+03 </s>
+04 <nl>
+05 /
+06 .
+07 -
+08 =
+09 + 
+
+
+First 10 words in trg vocabulary:
+00 <unk>
+01 <pad>
+02 <s>
+03 </s>
+04 /
+05 .
+06 -
+07 to
+08 '
+09 update 
+
+
+First 10 words in diff vocabulary:
+00 <unk>
+01 <pad>
+02 <s>
+03 </s>
+04 <nl>
+05 /
+06 .
+07 паддинг
+08 добавление
+09 = 
+
+Special words frequency and ids in src vocabulary: 
+<unk> 0 0
+<pad> 0 1
+<s> 0 2
+</s> 0 3
+<unk> 0 0
+<pad> 0 1
+<s> 0 2
+</s> 0 3
+<unk> 0 0
+<pad> 0 1
+<s> 0 2
+</s> 0 3
+замена 31876 11
+удаление 19482 17
+добавление 45630 8
+равенство 0 0
+паддинг 65112 7
+Number of words (types) in src vocabulary: 37209
+Number of words (types) in trg vocabulary: 7689
+Number of words (types) in diff vocabulary: 37176
+Start conducting accuracy calculation experiment for Test dataset...
+Top-1 accuracy: 229 / 1161 = 0.19724375538329025
+Top-3 accuracy: 244 / 1161 = 0.21016365202411713
+Top-5 accuracy: 251 / 1161 = 0.21619293712316967
+Top-10 accuracy: 264 / 1161 = 0.22739018087855298
+Top-50 accuracy: 275 / 1161 = 0.2368647717484927
+Duration: 0:57:59.402838
+
+Start conducting BLEU calculation experiment for Test dataset...
+b'BLEU = 32.39, 67.5/71.4/90.8/93.8 (BP=0.405, ratio=0.525, hyp_len=4908, ref_len=9348)\n'
+Errors: b'perl: warning: Setting locale failed.\nperl: warning: Please check that your locale settings:\n\tLANGUAGE = (unset),\n\tLC_ALL = (unset),\n\tLC_TIME = "ru_RU.UTF-8",\n\tLC_MONETARY = "ru_RU.UTF-8",\n\tLC_ADDRESS = "ru_RU.UTF-8",\n\tLC_TELEPHONE = "ru_RU.UTF-8",\n\tLC_NAME = "ru_RU.UTF-8",\n\tLC_MEASUREMENT = "ru_RU.UTF-8",\n\tLC_IDENTIFICATION = "ru_RU.UTF-8",\n\tLC_NUMERIC = "ru_RU.UTF-8",\n\tLC_PAPER = "ru_RU.UTF-8",\n\tLC_CTYPE = "C.UTF-8",\n\tLANG = "en_US.UTF-8"\n    are supported and installed on your system.\nperl: warning: Falling back to the standard locale ("C").\n'
+Duration: 0:00:00.302389
+
+Start conducting accuracy calculation experiment for Validation dataset...
+Top-1 accuracy: 244 / 1215 = 0.2008230452674897
+Top-3 accuracy: 262 / 1215 = 0.21563786008230454
+Top-5 accuracy: 270 / 1215 = 0.2222222222222222
+Top-10 accuracy: 281 / 1215 = 0.23127572016460907
+Top-50 accuracy: 296 / 1215 = 0.24362139917695474
+Duration: 0:54:29.712922
+
+Start conducting BLEU calculation experiment for Validation dataset...
+b'BLEU = 32.87, 68.1/71.4/89.8/92.5 (BP=0.412, ratio=0.530, hyp_len=5165, ref_len=9742)\n'
+Errors: b'perl: warning: Setting locale failed.\nperl: warning: Please check that your locale settings:\n\tLANGUAGE = (unset),\n\tLC_ALL = (unset),\n\tLC_TIME = "ru_RU.UTF-8",\n\tLC_MONETARY = "ru_RU.UTF-8",\n\tLC_ADDRESS = "ru_RU.UTF-8",\n\tLC_TELEPHONE = "ru_RU.UTF-8",\n\tLC_NAME = "ru_RU.UTF-8",\n\tLC_MEASUREMENT = "ru_RU.UTF-8",\n\tLC_IDENTIFICATION = "ru_RU.UTF-8",\n\tLC_NUMERIC = "ru_RU.UTF-8",\n\tLC_PAPER = "ru_RU.UTF-8",\n\tLC_CTYPE = "C.UTF-8",\n\tLANG = "en_US.UTF-8"\n    are supported and installed on your system.\nperl: warning: Falling back to the standard locale ("C").\n'
+Duration: 0:00:00.317111
+
+Start conducting accuracy calculation experiment for Train dataset (test size approximation)...
+Top-1 accuracy: 245 / 1161 = 0.21102497846683893
+Top-3 accuracy: 265 / 1161 = 0.22825150732127478
+Top-5 accuracy: 274 / 1161 = 0.2360034453057709
+Top-10 accuracy: 291 / 1161 = 0.25064599483204136
+Top-50 accuracy: 306 / 1161 = 0.26356589147286824
+Duration: 0:54:40.677878
+
+Start conducting BLEU calculation experiment for Train dataset (test size approximation)...
+b'BLEU = 32.78, 68.4/72.4/93.7/96.4 (BP=0.401, ratio=0.522, hyp_len=4791, ref_len=9170)\n'
+Errors: b'perl: warning: Setting locale failed.\nperl: warning: Please check that your locale settings:\n\tLANGUAGE = (unset),\n\tLC_ALL = (unset),\n\tLC_TIME = "ru_RU.UTF-8",\n\tLC_MONETARY = "ru_RU.UTF-8",\n\tLC_ADDRESS = "ru_RU.UTF-8",\n\tLC_TELEPHONE = "ru_RU.UTF-8",\n\tLC_NAME = "ru_RU.UTF-8",\n\tLC_MEASUREMENT = "ru_RU.UTF-8",\n\tLC_IDENTIFICATION = "ru_RU.UTF-8",\n\tLC_NUMERIC = "ru_RU.UTF-8",\n\tLC_PAPER = "ru_RU.UTF-8",\n\tLC_CTYPE = "C.UTF-8",\n\tLANG = "en_US.UTF-8"\n    are supported and installed on your system.\nperl: warning: Falling back to the standard locale ("C").\n'
+Duration: 0:00:00.275927
+

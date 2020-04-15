@@ -1,0 +1,1 @@
+private boolean METHOD_1 ( TYPE_1 n , TYPE_2 VAR_1 ) { if ( ! TYPE_3 . METHOD_2 ( n ) ) { return false ; } TYPE_1 VAR_2 = n . METHOD_3 ( ) ; TYPE_1 VAR_3 = VAR_2 . METHOD_3 ( ) ; if ( ! VAR_3 . METHOD_4 ( ) ) { return false ; } TYPE_4 var = VAR_1 . METHOD_5 ( VAR_3 . getString ( ) ) ; return var != null && var . METHOD_6 ( ) == VAR_1 && ! VAR_4 . contains ( var ) ; }

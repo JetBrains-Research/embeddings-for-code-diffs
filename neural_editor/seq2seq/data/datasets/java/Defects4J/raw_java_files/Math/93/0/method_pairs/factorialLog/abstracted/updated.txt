@@ -1,0 +1,1 @@
+public static double METHOD_1 ( final int n ) { if ( n < 0 ) { throw new TYPE_1 ( STRING_1 ) ; } if ( n < INT_2 ) { return TYPE_2 . METHOD_2 ( METHOD_3 ( n ) ) ; } double VAR_1 = 0 ; for ( int i = INT_1 ; i <= n ; i ++ ) { VAR_1 += TYPE_2 . METHOD_2 ( ( double ) i ) ; } return VAR_1 ; }

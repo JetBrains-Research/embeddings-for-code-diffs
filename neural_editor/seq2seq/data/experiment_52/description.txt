@@ -1,0 +1,24 @@
+Same as 51 but dataset is unfiltered neural_editor part.
+Expectation: better performance.
+
+Observations:
+loss for cmg plot is worse than in 51 (stronger overfitting). t-SNE is similar except t-SNE for Defects4J, but I think we can discard it.
+52 neural editor vs 51 neural editor:
+Dataset difference for neural editor (cmg is almost the same): train = 13000 - 10402 = 2598, val = 1486 - 1214 = 272, test = 1485 - 1160 = 325
+best_val_perplexity: 7.02 vs 8.97 (better)
+last_train_perplexity: 1.36 vs 1.34 (a little bit worse)
+test_acc: 0.098 vs 0.03 (better, 146 vs 35)
+train_acc_test_size: 0.46 vs 0.33 (better)
+train_acc_test_size top-50: 0.69 vs 0.62 (better)
+
+52 cmg vs 51 cmg:
+best_val_perplexity: 64.68 vs 49.84
+last_train_perplexity: 11.14 vs 10.15 (worse)
+test_acc: 0.053 vs 0.064 (worse)
+train_acc_test_size: 0.074 vs 0.08 (worse)
+train_acc_test_size top-50: 0.19 vs 0.24 (worse)
+
+Conclusions: performance for neural editor in terms of perplexity is almost the same. accuracy is higher, and looks like only because we do not filter dataset (146 < 325). Therefore:
+TODO: look at truly predicted examples from test and check that they should be filtered and result is |what_was_before| + |unfiltered_correct|. Also add evaluation on all types of datasets.
+
+cmg performance is worse and overfitting is stronger. Looks like dataset contains more examples that are simpler to predict and model overfits more on it. Nevertheless we should consider to lower capacity of cmg model.

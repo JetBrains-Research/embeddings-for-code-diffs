@@ -1,0 +1,1 @@
+public int METHOD_1 ( TYPE_1 VAR_1 , String text , int position ) { String str = text . substring ( position ) ; for ( String id : VAR_2 ) { if ( str . startsWith ( id ) ) { VAR_1 . METHOD_2 ( TYPE_2 . METHOD_3 ( id ) ) ; return position + id . length ( ) ; } } return ~ position ; }

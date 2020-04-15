@@ -1,0 +1,1 @@
+public static TYPE_1 METHOD_1 ( TYPE_2 date ) { if ( date == null ) { throw new TYPE_3 ( STRING_1 ) ; } return new TYPE_1 ( date . METHOD_2 ( ) + INT_1 , date . METHOD_3 ( ) + 1 , date . METHOD_4 ( ) , date . METHOD_5 ( ) , date . METHOD_6 ( ) , date . METHOD_7 ( ) , ( ( ( int ) ( date . getTime ( ) % INT_2 ) ) + INT_2 ) % INT_2 ) ; }

@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/miniconda3/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/miniconda3/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/mnt/embeddings-for-code-diffs_model5_3/neural_editor/seq2seq/main.py", line 23, in <module>
+    main()
+  File "/mnt/embeddings-for-code-diffs_model5_3/neural_editor/seq2seq/main.py", line 19, in main
+    test_model(model, config)
+  File "/mnt/embeddings-for-code-diffs_model5_3/neural_editor/seq2seq/analyze.py", line 134, in test_model
+    lambda: one_shot_learning_experiment.conduct(tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes,
+  File "/mnt/embeddings-for-code-diffs_model5_3/neural_editor/seq2seq/analyze.py", line 22, in measure_experiment_time
+    func()
+  File "/mnt/embeddings-for-code-diffs_model5_3/neural_editor/seq2seq/analyze.py", line 135, in <lambda>
+    'Tufano Labeled 0 50 Code Changes')
+  File "/mnt/embeddings-for-code-diffs_model5_3/neural_editor/seq2seq/experiments/OneShotLearning.py", line 77, in conduct
+    self.print_examples(incorrect_examples, is_correct=False)
+  File "/mnt/embeddings-for-code-diffs_model5_3/neural_editor/seq2seq/experiments/OneShotLearning.py", line 100, in print_examples
+    decode_method=self.beam_search)  # TODO: decode -> decode_several vs greedy decode
+  File "/mnt/embeddings-for-code-diffs_model5_3/neural_editor/seq2seq/train_utils.py", line 260, in print_examples_decode_method
+    result = result[0][0]
+IndexError: list index out of range
+srun: error: cn-008: task 0: Exited with exit code 1

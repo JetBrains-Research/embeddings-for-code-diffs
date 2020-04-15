@@ -1,0 +1,3 @@
+Same as 29, but model params are filtered with requires_grad=True in optimizer initialization: optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=config['LEARNING_RATE']). Needs to be compared with 29. Expectation: nothing must be changed.
+
+Observations: as expected nothing is changed except execution time.

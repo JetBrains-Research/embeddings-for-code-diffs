@@ -1,0 +1,15 @@
+Same as 59, but took part of unfiltered dataset. I expect pretty same results as in 59.
+
+Observations:
+60 vs 59
+Loss plots look pretty the same
+commit message generator
+best_val_perplexity: 90.81 vs 60.79 (much worse)
+last_train_perplexity: 13.56 vs 11.22 (worse)
+test_acc: 0.046 vs 0.073 (worse)
+train_acc_test_size: 0.057 vs 0.078 (worse)
+train_acc_test_size top-50: 0.186 vs 0.217 (worse)
+BLEU test: 19.61 vs 23.36 (a little bit worse)
+BLEU train: 19.13 vs 24.03 (worse)
+
+Conclusions: 26K samples of training data were reduced to 13K. This possibly could lead to more poor preformance because not enough samples were seen.

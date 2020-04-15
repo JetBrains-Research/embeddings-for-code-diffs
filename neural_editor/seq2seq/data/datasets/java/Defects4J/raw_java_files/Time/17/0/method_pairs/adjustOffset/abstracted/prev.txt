@@ -1,0 +1,1 @@
+public long METHOD_1 ( long VAR_1 , boolean VAR_2 ) { long VAR_3 = METHOD_2 ( VAR_1 - INT_1 * VAR_4 ) ; long VAR_5 = METHOD_2 ( VAR_1 + INT_1 * VAR_4 ) ; if ( VAR_3 == VAR_5 ) { return VAR_1 ; } long VAR_6 = METHOD_2 ( VAR_1 ) ; return METHOD_3 ( VAR_6 , false , VAR_2 ? VAR_5 : VAR_3 ) ; }

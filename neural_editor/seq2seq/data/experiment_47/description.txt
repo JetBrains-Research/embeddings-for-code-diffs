@@ -1,0 +1,13 @@
+Same as 44, but dataset is filtered, not filtered_part (only part for neural editor training). So the only difference is that you double training and val and test data.
+Expectations: better accuracy on test (?)
+
+Observations:
+Higher perturbations in loss compared with 44. t-SNE is almost the same but a little bit worse (some concentrated circles disappeared).
+47 vs 44:
+best_val_perplexity: 2.55 vs 2.91 (better)
+train_last_perplexity: 1.55 vs 2.03 (better)
+test_acc: 0.024 vs 0.078 (worse)
+train_acc_300: 0.03 vs 0.03 (same)
+train_acc_300 top-50: 0.06 vs 0.093 (worse)
+
+Conclusion: doubling of dataset makes performance worse in terms of accuracy. We predict less accurate examples even considering that we double dataset in size. It can mean that in the data there is no correlation.

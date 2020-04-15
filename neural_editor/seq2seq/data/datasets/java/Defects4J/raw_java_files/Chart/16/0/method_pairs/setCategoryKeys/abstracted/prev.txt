@@ -1,0 +1,1 @@
+public void METHOD_1 ( TYPE_1 [ ] VAR_1 ) { if ( VAR_1 == null ) { throw new TYPE_2 ( STRING_1 ) ; } if ( VAR_1 . length != this . VAR_2 [ 0 ] . length ) { throw new TYPE_2 ( STRING_2 ) ; } for ( int i = 0 ; i < VAR_1 . length ; i ++ ) { if ( VAR_1 [ i ] == null ) { throw new TYPE_2 ( STRING_3 + STRING_4 ) ; } } this . VAR_1 = VAR_1 ; METHOD_2 ( ) ; }

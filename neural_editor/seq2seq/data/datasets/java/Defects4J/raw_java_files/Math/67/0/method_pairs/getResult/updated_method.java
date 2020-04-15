@@ -1,0 +1,4 @@
+
+    public double getResult() {
+        return optima[0];
+    }

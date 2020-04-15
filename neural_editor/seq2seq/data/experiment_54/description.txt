@@ -1,0 +1,21 @@
+Same as 53 but dataset is unfiltered_part not filtered_part
+Expectation: better performance
+
+Observations:
+plots almost the same
+54 vs 53
+neural editor:
+best_val_perplexity: 2.49 vs 2.88 (better)
+last_train_perplexity: 1.44 vs 1.57 (better)
+test_acc: 0.119 vs 0.081 (better)
+train_acc_test_size: 0.21 vs 0.03 (better)
+train_acc_test_size top-50: 0.24 vs 0.07 (better) 
+
+commit message generator:
+best_val_perplexity: 44.22 vs 32.87 (worse)
+last_train_perplexity: 11.5 vs 9.68 (worse)
+test_acc: 0.135 vs 0.202 (much worse)
+train_acc_test_size: 0.133 vs 0.227 (worse)
+train_acc_test_size top-50:0.176 vs 0.269 (worse)
+
+Conclusions: neural editor trained better but message generation is worse, idk why. Is it because of neural editor trained better and therfore commit messaging is worse. Or that's because of noise when no filtering is applied? To find it out we should launch experiments on both datasets without neural editor.

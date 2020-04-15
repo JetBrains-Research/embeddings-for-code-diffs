@@ -1,0 +1,18 @@
+Same as 77 but greedy BLEU bug is fixed.
+
+86 vs 77 (in this experiments it is Jiang reproduction with best on PPL)
+Plots are very similar as expected, but BLEU is different (it is correct)
+
+neural editor
+
+commit message generator
+best_val_perplexity: 57.88 vs 
+last_train_perplexity: 1.56 vs 
+test_acc: 0.093 (greedy)
+train_acc_test_size: 0.106 (greedy)
+train_acc_test_size top-5: 
+BLEU test: 29.48 (greedy)
+BLEU train: 30.64 (greedy)
+hyp_len / ref_len (on test): 0.765
+
+Conclusions: beam search BLEU is ~25, whereas greedy BLEU ~30. And it means that we reproduced Jiang results! Experiment results of 77 is pretty the same (77 is a little bit better) except BLEU because in 77 it was not correctly calculated.

@@ -1,0 +1,3 @@
+Same as 24 but no copying mechanism
+
+Observations: perplexity is a little bit worse than in 24 (1.2 vs 1.18), but still top-1 accuracy on test is a little better (0.57 vs 0.55), and copying mechanism has big downside top-50 is almost the same as top-1, therefore this experiment is much better in terms of top-50 accuracy.

@@ -1,0 +1,12 @@
+Same as 45, but USE_COPYING_MECHANISM=True. Expectations: should be a little bit better than 45, and much better than 44 and 43.
+
+Looks like more similar this experiment is to 44. Therefore compraison is with 44.
+Observations:
+t-SNE is much worse (expected). Loss plot has perturbations too (as 44), but peaks are much higher.
+46 vs 44
+best_val_perplexity: 2.50 vs 2.91 (better)
+train_perplexity_for_best: 1.51 vs 1.66 (better)
+train_acc: 0.096 vs 0.03 (better)
+test_acc: 0.019 vs 0.078 (worse)
+test_acc top-50: 0.039 vs 0.087 (worse)
+test_acc is much worse which is strange... I don't know why. But we see strong dependence: if we have high train_acc, test_acc is low and vica versa. But also a strange moment is that even when we have lower perplexity on validation set still test_acc is lower.

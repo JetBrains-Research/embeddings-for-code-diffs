@@ -1,0 +1,28 @@
+Same as 61 but neural editor is used and trained on the same data.
+
+Observations:
+65 vs 61
+Loss plot looks pretty the same as in 61.
+
+neural editor (compared with 63 when dataset unfiltered + unfiltered, here we have filtered + filtered)
+best_val_perplexity: 7.88 vs 6.93 (worse)
+last_train_perplexity: 1.34 vs 1.45 (a little bit better)
+test_acc: 0.028 vs 0.123 (much worse)
+train_acc_test_size: 0.254 vs 0.388 (much worse)
+train_acc_test_size top-50: 0.594 vs 0.657 (worse)
+BLEU test: 76.77 vs 70.32 (MUCH BETTER)
+BLEU train: 90.07 vs 88.52 (better)
+hyp_len / ref_len (on test): 0.965 vs 0.853 (much better)
+
+commit message generator
+best_val_perplexity: 55.04 vs 49.76 (worse)
+last_train_perplexity: 9.71 vs 7.89 (worse)
+test_acc: 0.101 vs 0.158 (much worse)
+train_acc_test_size: 0.105 vs 0.168 (much worse)
+train_acc_test_size top-50: 0.248 vs 0.278 (worse)
+BLEU test: 27.83 vs 31.33 (worse)
+BLEU train: 28.41 vs 32.18 (worse)
+hyp_len / ref_len (on test): 0.533 vs 0.545 (worse)
+
+Conclusions: Interestingly neural editor when dataset is filtered is much worse in accuracy, BUT it is much better in BLEU on test and it generates sequences with comparable length as target. MAYBE Jiang's has comparable lengths and higher BLEU because they took model with best BLEU score.
+CMG model is much worse and I cannot explain why. Maybe the reason is that test_acc of neural editor is much worse than it was in 63 (the same comparison of Jiang and me is ok for unfiltered dataset). Therefore edit representations make performance of cmg model worse. To address poor accuracy and big difference between train and test accuracy we should use copying mechanism. So in short: neural editor was trained badly therefore cmg model degredated.

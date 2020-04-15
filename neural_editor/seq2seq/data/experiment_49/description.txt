@@ -1,0 +1,14 @@
+Same as 48 but dataset is unfiltered, all. In 48 we had undfiltered_part.
+Expectations: almost the same results
+
+Observations:
+plots are almost the same.
+Difference in dataset sizes: doubled the dataset
+49 vs 48:
+best_val_perplexity: 2.35 vs 2.64 (better)
+last_train_perplexity: 1.41 vs 1.67 (better)
+test_acc: 0.133 vs 0.158 (a little bit worse)
+train_acc_300: 0.22 vs 0.15 (better)
+train_acc_300 top-50: 0.25 vs 0.21 (better)
+
+Conclusions: Almost the same results, train_acc is higher but that can be because of 300 approximation isn't enough.

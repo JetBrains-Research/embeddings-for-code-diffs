@@ -1,0 +1,17 @@
+Rerun of e108 because it has poor results (BLEU 39.22).
+Made edit representation size from 16 to 64.
+e108: model2.5 on Jiang filtered part
+
+Comparison with 108
+108_2 vs 108:
+ne
+early stopped on: 164 vs 204
+best val ppl: 2.72 vs 2.76 (epoch 139 vs 179)
+
+cmg
+early stopped on: 539 vs 695
+best val BLEU: 40.0 vs 40.6 (epoch 439 vs 595)
+acc (on best val BLEU): 0.229 vs 0.235
+ppl (on best val BLEU): 176.64 vs 173.57
+
+Conclusion: ne is trained better because of 16 -> 64 and because of that cmg was early stopped earlier with comparable BLEU.

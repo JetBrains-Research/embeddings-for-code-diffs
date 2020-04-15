@@ -1,0 +1,7 @@
+Trying to fully reproduce Jiang.
+
+Observations: 
+accuracy grows each epoch, even if perplexity grows a lot. Strange... we should consider to run experiment where best on accuracy model will be selected.
+highest BLEU is in the first epochs, then almost the same around 2.6.
+One reason why perplexity on val data is very bad could be because of bad data: some data cannot be generalized correctly, therefore part of the val data is predicted completely correctly and other part completely incorrectly.
+BLEU when we decode greedly is ~2.6, while when we decode via beam search ~15. WHY?

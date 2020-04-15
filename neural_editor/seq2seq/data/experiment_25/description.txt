@@ -1,0 +1,3 @@
+Same as 22, but possible_infs is True in beam search.
+
+Observations: accuracy on test and transfer learning is lower than in 22 and possible_infs didn't help to solve top-1 ~ top-50 issue. One big question is: why training is different from experiment 22 (loss plot is different), changing possible_infs to True cannot affect training phase... Here best val perplexity is better than in 23 experiment.

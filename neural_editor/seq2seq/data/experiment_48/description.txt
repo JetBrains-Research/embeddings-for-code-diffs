@@ -1,0 +1,14 @@
+Same as 44 but dataset is unfiltered_part. So difference is that filtering is not applied and amount of data (train, test, val) is a little bit more that in 44.
+Expectations: worse results because of noise due to lack of filtering.
+
+Observations:
+Less epochs went in 48 (~140 vs ~175). Other plots are almost the same.
+Difference in dataset sizes: train = 13000 - 10402 = 2598, val = 1486 - 1214 = 272, test = 1485 - 1160 = 325
+48 vs 44:
+best_val_perplexity: 2.64 vs 2.55 (worse)
+last_train_perplexity: 1.67 vs 2.03 (better)
+test_acc: 0.158 vs 0.078 (better)
+train_acc_300: 0.15 vs 0.03 (better)
+train_acc_300 top-50: 0.21 vs 0.093 (better)
+
+Conclusion: accuracy is much better when no filtering is applied (so only additions and deletions are not deleted), but correct predicted examples on test is 234 vs 91, 234 - 91 = 143 < 325, therefore all new corrected guessed examples can be those that were filtered before. We should take a look at new guessed examples and also create accuracy calculation on all types of datasets (not only on train, test, val).

@@ -1,0 +1,16 @@
+Same as 61, but dataset is filtered_part for cmg.
+
+Observations:
+62 vs 61
+Loss plot is worse than in 61 (when all data is taken).
+commit message generator
+best_val_perplexity: 69.72 vs 49.76 (much worse)
+last_train_perplexity: 9.58 vs 7.89  (worse)
+test_acc: 0.065 vs 0.158 (much worse)
+train_acc_test_size: 0.091 vs 0.168 (much worse)
+train_acc_test_size top-50: 0.255 vs 0.278 (worse)
+BLEU test: 25.85 vs 31.33 (much worse)
+BLEU train: 26.88 vs 32.18 (much worse)
+hyp_len / ref_len (on test): 0.526 vs 0.545 (worse)
+
+Conclusions: Dataset reduced from 20K to 10K samples. Looks like the same situation as it was when unfiltered dataset part was taken. Data isn't enough to train model correctly. But diff between train and same test values are pretty the same. But train values are worse too and therefore we can conclude that there is no enough data.

@@ -1,0 +1,1 @@
+public static boolean METHOD_1 ( String str , String VAR_1 ) { if ( str == null || VAR_1 == null ) { return false ; } return contains ( str . toUpperCase ( ) , VAR_1 . toUpperCase ( ) ) ; }

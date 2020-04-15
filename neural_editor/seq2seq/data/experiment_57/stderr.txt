@@ -1,0 +1,45 @@
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type EncoderDecoder. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type Encoder. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type LSTM. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type Decoder. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type Generator. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type Linear. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type Embedding. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type BahdanauAttention. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type Sequential. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type Sigmoid. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type Dropout. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+/miniconda3/lib/python3.7/site-packages/torch/serialization.py:292: UserWarning: Couldn't retrieve source code for container of type EditEncoder. It won't be checked for correctness upon loading.
+  "type " + obj.__name__ + ". It won't be checked "
+Traceback (most recent call last):
+  File "/miniconda3/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/miniconda3/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/main.py", line 36, in <module>
+    main()
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/main.py", line 30, in main
+    test_neural_editor_model(neural_editor, config)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/analyze.py", line 111, in test_neural_editor_model
+    lambda: bleu_calculation_experiment.conduct(test_max_top_k_predicted, test_dataset,
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/analyze.py", line 25, in measure_experiment_time
+    ret = func()
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/analyze.py", line 112, in <lambda>
+    'Test dataset'))
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/experiments/BleuCalculation.py", line 16, in conduct
+    top_1_predictions = [' '.join(prediction[0]) for prediction in predictions]
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/experiments/BleuCalculation.py", line 16, in <listcomp>
+    top_1_predictions = [' '.join(prediction[0]) for prediction in predictions]
+IndexError: list index out of range
+srun: error: cn-022: task 0: Exited with exit code 1

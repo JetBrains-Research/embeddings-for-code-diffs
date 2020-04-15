@@ -1,0 +1,29 @@
+Same as 81, but code is lowered. We should think what happens when copying mechanism is used and code is not lowered, looks like copying mechanism should work better when lowering is applied to code.
+
+EXECUTION CRASHED BECAUSE OF dataframe error indexation.
+
+82 vs 81
+Observations: Plots are similar, but main difference is that in 81 cmg acc and bleu made an outbreak to 0.0016 and 0.7 respectively. Whereas acc in 82 for neural editor is a little bit better.
+
+neural editor 
+best_val_perplexity: 1.16 (on epoch 135) vs 1.2 (on epoch 64) (better)
+last_train_perplexity: 1.13 vs 1.21 (better)
+test_acc: 0.49 vs 0.40 (better)
+train_acc_test_size: 0.49 vs 0.30 (better)
+train_acc_test_size top-50: 0.51 vs 0.33 (much better)
+BLEU test: 90.51 vs 91.11 (worse)
+BLEU train: 92.15 vs 91.60 (better)
+hyp_len / ref_len (on test): 0.961 vs 0.976 (worse)
+
+commit message generator
+greedy bleu: 0 vs 0.61 (much worse)
+best_val_perplexity: 537.89 (on epoch 25) vs 552.13 (on epoch 27) (better)
+last_train_perplexity: 90.25 (epoch 50) vs 45.64 (epoch 52)
+test_acc: 
+train_acc_test_size: 
+train_acc_test_size top-5: 
+BLEU test: 
+BLEU train:
+hyp_len / ref_len (on test): 
+
+Conclusions: Neural editor is trained better, but cmg is worse, at first we need to understand why 81 has BLEU outbreak to 0.6.

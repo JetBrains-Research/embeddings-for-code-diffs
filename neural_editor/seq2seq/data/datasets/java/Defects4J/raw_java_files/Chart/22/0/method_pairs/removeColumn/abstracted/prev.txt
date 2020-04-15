@@ -1,0 +1,1 @@
+public void METHOD_1 ( TYPE_1 VAR_1 ) { int index = METHOD_2 ( VAR_1 ) ; if ( index < 0 ) { throw new TYPE_2 ( STRING_1 + VAR_1 + STRING_2 ) ; } TYPE_3 iterator = this . rows . iterator ( ) ; while ( iterator . METHOD_3 ( ) ) { TYPE_4 VAR_2 = ( TYPE_4 ) iterator . METHOD_4 ( ) ; VAR_2 . METHOD_5 ( VAR_1 ) ; } this . VAR_3 . remove ( VAR_1 ) ; }

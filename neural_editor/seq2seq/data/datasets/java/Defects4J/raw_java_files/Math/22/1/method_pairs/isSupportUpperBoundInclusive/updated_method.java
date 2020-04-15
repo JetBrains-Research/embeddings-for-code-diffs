@@ -1,0 +1,4 @@
+
+    public boolean isSupportUpperBoundInclusive() {
+        return true;
+    }

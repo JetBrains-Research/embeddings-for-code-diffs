@@ -1,0 +1,654 @@
+return of 0 is error for EVP_Sign/VerifyFinal
+Upgrade modifyAndResetAppPermissions test to support API 25 and 26
+display correct status on error message
+Fix NPE in request for CDROMs of wrong VM ''
+Add some @ Nullable annotations to VersionedMetaData
+Fixes password prompt for admin user
+Call ThreadGroup.add in Thread : :FinishStartup
+Use TYPE_5
+Fix bug preventing rejecting video calls
+implement basic debugging capabilities
+TypeStringLiteralRefiner now does not visit fields and methods
+Fix project files for DeviceConfig
+packageBuildConfig- > true in AndroidConfigAdaptor
+Adapt to recent changes in the plugin API
+AddVmCommandTest inline returns
+Add a delay ( ) to MessageBundleTest tearDown ( )
+Check selected item for null before running plugins on it
+escape during dialog loading causes problems
+Fix SubchainInfo.toString
+Fix broken SerializerCreator
+User portal error message when changing VM cluster inconsistent with webadmin
+Removed unused methods from NetworkUtils
+Replace == by METHOD_4 into tracer
+Allow empty path to NDK
+Limit query size even for exact queries
+Hide reply box when leaving the screen
+SubTabTreeView - reorganize ctr listeners
+improve error msg text in storage connection
+Remove redundant task handlers for auditLog at ExportRepoImage
+Fix METHOD_1 when there is no geocoder package
+No Search for METHOD_1
+ImagesHandler # METHOD_2 ( Snapshot , Guid , DiskImage )
+BLE Check and send scan response data
+DedicatedVmForVdsUnitToVmBaseBuilder streams
+ProcessOvfUpdate - skip vms/templates without ovf
+block editing migraion fields while VM ! Down
+Fix to crash when clicking text link without view activity
+bug fix in ImportVmFromExportDomainModel
+Prevent PreCallActivity from showing in lockscreen if it is not started in the lockscreen
+Enhance removed loads/substitutes in LSE
+Fix NullPointerException in RecipientsEditor
+Stop loading subview in METHOD_1
+Change label in Vm popup
+java.time.chrono.Chronology.isLeapYear fix
+CanThrow ( ) of HNewArray should return true
+Organize frontend imports
+fix transfer description log
+Look for CSS indicator for voice+data
+Add Cinder helper method for candidate volumes to delete
+Update the `` Delete All '' display
+clean connection on new GlusterFS failure
+VmPropertiesUtils singleton
+Adapt to latest change in master
+Advertise refs/users/self if user branch is visible due to Access Database
+handle negative flow for add cinder disk
+fix a utils method to detect compat level lower than 3.1
+Fix a crash with unresolved classes
+Vm run fails due to NPE when host statistics are missing
+unable to remove more then one quota at a time ( # 848816 )
+Exclude import VM from CopyImageGroup CDA
+Give more detail for usage of JackLibraryCodec
+Fix `` short read of block '' IO error on plugin docs
+Add missing @ Override annotation
+Fix engine-config logging config
+Use is prefix for boolean method
+Fixed race condition in Spinner.DialogPopup on null reference
+Check if mText is null before invoke toString ( )
+Do n't low case plugin name
+generic type of PostDeleteActionHandler : :fixParameters
+add message to assert
+CTS verifier crashes while executing the `` Notification Attention Management '' test
+Add NOT_ROAMING to bluetooth network capabilities
+Adding some contacts permission guards
+Import gluster hosts message modified
+Remove navigation workaround for Vim mode
+fixing spelling mistake
+Change String == to equals in Preference
+decrement pending vm on 'run in paused mode '
+Misleading audit log in VAR_5 domain refresh
+Add debug log of the loaded libraries
+hot unplug disk with alias-only xml
+Increment DB Generation when image is copied
+BackendAssignedPermissionsResource streams
+Adjust MigrateVmCommand to accept any vlan device name
+fix potential NPE
+Fix ColumnModel.getAllLeafColumns so 3-level primary keys work
+Remove workaround for kernel IPV6_MULTICAST_HOPS bug
+Displaying a filename to the titlebar when draw9-patch tool is invoked with specifying the filename
+Make Async getStats calls in HostMonitoring
+Rearrange attributes in XML files by default
+Extract TYPE_3
+Imporove the documentation of NICs
+Add CHANGE_SCREEN_HISTORY_RIGHT_OF_BUTTONS extension point
+Enable String compression
+change LSM lock scope to execution
+Fix DecimalFormatSymbols.maybeStripMarkers ( )
+Fix allocation-less launches
+Add Reference.getReferent for reference intrinsic
+Update to model 4.0.26
+Expose remaining EventBroker 's methods and fields
+@ Inject GetFenceAgentByIdQuery Daos
+Use correct day of week for arbitrary past expiration time
+GLUSTERFSStorageHelper METHOD_4 call
+cleanups in libvirt xml builder
+Support usage of RefControl.canDelete ( ... ) if AccessPath is VAR_5
+Fix issue with Thread.setName hanging after Thread.start
+Do not delete in WhiteLists
+Turn off palette previews during unit tests
+serialization/deserialization of SnapshotType
+Fix CloneVmCommand when the VM is based on template
+lowering logging level to debug
+Fix NPE when site header or footer is n't present
+[ RFE ] Improve power management proxy select .
+fixing RoleDaoDbFacadeImpl
+Fix metaVar for arguments
+Fix compilation after update to MockWebServer
+Fixing ResourceManager
+simplify GetAllVmStats with stream api
+refresh grid on overlay close
+Dismissing location prompt now actually prevents it from reshowing
+Fix typo in Satellite
+Now we provide more info about the Gradle build
+Launcher activities are not flagged as unprotected anymore if they are not protected by permissions
+ScanStorageForUnregisteredDisksCommandTest overflow
+Fix getting parent for level 1 projects
+Add SSH commands to query subscription states
+Add a check to verify the app is actually running
+MemoryStorageHandler comparators
+Add Error specifiers to the API
+Fix bootloop
+Fix libcore libcore.io.OsTest.test_readlink test on marlin/sailfish
+Change message displayed by -- list-plugins
+Fix Ant build
+fix geo rep session key parsing issue
+Allow configuration of reviewers on project info screen
+PagerTitleStrip flicker fix , take 2
+Eliminate unneeded updates to VdsDynamic
+Return UNKNOWN status for GlusterTaskStatus
+Abort connecting to native daemon during shutdown
+HostFenceActionExecutorTest redundant stubbing
+Restore rotation when case finished
+disks tab - fix quota visibility event handler
+Reformat java.nio.Buffer impls for update to 8u121-b13
+Make hasIccCard return true if RUIM card is present
+Use typed empty list in extensions
+Modify code to check that PUK code length is always 8
+adjust expected length with padding in decrypt mode ''
+NetworkImplementationDetailsUtilsUsingVlanNicTest stubbing
+VDS Commands for Live Storage Migration
+Preserve VM NUMA pinning settings in UI
+Do n't need to authenticate fingerprint when the fingerprint list is empty
+First version of the test only plugin
+Remove username parameter
+Simplify formatting of METHOD_1 in Gerrit
+Clear assistant stack after determining display
+libgfapi feature and cluster level feature have different names
+Only restore selection at discard for new comments
+Use Logger 's built-in string formatting
+remove Openstack Network LINUX_BRIDGE plugin type
+Convert ObjectReader to AutoCloseable
+Make sure used is always < = total
+Disable IccCardProxyTest.testAppReady
+return error code on error
+Introduce TryBackToCinderSnapshotCommand
+v2v-VMware 's username validation changed to allow dot and domain\user format
+Remove Divide Operation and push to CodeReview
+Add CHANGE_SCREEN_BELOW_COMMIT_INFO_BLOCK extension point
+Pre-compile the regex for matching trash folder names
+Enforce xmlns : android declaration in merged manifest file
+Fix detection of preferred hosts for numa nodes
+Ensure that AccessPath is set when user for SshSession is authenticated
+fix cpu profile validation on import template
+Block provide type change
+validate users and roles
+Change VerticalPanel to FlowPanel
+@ Inject GetFenceAgentsByVdsIdQuery Daos
+wrong string comparison in comment column
+METHOD_1 return
+Update to new ddmlib-prebuilt api
+Clear commonServer even if stop fails
+Remove IdentifiableUtils
+Checkbox labels in Install Host dialog
+Fix toString in NameSpecification
+Fix NPE when abandoning a change
+Add method to publish edits
+SystemUtils.LINE_SEPARATOR- > System.lineSeparator ( )
+Change deoptimize entrypoint to save everything
+Fix NPE when change has no current patch set
+Move FLATTENED_PATTERN to inner class
+Fix ISO Domain List refresh NPE
+switch default curve to 256 bits
+Check for null mGapWorker in onDetachedFromWindow
+Correct error reporting for georep delete
+prevent IndexOutOfBounds on VmSnapshotList
+Update BuildVersionTest for 2.3 and 2.3.1
+Fix AnimationUtilsTest failure due to the timing dependency
+Ensure the library path variable is valid
+Modification of METHOD_2 implementation
+Clear temp inserter right after flushing
+Fix clearing event filters in notifier
+Initial implementation of SSH command to index changes
+Fix crash when exiting the Significant Motion test
+Add another test for HttpURLConnection # usingProxy
+for bonds mode=4 setting default xmit_hash_policy
+Use BufferedOutputStream between ZipOS and FileOS
+Fix push over HTTP
+Clean up Editor fields before Model objects
+Adding ad_aggregator_id to HostNic
+Use the pending VM count in EvenGuestDistr . weight unit
+Ignore case for GID matching
+Filter out zombie draft refs
+add missing initialization of vm-init model for pool
+Stop using WorkQueue # unregisterWorkQueue
+Set default value for ChangeNotes.hashtags to avoid NPE
+Only show the progress meter if we have n't reset the table content
+LockedObjectFactoryTest # METHOD_1
+set 100 % width for NfsStorageView- > VAR_4
+Fix two zygote imports
+RestoreAllSnapshotCommandTest collections
+Fixing typo in RDP connection error dialog
+AuditLogable - replace check to METHOD_3
+Removing use of StingHelper
+Fix SSLCertificateSocketFactory.getDefaultCipherSuites
+Fix incorrect name in METHOD_1 log wrapper
+Add handling for hashed uninflated object
+Use the same credentials for all servers
+TreeFormatter should always use '\n ' as line separator string
+Rename METHOD_1 ( ) to METHOD_2 ( )
+java.lang.reflect.Proxy
+Bump to Gerrit 2.10.6 APIs
+fix mocking validator in FenceValidatorTest
+Keep old timestamps during data migration
+Collapse layout properties by default
+Minor fixes for cluster features
+Fix METHOD_1 for YUV allocations
+Do n't refcount VAR_4 requests
+Use precompiled regex patterns to test for single query
+vmware tooltip in import dialog is located incorrectly
+prevent stock email app to unset VAR_5 on mark/unmark as read
+GetAllAttachableDisksForVmQuery branching
+fix ssh test suite for stderr
+Allow ECDSA based public key authentication ''
+Fix build error in SessionDataContainer
+Lint misreports missing layout_ [ width/height ]
+Fix KeyId.getCategory
+Fix the SL4A Doc String for METHOD_1 ( )
+Fix remove of template watchdog
+[ device owner ] result_canceled counts as vpn restricted
+Add extra message when manifest merging fails
+Corrected warning message
+Use MoreObjects.firstNonNull in PermissionCollection
+Use % n instead of \n in printf
+BackendExportDomainDisksResourceTest build
+Added multiply operation to CodeReview from a Linux client
+Keep track of braces { } in @ code comments
+Track a typo fix in hidden libcore API
+Fix NPE in AbstractSizeColumn
+fix quota for remove vm with cinder disks
+Enhance UploadValidators to allow listening to negotation start
+Fix NetworkInterface # METHOD_1 corner case
+Fix Broken Build
+Update changelog and fix api issue
+Pool name in audit log when adding/removing a VM Pool
+Fix typo in BaseEntityModelDetachableWidget
+Fix memory leak of DataSaverPreference
+Expose Lucene Index Writers for plug-ins
+Compare to the key event value which is defined
+Do n't fetch calls if the parent does n't exist
+@ Inject GetAllClustersQuery Daos
+force update VM to down
+xmlns : app lint error
+NPE if the user does not have access to management network
+Ensure that ObjectOutputStream in H2CacheImpl is closed
+CommandBase - avoid releasing lock if there is a callback
+coverity issue fix
+remove 'Oops ! ' from error popup
+Plugin API for project
+Fix exception when clicking on binary file without being signed in
+ExportedReceiver flags app widget receivers
+storage_pool cleanup
+Do n't try to close panel on setting screen
+Use ReplacementUtils
+Update to model 4.1.37
+Track API change
+Do n't run Annotations57649Test on low-ram devices
+LiveMigrateVmDisksCommandTest @ Spy annotation
+Incremental log writer must replace null by empty string
+Adding validation for snapshot id on preview
+Fix backtracking for arity-2 predicates
+Properly handles using addon string for VAR_1 in NDK
+Make *Info classes in GetServerInfo movable to extension package
+Fix a METHOD_1 implementation
+libgfapi feature and cluster level feature have different names
+removing fenceSpmStorage verb and related classes
+Move GroupRebuilder and GroupBundle into schema package
+catch another RSA error
+IconUtils.extractIconIds null resistant
+Fix the trimElements method of the OsRepo
+mismatch in dialog header
+Add optional setup for plugin acceptance tests /IT prior to server start
+Fix typo at SPMAsyncTask
+[ NAN ] Make attach configuration parameter optional
+Avoid flooding the screen of group membership warnings
+request am to show the ANR dialog
+Cleanup Guid.toString ( )
+Use the jarjar names of security providers
+Expand permission checks for transfers
+remove unused method Linq.contains
+Count of affected VMs shown when CL change
+Allow admins to see all groups ( including external ones ) of a user
+Fix Project Links
+Allow DexFile # METHOD_1 to check case when downgrading is required
+Fix tests
+Inject CinderBroker 's members
+Invalid guid should result in 400 ( BAD_REQUEST ) status
+Set extra EXTRA_ALWAYS_USE_VOIP_AUDIO_MODE for SIP accounts
+Fix KeyValueQuotaTest
+Remove connection references when an app is removed
+Quick fix recursively importing
+Add exceptions for big5han and gb2312han in genrb
+Fix DexMakerTest # testMonitorEnterMonitorExit test
+replace javax.ejb.Singleton with javax.inject.Singleton
+ECBM SystemProperty cleanup
+Linq.SharedMacPoolComparator 's lexonumeric
+Remove useless FileUtils methods
+Open Repository and RevWalk in try-with-resource
+Complete provisioning , and complete provisioning again
+Add method names from mapping without parameters
+Fix typo in 'exclusive ' parameter
+Relax 030-bad-finalizer test
+Adding tooltip with bond properties to bond icon
+Clicking in the layout editor does not show its properties
+Fix unpermitted storage related commands in Audit mode
+Fix for testFreeformWindowManagementSupport
+SL4A reliability
+Fix errors in refactor of DPInstrumentTestTask
+Do n't configure kdump when PM is disabled
+use the converter callback also in user portal
+Revert `` Remove a usage of list method into JaycePackageLoader ''
+Fix of IndexOutOfBoundsE in Host tab
+fix coverity 1385262 possible NPEs
+Make METHOD_1 throw unconditionally
+Provisioning of VMs created from Templates tab fix
+Fix dao tests not to print lookup error
+Change ReferenceQueue.add to append at end of the unenqueued list
+Remove useless KnownIssue
+RandomUtilsSeedingRule JUnit 4.10 upgrade
+Remove member init in the compat module
+Set minimum density when running METHOD_1
+@ Inject GetAllHostNamesPinnedToVmByIdQuery Daos
+Fix divergent equals and METHOD_1 behavior
+add the transferred field
+Sync file size and uploaded image 's actual size
+cleanup
+Fix NPE when ProjectInput.name is not set
+Modifies Self-Managed CS binding detection
+Bind PluginActionButtonHandler as eager singleton
+fix AddVmParameters for null VAR_1
+StrictMode.permitCustomSlowCalls ( ) should call disable ( DETECT_CUSTOM )
+Make ElementTooltip.setContent ( ) null-safe
+Revert `` java.time.Instant.toEpochMilli ( ) fixes ''
+Missing opertions for snapshots in RESTAPI
+Respect servlet context path in URL for top menu items
+fix IpAddressPredicateTest.testCompressedIpv6AndNotCompressedIpv6
+non admin user api - Filtering hosts ( # 783087 )
+Reset to default did not reset cached settings
+add finish report on multi-host network commands
+Update AddStorageDomainCommonTest to succeed when storage pool is null
+Disable Git over http when Gerrit is not configured to support http
+Adding check to make sure /dev/port does n't exist
+Entity and DAO changes for Disk provisioning
+Upgrade Lucene to 5.4.1
+Remove a METHOD_6 ( )
+Add timeout to communication with network provider
+sdm - generate and pass job id to vds commands
+MigrationPoliciesSupported config value added
+Prompt for mode setting only if setting is available
+Add foreground flag to AG_CALL_CHANGED broadcast intent
+Fixes saving timestamps to db
+Remove apache dependency from android-common
+Call to equals compare different types
+Reject CreateSnapshot when using mdev_type hook
+Add new render method that allows forcing a measure step
+Fix QuartzException when Ctrl+C engine
+Fixes DWH HeartBeat init message
+fix TelephonyNetworkFactory unit test failure
+validate Cinder disks status on RunVmValidator
+Do n't use ExpectedException in METHOD_1
+Fix bug that hid UnaryTests.test005 ( )
+Fix the layoutlib Paint.set ( Paint ) method
+GuidUtils streaming
+Fix for crash in PathBarLayer : :recomputeComponents
+fix column resizing
+Boolean.valueOf ( ) - > Boolean.parseBoolean ( )
+Fixed a spelling mistake in AuditLogAgingThreashold config var
+update guest agent info on GetAllVmsQuery ( # 848048 )
+BT - Not possible to accept incoming obex transfers using key-presses
+Convert to auto-closeable Repository and RevWalk
+Fix camera2.cts.CameraManagerTest.testManagerGetDeviceIdList for TV
+Fix to ensure actual delay in a vibrate pattern
+rm DevicePropertiesUtils.getSupportedDeviceTypes
+Store imagare user preferences in a browser cookie
+Add AndroidVersion method for looking up the effective API level
+Guarantee that all db related files are deleted together
+Fix the link another identity button
+Improve the BaseDexClassLoader detail message , and make ScopedLocalRef more unique_ptr-like
+Make -- watchfs a common command option
+Replace Maps with UserDictionarySettings to trigger database writes
+Use BooleanCondition for # METHOD_3
+Enable vertical scrolling in bond dialog
+Remove FixupBidiClassDoc in codegen tool
+Correct rendering of commit messages
+Display an alert if the VM has illegal images
+Copy 'res ' folder to device for run-tests
+Set endAction try again to false on failure
+Fix build
+Add configuation option to show/hide top level menu
+Use Long.parseLong instead of boxing
+Disable Sparsify for direct LUNs and Cinder disks
+Prevent starting the reporter twice
+Fix TypeError when there is no assignee yet
+Remove incorrect @ Nullable
+Fix NPE if animation updated after manager released
+Rename StartStopDeamonIT to StartStopDaemonIT
+Modify FinalizationTester to use Runtime.gc ( )
+Add SourceInfo.toString ( )
+Remove unneeded @ SuppressWarnings
+31050764
+@ Inject GetVnicProfileByIdQuery Daos
+Relax namespace restriction on system server classloader
+Add an events TrimCommand
+The config file location can be specified using -Dorg.ovirt.optimizer.config= < path >
+Print plugin name in CacheEvictionTask.toString ( )
+Avoid injection when creating an alert log
+Avoid @ Sandboxed annotations by resetting project states after each test
+simRecordLoaded registrants not notified for CDMA
+Removes MD5 initialization from Logging
+Support retrieving the server version via REST
+Include all command arguments in SSH log entry
+Check if dialpad is already open when handleing new intents
+Errata dialog filter
+ExpatParser LP64 fixes
+Only consider the pack size if a pack was really received
+Handle correct NIC ID from OVF ( # 827061 )
+fix context sensitive help paths / open in new tab
+Send next message if current one fails
+RemoveStorageServerConnectionCommandTest generics
+fix possible NPE in internal migration
+Introduce template diskattachments resources and remove old API
+Change VM Time Zone display string to 'Hardware Clock Time Offset '
+Fix NetworkInClusterComparator
+Do n't view images with src= '' javascript : ... ''
+ActivateStorageDomain - unwrap useless else
+RepoFileMetraDataDAOTest # METHOD_1
+Overlapped in 'New Virtual Machine - Guide Me ' dialog
+Support clearing cookies by adding it with `` max-age=0 ''
+MediaStore.Audio.Media.getContentUriForPath ( ) returns unexpected content
+Convert ReindexIT to use Google Truth
+Adapt to Gerrit 2.14 and Java 8
+Added `` recommended Gradle plug-in version '' constant
+Fix order of expected and actual results
+Rng devices are updated during cluster downgrade
+Fix LongCodec.setMax ( ... )
+Fix NPE
+Fixing serialization compatibility tests for sql tests
+Set ChromeClient to webview to gurantee the getprogress ( ) value
+Mcc should not set country code with persistent request
+fixing buttons text misalignment
+Add API to support warning for attached Storage Domains
+disk dialog - capitalize casing of LUN
+Explain order of 'list ' is n't guaranteed
+Unify validation of network providers in VdsCommand
+Fix propagation of Group indexing events
+Enable parameter files for manifest merger actions
+Prevent crash in NetworkManagementServiceTest # shutdown ( )
+Fix typo in test
+Remove setting parent command
+Fixed ScriptGroup finalizer for old API
+Skip the NumberFormatTest # METHOD_1 test case
+use stream in METHOD_1
+Avoid adding more threads while the queue is shutting down
+Allow gitweb URLs to be passed unencoded for viewing
+Split up callchain in METHOD_1
+do n't use hotplug when updating instance type
+Fix possible NPE flagged by SonarQube
+Renaming JarPlugin to ServerPlugin for future extensions
+Add test for https : //android-review.googlesource.com/99853
+Allow compilation with Java7
+Fix the build
+Use ITestDevice # pullFile instead of ITestDevice # executeAdbCommand
+Fix upgrade of virt host in UP state
+Fix stream flushing when SYNC_FLUSH is set
+Convert project permission check to PermissionBackend
+attach disk - allow read-only for passthrough
+Adding Enum validations in create volume ( # 831096 )
+mention which Mac address is used log
+Fix ServiceConnection leak in ProjectionOffscreenActivity
+Remove assertion
+Notify BluetoothRouteManager when Bluetooth turned off
+Fix a copy/paste typo in ViewPropertyAnimator
+`` escape '' underscores in spice menu
+Revert `` Revert `` Add license headers to generated stubs . '' ''
+GetGlusterGeoReplicationEligibleVolumesQueryTest streams
+CopyData - use volume job fencing
+More descriptive message on attempt to update running VM
+initialize TabIndexes with 1 by default
+Add user name field to VAR_2
+Allow UiCommands to appear in more than one place
+Fix Eclipse warnings
+Vm run fails due to NPE when host statistics are missing
+Revert `` Update mysql-connector-java to 6.0.6 ''
+NPE in Picking first provider
+Fixed crash in RemoteContactCusror
+remove unnecessary static 'started ' flag
+Move commands ' init logic to init ( )
+Added VDS to StorageHandlingCommandBase VAR_1
+Upgrade should start when host in maintenance
+Fix RenderScriptGL METHOD_1 problem
+Remove deprecated config value
+Add screen to list service users
+Force closed at settings application when delete Misc files
+Pool name in audit log when adding/removing a VM Pool
+@ Inject GetAllTemplateBasedEntityQuery Daos
+Update templates to java7 , fix endpoint VAR_6
+Fix potential OvfParserTest NPE
+correct build version check
+Only run when GERRIT_NOTEDB=off
+Minor cleanup in VdsUpdateRunTimeInfoTest
+refactor HostConnectivityChecker
+Remove stray logging statement
+Remove redundant assignment in DiskValidatorTest
+send hot-set nic xml only when domain xml is enabled
+Remove reliance on afterExecute from WorkQueue
+adding an error log print in engine-manage-domains
+Fix for the missing focus in WebView form fields
+Remove direct LUN disk fails on NPE ( # 769891 )
+Use -is : ignored predicate in dashboard queries
+AuditLogMessage for internal disk addition
+fix NPE in HostInterfaceListModel.setEntity
+Support for Gerrit 2.11
+Prevent NPE in Property Sheet code
+Update to model 4.1.4
+Fix link to home
+Renamed tags_vds_map_id.java to TagsVdsMapId.java
+Update ECJ to 4.6M4
+Stop adding link caption if it is null or agrees with the url
+allow the server path to be only a slash
+BaseNetworkImplementationDetailsUtilsTest unused stubbing
+Fix NPE when importing VMs that have no ExportDate
+Fix exception print due to wrong database operation
+Configure editable account fields for OAuth realm
+Do n't open file while saving topic update
+java.time.Instant.toEpochMilli ( ) fixes
+Bind PluginActionButtonHandler as eager singleton
+Populate values in KeyValueWidgets
+ForceSelectSPM might fail
+Fix divergence between interpreter and compiler
+bootstrap buttons for user/group select on user list
+Fix RTT property setting
+Remove unncessary hostname assignment in Inet6Address.initif
+Ignore OOMEs in ThreadStress ' QueuedWait operation
+Go back to change screen if 'Publish and Submit ' fails on submit
+Enable warnings for missing @ Override annotations
+fix drive 's host-resource within ova
+91e1658f36 -s ours
+enrich TimeZoneValidator
+Add null check before finish SystemUI Tuner 's activity
+Fix spelling mistake in InMemoryLockManager
+LocalSdk.hasChanged ( ) not correctly synchronized
+remove jobs of IVdsAsyncCommands on engine startup
+Added sortKeyDesc to Change
+tiny fix for make template dialog 's focus traversal
+Handle null input
+Use ExternalId.isValidUsername instead of VAR_2
+Track initial call log building metrics separately from incremental building metrics
+prevent IndexOutOfBounds on VmSnapshotList
+do n't disable pass button for configuration change
+Allow rebase of a change only with push permission
+Disable Sparsify for direct LUNs and Cinder disks
+Split off ioutil from the giant server library
+delete file when do n't support 3gp Bug:30545980
+GWT/P upgrade , part 4
+Inline InterfaceCompararByMAC
+Block cluster version change when Snapshot in Preview
+Use StandardCharsets.US_ASCII constant
+Increase max connections per route for acceptance test HTTP client
+Fix METHOD_1 ( ) number format exception
+Be more consistent with L suffixes in NIOAcccess
+Inline Linq.GlusterVolumeGeoRepSessionComparer
+Add validation if provider is a network provider
+Display latest result of branch list screen 's filter
+Extract a constant for default submit type
+added support for optionally select the target cluster
+Compute canonical list of options using OptionValueDescription 's tracking of instances
+LSM - rephrasing move dialog warning
+Fix thread priorities for unstarted threads
+Fix push to refs/drafts creates a change in NEW state
+Fix JackApiV02Toolchain.setWithDebugInfos by updating field
+Fix NPE in ImportVmFromExternalSourceModel
+Avoid enabling balloon device on VM edit
+Test for bug 33137046
+Do not follow symbolic link when deleting virtualenv
+Enable GlusterGeoRepDaoTest # METHOD_1
+Increase arbitrary wait for boot
+Update METHOD_1 after functionality changed in framework
+fix typo bellow -- > below
+Show remote device local ( Alias ) name
+Call ConsoleAppender.activateOptions ( )
+Overlapped in 'New Virtual Machine - Guide Me ' dialog
+Use preferred email if available
+in ASN1 encoding , use 12 when no value is specified
+Include `` a=commit '' in direct gitweb commit links
+Exclude java 8 bridge test from Jill based toolchain
+Do not fail if index is null
+FenceValidator RegEx usage
+auditlog for importing a VM from a data domain
+Remove harmony provider and default SecureRandom impl
+TimePickerDialog OTG keyboard entry discarded
+SEAT - call startPollingAsyncTasks on revert
+Return a more specific type from AnnotationFactory.createAnnotation
+Assist app is not launched when long-pressing on Home key
+MoveDisksCommands - disk id for perm subject
+Cache VM from configuration when cloning from snapshot
+Showing recording time at screen record
+Update ViewInfo to return the type of view
+changed Spice to SPICE
+Fix no options menu on location settings screen
+Fix inifinite recursion in RefControl.isOwner
+Set default boot order if absent in OVF
+update the isWindowsOs detection
+Process has stopped after dragging progress
+Device with UI mode set to VR_HEADSET is identified as a watch
+Adapt to permission backend
+Change random data generation in SSCEDaoTest
+Stop referring to WorkQueue.Executor
+add note about kernels between 3.5 and 3.8 ''
+Add unit tests for Comment.Range # isValid
+Upgrade to DBUnit 2.5.3
+pull file and read instead of adb shell cat
+add shortcut in DefaultReadDao.get
+Remove redundant specification of type arguments
+Show scroll bars
+correct AuditLogType on ThawVmCommand
+Improve test reliability
+Always use a thread pool for interactive indexing
+ImagesHanlder # METHOD_1
+Show plugins install screen at first login
+Enable ErrorTest 002
+Move from common to api.groups package
+Fix sharding runtime bug
+disks tab - fix quota visibility event handler
+Use validation only if Template is not blank
+Fix NPE when VM does not exists on register
+Set METHOD_1 on index queries depending on schema version

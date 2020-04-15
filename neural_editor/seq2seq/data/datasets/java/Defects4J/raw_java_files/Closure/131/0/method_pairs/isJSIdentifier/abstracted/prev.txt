@@ -1,0 +1,1 @@
+public static boolean METHOD_1 ( String VAR_1 ) { int length = VAR_1 . length ( ) ; if ( length == 0 || ! TYPE_1 . METHOD_2 ( VAR_1 . METHOD_3 ( 0 ) ) ) { return false ; } for ( int i = 1 ; i < length ; i ++ ) { if ( ! TYPE_1 . METHOD_4 ( VAR_1 . METHOD_3 ( i ) ) ) { return false ; } } return true ; }

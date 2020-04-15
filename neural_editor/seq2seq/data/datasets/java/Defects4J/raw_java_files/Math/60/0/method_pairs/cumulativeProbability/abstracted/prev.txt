@@ -1,0 +1,1 @@
+public double METHOD_1 ( double x ) throws TYPE_1 { final double VAR_1 = x - VAR_2 ; try { return FLOAT_1 * ( 1.0 + TYPE_2 . METHOD_2 ( ( VAR_1 ) / ( VAR_3 * TYPE_3 . METHOD_3 ( FLOAT_2 ) ) ) ) ; } catch ( TYPE_4 VAR_4 ) { if ( x < ( VAR_2 - INT_1 * VAR_3 ) ) { return 0 ; } else if ( x > ( VAR_2 + INT_1 * VAR_3 ) ) { return 1 ; } else { throw VAR_4 ; } } }

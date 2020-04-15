@@ -1,0 +1,3 @@
+Try to investigate why BLEU had outbreak to 0.6 in 81 experiment.
+Therefore it is the same config as was in 81 except for early stopping is used on BLEU.
+Here to save time we do not train neural editor but take it from trained in 81.

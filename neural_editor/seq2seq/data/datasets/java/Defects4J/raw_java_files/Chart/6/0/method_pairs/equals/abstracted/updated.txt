@@ -1,0 +1,1 @@
+public boolean equals ( TYPE_1 obj ) { if ( obj == this ) { return true ; } if ( ! ( obj instanceof TYPE_2 ) ) { return false ; } TYPE_2 VAR_1 = ( TYPE_2 ) obj ; int VAR_2 = size ( ) ; for ( int i = 0 ; i < VAR_2 ; i ++ ) { if ( ! TYPE_3 . METHOD_1 ( ( TYPE_4 ) get ( i ) , ( TYPE_4 ) VAR_1 . get ( i ) ) ) { return false ; } } return true ; }

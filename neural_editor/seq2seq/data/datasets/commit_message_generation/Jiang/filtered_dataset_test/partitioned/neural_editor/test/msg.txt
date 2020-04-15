@@ -1,0 +1,64 @@
+added missing OSGI - INF to build . properties
+Fixed problem with getHighestFnScope method
+Add mention of 4321 / 4411 to NEWS
+ignore Update ' modules / apps / collaboration / comment / .
+Fix changelog ( 2 . 1 . 15 is frozen )
+ignore Update ' modules / apps / web - experience / asset / .
+ignore Update ' modules / apps / foundation / portal - scripting / .
+Fix TsExtractor tests
+update chagelog
+ignore Update ' modules / apps / foundation / login / .
+bump up druid version to 0 . 4 . 0
+Call close ( ) instead of deactivate ( ) in CursorToBulkCursorAdaptor . close ( )
+Bumped gradle plugin
+remove logall since it doesn ' t trigger anymore
+Remove reference to Melomel
+prepare release v1 . 4
+Travis should also use the Gradle wrapper
+adds TODO for instantiateCroutonView
+removed unused line
+update fonts
+ignore Update ' modules / apps / foundation / portal / .
+Prepared version 0 . 2 - SNAPSHOT .
+Updated the version string to the version of T4J
+Updated changelog
+Added STORM - 816 to Changelog
+Cancel all pending root scan requests on dispose .
+Ignore time - zone data
+setting version to 3 . 0 . 1 - SNAPSHOT
+Removed tag flyway - 1 . 6
+LRQA - 17074 Modify java . jdk . type property from x64 to x32
+Removing jdk6 from the Travis file again .
+Skip tests pending resolution of JBAS - 8339
+Fixed bug in Svn class with wrong release branch name .
+Update the changelog file
+ignore Update ' modules / apps / foundation / portal - cache / .
+ignore Update ' modules / apps / web - experience / export - import / .
+add profvis package to install dependencies
+Bumped version to 1 . 3 . 3
+updated todo . txt
+Try different sources setting to attach and deploy sources artifacts
+Fix indentation
+Ninja - add debug log statement to mv builder scheduled at startup
+Fixed method signature
+add STORM - 1872 to CHANGELOG
+ignore Update ' modules / apps / web - experience / trash / .
+Fix test data so that it can be compiled
+Add some .
+update h2o - flow version to 0 . 5 . 0 with . . . ( # 684 )
+Clarify prev / next Meaning
+Changing Error to Warning
+update travis conf
+Bump the version
+Updated CHANGELOG . txt .
+Removed non - needed imports
+Prepare 3 . 0 . 0 release
+ignore Update ' modules / apps / forms - and - workflow / polls / .
+ignore Update ' modules / apps / foundation / contacts / .
+bump engine . io - client
+Updated gitignore
+fix error in docking station on chunk unload , fixes # 2898
+Changed the behaviour of sendKey so that any key event kan be sent
+Smack 4 . 2 . 0 - alpha1
+ignore Update ' modules / apps / collaboration / document - library / .
+run Findbugs on main only ( # 4131 )
