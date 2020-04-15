@@ -1,0 +1,3 @@
+Version where bug that edit vectors lstm were not trained was fixed.
+This config is the same as e133_2 (acc 15%) and purpose of this launch is to check that no bug was introduced.
+(batches, 0, 1, BUILD_EDIT_VECTORS_EACH_QUERY=False)
