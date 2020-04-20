@@ -34,6 +34,8 @@ class Decoder(nn.Module):
         self.dropout = dropout
         self.use_edit_representation = use_edit_representation
         self.teacher_forcing_ratio = teacher_forcing_ratio
+        if not use_edit_representation:
+            edit_representation_size = 0
 
         self.rnn = nn.LSTM(emb_size + 2 * hidden_size_encoder + 2 * edit_representation_size, hidden_size,
                            num_layers, bidirectional=False,  # TODO_DONE: bidirectional=False?
@@ -69,10 +71,13 @@ class Decoder(nn.Module):
             query=query, proj_key=projection_key,
             value=encoder_output, mask=src_mask)
 
-        # [B, 1, NumDirections * DiffEncoderH]
-        edit_hidden_last_layer = edit_hidden.transpose(0, 1)[:, -1, :].unsqueeze(1)
         # update rnn hidden state
-        rnn_input = torch.cat([prev_embed, context, edit_hidden_last_layer], dim=2)
+        rnn_input = [prev_embed, context]
+        if self.use_edit_representation:
+            # [B, 1, NumDirections * DiffEncoderH]
+            edit_hidden_last_layer = edit_hidden.transpose(0, 1)[:, -1, :].unsqueeze(1)
+            rnn_input.append(edit_hidden_last_layer)
+        rnn_input = torch.cat(rnn_input, dim=2)
         # DONE_TODO: zeros or cell states from encoder
         # [B, 1, DecoderH], [NumLayers, B, DecoderH], [NumLayers, B, DecoderH]
         output, (hidden, cell) = self.rnn(rnn_input, (hidden, cell))
@@ -112,8 +117,8 @@ class Decoder(nn.Module):
         # initialize decoder hidden state
         (edit_hidden, edit_cell) = edit_final  # Tuple of [NumLayers, B, NumDirections * DiffEncoderH]
         if not self.use_edit_representation:
-            edit_hidden = torch.zeros_like(edit_hidden, requires_grad=False)
-            edit_cell = torch.zeros_like(edit_cell, requires_grad=False)
+            edit_hidden = None
+            edit_cell = None
         (encoder_hidden, encoder_cell) = encoder_final  # Tuple of [NumLayers, B, NumDirections * SrcEncoderH]
 
         if states_to_initialize is None:
@@ -156,7 +161,6 @@ class Decoder(nn.Module):
         :return: [NumLayers, B, DecoderH]
         """
 
-        if encoder_final is None or edit_final is None:
-            return None  # start with zeros
-
+        if edit_final is None:
+            return torch.tanh(self.bridge(encoder_final))
         return torch.tanh(self.bridge(torch.cat((encoder_final, edit_final), dim=2)))
