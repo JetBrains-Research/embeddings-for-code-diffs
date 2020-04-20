@@ -32,10 +32,6 @@ class AccuracyCalculation:
         print(f'Start conducting accuracy calculation experiment for {dataset_label}...')
         data_iterator = data.Iterator(dataset, batch_size=1,
                                       sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
-        print('BUG FIXING ACCURACY')
-        self.model.set_training_data(self.train_dataset, self.pad_index)
-        self.run(data_iterator)
-        self.model.unset_training_data()
         print('TRAINING OBJECTIVE ACCURACY')
         self.run(data_iterator)
 

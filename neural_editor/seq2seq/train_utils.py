@@ -12,7 +12,6 @@ from torchtext import data
 from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
 
-from edit_representation.sequence_encoding.EditEncoder import EditEncoder
 from neural_editor.seq2seq import SimpleLossCompute
 from neural_editor.seq2seq.BahdanauAttention import BahdanauAttention
 from neural_editor.seq2seq.Batch import Batch, rebatch
@@ -23,7 +22,7 @@ from neural_editor.seq2seq.decoder.Decoder import Decoder
 from neural_editor.seq2seq.encoder.Encoder import Encoder
 
 
-def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
+def make_model(vocab_size: int, emb_size: int,
                hidden_size_encoder: int, hidden_size_decoder: int,
                num_layers: int,
                dropout: float,
@@ -37,13 +36,11 @@ def make_model(vocab_size: int, edit_representation_size: int, emb_size: int,
     embedding = nn.Embedding(vocab_size, emb_size)
     model: EncoderDecoder = EncoderDecoder(
         Encoder(emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout),
-        Decoder(generator, embedding, emb_size, edit_representation_size,
+        Decoder(generator, embedding, emb_size,
                 hidden_size_encoder, hidden_size_decoder,
                 attention,
                 num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
-                dropout=dropout, bridge=use_bridge,
-                use_edit_representation=config['USE_EDIT_REPRESENTATION']),
-        EditEncoder(3 * emb_size, edit_representation_size, num_layers, dropout),
+                dropout=dropout, bridge=use_bridge),
         embedding, generator, config)
     model.to(config['DEVICE'])
     return model
@@ -139,7 +136,7 @@ def iterate_over_all_data(batches_num, data_iter, loss_compute, model, print_eve
         pre_output_default_loss = None
         pre_output_bug_fixing_loss = None
         if do_default_loss:
-            _, _, pre_output_default_loss = model.forward(batch, ignore_encoded_train=True)
+            _, _, pre_output_default_loss = model.forward(batch)
             total_tokens += batch.ntokens
             print_tokens += batch.ntokens
         if do_bug_fixing_loss:
@@ -177,7 +174,7 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
     # [B, SrcSeqLen], [B, 1, SrcSeqLen], [B]
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
-        edit_final, encoder_output, encoder_final = model.encode(batch)
+        encoder_output, encoder_final = model.encode(batch)
         prev_y = torch.ones(batch.nseqs, 1).fill_(sos_index).type_as(src)  # [B, 1]
         trg_mask = torch.ones_like(prev_y)  # [B, 1]
 
@@ -187,7 +184,7 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
     for i in range(max_len):
         with torch.no_grad():
             # pre_output: [B, TrgSeqLen, DecoderH]
-            out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
+            out, states, pre_output = model.decode(encoder_output, encoder_final,
                                                    src_mask, prev_y, trg_mask, states)
 
             # we predict from the pre-output layer, which is

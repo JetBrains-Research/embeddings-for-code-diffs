@@ -50,14 +50,14 @@ def perform_search(
     """
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
-        edit_final, encoder_output, encoder_final = model.encode(batch)
+        encoder_output, encoder_final = model.encode(batch)
         prev_y = torch.ones(batch.nseqs, 1).fill_(sos_index).type_as(src)  # [B, 1]
         trg_mask = torch.ones_like(prev_y)  # [B, 1]
 
     states = None
     with torch.no_grad():
         # pre_output: [B, TrgSeqLen, DecoderH]
-        out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
+        out, states, pre_output = model.decode(encoder_output, encoder_final,
                                                src_mask, prev_y, trg_mask, states)
 
         # we predict from the pre-output layer, which is
@@ -99,10 +99,6 @@ def perform_search(
     log_probs = log_probs.repeat_interleave(search.batch_size, dim=0)
     src_mask = src_mask.repeat_interleave(search.batch_size * beam_size, dim=0)
     trg_mask = trg_mask.repeat_interleave(search.batch_size * beam_size, dim=0)
-    edit_final = (
-        edit_final[0].repeat_interleave(search.batch_size * beam_size, dim=1),
-        edit_final[1].repeat_interleave(search.batch_size * beam_size, dim=1)
-    )
     encoder_output = encoder_output.repeat_interleave(search.batch_size * beam_size, dim=0)
     encoder_final = (
         encoder_final[0].repeat_interleave(search.batch_size * beam_size, dim=1),
@@ -118,13 +114,12 @@ def perform_search(
 
         prev_y = search.last_predictions.unsqueeze(1)
         # pre_output: [B, TrgSeqLen, DecoderH]
-        edit_final = (edit_final[0][:, mask, :], edit_final[1][:, mask, :])
         encoder_output = encoder_output[mask]
         encoder_final = (encoder_final[0][:, mask, :], encoder_final[1][:, mask, :])
         src_mask = src_mask[mask]
         trg_mask = trg_mask[mask]
         states = (states[0][:, mask, :], states[1][:, mask, :])
-        out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
+        out, states, pre_output = model.decode(encoder_output, encoder_final,
                                                src_mask, prev_y, trg_mask, states)
 
         # we predict from the pre-output layer, which is

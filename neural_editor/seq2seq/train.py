@@ -66,7 +66,6 @@ def train(model: EncoderDecoder,
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=config['LEARNING_RATE'])
 
-    model.set_training_data(train_data, pad_index)
     train_iter = data.BucketIterator(train_data, batch_size=config['BATCH_SIZE'], train=True,
                                      shuffle=True,
                                      sort_within_batch=True,
@@ -135,7 +134,6 @@ def train(model: EncoderDecoder,
         if epoch % config['SAVE_MODEL_EVERY'] == 0:
             save_data_on_checkpoint(model, train_perplexities, val_perplexities, config)
 
-    model.unset_training_data()
     return train_perplexities, val_perplexities
 
 
@@ -197,7 +195,6 @@ def run_train(config: Config):
 
     train_dataset, val_dataset, test_dataset, diffs_field = load_data(config['VERBOSE'], config)
     model: EncoderDecoder = make_model(len(diffs_field.vocab),
-                                       edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
                                        emb_size=config['WORD_EMBEDDING_SIZE'],
                                        hidden_size_encoder=config['ENCODER_HIDDEN_SIZE'],
                                        hidden_size_decoder=config['DECODER_HIDDEN_SIZE'],

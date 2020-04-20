@@ -43,13 +43,9 @@ def test_model(model: EncoderDecoder, data, config: Config) -> None:
     tufano_code_changes_50_100_dataset_train, tufano_code_changes_50_100_dataset_val, tufano_code_changes_50_100_dataset_test = \
         load_tufano_dataset(config['TUFANO_CODE_CHANGES_50_100_PATH'], diffs_field, config)
 
-    one_shot_learning_experiment = OneShotLearning(model, diffs_field, config)
     accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, train_dataset, config)
-    visualization_experiment = EditRepresentationVisualization(model, diffs_field, config)
 
     model.eval()
-    model.unset_edit_representation()
-    model.unset_training_data()
     with torch.no_grad():
         # Visualization of data
         """
@@ -132,17 +128,17 @@ def test_model(model: EncoderDecoder, data, config: Config) -> None:
         )
 
         # One shot learning
-        measure_experiment_time(
-            lambda: one_shot_learning_experiment.conduct(tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes,
-                                                         'Tufano Labeled 0 50 Code Changes')
-        )
-        measure_experiment_time(
-            lambda: one_shot_learning_experiment.conduct(tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes,
-                                                         'Tufano Labeled 50 100 Code Changes')
-        )
-        measure_experiment_time(
-            lambda: one_shot_learning_experiment.conduct(defects4j_dataset, defects4j_classes, 'Defects4J')
-        )
+        #measure_experiment_time(
+        #    lambda: one_shot_learning_experiment.conduct(tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes,
+        #                                                 'Tufano Labeled 0 50 Code Changes')
+        #)
+        #measure_experiment_time(
+        #    lambda: one_shot_learning_experiment.conduct(tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes,
+        #                                                 'Tufano Labeled 50 100 Code Changes')
+        #)
+        #measure_experiment_time(
+        #    lambda: one_shot_learning_experiment.conduct(defects4j_dataset, defects4j_classes, 'Defects4J')
+        #)
 
         print('Starting long experiments', flush=True)
 
