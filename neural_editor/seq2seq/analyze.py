@@ -14,6 +14,8 @@ from neural_editor.seq2seq.config import Config, load_config
 from neural_editor.seq2seq.datasets.dataset_utils import take_part_from_dataset
 from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalculation
 from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
+from neural_editor.seq2seq.experiments.NearestNeighbor import NearestNeighbor
+from neural_editor.seq2seq.experiments.NearestNeighborAccuracyOnLabeledData import NearestNeighborAccuracyOnLabeledData
 from neural_editor.seq2seq.experiments.OneShotLearning import OneShotLearning
 from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_labeled_dataset
 from neural_editor.seq2seq.train import load_data, load_tufano_dataset
@@ -31,6 +33,8 @@ def measure_experiment_time(func) -> Any:
 
 def test_model(model: EncoderDecoder, data, config: Config) -> None:
     train_dataset, val_dataset, test_dataset, diffs_field = data
+    pad_index = diffs_field.vocab.stoi[config['PAD_TOKEN']]
+
     tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes = \
         load_labeled_dataset(config['TUFANO_LABELED_0_50_PATH'], diffs_field, config)
     tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes = \
@@ -48,6 +52,9 @@ def test_model(model: EncoderDecoder, data, config: Config) -> None:
     one_shot_learning_experiment = OneShotLearning(model, diffs_field, config)
     accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, train_dataset, config)
     visualization_experiment = EditRepresentationVisualization(model, diffs_field, config)
+    nearest_neighbor_experiment = NearestNeighbor(model, pad_index, config)
+    nearest_neighbor_accuracy_on_labeled_data_experiment = \
+        NearestNeighborAccuracyOnLabeledData(nearest_neighbor_experiment)
 
     model.eval()
     model.unset_edit_representation()
@@ -107,6 +114,19 @@ def test_model(model: EncoderDecoder, data, config: Config) -> None:
                                                      'train5000_2d_representations.png', classes=None)
         )
         """
+        # Nearest neighbor accuracy on labeled data
+        measure_experiment_time(
+            lambda: nearest_neighbor_accuracy_on_labeled_data_experiment.conduct(
+                dataset=tufano_labeled_0_50_dataset,
+                classes=tufano_labeled_0_50_classes,
+                dataset_label='Tufano Labeled 0 50 Code Changes')
+        )
+        measure_experiment_time(
+            lambda: nearest_neighbor_accuracy_on_labeled_data_experiment.conduct(
+                dataset=tufano_labeled_50_100_dataset,
+                classes=tufano_labeled_50_100_classes,
+                dataset_label='Tufano Labeled 50 100 Code Changes')
+        )
 
         # Accuracy
         measure_experiment_time(
