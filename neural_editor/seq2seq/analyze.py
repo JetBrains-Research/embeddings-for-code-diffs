@@ -4,6 +4,7 @@ import sys
 import time
 from datetime import timedelta
 from pathlib import Path
+from typing import List, Any
 
 import torch
 from torch import nn
@@ -19,12 +20,13 @@ from neural_editor.seq2seq.train import load_data, load_tufano_dataset
 from neural_editor.seq2seq.train_utils import make_model
 
 
-def measure_experiment_time(func) -> None:
+def measure_experiment_time(func) -> Any:
     start = time.time()
-    func()
+    ret = func()
     end = time.time()
     print(f'Duration: {str(timedelta(seconds=end - start))}')
     print()
+    return ret
 
 
 def test_model(model: EncoderDecoder, data, config: Config) -> None:
