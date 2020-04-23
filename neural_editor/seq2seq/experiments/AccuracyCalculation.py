@@ -4,11 +4,14 @@ from typing import List
 from torchtext import data
 from torchtext.data import Field, Dataset
 from torchtext.vocab import Vocab
+import numpy as np
 
+from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.Batch import rebatch, rebatch_iterator
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder.search import create_decode_method
+from neural_editor.seq2seq.experiments.NearestNeighbor import create_levenshtein_metric
 from neural_editor.seq2seq.train_utils import calculate_top_k_accuracy, create_greedy_decode_method_top_k_edits, \
     create_greedy_decode_method
 
@@ -44,6 +47,7 @@ class AccuracyCalculation:
         self.max_top_k = max(self.topk_values)
         num_iterations = self.config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
         self.train_dataset = train_dataset
+
         self.beam_search = create_decode_method(self.model, num_iterations, sos_index, self.eos_index, self.beam_size,
                                                 self.config['NUM_GROUPS'], self.config['DIVERSITY_STRENGTH'],
                                                 verbose=False)
@@ -51,6 +55,11 @@ class AccuracyCalculation:
                                                                            sos_index, self.eos_index,
                                                                            self.max_top_k)
         self.greedy_decode = create_greedy_decode_method(self.model, num_iterations, sos_index, self.eos_index)
+
+        self.differ = Differ(self.config['REPLACEMENT_TOKEN'], self.config['DELETION_TOKEN'],
+                             self.config['ADDITION_TOKEN'], self.config['UNCHANGED_TOKEN'],
+                             self.config['PADDING_TOKEN'])
+        self.levenshtein_metric = create_levenshtein_metric(self.differ)
 
     def conduct(self, dataset: Dataset, dataset_label: str) -> None:
         print(f'Start conducting accuracy calculation experiment for {dataset_label}...', flush=True)
@@ -69,17 +78,18 @@ class AccuracyCalculation:
 
         self.model.set_training_data(self.train_dataset, self.pad_index)
         self.measure_performance(batched_data_iterator, dataset_name, 'top_k_edits_greedy_bug_fixing',
-                                 self.greedy_decode_top_k, len(dataset))
-        self.measure_performance(data_iterator, dataset_name, 'bug_fixing', self.beam_search, len(dataset))
+                                 self.greedy_decode_top_k, dataset)
+        self.measure_performance(data_iterator, dataset_name, 'bug_fixing', self.beam_search, dataset)
         self.model.unset_training_data()
 
         self.measure_performance(batched_data_iterator, dataset_name, 'greedy_default_objective',
-                                 self.greedy_decode, len(dataset))
-        self.measure_performance(data_iterator, dataset_name, 'default_objective', self.beam_search, len(dataset))
+                                 self.greedy_decode, dataset)
+        self.measure_performance(data_iterator, dataset_name, 'default_objective', self.beam_search, dataset)
 
-    def measure_performance(self, data_iterator, dataset_name, method_name, decode_method, dataset_len):
+    def measure_performance(self, data_iterator, dataset_name, method_name, decode_method, dataset: Dataset):
         print(f'{method_name} ACCURACY')
-        max_top_k_predicted = self.run(data_iterator, decode_method, dataset_len)
+        max_top_k_predicted = self.run(data_iterator, decode_method, len(dataset))
+        self.calculate_top_k_levenshtein_distance(max_top_k_predicted, dataset)
         save_predicted(max_top_k_predicted, f'{dataset_name}_{method_name}', k=1, config=self.config)
 
     def run(self, data_iterator: data.Iterator, decode_method, dataset_len) -> List[List[List[str]]]:
@@ -90,3 +100,23 @@ class AccuracyCalculation:
         for correct_top_k, k in zip(correct_all_k, self.topk_values):
             print(f'Top-{k} accuracy: {correct_top_k} / {total} = {correct_top_k / total}')
         return max_top_k_predicted
+
+    def calculate_top_k_levenshtein_distance(self, predictions: List[List[List[str]]], dataset: Dataset) -> None:
+        targets = [example.trg for example in dataset.examples]
+        top_k_distances = np.full((len(dataset), len(self.topk_values)), np.inf)
+        for example_id in range(len(predictions)):
+            target = targets[example_id]
+            example_predictions = predictions[example_id][:self.max_top_k]
+            tail_id = 0
+            min_distance = float('inf')
+            for i, prediction in enumerate(example_predictions):
+                if i + 1 > self.topk_values[tail_id]:
+                    tail_id += 1
+                distance = self.levenshtein_metric(prediction, target)
+                if distance < min_distance:
+                    min_distance = distance
+                    for j in range(tail_id, len(self.topk_values)):
+                        top_k_distances[example_id][j] = distance
+        for i, k in enumerate(self.topk_values):
+            distances = top_k_distances[:, i]
+            print(f'Top-{k} levenshtein distance mean: {distances.mean()}, std: {distances.std()}')

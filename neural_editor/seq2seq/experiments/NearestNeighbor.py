@@ -28,6 +28,14 @@ def save_nbrs_result(nbrs_result: Dict[Any, Any], dataset_label: str, config: Co
         f.write(pprint.pformat(nbrs_result))
 
 
+def create_levenshtein_metric(differ) -> Callable:
+    def levenshtein_metric(x: np.ndarray, y: np.ndarray) -> float:
+        diff = differ.diff_tokens_fast_lvn(x, y, leave_only_changed=True)
+        return len(diff[0])
+
+    return levenshtein_metric
+
+
 class NearestNeighbor:
     def __init__(self, model: EncoderDecoder, pad_index: int, config: Config) -> None:
         super().__init__()
@@ -37,15 +45,8 @@ class NearestNeighbor:
         self.differ = Differ(self.config['REPLACEMENT_TOKEN'], self.config['DELETION_TOKEN'],
                              self.config['ADDITION_TOKEN'], self.config['UNCHANGED_TOKEN'],
                              self.config['PADDING_TOKEN'])
-        self.levenshtein_metric = self.create_levenshtein_metric()
+        self.levenshtein_metric = create_levenshtein_metric(self.differ)
         self.sample_k = 15
-
-    def create_levenshtein_metric(self) -> Callable:
-        def levenshtein_metric(x: np.ndarray, y: np.ndarray) -> float:
-            diff = self.differ.diff_tokens_fast_lvn(x, y, leave_only_changed=True)
-            return len(diff[0])
-
-        return levenshtein_metric
 
     def conduct(self, dataset_train: Dataset, dataset_test: Optional[Dataset], dataset_label: str) -> Dict[
         str, Dict[str, List[int]]]:
