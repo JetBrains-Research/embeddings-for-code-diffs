@@ -1,4 +1,7 @@
-from typing import List, Callable, Dict, Optional
+import os
+import pickle
+import pprint
+from typing import List, Callable, Dict, Optional, Any
 
 import torch
 from sklearn.neighbors import NearestNeighbors
@@ -11,6 +14,17 @@ from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.Batch import rebatch
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.experiments.SimpleNearestNeighbors import SimpleNearestNeighbors
+
+
+def save_nbrs_result(nbrs_result: Dict[Any, Any], dataset_label: str, config: Config):
+    root_to_save = os.path.join(config['OUTPUT_PATH'], 'nearest_neighbors')
+    if not os.path.isdir(root_to_save):
+        os.mkdir(root_to_save)
+    dataset_name = '_'.join(dataset_label.lower().split())
+    with open(os.path.join(root_to_save, f'{dataset_name}_nbrs_result.pkl'), 'wb') as f:
+        pickle.dump(nbrs_result, f)
+    with open(os.path.join(root_to_save, f'{dataset_name}_nbrs_result.txt'), 'w') as f:
+        f.write(pprint.pformat(nbrs_result))
 
 
 class NearestNeighbor:
@@ -33,8 +47,9 @@ class NearestNeighbor:
 
     def conduct(self, dataset_train: Dataset, dataset_test: Optional[Dataset], dataset_label: str) -> Dict[
         str, Dict[str, List[int]]]:
-        print(f'Start conducting nearest neighbor experiment for {dataset_label}...')
+        print(f'Start conducting nearest neighbor experiment for {dataset_label}...', flush=True)
         nbrs_result = self.find(dataset_train, dataset_test)
+        save_nbrs_result(nbrs_result, dataset_label, config=self.config)
         return nbrs_result
 
     def find(self, dataset_train: Dataset, dataset_test: Optional[Dataset]) -> Dict[str, Dict[str, List[int]]]:

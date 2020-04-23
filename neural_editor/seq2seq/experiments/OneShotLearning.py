@@ -31,7 +31,7 @@ class OneShotLearning:
                                                 verbose=False)
 
     def conduct(self, dataset: Dataset, classes: List[str], dataset_label: str) -> None:
-        print(f'Start conducting one shot learning experiment for {dataset_label}...')
+        print(f'Start conducting one shot learning experiment for {dataset_label}...', flush=True)
         data_iterator = data.Iterator(dataset, batch_size=1,
                                       sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
         current_class = None

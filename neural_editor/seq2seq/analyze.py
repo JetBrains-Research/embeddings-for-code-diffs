@@ -54,7 +54,7 @@ def test_model(model: EncoderDecoder, data, config: Config) -> None:
     visualization_experiment = EditRepresentationVisualization(model, diffs_field, config)
     nearest_neighbor_experiment = NearestNeighbor(model, pad_index, config)
     nearest_neighbor_accuracy_on_labeled_data_experiment = \
-        NearestNeighborAccuracyOnLabeledData(nearest_neighbor_experiment)
+        NearestNeighborAccuracyOnLabeledData(nearest_neighbor_experiment, config)
 
     model.eval()
     model.unset_edit_representation()
@@ -128,6 +128,13 @@ def test_model(model: EncoderDecoder, data, config: Config) -> None:
                 dataset_label='Tufano Labeled 50 100 Code Changes')
         )
 
+        # Nearest neighbor between train and test 300
+        measure_experiment_time(
+            lambda: nearest_neighbor_experiment.conduct(dataset_train=train_dataset,
+                                                        dataset_test=take_part_from_dataset(test_dataset, 300),
+                                                        dataset_label='Train dataset Test dataset 300')
+        )
+
         # Accuracy
         measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(tufano_labeled_0_50_dataset,
@@ -172,6 +179,13 @@ def test_model(model: EncoderDecoder, data, config: Config) -> None:
         measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(
                 test_dataset, 'Test dataset all')
+        )
+
+        # Nearest neighbor between train and test
+        measure_experiment_time(
+            lambda: nearest_neighbor_experiment.conduct(dataset_train=train_dataset,
+                                                        dataset_test=test_dataset,
+                                                        dataset_label='Train dataset Test dataset')
         )
 
         print('Starting all Tufano variations experiments', flush=True)

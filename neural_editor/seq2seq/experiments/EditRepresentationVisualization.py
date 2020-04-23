@@ -21,7 +21,7 @@ class EditRepresentationVisualization:
         self.pad_index: int = diffs_field.vocab.stoi[self.config['PAD_TOKEN']]
 
     def conduct(self, dataset: Dataset, filename: str, classes: List[str], threshold=0):
-        print(f'Starting conducting edit representation visualization experiment for {filename}...')
+        print(f'Starting conducting edit representation visualization experiment for {filename}...', flush=True)
         if classes is None:
             self.visualization_for_unclassified_dataset(dataset, filename)
         else:
