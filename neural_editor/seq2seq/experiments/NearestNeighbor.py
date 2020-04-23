@@ -53,7 +53,7 @@ class NearestNeighbor:
         print(f'Start conducting nearest neighbor experiment for {dataset_label}...', flush=True)
         nbrs_result = self.find(dataset_train, dataset_test)
         save_nbrs_result(nbrs_result, dataset_label, config=self.config)
-        self.print_samples(nbrs_result, dataset_train, dataset_test)
+        self.print_samples(nbrs_result, dataset_train, dataset_test if dataset_test is not None else dataset_train)
         return nbrs_result
 
     def find(self, dataset_train: Dataset, dataset_test: Optional[Dataset]) -> Dict[str, Dict[str, List[int]]]:
