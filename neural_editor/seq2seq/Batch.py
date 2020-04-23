@@ -1,7 +1,8 @@
-from typing import Tuple
+from typing import Tuple, List
 
 import torchtext
 from torch import Tensor
+from torchtext import data
 
 from neural_editor.seq2seq.config import Config
 
@@ -59,6 +60,10 @@ class Batch:
 
     def __len__(self) -> int:
         return self.nseqs
+
+
+def rebatch_iterator(data_iterator: data.Iterator, pad_idx: int, config: Config) -> List[Batch]:
+    return [rebatch(pad_idx, batch, config) for batch in data_iterator]
 
 
 def rebatch(pad_idx: int, batch: torchtext.data.Batch, config: Config) -> Batch:

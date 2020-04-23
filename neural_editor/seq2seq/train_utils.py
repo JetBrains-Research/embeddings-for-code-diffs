@@ -202,6 +202,66 @@ def greedy_decode(model: EncoderDecoder, batch: Batch,
     return remove_eos(output, eos_index)
 
 
+def greedy_decode_top_k_edits(model: EncoderDecoder, batch: Batch,
+                              max_len: int,
+                              sos_index: int, eos_index: int, n_neighbors: int) -> typing.List[typing.List[np.array]]:
+    """
+    Greedily decode a sentence.
+    :return: [DecodedSeqLenCutWithEos]
+    """
+    # TODO: create beam search
+    # [B, SrcSeqLen], [B, 1, SrcSeqLen], [B]
+    src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
+    with torch.no_grad():
+        edit_finals, encoder_output, encoder_final = model.encode(batch, ignore_encoded_train=False,
+                                                                  n_neighbors=n_neighbors)
+    result = np.empty((len(batch), n_neighbors), dtype=object)
+    for edit_k, edit_final in enumerate(edit_finals):
+        prev_y = torch.ones(batch.nseqs, 1).fill_(sos_index).type_as(src)  # [B, 1]
+        trg_mask = torch.ones_like(prev_y)  # [B, 1]
+
+        output = torch.zeros((batch.nseqs, max_len))
+        states = None
+
+        for i in range(max_len):
+            with torch.no_grad():
+                # pre_output: [B, TrgSeqLen, DecoderH]
+                out, states, pre_output = model.decode(edit_final, encoder_output, encoder_final,
+                                                       src_mask, prev_y, trg_mask, states)
+
+                # we predict from the pre-output layer, which is
+                # a combination of Decoder state, prev emb, and context
+                prob = model.generator(pre_output[:, -1])  # [B, V]
+
+            _, next_words = torch.max(prob, dim=1)
+            output[:, i] = next_words
+            prev_y[:, 0] = next_words
+
+        output = output.cpu().long().numpy()
+        result[:, edit_k] = remove_eos(output, eos_index)
+    return result
+
+
+def create_greedy_decode_method_top_k_edits(model: EncoderDecoder,
+                                            max_len: int,
+                                            sos_index: int, eos_index: int, n_neighbors: int):
+    def decode(batch: Batch) -> typing.List[typing.List[np.array]]:
+        predicted = greedy_decode_top_k_edits(model, batch, max_len, sos_index, eos_index, n_neighbors)
+        return predicted
+
+    return decode
+
+
+def create_greedy_decode_method(model: EncoderDecoder,
+                                max_len: int,
+                                sos_index: int, eos_index: int):
+    def decode(batch: Batch) -> typing.List[typing.List[np.array]]:
+        predicted = greedy_decode(model, batch, max_len, sos_index, eos_index)
+        return [[el] for el in predicted]
+
+    return decode
+
+
 def remove_eos(batch: np.array, eos_index: int) -> typing.List[np.array]:
     result = []
     for sequence in batch:

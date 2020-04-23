@@ -97,7 +97,8 @@ class EncoderDecoder(nn.Module):
         encoded_train_sorted = {
             'edit_hidden': encoded_train_unsorted['edit_hidden'][:, ids_reverse, :],
             'edit_cell': encoded_train_unsorted['edit_cell'][:, ids_reverse, :],
-            'nbrs': NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2, n_jobs=-1).fit(src_hidden_sorted)
+            'nbrs': NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2, n_jobs=-1).fit(
+                src_hidden_sorted)
         }
         self.encoded_train = encoded_train_sorted
 
@@ -106,23 +107,34 @@ class EncoderDecoder(nn.Module):
         self.train_dataset = None
         self.pad_index = None
 
-    def get_edit_final_from_train(self, src: Tensor) -> Tuple[Tensor, Tensor]:
+    def get_edit_final_from_train(self, src: Tensor, n_neighbors=None) -> Tuple[Tensor, Tensor]:
         src = src.detach().cpu().numpy()
         # TODO: get rid of "if" by filtering on batch.ids
         # TODO_DONE: find out why distances are not zeros, reason: dropout in LSTM introduces randomness
         # TODO: but still some examples from the very first batch
         #   doesn't match (difference between encoders outputs is < 1e-2), therefore maybe it is just calculation
         #   errors, such examples are rare (~6 from 64)
-        if self.training:
-            indices = self.encoded_train['nbrs'].kneighbors(src, n_neighbors=2, return_distance=False)
-            indices = indices[:, 1]
+        if n_neighbors is None:
+            if self.training:
+                indices = self.encoded_train['nbrs'].kneighbors(src, n_neighbors=2, return_distance=False)
+                indices = indices[:, 1]
+            else:
+                indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
+                indices = indices[:, 0]
+            if not self.config['BUILD_EDIT_VECTORS_EACH_QUERY']:
+                return self.encoded_train['edit_hidden'][:, indices, :].to(self.config['DEVICE']), \
+                       self.encoded_train['edit_cell'][:, indices, :].to(self.config['DEVICE'])
+            return self.encode_edit(self.get_batch_from_ids(indices))
         else:
-            indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
-            indices = indices[:, 0]
-        if not self.config['BUILD_EDIT_VECTORS_EACH_QUERY']:
-            return self.encoded_train['edit_hidden'][:, indices, :].to(self.config['DEVICE']), \
-                   self.encoded_train['edit_cell'][:, indices, :].to(self.config['DEVICE'])
-        return self.encode_edit(self.get_batch_from_ids(indices))
+            indices = self.encoded_train['nbrs'].kneighbors(src, n_neighbors=n_neighbors, return_distance=False)
+            output = []
+            for i in range(n_neighbors):
+                i_indices = indices[:, i]
+                if not self.config['BUILD_EDIT_VECTORS_EACH_QUERY']:
+                    output.append((self.encoded_train['edit_hidden'][:, i_indices, :].to(self.config['DEVICE']),
+                                   self.encoded_train['edit_cell'][:, i_indices, :].to(self.config['DEVICE'])))
+                output.append(self.encode_edit(self.get_batch_from_ids(i_indices)))
+            return output
 
     def get_batch_from_ids(self, indices):
         dataset = take_subset_from_dataset(self.train_dataset, indices)
@@ -156,7 +168,7 @@ class EncoderDecoder(nn.Module):
         )
         return edit_final
 
-    def encode(self, batch: Batch, ignore_encoded_train=False) -> Tuple[
+    def encode(self, batch: Batch, ignore_encoded_train=False, n_neighbors=None) -> Tuple[
         Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
         """
         Encodes edits and prev sequences
@@ -172,7 +184,7 @@ class EncoderDecoder(nn.Module):
         if self.edit_final is not None:
             edit_final = self.edit_final
         elif self.encoded_train is not None and not ignore_encoded_train:
-            edit_final = self.get_edit_final_from_train(encoder_final[0][-1])
+            edit_final = self.get_edit_final_from_train(encoder_final[0][-1], n_neighbors)
         else:
             edit_final = self.encode_edit(batch)
         return edit_final, encoder_output, encoder_final
