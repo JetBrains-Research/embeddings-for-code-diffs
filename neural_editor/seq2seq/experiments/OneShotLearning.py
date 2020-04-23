@@ -48,16 +48,18 @@ class OneShotLearning:
             if y != current_class:
                 self.model.set_edit_representation(batch)
                 current_class = y
-                correct_top_k, _ = calculate_top_k_accuracy(self.topk_values, [batch],
-                                                            self.beam_search, self.eos_index)
+                correct_top_k, _, _ = calculate_top_k_accuracy(self.topk_values, [batch],
+                                                               self.beam_search, self.vocab, self.eos_index,
+                                                               len(dataset))
                 correct_top_k_same_edit_representation += correct_top_k
                 total_same_edit_representation += 1
                 is_correct = False if correct_top_k[0] == 0 else True
                 correct_examples.append({'class': y, 'golden': (batch, is_correct), 'others': []})
                 incorrect_examples.append({'class': y, 'golden': (batch, is_correct), 'others': []})
             else:
-                correct_top_k, _ = calculate_top_k_accuracy(self.topk_values, [batch],
-                                                            self.beam_search, self.eos_index)
+                correct_top_k, _, _ = calculate_top_k_accuracy(self.topk_values, [batch],
+                                                               self.beam_search, self.vocab, self.eos_index,
+                                                               len(dataset))
                 correct_top_k_other_edit_representation += correct_top_k
                 total_other_edit_representation += 1
                 if correct_top_k[0] == 0:

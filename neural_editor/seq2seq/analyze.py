@@ -181,11 +181,16 @@ def test_model(model: EncoderDecoder, data, config: Config) -> None:
                 test_dataset, 'Test dataset all')
         )
 
-        # Nearest neighbor between train and test
+        # Nearest neighbor between train and test, train and train
         measure_experiment_time(
             lambda: nearest_neighbor_experiment.conduct(dataset_train=train_dataset,
                                                         dataset_test=test_dataset,
                                                         dataset_label='Train dataset Test dataset')
+        )
+        measure_experiment_time(
+            lambda: nearest_neighbor_experiment.conduct(dataset_train=train_dataset,
+                                                        dataset_test=None,
+                                                        dataset_label='Train dataset None')
         )
 
         print('Starting all Tufano variations experiments', flush=True)

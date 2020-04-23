@@ -1,6 +1,7 @@
 import os
 import pickle
 import pprint
+import random
 from typing import List, Callable, Dict, Optional, Any
 
 import torch
@@ -37,6 +38,7 @@ class NearestNeighbor:
                              self.config['ADDITION_TOKEN'], self.config['UNCHANGED_TOKEN'],
                              self.config['PADDING_TOKEN'])
         self.levenshtein_metric = self.create_levenshtein_metric()
+        self.sample_k = 15
 
     def create_levenshtein_metric(self) -> Callable:
         def levenshtein_metric(x: np.ndarray, y: np.ndarray) -> float:
@@ -50,6 +52,7 @@ class NearestNeighbor:
         print(f'Start conducting nearest neighbor experiment for {dataset_label}...', flush=True)
         nbrs_result = self.find(dataset_train, dataset_test)
         save_nbrs_result(nbrs_result, dataset_label, config=self.config)
+        self.print_samples(nbrs_result, dataset_train, dataset_test)
         return nbrs_result
 
     def find(self, dataset_train: Dataset, dataset_test: Optional[Dataset]) -> Dict[str, Dict[str, List[int]]]:
@@ -113,3 +116,29 @@ class NearestNeighbor:
                                'edit_hidden': encoded_data['edit_hidden'][ids_reverse, :].numpy()}
 
         return encoded_data_sorted
+
+    def print_samples(self, nbrs_result: Dict[Any, Any], dataset_train: Dataset, dataset_test: Dataset) -> None:
+        ids_to_sample = [i for i in range(len(dataset_test))]
+        sampled_ids = random.sample(ids_to_sample, self.sample_k)
+
+        print('===TEST===')
+        self.print_dataset_examples(dataset_test, sampled_ids, lambda i: i)
+
+        print('\n===TRAIN===')
+        for vector_type in nbrs_result:
+            for distance_type in nbrs_result[vector_type]:
+                print(f'vector_type: {vector_type}, distance_type: {distance_type}')
+                neighbors = nbrs_result[vector_type][distance_type]
+                self.print_dataset_examples(dataset_train, sampled_ids, lambda i: neighbors[i])
+
+    def print_dataset_examples(self, dataset, ids, map_idx):
+        print('\n====START PREV====')
+        for idx in ids:
+            print('====NEW EXAMPLE====')
+            print(' '.join(dataset.examples[map_idx(idx)].src))
+        print('====END PREV====')
+        print('====START UPDATED====')
+        for idx in ids:
+            print('====NEW EXAMPLE====')
+            print(' '.join(dataset.examples[map_idx(idx)].trg))
+        print('====END UPDATED====\n')
