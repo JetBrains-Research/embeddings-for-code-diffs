@@ -31,7 +31,8 @@ class NearestNeighbor:
 
         return levenshtein_metric
 
-    def conduct(self, dataset_train: Dataset, dataset_test: Optional[Dataset], dataset_label: str) -> Dict[str, Dict[str, List[int]]]:
+    def conduct(self, dataset_train: Dataset, dataset_test: Optional[Dataset], dataset_label: str) -> Dict[
+        str, Dict[str, List[int]]]:
         print(f'Start conducting nearest neighbor experiment for {dataset_label}...')
         nbrs_result = self.find(dataset_train, dataset_test)
         return nbrs_result
@@ -75,7 +76,7 @@ class NearestNeighbor:
         ids = []
         encoded_data = {'src': [], 'src_hidden': [], 'edit_hidden': []}
         # TODO: batch != 1 produces different results
-        data_iterator = data.Iterator(dataset, batch_size=1, train=False,
+        data_iterator = data.Iterator(dataset, batch_size=self.config['BATCH_SIZE'], train=False,
                                       sort=False,
                                       sort_within_batch=True,
                                       sort_key=lambda x: (len(x.src), len(x.trg)), repeat=False,
@@ -90,11 +91,10 @@ class NearestNeighbor:
         encoded_data['src_hidden'] = torch.cat(encoded_data['src_hidden'], dim=0)
         encoded_data['edit_hidden'] = torch.cat(encoded_data['edit_hidden'], dim=0)
         ids = torch.cat(ids, dim=0)
+        ids_reverse = torch.argsort(ids)
 
-        encoded_data['src_hidden'][ids, :] = encoded_data['src_hidden']
-        encoded_data['edit_hidden'][ids, :] = encoded_data['edit_hidden']
-        encoded_data['src_hidden'] = encoded_data['src_hidden'].numpy()
-        encoded_data['edit_hidden'] = encoded_data['edit_hidden'].numpy()
-        encoded_data['src'] = [example.src for example in dataset.examples]
+        encoded_data_sorted = {'src': [example.src for example in dataset.examples],
+                               'src_hidden': encoded_data['src_hidden'][ids_reverse, :].numpy(),
+                               'edit_hidden': encoded_data['edit_hidden'][ids_reverse, :].numpy()}
 
-        return encoded_data
+        return encoded_data_sorted

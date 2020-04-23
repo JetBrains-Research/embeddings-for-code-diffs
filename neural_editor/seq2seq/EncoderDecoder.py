@@ -74,7 +74,7 @@ class EncoderDecoder(nn.Module):
         self.update_training_vectors()
 
     def update_training_vectors(self) -> None:
-        encoded_train = {'src_hidden': [], 'edit_hidden': [], 'edit_cell': [], 'ids': []}
+        encoded_train_unsorted = {'src_hidden': [], 'edit_hidden': [], 'edit_cell': [], 'ids': []}
         data_iterator = data.Iterator(self.train_dataset, batch_size=self.config['BATCH_SIZE'], train=False,
                                       sort_within_batch=True,
                                       sort_key=lambda x: (len(x.src), len(x.trg)), repeat=False,
@@ -83,25 +83,23 @@ class EncoderDecoder(nn.Module):
 
         for batch in data_iterator:
             (edit_hidden, edit_cell), _, (encoder_hidden, _) = self.encode(batch, ignore_encoded_train=True)
-            encoded_train['src_hidden'].append(encoder_hidden[-1].detach().cpu())
-            encoded_train['edit_hidden'].append(edit_hidden.detach().cpu())
-            encoded_train['edit_cell'].append(edit_cell.detach().cpu())
-            encoded_train['ids'].append(batch.ids.detach().cpu())
-        encoded_train['src_hidden'] = torch.cat(encoded_train['src_hidden'], dim=0)
-        encoded_train['edit_hidden'] = torch.cat(encoded_train['edit_hidden'], dim=1)
-        encoded_train['edit_cell'] = torch.cat(encoded_train['edit_cell'], dim=1)
-        encoded_train['ids'] = torch.cat(encoded_train['ids'], dim=0)
+            encoded_train_unsorted['src_hidden'].append(encoder_hidden[-1].detach().cpu())
+            encoded_train_unsorted['edit_hidden'].append(edit_hidden.detach().cpu())
+            encoded_train_unsorted['edit_cell'].append(edit_cell.detach().cpu())
+            encoded_train_unsorted['ids'].append(batch.ids.detach().cpu())
+        encoded_train_unsorted['src_hidden'] = torch.cat(encoded_train_unsorted['src_hidden'], dim=0)
+        encoded_train_unsorted['edit_hidden'] = torch.cat(encoded_train_unsorted['edit_hidden'], dim=1)
+        encoded_train_unsorted['edit_cell'] = torch.cat(encoded_train_unsorted['edit_cell'], dim=1)
+        encoded_train_unsorted['ids'] = torch.cat(encoded_train_unsorted['ids'], dim=0)
+        ids_reverse = torch.argsort(encoded_train_unsorted['ids'])
 
-        encoded_train['src_hidden'][encoded_train['ids'], :] = encoded_train['src_hidden']
-        encoded_train['edit_hidden'][:, encoded_train['ids'], :] = encoded_train['edit_hidden']
-        encoded_train['edit_cell'][:, encoded_train['ids'], :] = encoded_train['edit_cell']
-
-        encoded_train['nbrs'] = \
-            NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2, n_jobs=-1) \
-                .fit(encoded_train['src_hidden'].numpy())
-        del encoded_train['src_hidden']
-
-        self.encoded_train = encoded_train
+        src_hidden_sorted = encoded_train_unsorted['src_hidden'][ids_reverse, :].numpy()
+        encoded_train_sorted = {
+            'edit_hidden': encoded_train_unsorted['edit_hidden'][:, ids_reverse, :],
+            'edit_cell': encoded_train_unsorted['edit_cell'][:, ids_reverse, :],
+            'nbrs': NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2, n_jobs=-1).fit(src_hidden_sorted)
+        }
+        self.encoded_train = encoded_train_sorted
 
     def unset_training_data(self) -> None:
         self.encoded_train = None

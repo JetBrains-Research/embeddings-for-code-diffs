@@ -28,8 +28,8 @@ class EditEncoder(nn.Module):
         ]
         """
         lengths, lengths_mask = torch.sort(lengths, descending=True)
-        x = x[lengths_mask, :, :]
-        packed = pack_padded_sequence(x, lengths, batch_first=True)  # [RealTokenNumberWithoutPad, AlignedSeqLen * 3]
+        x_sorted = x[lengths_mask, :, :]
+        packed = pack_padded_sequence(x_sorted, lengths, batch_first=True)  # [RealTokenNumberWithoutPad, AlignedSeqLen * 3]
         # packed seq, [NumLayers * NumDirections, B, DiffEncoderH], [NumLayers * NumDirections, B, DiffEncoderH]
         output, (h_n, c_n) = self.rnn(packed)
         output, _ = pad_packed_sequence(output, batch_first=True)  # [B, AlignedSeqLen, NumDirections * DiffEncoderH]
