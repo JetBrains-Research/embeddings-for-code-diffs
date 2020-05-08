@@ -15,7 +15,7 @@ from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.datasets.dataset_utils import load_datasets
 from neural_editor.seq2seq.test_utils import save_perplexity_plot
-from neural_editor.seq2seq.train_utils import output_accuracy_on_data
+from neural_editor.seq2seq.train_utils import output_accuracy_on_data, load_state_dict_from_jiang_model
 from neural_editor.seq2seq.config import load_config, Config
 from neural_editor.seq2seq.train_utils import print_data_info, make_model, \
     run_epoch, print_examples
@@ -208,7 +208,11 @@ def run_train(config: Config):
     # noinspection PyTypeChecker
     # reason: PyCharm doesn't understand that EncoderDecoder is child of nn.Module
     if config['LOAD_WEIGHTS_FROM'] is not None:
-        model.load_state_dict(torch.load(config['LOAD_WEIGHTS_FROM'], map_location=config['DEVICE']))
+        loaded_dict = torch.load(config['LOAD_WEIGHTS_FROM'], map_location=config['DEVICE'])
+        if config['JIANG_WEIGHTS_LOADING']:
+            load_state_dict_from_jiang_model(model, loaded_dict)
+        else:
+            model.load_state_dict(loaded_dict)
     train_perplexities, val_perplexities = train(model, train_dataset, val_dataset, diffs_field, config)
     print(train_perplexities)
     print(val_perplexities)

@@ -2,12 +2,14 @@ import math
 import random
 import time
 import typing
+from collections import OrderedDict
 from datetime import timedelta
 
 import numpy as np
 import torch
 from termcolor import colored
 from torch import nn
+from torch.nn import Parameter
 from torchtext import data
 from torchtext.data import Dataset, Field
 from torchtext.vocab import Vocab
@@ -79,6 +81,17 @@ def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset
         print(f"{special_token} {field.vocab.freqs[special_token]} {field.vocab.stoi[special_token]}")
 
     print("Number of words (types):", len(field.vocab))
+
+
+def load_state_dict_from_jiang_model(model, state_dict: OrderedDict) -> None:
+    own_state = model.state_dict()
+    for name, param in state_dict.items():
+        if name not in own_state or name == 'decoder.embedding.weight':
+            continue
+        if isinstance(param, Parameter):
+            # backwards compatibility for serialized parameters
+            param = param.data
+        own_state[name].copy_(param)
 
 
 def run_epoch(data_iter: typing.List, model: EncoderDecoder, loss_compute: SimpleLossCompute,
