@@ -207,6 +207,8 @@ def run_train(config: Config):
                                        config=config)
     # noinspection PyTypeChecker
     # reason: PyCharm doesn't understand that EncoderDecoder is child of nn.Module
+    if config['LOAD_WEIGHTS_FROM'] is not None:
+        model.load_state_dict(torch.load(config['LOAD_WEIGHTS_FROM'], map_location=config['DEVICE']))
     train_perplexities, val_perplexities = train(model, train_dataset, val_dataset, diffs_field, config)
     print(train_perplexities)
     print(val_perplexities)
