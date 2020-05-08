@@ -134,7 +134,7 @@ class EncoderDecoder(nn.Module):
                     output.append((self.encoded_train['edit_hidden'][:, i_indices, :].to(self.config['DEVICE']),
                                    self.encoded_train['edit_cell'][:, i_indices, :].to(self.config['DEVICE'])))
                 output.append(self.encode_edit(self.get_batch_from_ids(i_indices)))
-            return output
+            return output, indices
 
     def get_batch_from_ids(self, indices):
         dataset = take_subset_from_dataset(self.train_dataset, indices)

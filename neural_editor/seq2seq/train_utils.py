@@ -213,7 +213,7 @@ def greedy_decode_top_k_edits(model: EncoderDecoder, batch: Batch,
     # [B, SrcSeqLen], [B, 1, SrcSeqLen], [B]
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
-        edit_finals, encoder_output, encoder_final = model.encode(batch, ignore_encoded_train=False,
+        (edit_finals, indices), encoder_output, encoder_final = model.encode(batch, ignore_encoded_train=False,
                                                                   n_neighbors=n_neighbors)
     result = np.empty((len(batch), n_neighbors), dtype=object)
     for edit_k, edit_final in enumerate(edit_finals):
@@ -239,15 +239,25 @@ def greedy_decode_top_k_edits(model: EncoderDecoder, batch: Batch,
 
         output = output.cpu().long().numpy()
         result[:, edit_k] = remove_eos(output, eos_index)
-    return result
+    return result, indices
 
 
 def create_greedy_decode_method_top_k_edits(model: EncoderDecoder,
                                             max_len: int,
                                             sos_index: int, eos_index: int, n_neighbors: int):
     def decode(batch: Batch) -> typing.List[typing.List[np.array]]:
-        predicted = greedy_decode_top_k_edits(model, batch, max_len, sos_index, eos_index, n_neighbors)
+        predicted, _ = greedy_decode_top_k_edits(model, batch, max_len, sos_index, eos_index, n_neighbors)
         return predicted
+
+    return decode
+
+
+def create_greedy_decode_method_top_k_edits_with_indices(model: EncoderDecoder,
+                                                         max_len: int,
+                                                         sos_index: int, eos_index: int, n_neighbors: int):
+    def decode(batch: Batch) -> typing.Tuple[typing.List[typing.List[np.array]], np.ndarray]:
+        predicted, indices = greedy_decode_top_k_edits(model, batch, max_len, sos_index, eos_index, n_neighbors)
+        return predicted, indices
 
     return decode
 
