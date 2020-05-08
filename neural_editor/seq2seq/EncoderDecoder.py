@@ -33,6 +33,7 @@ class EncoderDecoder(nn.Module):
         self.config = config
         self.train_dataset = None
         self.pad_index = None
+        self.metric = config['METRIC']
 
     def forward(self, batch: Batch, ignore_encoded_train) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
         """
@@ -97,7 +98,7 @@ class EncoderDecoder(nn.Module):
         encoded_train_sorted = {
             'edit_hidden': encoded_train_unsorted['edit_hidden'][:, ids_reverse, :],
             'edit_cell': encoded_train_unsorted['edit_cell'][:, ids_reverse, :],
-            'nbrs': NearestNeighbors(n_neighbors=1, algorithm='brute', metric='minkowski', p=2, n_jobs=-1).fit(
+            'nbrs': NearestNeighbors(n_neighbors=1, algorithm='brute', metric=self.metric, n_jobs=-1).fit(
                 src_hidden_sorted)
         }
         self.encoded_train = encoded_train_sorted

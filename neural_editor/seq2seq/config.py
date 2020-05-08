@@ -17,6 +17,7 @@ class Config:
         'IS_TEST': False,
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
+        'METRIC': 'cosine',
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
         'TUFANO_LABELED_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/50_100',
