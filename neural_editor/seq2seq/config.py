@@ -78,7 +78,7 @@ class Config:
                   'TUFANO_CODE_CHANGES_0_50_PATH', 'TUFANO_CODE_CHANGES_50_100_PATH']
 
     def __getitem__(self, key: str) -> Any:
-        if key in self._PATH_KEYS:
+        if key in self._PATH_KEYS and self._CONFIG[key] is not None:
             return os.path.abspath(os.path.join(os.path.dirname(__file__), self._CONFIG[key]))
         return self._CONFIG[key]
 
