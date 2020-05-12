@@ -108,6 +108,9 @@ class EncoderDecoder(nn.Module):
         self.train_dataset = None
         self.pad_index = None
 
+    def get_neighbors(self, n_neighbors) -> None:
+        return self.encoded_train['nbrs'].kneighbors(n_neighbors=n_neighbors, return_distance=False)
+
     def get_edit_final_from_train(self, src: Tensor, n_neighbors=None) -> Tuple[Tensor, Tensor]:
         src = src.detach().cpu().numpy()
         # TODO: get rid of "if" by filtering on batch.ids

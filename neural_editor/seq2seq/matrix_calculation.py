@@ -15,20 +15,22 @@ from neural_editor.seq2seq.train_utils import get_greedy_correct_predicted_examp
 
 def get_matrix(model: EncoderDecoder, train_dataset: Dataset, diffs_field: Field, config: Config) \
         -> np.ndarray:
-    train_dataset = take_part_from_dataset(train_dataset, 10)
-
     dataset_len = len(train_dataset)
+    max_len = config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
+    pad_index: int = diffs_field.vocab.stoi[config['PAD_TOKEN']]
+    sos_index = diffs_field.vocab.stoi[config['SOS_TOKEN']]
+    eos_index = diffs_field.vocab.stoi[config['EOS_TOKEN']]
+
     n_neighbors = config['MATRIX_N_NEIGHBORS']
     if n_neighbors is None:
         n_neighbors = dataset_len
         diff_example_ids = np.tile(np.arange(dataset_len), (dataset_len, 1))
     else:
-        diff_example_ids = np.random.randint(dataset_len, size=(dataset_len, n_neighbors))  # TODO: change
+        model.set_training_data(train_dataset, pad_index)
+        diff_example_ids_no_identity = model.get_neighbors(n_neighbors - 1)
+        diff_example_ids = np.concatenate((np.arange(dataset_len).reshape(-1, 1), diff_example_ids_no_identity), axis=1)
+        model.unset_training_data()
     matrix_dataset = MatrixDataset(train_dataset, diff_example_ids, diffs_field)
-    max_len = config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
-    pad_index: int = diffs_field.vocab.stoi[config['PAD_TOKEN']]
-    sos_index = diffs_field.vocab.stoi[config['SOS_TOKEN']]
-    eos_index = diffs_field.vocab.stoi[config['EOS_TOKEN']]
     batched_data_iterator = rebatch_iterator(
         data.Iterator(matrix_dataset, batch_size=config['BATCH_SIZE'], train=False,
                       sort=False,
