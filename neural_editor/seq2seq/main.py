@@ -18,8 +18,8 @@ def main():
     model, data = run_train(config)
     train_dataset, _, _, diffs_field = data
     print('\n====STARTING MATRIX CALCULATION====\n', end='')
-    matrix = get_matrix(model, train_dataset, diffs_field, config)
-    write_matrix(matrix, config)
+    matrix, diff_example_ids = get_matrix(model, train_dataset, diffs_field, config)
+    write_matrix(matrix, diff_example_ids, config)
     print('\n====STARTING EVALUATION====\n', end='')
     test_model(model, data, config)
 

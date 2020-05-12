@@ -1,5 +1,7 @@
 import os
 import sys
+from typing import Tuple
+
 import numpy as np
 from torchtext import data
 from torchtext.data import Field, Dataset
@@ -14,7 +16,7 @@ from neural_editor.seq2seq.train_utils import get_greedy_correct_predicted_examp
 
 
 def get_matrix(model: EncoderDecoder, train_dataset: Dataset, diffs_field: Field, config: Config) \
-        -> np.ndarray:
+        -> Tuple[np.ndarray, np.ndarray]:
     dataset_len = len(train_dataset)
     max_len = config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
     pad_index: int = diffs_field.vocab.stoi[config['PAD_TOKEN']]
@@ -48,11 +50,12 @@ def get_matrix(model: EncoderDecoder, train_dataset: Dataset, diffs_field: Field
     sample_idx = 20
     print(f'Matrix[:{sample_idx}, :{sample_idx}]')
     print(matrix[:sample_idx, :sample_idx])
-    return matrix
+    return matrix, diff_example_ids
 
 
-def write_matrix(matrix: np.ndarray, config: Config) -> None:
+def write_matrix(matrix: np.ndarray, diff_example_ids: np.ndarray, config: Config) -> None:
     np.save(os.path.join(config['OUTPUT_PATH'], f'matrix.npy'), matrix)
+    np.save(os.path.join(config['OUTPUT_PATH'], f'diff_example_ids.npy'), diff_example_ids)
 
 
 def main() -> None:
@@ -62,8 +65,8 @@ def main() -> None:
     results_root_dir = sys.argv[1]
     is_test = len(sys.argv) > 2 and sys.argv[2] == 'test'
     model, (train_dataset, _, _, diffs_field), config = load_all(results_root_dir, is_test)
-    matrix = get_matrix(model, train_dataset, diffs_field, config)
-    write_matrix(matrix, config)
+    matrix, diff_example_ids = get_matrix(model, train_dataset, diffs_field, config)
+    write_matrix(matrix, diff_example_ids, config)
 
 
 if __name__ == "__main__":
