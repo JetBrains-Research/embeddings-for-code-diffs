@@ -387,7 +387,7 @@ def get_greedy_correct_predicted_examples(dataset_iterator: typing.List,
                                           max_len: int,
                                           sos_index: int,
                                           eos_index: int,
-                                          print_every=2) -> np.ndarray:
+                                          print_every=1000) -> np.ndarray:
     correct_ids = []
     start = time.time()
     for i_batch, batch in enumerate(dataset_iterator):
