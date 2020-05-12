@@ -11,10 +11,11 @@ class MatrixDataset(data.Dataset):
                   ('src_example_ids', Field(sequential=False, use_vocab=False)),
                   ('diff_example_ids', Field(sequential=False, use_vocab=False))]
         examples = []
+        n_neighbors = diff_example_ids.shape[1]
         for i, src_example in enumerate(dataset.examples):
             for j, diff_example_id in enumerate(diff_example_ids[i]):
                 diff_example = dataset.examples[diff_example_id]
-                idx = i * len(dataset) + j
+                idx = i * n_neighbors + j
                 examples.append(data.Example.fromlist(
                     [src_example.src, src_example.trg,
                      diff_example.diff_alignment, diff_example.diff_prev, diff_example.diff_updated,
