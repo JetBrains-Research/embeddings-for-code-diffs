@@ -33,6 +33,7 @@ def get_matrix(model: EncoderDecoder, train_dataset: Dataset, diffs_field: Field
         diff_example_ids = np.concatenate((np.arange(dataset_len).reshape(-1, 1), diff_example_ids_no_identity), axis=1)
         model.unset_training_data()
     matrix_dataset = MatrixDataset(train_dataset, diff_example_ids, diffs_field)
+    print('Constructed matrix dataset, start predicting', flush=True)
     batched_data_iterator = rebatch_iterator(
         data.Iterator(matrix_dataset, batch_size=config['BATCH_SIZE'], train=False,
                       sort=False,
