@@ -294,11 +294,13 @@ def load_model(results_root: str, vocab_size: int, config: Config) -> nn.Module:
     return model
 
 
-def print_results(results_root: str, config: Config) -> None:
+def load_all(results_root_dir, is_test):
+    config_path = Path(results_root_dir).joinpath('config.pkl')
+    config = load_config(is_test, config_path)
     pprint.pprint(config.get_config())
     data = load_data(verbose=True, config=config)
-    model = load_model(results_root, len(data[3].vocab), config)
-    test_model(model, data, config)
+    model = load_model(results_root_dir, len(data[3].vocab), config)
+    return model, data, config
 
 
 def main() -> None:
@@ -306,9 +308,8 @@ def main() -> None:
         print("arguments: <results_root_dir> <is_test (optional, default false)>.")
     results_root_dir = sys.argv[1]
     is_test = len(sys.argv) > 2 and sys.argv[2] == 'test'
-    config_path = Path(results_root_dir).joinpath('config.pkl')
-    config = load_config(is_test, config_path)
-    print_results(results_root_dir, config)
+    model, data, config = load_all(results_root_dir, is_test)
+    test_model(model, data, config)
 
 
 if __name__ == "__main__":

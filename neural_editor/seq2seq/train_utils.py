@@ -227,7 +227,7 @@ def greedy_decode_top_k_edits(model: EncoderDecoder, batch: Batch,
     src, src_mask, src_lengths = batch.src, batch.src_mask, batch.src_lengths
     with torch.no_grad():
         (edit_finals, indices), encoder_output, encoder_final = model.encode(batch, ignore_encoded_train=False,
-                                                                  n_neighbors=n_neighbors)
+                                                                             n_neighbors=n_neighbors)
     result = np.empty((len(batch), n_neighbors), dtype=object)
     for edit_k, edit_final in enumerate(edit_finals):
         prev_y = torch.ones(batch.nseqs, 1).fill_(sos_index).type_as(src)  # [B, 1]
@@ -382,25 +382,29 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
             break
 
 
-def calculate_accuracy(dataset_iterator: typing.Iterable,
-                       model: EncoderDecoder,
-                       max_len: int,
-                       vocab: Vocab,
-                       config: Config) -> float:
-    sos_index = vocab.stoi[config['SOS_TOKEN']]
-    eos_index = vocab.stoi[config['EOS_TOKEN']]
-
-    correct = 0
-    total = 0
-    for batch in dataset_iterator:
+def get_greedy_correct_predicted_examples(dataset_iterator: typing.List,
+                                          model: EncoderDecoder,
+                                          max_len: int,
+                                          sos_index: int,
+                                          eos_index: int,
+                                          print_every=2) -> np.ndarray:
+    correct_ids = []
+    start = time.time()
+    for i_batch, batch in enumerate(dataset_iterator):
         targets = remove_eos(batch.trg_y.cpu().numpy(), eos_index)
 
         results = greedy_decode(model, batch, max_len, sos_index, eos_index)
         for i in range(len(targets)):
-            if np.all(targets[i] == results[i]):
-                correct += 1
-            total += 1
-    return correct / total
+            if len(targets[i]) == len(results[i]) and np.all(targets[i] == results[i]):
+                correct_ids.append(batch.ids[i].item())
+        if (i_batch + 1) % print_every == 0:
+            end = time.time()
+            duration = end - start
+            start = end
+            print(f'Processing {i_batch + 1} / {len(dataset_iterator)}, '
+                  f'{int((i_batch + 1) / print_every)} / {math.ceil(len(dataset_iterator) / print_every)}, '
+                  f'elapsed: {str(timedelta(seconds=duration))}')
+    return np.array(correct_ids)
 
 
 def calculate_top_k_accuracy(topk_values: typing.List[int], dataset_iterator: typing.Iterator,
@@ -448,8 +452,8 @@ def output_accuracy_on_data(model: EncoderDecoder,
                                               sort_key=lambda x: (len(x.src), len(x.trg)),
                                               repeat=False,
                                               device=config['DEVICE'])
-            accuracy = calculate_accuracy((rebatch(pad_index, t, config) for t in accuracy_iterator),
-                                          model,
-                                          config['TOKENS_CODE_CHUNK_MAX_LEN'],
-                                          vocab, config)
+            accuracy = get_greedy_correct_predicted_examples((rebatch(pad_index, t, config) for t in accuracy_iterator),
+                                                             model,
+                                                             config['TOKENS_CODE_CHUNK_MAX_LEN'],
+                                                             vocab, config)
             print(f'Accuracy on {label}: {accuracy}')

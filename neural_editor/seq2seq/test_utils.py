@@ -14,7 +14,7 @@ from torchtext.vocab import Vocab
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.config import Config
-from neural_editor.seq2seq.train_utils import print_examples, calculate_accuracy
+from neural_editor.seq2seq.train_utils import print_examples, get_greedy_correct_predicted_examples
 from neural_editor.seq2seq.Batch import rebatch
 
 
@@ -80,8 +80,8 @@ def output_accuracy_on_defects4j(model: EncoderDecoder, defects4j_data: Dataset,
                                           sort_key=lambda x: (len(x.src), len(x.trg)),
                                           repeat=False,
                                           device=config['DEVICE'])
-        accuracy = calculate_accuracy((rebatch(pad_index, t, config) for t in accuracy_iterator),
-                                      model,
-                                      config['TOKENS_CODE_CHUNK_MAX_LEN'],
-                                      vocab, config)
+        accuracy = get_greedy_correct_predicted_examples((rebatch(pad_index, t, config) for t in accuracy_iterator),
+                                                         model,
+                                                         config['TOKENS_CODE_CHUNK_MAX_LEN'],
+                                                         vocab, config)
         print(f'Accuracy on Defects4J: {accuracy}')
