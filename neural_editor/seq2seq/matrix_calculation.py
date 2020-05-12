@@ -13,8 +13,18 @@ from neural_editor.seq2seq.datasets.dataset_utils import take_part_from_dataset
 from neural_editor.seq2seq.train_utils import get_greedy_correct_predicted_examples
 
 
-def get_matrix(model: EncoderDecoder, train_dataset: Dataset, diffs_field: Field, config: Config) -> np.ndarray:
-    matrix_dataset = MatrixDataset(train_dataset, diffs_field)
+def get_matrix(model: EncoderDecoder, train_dataset: Dataset, diffs_field: Field, config: Config) \
+        -> np.ndarray:
+    train_dataset = take_part_from_dataset(train_dataset, 10)
+
+    dataset_len = len(train_dataset)
+    n_neighbors = config['MATRIX_N_NEIGHBORS']
+    if n_neighbors is None:
+        n_neighbors = dataset_len
+        diff_example_ids = np.tile(np.arange(dataset_len), (dataset_len, 1))
+    else:
+        diff_example_ids = np.random.randint(dataset_len, size=(dataset_len, n_neighbors))  # TODO: change
+    matrix_dataset = MatrixDataset(train_dataset, diff_example_ids, diffs_field)
     max_len = config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1
     pad_index: int = diffs_field.vocab.stoi[config['PAD_TOKEN']]
     sos_index = diffs_field.vocab.stoi[config['SOS_TOKEN']]
@@ -30,10 +40,9 @@ def get_matrix(model: EncoderDecoder, train_dataset: Dataset, diffs_field: Field
     model.unset_edit_representation()
     correct_predicted_ids = get_greedy_correct_predicted_examples(batched_data_iterator, model,
                                                                   max_len, sos_index, eos_index)
-    dataset_len = len(train_dataset)
-    matrix = np.zeros((dataset_len, dataset_len))
+    matrix = np.zeros((dataset_len, n_neighbors))
     if len(correct_predicted_ids) != 0:
-        matrix[(correct_predicted_ids / dataset_len).astype(int), correct_predicted_ids % dataset_len] = 1
+        matrix[(correct_predicted_ids / matrix.shape[1]).astype(int), correct_predicted_ids % matrix.shape[1]] = 1
     sample_idx = 20
     print(f'Matrix[:{sample_idx}, :{sample_idx}]')
     print(matrix[:sample_idx, :sample_idx])

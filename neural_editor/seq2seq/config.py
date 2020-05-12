@@ -16,6 +16,7 @@ class Config:
     _CONFIG = {
         'IS_TEST': False,
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
+        'MATRIX_N_NEIGHBORS': 5,
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
         'METRIC': 'cosine',
         'JIANG_WEIGHTS_LOADING': True,
