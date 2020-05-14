@@ -48,15 +48,43 @@ def get_matrix(model: EncoderDecoder, train_dataset: Dataset, diffs_field: Field
     matrix = np.zeros((dataset_len, n_neighbors))
     if len(correct_predicted_ids) != 0:
         matrix[(correct_predicted_ids / matrix.shape[1]).astype(int), correct_predicted_ids % matrix.shape[1]] = 1
-    sample_idx = 20
-    print(f'Matrix[:{sample_idx}, :{sample_idx}]')
-    print(matrix[:sample_idx, :sample_idx])
     return matrix, diff_example_ids
 
 
 def write_matrix(matrix: np.ndarray, diff_example_ids: np.ndarray, config: Config) -> None:
     np.save(os.path.join(config['OUTPUT_PATH'], f'matrix.npy'), matrix)
     np.save(os.path.join(config['OUTPUT_PATH'], f'diff_example_ids.npy'), diff_example_ids)
+
+
+def print_matrix_statistics(matrix: np.ndarray, diff_example_ids: np.ndarray):
+    def print_accuracy(array, label):
+        correct = (array.sum(axis=1) != 0).sum()
+        print(f'{label}: {correct} / {array.shape[0]} = '
+              f'{correct / array.shape[0]}')
+
+    def print_non_zero_info(array, label):
+        print(f'{label}: {(array != 0).sum()} / {array.shape[0] * array.shape[1]} = '
+              f'{(array != 0).sum() / (array.shape[0] * array.shape[1])}')
+
+    print(f'Matrix information')
+    print(f'Shape: {matrix.shape}')
+    print_non_zero_info(matrix, 'Non-zeros')
+    print_non_zero_info(matrix[:, 1:], 'No-first column non-zeros')
+    print_accuracy(matrix, 'Accuracy')
+    print_accuracy(matrix[:, 1:], 'No-first column accuracy')
+    top_k_values = [1, 3, 5, 10, 50]
+    for top_k in top_k_values:
+        print_accuracy(matrix[:, 1:(top_k + 1)], f'No-first column top-{top_k} accuracy')
+    sample_idx = 20
+    print(f'Matrix[:{sample_idx}, :{sample_idx}]')
+    print(matrix[:sample_idx, :sample_idx])
+    print(f'Ids[:{sample_idx}, :{sample_idx}]')
+    print(diff_example_ids[:sample_idx, :sample_idx])
+
+
+def load_matrix(root: str) -> Tuple[np.ndarray, np.ndarray]:
+    return np.load(os.path.join(root, f'matrix.npy')), \
+           np.load(os.path.join(root, f'diff_example_ids.npy'))
 
 
 def main() -> None:
@@ -67,6 +95,7 @@ def main() -> None:
     is_test = len(sys.argv) > 2 and sys.argv[2] == 'test'
     model, (train_dataset, _, _, diffs_field), config = load_all(results_root_dir, is_test)
     matrix, diff_example_ids = get_matrix(model, train_dataset, diffs_field, config)
+    print_matrix_statistics(matrix, diff_example_ids)
     write_matrix(matrix, diff_example_ids, config)
 
 
