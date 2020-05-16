@@ -295,10 +295,15 @@ def load_model(results_root: str, vocab_size: int, config: Config) -> nn.Module:
 
 
 def load_all(results_root_dir, is_test):
+    def change_config():
+        pass
+        # config._CONFIG['EARLY_STOPPING_ROUNDS_CLASSIFIER'] = 25
+        # config._CONFIG['METRIC'] = 'minkowski'
+        # config._CONFIG['OUTPUT_PATH'] = results_root_dir
+
     config_path = Path(results_root_dir).joinpath('config.pkl')
     config = load_config(is_test, config_path)
-    # config._CONFIG['METRIC'] = 'minkowski'  # TODO: remove
-    # config._CONFIG['MATRIX_N_NEIGHBORS'] = 5  # TODO: remove
+    change_config()
     pprint.pprint(config.get_config())
     data = load_data(verbose=True, config=config)
     model = load_model(results_root_dir, len(data[3].vocab), config)

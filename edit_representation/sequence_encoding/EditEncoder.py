@@ -10,6 +10,8 @@ class EditEncoder(nn.Module):
 
     def __init__(self, input_size: int, hidden_size: int, num_layers: int, dropout: float) -> None:
         super(EditEncoder, self).__init__()
+        self.input_size = input_size
+        self.hidden_size = hidden_size
         self.num_layers = num_layers
         self.rnn = nn.LSTM(input_size, hidden_size, num_layers,
                            batch_first=True, bidirectional=True, dropout=dropout)

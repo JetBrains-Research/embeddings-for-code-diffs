@@ -1,12 +1,14 @@
 import json
 import os
 import sys
+import random
 from typing import Tuple
 
 import numpy as np
 from torchtext.data import Dataset, Field
 
 from neural_editor.seq2seq.config import Config
+from neural_editor.seq2seq.datasets.ClassifierDataset import ClassifierDataset
 
 
 def split_train_val_test(root: str, train: float = 0.6, val: float = 0.2, test: float = 0.2) -> None:
@@ -58,6 +60,26 @@ def take_part_from_dataset(dataset: Dataset, n: int) -> Dataset:
 def take_subset_from_dataset(dataset: Dataset, indices) -> Dataset:
     import torchtext
     return torchtext.data.Dataset([dataset.examples[i] for i in indices], dataset.fields)
+
+
+def get_indices_for_train_val_test(dataset_len: int, ratios=(0.1, 0.1)) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    test_size = int(dataset_len * ratios[1])
+    val_size = int(dataset_len * ratios[0])
+    indices = [i for i in range(dataset_len)]
+    random.shuffle(indices)
+    test_indices = indices[:test_size]
+    val_indices = indices[test_size:(test_size + val_size)]
+    train_indices = indices[(test_size + val_size):]
+    return np.array(train_indices), np.array(val_indices), np.array(test_indices)
+
+
+def create_classifier_dataset(dataset, diffs_field, matrix, diff_example_ids):
+    # TODO: fix that val, test and train intersects
+    train_indices, val_indices, test_indices = get_indices_for_train_val_test(len(dataset))
+    train_dataset = ClassifierDataset(dataset, train_indices, diff_example_ids, diffs_field, matrix)
+    val_dataset = ClassifierDataset(dataset, val_indices, diff_example_ids, diffs_field, matrix)
+    test_dataset = ClassifierDataset(dataset, test_indices, diff_example_ids, diffs_field, matrix)
+    return train_dataset, val_dataset, test_dataset
 
 
 if __name__ == "__main__":

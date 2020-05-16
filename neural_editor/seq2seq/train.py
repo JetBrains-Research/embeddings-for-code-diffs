@@ -145,8 +145,9 @@ def save_model(model: nn.Module, model_suffix: str, config: Config) -> None:
     print(f'Model saved {model_suffix}!')
 
 
-def load_weights_of_best_model_on_validation(model: nn.Module, config: Config) -> None:
-    model.load_state_dict(torch.load(os.path.join(config['OUTPUT_PATH'], f'model_state_dict_best_on_validation.pt')))
+def load_weights_of_best_model_on_validation(model: nn.Module, config: Config, suffix='') -> None:
+    model.load_state_dict(torch.load(os.path.join(config['OUTPUT_PATH'],
+                                                  f'model_state_dict_best_on_validation_{suffix}.pt')))
 
 
 def save_data_on_checkpoint(model: nn.Module,

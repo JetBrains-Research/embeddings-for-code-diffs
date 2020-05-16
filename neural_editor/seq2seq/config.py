@@ -49,6 +49,7 @@ class Config:
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
         'EARLY_STOPPING_ROUNDS': 25,
+        'EARLY_STOPPING_ROUNDS_CLASSIFIER': 25,
         'BEAM_SIZE': 50,
         'NUM_GROUPS': 1,
         'DIVERSITY_STRENGTH': None,
