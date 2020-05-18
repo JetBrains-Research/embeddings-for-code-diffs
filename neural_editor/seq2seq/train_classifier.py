@@ -17,7 +17,7 @@ from neural_editor.seq2seq.classifier.GoodEditClassifier import GoodEditClassifi
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.datasets.dataset_utils import create_classifier_dataset, take_part_from_dataset
 from neural_editor.seq2seq.matrix_calculation import load_matrix, print_matrix_statistics, get_matrix, write_matrix
-from neural_editor.seq2seq.test_utils import save_perplexity_plot
+from neural_editor.seq2seq.test_utils import save_perplexity_plot, save_metrics_plot
 from neural_editor.seq2seq.train import save_model, load_weights_of_best_model_on_validation
 from neural_editor.seq2seq.train_utils import lookup_words
 
@@ -248,8 +248,8 @@ def run_train_classifier(dataset, diffs_field, matrix, diff_example_ids, config)
         print(f'Train: {train_metrics}')
         print(f'Validation: {val_metrics}')
         for key in train_metrics.keys():
-            save_perplexity_plot([train_metrics[key], val_metrics[key]], ['train', 'val'],
-                                 f'{key}_classifier.png', config)
+            save_metrics_plot([train_metrics[key], val_metrics[key]], ['train', 'val'], key,
+                              f'{key}_classifier.png', config, xlabel='iteration', ylabel=key)
     else:
         losses, accuracies = train_classifier(model, train_dataset, val_dataset, diffs_field, config)
         print(f'Losses: {losses}')

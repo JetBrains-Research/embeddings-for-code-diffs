@@ -49,6 +49,19 @@ def save_perplexity_plot(perplexities: List[List[float]], labels: List[str], fil
     plt.clf()
 
 
+def save_metrics_plot(metrics: List[List[float]], labels: List[str], title: str, filepath: str, config: Config,
+                      xlabel='', ylabel='') \
+        -> None:
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    for perplexity_values, label in zip(metrics, labels):
+        plt.plot(perplexity_values, label=label)
+        plt.legend()
+    plt.savefig(os.path.join(config['OUTPUT_PATH'], filepath))
+    plt.clf()
+
+
 def load_defects4j_dataset(diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:
     dataset = CodeChangesTokensDataset(config['DEFECTS4J_PATH'], diffs_field,
                                        add_reverse_examples_ratio=0, config=config)
