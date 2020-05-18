@@ -297,8 +297,10 @@ def load_model(results_root: str, vocab_size: int, config: Config) -> nn.Module:
 def load_all(results_root_dir, is_test):
     def change_config():
         pass
-        # config._CONFIG['EARLY_STOPPING_ROUNDS_CLASSIFIER'] = 25
+        # config._CONFIG['EARLY_STOPPING_ROUNDS_CLASSIFIER'] = 100
         # config._CONFIG['METRIC'] = 'minkowski'
+        # config._CONFIG['EVALUATION_ROUNDS_CLASSIFIER'] = 100
+        # config._CONFIG['CLASSIFIER_EARLY_STOPPING_NO_EPOCHS'] = True
         # config._CONFIG['OUTPUT_PATH'] = results_root_dir
 
     config_path = Path(results_root_dir).joinpath('config.pkl')
