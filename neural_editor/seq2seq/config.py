@@ -16,11 +16,11 @@ class Config:
     _CONFIG = {
         'IS_TEST': False,
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
-        'MATRIX_N_NEIGHBORS': 5,
+        'MATRIX_N_NEIGHBORS': 50,
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
-        'METRIC': 'cosine',
-        'JIANG_WEIGHTS_LOADING': True,
-        'LOAD_WEIGHTS_FROM': '../../../embeddings-for-code-diffs-data/experiment_127_10/model_state_dict_best_on_validation_neural_editor.pt',
+        'METRIC': 'minkowski',
+        'JIANG_WEIGHTS_LOADING': None,
+        'LOAD_WEIGHTS_FROM': None,
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
         'TUFANO_LABELED_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/50_100',
@@ -52,6 +52,7 @@ class Config:
         'EARLY_STOPPING_ROUNDS_CLASSIFIER': 100,
         'EVALUATION_ROUNDS_CLASSIFIER': 100,
         'CLASSIFIER_EARLY_STOPPING_NO_EPOCHS': True,
+        'CLASSIFIER_FILENAME': 'model_state_dict_best_on_validation_classifier.pt',
         'BEAM_SIZE': 50,
         'NUM_GROUPS': 1,
         'DIVERSITY_STRENGTH': None,
@@ -102,7 +103,7 @@ class Config:
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/0_50'
         self._CONFIG['TUFANO_LABELED_50_100_PATH'] = \
             '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes_test/labeled/50_100'
-        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 4
+        self._CONFIG['MAX_NUM_OF_EPOCHS'] = 2
 
 
 def load_config(is_test: bool, path_to_config: Path = None) -> Config:

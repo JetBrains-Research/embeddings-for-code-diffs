@@ -4,12 +4,13 @@ import sys
 import time
 from datetime import timedelta
 from pathlib import Path
-from typing import List, Any
+from typing import Any
 
 import torch
 from torch import nn
 
 from neural_editor.seq2seq import EncoderDecoder
+from neural_editor.seq2seq.classifier_utils import load_classifier
 from neural_editor.seq2seq.config import Config, load_config
 from neural_editor.seq2seq.datasets.dataset_utils import take_part_from_dataset
 from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalculation
@@ -297,10 +298,11 @@ def load_model(results_root: str, vocab_size: int, config: Config) -> nn.Module:
 def load_all(results_root_dir, is_test):
     def change_config():
         pass
-        # config._CONFIG['EARLY_STOPPING_ROUNDS_CLASSIFIER'] = 100
-        # config._CONFIG['METRIC'] = 'minkowski'
-        # config._CONFIG['EVALUATION_ROUNDS_CLASSIFIER'] = 100
-        # config._CONFIG['CLASSIFIER_EARLY_STOPPING_NO_EPOCHS'] = True
+        #config._CONFIG['EARLY_STOPPING_ROUNDS_CLASSIFIER'] = 100
+        #config._CONFIG['METRIC'] = 'minkowski'
+        #config._CONFIG['EVALUATION_ROUNDS_CLASSIFIER'] = 100
+        #config._CONFIG['CLASSIFIER_EARLY_STOPPING_NO_EPOCHS'] = True
+        #config._CONFIG['CLASSIFIER_FILENAME'] = 'model_state_dict_best_on_validation_classifier.pt'
         # config._CONFIG['OUTPUT_PATH'] = results_root_dir
 
     config_path = Path(results_root_dir).joinpath('config.pkl')
@@ -309,6 +311,11 @@ def load_all(results_root_dir, is_test):
     pprint.pprint(config.get_config())
     data = load_data(verbose=True, config=config)
     model = load_model(results_root_dir, len(data[3].vocab), config)
+    if config['CLASSIFIER_FILENAME'] is not None and \
+            os.path.isfile(os.path.join(results_root_dir, config['CLASSIFIER_FILENAME'])):
+        classifier = \
+            load_classifier(os.path.join(results_root_dir, config['CLASSIFIER_FILENAME']), len(data[3].vocab), config)
+        model.set_classifier(classifier)
     return model, data, config
 
 

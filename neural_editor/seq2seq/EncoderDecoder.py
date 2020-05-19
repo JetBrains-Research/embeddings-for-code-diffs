@@ -5,9 +5,12 @@ from sklearn.neighbors import NearestNeighbors
 from torch import nn
 from torch import Tensor
 from torchtext import data
+import numpy as np
 
 from edit_representation.sequence_encoding import EditEncoder
 from neural_editor.seq2seq import Generator, Batch
+from neural_editor.seq2seq.ClassifierBatch import ClassifierBatch
+from neural_editor.seq2seq.classifier import GoodEditClassifier
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.datasets.dataset_utils import take_subset_from_dataset
 from neural_editor.seq2seq.decoder import Decoder
@@ -33,6 +36,7 @@ class EncoderDecoder(nn.Module):
         self.config = config
         self.train_dataset = None
         self.pad_index = None
+        self.classifier: GoodEditClassifier = None
         self.metric = config['METRIC']
 
     def forward(self, batch: Batch, ignore_encoded_train) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor]:
@@ -111,7 +115,7 @@ class EncoderDecoder(nn.Module):
     def get_neighbors(self, n_neighbors) -> None:
         return self.encoded_train['nbrs'].kneighbors(n_neighbors=n_neighbors, return_distance=False)
 
-    def get_edit_final_from_train(self, src: Tensor, n_neighbors=None) -> Tuple[Tensor, Tensor]:
+    def get_edit_final_from_train(self, src: Tensor, n_neighbors=None, src_indices=None) -> Tuple[Tensor, Tensor]:
         src = src.detach().cpu().numpy()
         # TODO: get rid of "if" by filtering on batch.ids
         # TODO_DONE: find out why distances are not zeros, reason: dropout in LSTM introduces randomness
@@ -123,21 +127,29 @@ class EncoderDecoder(nn.Module):
                 indices = self.encoded_train['nbrs'].kneighbors(src, n_neighbors=2, return_distance=False)
                 indices = indices[:, 1]
             else:
-                indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
-                indices = indices[:, 0]
+                if self.classifier is None:
+                    indices = self.encoded_train['nbrs'].kneighbors(src, return_distance=False)
+                    indices = indices[:, 0]
+                else:
+                    indices = self.encoded_train['nbrs'].kneighbors(src, n_neighbors=50, return_distance=False)
+                    indices = self.resort_indices(src_indices, indices)
+                    indices = indices[:, 0]
             if not self.config['BUILD_EDIT_VECTORS_EACH_QUERY']:
                 return self.encoded_train['edit_hidden'][:, indices, :].to(self.config['DEVICE']), \
                        self.encoded_train['edit_cell'][:, indices, :].to(self.config['DEVICE'])
             return self.encode_edit(self.get_batch_from_ids(indices))
         else:
             indices = self.encoded_train['nbrs'].kneighbors(src, n_neighbors=n_neighbors, return_distance=False)
+            if self.classifier is not None:
+                indices = self.resort_indices(src_indices, indices)
             output = []
             for i in range(n_neighbors):
                 i_indices = indices[:, i]
                 if not self.config['BUILD_EDIT_VECTORS_EACH_QUERY']:
                     output.append((self.encoded_train['edit_hidden'][:, i_indices, :].to(self.config['DEVICE']),
                                    self.encoded_train['edit_cell'][:, i_indices, :].to(self.config['DEVICE'])))
-                output.append(self.encode_edit(self.get_batch_from_ids(i_indices)))
+                else:
+                    output.append(self.encode_edit(self.get_batch_from_ids(i_indices)))
             return output, indices
 
     def get_batch_from_ids(self, indices):
@@ -148,6 +160,29 @@ class EncoderDecoder(nn.Module):
                                       device=self.config['DEVICE'])
         data_iterator = [rebatch(self.pad_index, batch, self.config) for batch in data_iterator]
         return data_iterator[0]
+
+    def set_classifier(self, classifier: GoodEditClassifier):
+        self.classifier = classifier
+        self.classifier.eval()
+
+    def unset_classifier(self):
+        self.classifier = None
+
+    def resort_indices(self, src_examples: Tensor, indices: np.ndarray) -> np.ndarray:
+        sorted_indices = np.empty_like(indices)
+        for src_i, neighbors_ids in enumerate(indices):
+            src_with_padding = src_examples[src_i]
+            src_without_padding = src_with_padding[src_with_padding != self.pad_index]
+            src = torch.cat(len(neighbors_ids) * [src_without_padding.unsqueeze(dim=0)])
+            originral_src = (src, torch.tensor([src_without_padding.shape[0]] * len(neighbors_ids)))
+
+            neighbors_batch = self.get_batch_from_ids(neighbors_ids)
+            edit_src = (neighbors_batch.src, neighbors_batch.src_lengths)
+
+            classifier_batch = ClassifierBatch(originral_src, edit_src, trg=None, pad_index=self.pad_index)
+            predicted = self.classifier.predict(classifier_batch)
+            sorted_indices[src_i] = neighbors_ids[torch.argsort(predicted, descending=True).detach().cpu().numpy()]
+        return sorted_indices
 
     def encode_edit(self, batch: Batch) -> Tuple[Tensor, Tensor]:
         """
@@ -188,7 +223,7 @@ class EncoderDecoder(nn.Module):
         if self.edit_final is not None:
             edit_final = self.edit_final
         elif self.encoded_train is not None and not ignore_encoded_train:
-            edit_final = self.get_edit_final_from_train(encoder_final[0][-1], n_neighbors)
+            edit_final = self.get_edit_final_from_train(encoder_final[0][-1], n_neighbors, batch.src)
         else:
             edit_final = self.encode_edit(batch)
         return edit_final, encoder_output, encoder_final

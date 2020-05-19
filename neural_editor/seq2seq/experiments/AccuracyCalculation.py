@@ -98,7 +98,7 @@ class AccuracyCalculation:
                                      data_iterator, decode_method,
                                      self.vocab, self.eos_index, dataset_len)
         for correct_top_k, k in zip(correct_all_k, self.topk_values):
-            print(f'Top-{k} accuracy: {correct_top_k} / {total} = {correct_top_k / total}')
+            print(f'Top-{k} accuracy: {correct_top_k} / {total} = {correct_top_k / total}', flush=True)
         return max_top_k_predicted
 
     def calculate_top_k_levenshtein_distance(self, predictions: List[List[List[str]]], dataset: Dataset) -> None:
@@ -119,4 +119,4 @@ class AccuracyCalculation:
                         top_k_distances[example_id][j] = distance
         for i, k in enumerate(self.topk_values):
             distances = top_k_distances[:, i]
-            print(f'Top-{k} levenshtein distance mean: {distances.mean()}, std: {distances.std()}')
+            print(f'Top-{k} levenshtein distance mean: {distances.mean()}, std: {distances.std()}', flush=True)

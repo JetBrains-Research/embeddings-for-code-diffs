@@ -3,33 +3,21 @@ import time
 from typing import List, Tuple
 from datetime import timedelta
 
-import numpy as np
 import torch
 from torch import nn
 from torch.utils.data import Dataset
 from torchtext import data
 
-from edit_representation.sequence_encoding.EditEncoder import EditEncoder
 from neural_editor.seq2seq.ClassifierBatch import rebatch_classifier, rebatch_classifier_iterator
 from neural_editor.seq2seq.ClassifierLossCompute import ClassifierLossCompute
 from neural_editor.seq2seq.analyze import load_all
 from neural_editor.seq2seq.classifier.GoodEditClassifier import GoodEditClassifier
-from neural_editor.seq2seq.config import Config
-from neural_editor.seq2seq.datasets.dataset_utils import create_classifier_dataset, take_part_from_dataset
+from neural_editor.seq2seq.classifier_utils import create_classifier
+from neural_editor.seq2seq.datasets.dataset_utils import create_classifier_dataset
 from neural_editor.seq2seq.matrix_calculation import load_matrix, print_matrix_statistics, get_matrix, write_matrix
 from neural_editor.seq2seq.test_utils import save_perplexity_plot, save_metrics_plot
 from neural_editor.seq2seq.train import save_model, load_weights_of_best_model_on_validation
 from neural_editor.seq2seq.train_utils import lookup_words
-
-
-def create_classifier(vocab_size, config: Config):
-    emb_size = config['WORD_EMBEDDING_SIZE']
-    embedding = nn.Embedding(vocab_size, emb_size)
-    original_src_encoder = EditEncoder(emb_size, config['ENCODER_HIDDEN_SIZE'], config['NUM_LAYERS'], config['DROPOUT'])
-    edit_src_encoder = original_src_encoder
-    model = GoodEditClassifier(original_src_encoder, edit_src_encoder, embedding, output_size=1)
-    model.to(config['DEVICE'])
-    return model
 
 
 def run_classifier_epoch(data_iter: List, model: GoodEditClassifier, loss_compute,
@@ -256,7 +244,7 @@ def run_train_classifier(dataset, diffs_field, matrix, diff_example_ids, config)
         print(f'Accuracies: {accuracies}')
         save_perplexity_plot(losses.values(), losses.keys(), 'loss_classifier.png', config)
         save_perplexity_plot(accuracies.values(), accuracies.keys(), 'accuracy_classifier.png', config)
-    load_weights_of_best_model_on_validation(model, config, suffix='classifier')
+    load_weights_of_best_model_on_validation(model, config, suffix='_classifier')
     return model, (train_dataset, val_dataset, test_dataset, diffs_field)
 
 

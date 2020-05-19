@@ -8,6 +8,7 @@ from neural_editor.seq2seq.analyze import test_model
 from neural_editor.seq2seq.config import load_config
 from neural_editor.seq2seq.matrix_calculation import get_matrix, write_matrix, print_matrix_statistics
 from neural_editor.seq2seq.train import run_train
+from neural_editor.seq2seq.train_classifier import run_train_classifier, test_classifier
 
 
 def main():
@@ -21,7 +22,12 @@ def main():
     matrix, diff_example_ids = get_matrix(model, train_dataset, diffs_field, config)
     print_matrix_statistics(matrix, diff_example_ids)
     write_matrix(matrix, diff_example_ids, config)
-    print('\n====STARTING EVALUATION====\n', end='')
+    print('\n====STARTING CLASSIFIER TRAINING====\n', end='')
+    classifier, classifier_data = run_train_classifier(train_dataset, diffs_field, matrix, diff_example_ids, config)
+    print('\n====STARTING CLASSIFIER EVALUATION====\n', end='')
+    test_classifier(classifier, classifier_data, config)
+    print('\n====STARTING EDITOR EVALUATION====\n', end='')
+    model.set_classifier(classifier)
     test_model(model, data, config)
 
 
