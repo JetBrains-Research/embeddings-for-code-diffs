@@ -30,6 +30,31 @@ def split_on_train_test_val():
             path_to_write.joinpath(filename).write_text('\n'.join(lines))
 
 
+def partition_data():
+    if len(sys.argv) != 2:
+        print('Usage: <root where to save processed data>')
+        exit(1)
+    root = Path(sys.argv[1])
+    filenames = ['prev.txt', 'updated.txt', 'trg.txt', 'ids.txt']
+    folder_names = ['neural_editor', 'predictor']
+
+    data = list(zip(*[root.joinpath(filename).read_text().splitlines(keepends=False) for filename in filenames]))
+    ne_indices, predictor_indices, _ = get_indices_for_train_val_test(len(data), ratios=(0.5, 0))
+    indices = {'neural_editor': ne_indices, 'predictor': predictor_indices}
+    print(f'Neural editor: {len(ne_indices)}, predictor: {len(predictor_indices)}')
+    for folder_name in folder_names:
+        path_to_write = root.joinpath(folder_name)
+        path_to_write.mkdir(exist_ok=True)
+        folder_indices = indices[folder_name]
+        filenames_lines = {filename: [] for filename in filenames}
+        for idx in folder_indices:
+            data_sample = data[idx]
+            for i, filename in enumerate(filenames_lines):
+                filenames_lines[filename].append(data_sample[i])
+        for filename, lines in filenames_lines.items():
+            path_to_write.joinpath(filename).write_text('\n'.join(lines))
+
+
 def mine_dataset() -> None:
     if len(sys.argv) != 4:
         print('Usage: <root where to save processed data> <path to file with description of dataset> '
@@ -51,5 +76,6 @@ def mine_dataset() -> None:
 
 
 if __name__ == "__main__":
+    # partition_data()
     split_on_train_test_val()
     # mine_dataset()
