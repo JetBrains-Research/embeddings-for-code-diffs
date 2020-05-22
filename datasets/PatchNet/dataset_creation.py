@@ -1,3 +1,4 @@
+import random
 import sys
 from pathlib import Path
 
@@ -28,6 +29,25 @@ def split_on_train_test_val():
                 filenames_lines[filename].append(data_sample[i])
         for filename, lines in filenames_lines.items():
             path_to_write.joinpath(filename).write_text('\n'.join(lines))
+
+
+def cut_dataset(n, shuffle=False):
+    if len(sys.argv) != 2:
+        print('Usage: <root where to save processed data>')
+        exit(1)
+    root = Path(sys.argv[1])
+    filenames = ['prev.txt', 'updated.txt', 'trg.txt', 'ids.txt']
+
+    data = list(zip(*[root.joinpath(filename).read_text().splitlines(keepends=False) for filename in filenames]))
+    if shuffle:
+        random.shuffle(data)
+    data = data[:n]
+    filenames_lines = {filename: [] for filename in filenames}
+    for data_sample in data:
+        for i, filename in enumerate(filenames_lines):
+            filenames_lines[filename].append(data_sample[i])
+    for filename, lines in filenames_lines.items():
+        root.joinpath(filename).write_text('\n'.join(lines))
 
 
 def partition_data():
@@ -76,6 +96,7 @@ def mine_dataset() -> None:
 
 
 if __name__ == "__main__":
+    # cut_dataset(200, shuffle=False)
     # partition_data()
     split_on_train_test_val()
     # mine_dataset()
