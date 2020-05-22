@@ -1,5 +1,6 @@
 import json
 import os
+import random
 import sys
 from typing import Tuple, List
 
@@ -68,6 +69,17 @@ def prepare_dataset(dataset_root):
 def take_part_from_dataset(dataset: Dataset, n: int) -> Dataset:
     import torchtext
     return torchtext.data.Dataset(dataset[:n], dataset.fields)
+
+
+def get_indices_for_train_val_test(dataset_len: int, ratios=(0.1, 0.1)) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    test_size = int(dataset_len * ratios[1])
+    val_size = int(dataset_len * ratios[0])
+    indices = [i for i in range(dataset_len)]
+    random.shuffle(indices)
+    test_indices = indices[:test_size]
+    val_indices = indices[test_size:(test_size + val_size)]
+    train_indices = indices[(test_size + val_size):]
+    return np.array(train_indices), np.array(val_indices), np.array(test_indices)
 
 
 if __name__ == "__main__":

@@ -93,7 +93,9 @@ class PatchNetDataset:
         prev_file_lines = [' '.join(data_sample.commit.get_prev()) for data_sample in self.data_samples]
         updated_file_lines = [' '.join(data_sample.commit.get_updated()) for data_sample in self.data_samples]
         trg_file_lines = [str(int(data_sample.stable)) for data_sample in self.data_samples]
+        ids_file_lines = [str(data_sample.idx) for data_sample in self.data_samples]
         self.root.joinpath('prev.txt').write_text('\n'.join(prev_file_lines))
         self.root.joinpath('updated.txt').write_text('\n'.join(updated_file_lines))
         self.root.joinpath('trg.txt').write_text('\n'.join(trg_file_lines))
+        self.root.joinpath('ids.txt').write_text('\n'.join(ids_file_lines))
 

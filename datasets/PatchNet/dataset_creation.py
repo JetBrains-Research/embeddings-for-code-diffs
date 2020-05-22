@@ -2,9 +2,35 @@ import sys
 from pathlib import Path
 
 from datasets.PatchNet.PatchNetDataset import PatchNetDataset
+from datasets.dataset_utils import get_indices_for_train_val_test
 
 
-def main() -> None:
+def split_on_train_test_val():
+    if len(sys.argv) != 2:
+        print('Usage: <root where to save processed data>')
+        exit(1)
+    root = Path(sys.argv[1])
+    filenames = ['prev.txt', 'updated.txt', 'trg.txt', 'ids.txt']
+    folder_names = ['train', 'val', 'test']
+
+    data = list(zip(*[root.joinpath(filename).read_text().splitlines(keepends=False) for filename in filenames]))
+    train_indices, val_indices, test_indices = get_indices_for_train_val_test(len(data), ratios=(0.1, 0.1))
+    indices = {'train': train_indices, 'val': val_indices, 'test': test_indices}
+    print(f'Train: {len(train_indices)}, val: {len(val_indices)}, test: {len(test_indices)}')
+    for folder_name in folder_names:
+        path_to_write = root.joinpath(folder_name)
+        path_to_write.mkdir(exist_ok=True)
+        folder_indices = indices[folder_name]
+        filenames_lines = {filename: [] for filename in filenames}
+        for idx in folder_indices:
+            data_sample = data[idx]
+            for i, filename in enumerate(filenames_lines):
+                filenames_lines[filename].append(data_sample[i])
+        for filename, lines in filenames_lines.items():
+            path_to_write.joinpath(filename).write_text('\n'.join(lines))
+
+
+def mine_dataset() -> None:
     if len(sys.argv) != 4:
         print('Usage: <root where to save processed data> <path to file with description of dataset> '
               '<path to local copy of linux git repository>')
@@ -25,4 +51,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    split_on_train_test_val()
+    # mine_dataset()
