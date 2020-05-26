@@ -1,11 +1,13 @@
 import math
+import os
+import pickle
 import time
 import typing
 from datetime import timedelta
+from typing import Dict, List
 
 import numpy as np
 import torch
-import torchtext
 from termcolor import colored
 from torch import nn
 from torchtext import data
@@ -14,8 +16,9 @@ from torchtext.vocab import Vocab
 
 from edit_representation.sequence_encoding.EditEncoder import EditEncoder
 from neural_editor.seq2seq import SimpleLossCompute
+from neural_editor.seq2seq.EncoderPredictor import EncoderPredictor
 from neural_editor.seq2seq.BahdanauAttention import BahdanauAttention
-from neural_editor.seq2seq.Batch import Batch
+from neural_editor.seq2seq.Batch import Batch, rebatch
 from neural_editor.seq2seq.EncoderDecoder import EncoderDecoder
 from neural_editor.seq2seq.Generator import Generator
 from neural_editor.seq2seq.config import Config
@@ -23,8 +26,7 @@ from neural_editor.seq2seq.decoder.Decoder import Decoder
 from neural_editor.seq2seq.encoder.Encoder import Encoder
 
 
-def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
-               edit_encoder: EditEncoder, encoder: Encoder,
+def make_model(src_vocab_size: int, vocab_size: int, unk_index: int,
                edit_representation_size: int,
                emb_size: int,
                hidden_size_encoder: int, hidden_size_decoder: int,
@@ -33,32 +35,31 @@ def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
                use_bridge: bool,
                config: Config) -> EncoderDecoder:
     """Helper: Construct a model from hyperparameters."""
-    assert((encoder is None and edit_encoder is None) or (encoder is not None and edit_encoder is not None))
-
-    if edit_encoder is not None and config['FREEZE_EDIT_ENCODER_WEIGHTS']:
-        freeze_weights(edit_encoder)
-        freeze_weights(encoder)
     attention = BahdanauAttention(hidden_size_decoder, key_size=2 * hidden_size_encoder, query_size=hidden_size_decoder)
-
-    generator = Generator(hidden_size_decoder, trg_vocab_size)
-    target_embedding = nn.Embedding(trg_vocab_size, emb_size)
-    if edit_encoder is None:
-        embedding = nn.Embedding(src_vocab_size, emb_size)
-        edit_encoder = EditEncoder(embedding, 3 * emb_size, edit_representation_size, num_layers, dropout)
-        encoder = Encoder(embedding, emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout)
-        target_embedding = embedding
+    generator = Generator(hidden_size_decoder, vocab_size)
+    embedding = nn.Embedding(src_vocab_size, emb_size)
+    edit_encoder = EditEncoder(embedding, 3 * emb_size, edit_representation_size, num_layers, dropout)
+    encoder = Encoder(embedding, emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout)
     model: EncoderDecoder = EncoderDecoder(
         encoder,
-        Decoder(generator, target_embedding, emb_size, edit_representation_size,
-                hidden_size_encoder, hidden_size_decoder, trg_vocab_size, trg_unk_index,
+        Decoder(generator, embedding, emb_size, edit_representation_size,
+                hidden_size_encoder, hidden_size_decoder, vocab_size, unk_index,
                 attention,
                 num_layers=num_layers, teacher_forcing_ratio=config['TEACHER_FORCING_RATIO'],
                 dropout=dropout, bridge=use_bridge,
                 use_edit_representation=config['USE_EDIT_REPRESENTATION'],
                 use_copying_mechanism=config['USE_COPYING_MECHANISM']),
-        edit_encoder,
-        target_embedding,
-        generator)
+        edit_encoder, embedding, generator)
+    model.to(config['DEVICE'])
+    return model
+
+
+def make_predictor(edit_encoder: EditEncoder, encoder: Encoder, config: Config) -> EncoderPredictor:
+    if config['FREEZE_EDIT_ENCODER_WEIGHTS']:
+        freeze_weights(edit_encoder)
+        freeze_weights(encoder)
+
+    model: EncoderDecoder = EncoderPredictor(encoder, edit_encoder)
     model.to(config['DEVICE'])
     return model
 
@@ -66,13 +67,6 @@ def make_model(src_vocab_size: int, trg_vocab_size: int, trg_unk_index: int,
 def freeze_weights(model) -> None:
     for param in model.parameters():
         param.requires_grad = False
-
-
-def rebatch(pad_idx: int, batch: torchtext.data.Batch, dataset: Dataset, config: Config) -> Batch:
-    """Wrap torchtext batch into our own Batch class for pre-processing"""
-    # These fields are added dynamically by PyTorch
-    return Batch(batch.src, batch.trg, batch.diff_alignment,
-                 batch.diff_prev, batch.diff_updated, batch.ids, dataset, pad_idx, config)
 
 
 def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: SimpleLossCompute,
@@ -117,9 +111,9 @@ def run_epoch(data_iter: typing.Generator, model: EncoderDecoder, loss_compute: 
 
 
 def create_greedy_decode_method_with_batch_support(model: EncoderDecoder,
-                  max_len: int,
-                  sos_index: int, eos_index: int,
-                  unk_index: int, vocab_size: int):
+                                                   max_len: int,
+                                                   sos_index: int, eos_index: int,
+                                                   unk_index: int, vocab_size: int):
     def decode(batch: Batch) -> typing.List[typing.List[np.array]]:
         predicted = greedy_decode(model, batch, max_len, sos_index, eos_index, unk_index, vocab_size)
         return [[el] for el in predicted]
@@ -183,6 +177,15 @@ def lookup_words(x: np.array, vocab: Vocab, oov_vocab_reverse: typing.Dict[int, 
     return [lookup_table[i] for i in x]
 
 
+def lookup_words_no_copying_mechanism(x: np.array, vocab: Vocab) -> typing.List[str]:
+    """
+    :param x: [SeqLen]
+    :param vocab: torchtext vocabulary
+    :return: list of words
+    """
+    lookup_table = {i: el for i, el in enumerate(vocab.itos)}
+    return [lookup_table[i] for i in x]
+
 # TODO: unite this method with print_examples
 def print_examples_decode_method(example_iter: typing.Iterable, model: EncoderDecoder,
                                  vocab: Vocab, config: Config,
@@ -232,7 +235,7 @@ def print_examples(example_iter: typing.Iterable, model: EncoderDecoder,
     model.eval()
     count = 0
 
-    assert(src_vocab.stoi[config['SOS_TOKEN']] == trg_vocab.stoi[config['SOS_TOKEN']])
+    assert (src_vocab.stoi[config['SOS_TOKEN']] == trg_vocab.stoi[config['SOS_TOKEN']])
     assert (src_vocab.stoi[config['EOS_TOKEN']] == trg_vocab.stoi[config['EOS_TOKEN']])
     sos_index = src_vocab.stoi[config['SOS_TOKEN']]
     eos_index = src_vocab.stoi[config['EOS_TOKEN']]
@@ -287,6 +290,7 @@ def calculate_accuracy(dataset_iterator: typing.Iterable,
 def calculate_top_k_accuracy(topk_values: typing.List[int], dataset_iterator: typing.Iterator,
                              decode_method, trg_vocab: Vocab, eos_index: int, dataset_len: int) \
         -> typing.Tuple[typing.List[int], int, typing.List[typing.List[typing.List[str]]]]:
+    # TODO: handle <unk> token issue
     correct = [0 for _ in range(len(topk_values))]
     max_k = topk_values[-1]
     total = 0
@@ -334,3 +338,23 @@ def output_accuracy_on_data(model: EncoderDecoder,
                                           config['TOKENS_CODE_CHUNK_MAX_LEN'],
                                           vocab, config)
             print(f'Accuracy on {label}: {accuracy}')
+
+
+def save_data_on_checkpoint(model: nn.Module,
+                            train_logs: Dict[str, List[float]],
+                            suffix: str,
+                            config: Config) -> None:
+    save_model(model, f'checkpoint_{suffix}', config)
+    with open(os.path.join(config['OUTPUT_PATH'], f'train_logs_{suffix}.pkl'), 'wb') as train_logs_file:
+        pickle.dump(train_logs, train_logs_file)
+
+
+def load_weights_of_best_model_on_validation(model: nn.Module, suffix: str, config: Config) -> None:
+    model.load_state_dict(torch.load(os.path.join(config['OUTPUT_PATH'],
+                                                  f'model_state_dict_best_on_validation_{suffix}.pt')))
+
+
+def save_model(model: nn.Module, model_suffix: str, config: Config) -> None:
+    torch.save(model.state_dict(), os.path.join(config['OUTPUT_PATH'], f'model_state_dict_{model_suffix}.pt'))
+    torch.save(model, os.path.join(config['OUTPUT_PATH'], f'model_{model_suffix}.pt'))
+    print(f'Model saved {model_suffix}!')

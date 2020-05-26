@@ -26,7 +26,7 @@ class CodeChangesTokensDataset(data.Dataset):
         """
         fields = [('src', field), ('trg', field),
                   ('diff_alignment', field), ('diff_prev', field), ('diff_updated', field),
-                  ('msg', field),
+                  ('stable', Field(sequential=False, use_vocab=False)),
                   ('ids', Field(sequential=False, use_vocab=False))]
         examples = []
         differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
@@ -34,9 +34,9 @@ class CodeChangesTokensDataset(data.Dataset):
                         config['PADDING_TOKEN'])
         with open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated, \
-                open(os.path.join(path, 'msg.txt'), mode='r', encoding='utf-8') as msg:
-            for prev_line, updated_line, msg_line in zip(prev, updated, msg):
-                prev_line, updated_line, msg_line = prev_line.strip(), updated_line.strip(), msg_line.strip()
+                open(os.path.join(path, 'trg.txt'), mode='r', encoding='utf-8') as stable:
+            for prev_line, updated_line, stable_line in zip(prev, updated, stable):
+                prev_line, updated_line, stable_line = prev_line.strip(), updated_line.strip(), stable_line.strip()
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
                                                    leave_only_changed=config['LEAVE_ONLY_CHANGED'])
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
@@ -45,7 +45,7 @@ class CodeChangesTokensDataset(data.Dataset):
                     print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
-                    [prev_line, updated_line, diff[0], diff[1], diff[2], msg_line, len(examples)], fields))
+                    [prev_line, updated_line, diff[0], diff[1], diff[2], int(stable_line), len(examples)], fields))
         super(CodeChangesTokensDataset, self).__init__(examples, fields)
 
     @staticmethod
@@ -62,7 +62,7 @@ class CodeChangesTokensDataset(data.Dataset):
         diffs_field: Field = data.Field(batch_first=True, lower=config['LOWER'], include_lengths=True,
                                         unk_token=config['UNK_TOKEN'], pad_token=config['PAD_TOKEN'],
                                         init_token=config['SOS_TOKEN'],
-                                        eos_token=config['EOS_TOKEN'])  # TODO: init_token=None?
+                                        eos_token=config['EOS_TOKEN'])
 
         train_data, val_data, test_data = CodeChangesTokensDataset.load_datasets(config['DATASET_ROOT'], diffs_field,
                                                                                  config)
@@ -82,17 +82,20 @@ class CodeChangesTokensDataset(data.Dataset):
         print('valid', len(valid_data))
         print('test', len(test_data), "\n")
 
-        max_seq_len = max((
-            max((len(example.src), len(example.trg), len(example.diff_alignment)))
-            for dataset in (train_data, valid_data, test_data) for example in dataset))
-        print(f'Max sequence length in tokens: {max_seq_len}', '\n')
+        max_src_trg_len = max(max(len(example.src), len(example.trg)) for dataset
+                              in (train_data, valid_data, test_data) for example in dataset)
+        max_diff_len = max(len(example.diff_alignment) for dataset
+                           in (train_data, valid_data, test_data) for example in dataset)
+        print(f'Max src or trg sequence length in tokens: {max_src_trg_len}')
+        print(f'Max diff sequence length in tokens: {max_diff_len}', '\n')
 
         print("First training example:")
-        print("src:", " ".join(vars(train_data[0])['src']))
-        print("trg:", " ".join(vars(train_data[0])['trg']))
+        print("src           :", " ".join(vars(train_data[0])['src']))
+        print("trg           :", " ".join(vars(train_data[0])['trg']))
         print("diff_alignment:", " ".join(vars(train_data[0])['diff_alignment']))
-        print("diff_prev:", " ".join(vars(train_data[0])['diff_prev']))
-        print("diff_updated:", " ".join(vars(train_data[0])['diff_updated']), '\n')
+        print("diff_prev     :", " ".join(vars(train_data[0])['diff_prev']))
+        print("diff_updated  :", " ".join(vars(train_data[0])['diff_updated']))
+        print("stable        :", vars(train_data[0])['stable'], '\n')
 
         print("Most common words:")
         print("\n".join(["%10s %10d" % x for x in field.vocab.freqs.most_common(10)]), "\n")

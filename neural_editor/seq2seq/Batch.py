@@ -1,6 +1,7 @@
 from typing import Tuple, Dict, List
 
 import torch
+import torchtext
 from torch import Tensor
 from torchtext.data import Dataset
 
@@ -110,3 +111,10 @@ class Batch:
 
     def __len__(self) -> int:
         return self.nseqs
+
+
+def rebatch(pad_idx: int, batch: torchtext.data.Batch, dataset: Dataset, config: Config) -> Batch:
+    """Wrap torchtext batch into our own Batch class for pre-processing"""
+    # These fields are added dynamically by PyTorch
+    return Batch(batch.src, batch.trg, batch.diff_alignment,
+                 batch.diff_prev, batch.diff_updated, batch.ids, dataset, pad_idx, config)

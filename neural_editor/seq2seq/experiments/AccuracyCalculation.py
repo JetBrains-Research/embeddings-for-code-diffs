@@ -7,8 +7,9 @@ from torchtext.vocab import Vocab
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder.search import create_decode_method
-from neural_editor.seq2seq.train_utils import rebatch, calculate_top_k_accuracy, \
+from neural_editor.seq2seq.train_utils import calculate_top_k_accuracy, \
     create_greedy_decode_method_with_batch_support
+from neural_editor.seq2seq.Batch import rebatch
 
 
 class AccuracyCalculation:
@@ -37,7 +38,7 @@ class AccuracyCalculation:
         self.batch_size = self.config['TEST_BATCH_SIZE'] if greedy else 1
 
     def conduct(self, dataset: Dataset, dataset_label: str) -> List[List[List[str]]]:
-        print(f'Start conducting accuracy calculation experiment for {dataset_label}...')
+        print(f'Start conducting accuracy calculation experiment for {dataset_label}...', flush=True)
         data_iterator = data.Iterator(dataset, batch_size=self.batch_size, train=False,
                                       shuffle=False,
                                       sort=False,

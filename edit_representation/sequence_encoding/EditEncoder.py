@@ -13,18 +13,18 @@ class EditEncoder(nn.Module):
 
     def __init__(self, embed: Embedding, input_size: int, hidden_size: int, num_layers: int, dropout: float) -> None:
         super(EditEncoder, self).__init__()
-        self.embed = embed
         self.num_layers = num_layers
+        self.hidden_size = hidden_size
+        self.embed = embed
         self.rnn = nn.LSTM(input_size, hidden_size, num_layers,
                            batch_first=True, bidirectional=True, dropout=dropout)
 
-    def forward(self, x: Tensor, mask: Tensor, lengths: Tensor) -> Tuple[Tensor, Tuple[Tensor, Tensor]]:
+    def forward(self, x: Tensor, lengths: Tensor) -> Tuple[Tensor, Tuple[Tensor, Tensor]]:
         """
         Applies a bidirectional LSTM to sequence of embeddings x.
         The input mini-batch x needs to be sorted by length.
         x should have dimensions [batch, time, dim].
         :param x: [B, AlignedSeqLen, EmbDiff + EmbDiff + EmbDiff]
-        :param mask: [B, 1, AlignedSeqLen + AlignedSeqLen + AlignedSeqLen]
         :param lengths: [B]
         :return: Tuple[
             [B, AlignedSeqLen, NumDirections * DiffEncoderH],
@@ -59,15 +59,10 @@ class EditEncoder(nn.Module):
             (self.embed(batch.diff_alignment), self.embed(batch.diff_prev), self.embed(batch.diff_updated)),
             dim=2
         )  # [B, SeqAlignedLen, EmbDiff + EmbDiff + EmbDiff]
-        diff_embedding_mask = torch.cat(
-            (batch.diff_alignment_mask, batch.diff_prev_mask, batch.diff_updated_mask),
-            dim=2
-        )  # [B, 1, AlignedSeqLen + AlignedSeqLen + AlignedSeqLen]
         # [B, AlignedSeqLen, NumDirections * DiffEncoderH]
         # Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]]
         _, edit_final = self.forward(
             diff_embedding,
-            diff_embedding_mask,
             batch.diff_alignment_lengths  # B * 1 * AlignedSeqLen
         )
         return edit_final

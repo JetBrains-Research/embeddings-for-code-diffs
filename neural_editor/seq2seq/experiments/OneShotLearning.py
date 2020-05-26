@@ -8,8 +8,9 @@ import numpy as np
 from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder.search import create_decode_method
-from neural_editor.seq2seq.train_utils import rebatch, calculate_top_k_accuracy, \
+from neural_editor.seq2seq.train_utils import calculate_top_k_accuracy, \
     print_examples_decode_method
+from neural_editor.seq2seq.Batch import rebatch
 
 
 class OneShotLearning:

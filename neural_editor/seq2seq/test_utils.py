@@ -15,7 +15,8 @@ from datasets.dataset_utils import create_filter_predicate_on_length
 from neural_editor.seq2seq import EncoderDecoder
 from datasets.CodeChangesDataset import CodeChangesTokensDataset
 from neural_editor.seq2seq.config import Config
-from neural_editor.seq2seq.train_utils import print_examples, rebatch, calculate_accuracy
+from neural_editor.seq2seq.train_utils import print_examples, calculate_accuracy
+from neural_editor.seq2seq.Batch import rebatch
 
 
 def save_predicted(max_top_k_predicted: List[List[List[str]]], dataset_name: str, config: Config) -> None:
@@ -43,6 +44,19 @@ def map_classes_to_colors(classes: List[str]) -> Tuple[List[int], Dict[int, str]
             dictionary[cls] = len(dictionary)
         colors.append(dictionary[cls])
     return colors, dict([(value, key) for key, value in dictionary.items()])
+
+
+def save_metrics_plot(metrics: List[List[float]], labels: List[str], title: str, filepath: str, config: Config,
+                      xlabel='', ylabel='') \
+        -> None:
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    for values, label in zip(metrics, labels):
+        plt.plot(values, label=label)
+        plt.legend()
+    plt.savefig(os.path.join(config['OUTPUT_PATH'], filepath))
+    plt.clf()
 
 
 def visualize_tsne(representations: torch.Tensor, classes: List[str], filename: str, config: Config) -> None:

@@ -5,10 +5,11 @@ import sys
 from pathlib import Path
 
 from datasets.CodeChangesDataset import CodeChangesTokensDataset
-from datasets.CommitMessageGenerationDataset import CommitMessageGenerationDataset
-from neural_editor.seq2seq.analyze import test_neural_editor_model, test_commit_message_generation_model
+from datasets.StablePatchPredictionDataset import StablePatchPredictionDataset
+from neural_editor.seq2seq.analyze import test_neural_editor_model, test_stable_patch_predictor_model
 from neural_editor.seq2seq.config import load_config
 from neural_editor.seq2seq.train import run_train
+from neural_editor.seq2seq.train_predictor import run_train_predictor
 
 
 def main():
@@ -16,27 +17,20 @@ def main():
     config_path = None if len(sys.argv) < 3 else Path(sys.argv[2])
     config = load_config(is_test, config_path)
     print('\n====STARTING TRAINING OF NEURAL EDITOR====\n', end='')
-    config.set_cmg_mode(False)
     train_dataset, val_dataset, test_dataset, diffs_field = \
         CodeChangesTokensDataset.load_data(config['VERBOSE'], config)
-    fields = (diffs_field, diffs_field, diffs_field)
-    neural_editor = run_train(train_dataset, val_dataset, fields,
-                              'neural_editor', edit_encoder=None, encoder=None, config=config,
+    neural_editor = run_train(train_dataset, val_dataset, diffs_field,
+                              'neural_editor', config=config,
                               only_make_model=not config['USE_EDIT_REPRESENTATION'])
-    print('\n====STARTING TRAINING OF COMMIT MESSAGE GENERATOR====\n', end='')
-    config.set_cmg_mode(True)
-    train_dataset_commit, val_dataset_commit, test_dataset_commit, fields_commit = \
-        CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
-    commit_message_generator = run_train(train_dataset_commit, val_dataset_commit, fields_commit,
-                                         'commit_msg_generator', neural_editor.edit_encoder, neural_editor.encoder,
-                                         config=config)
+    print('\n====STARTING TRAINING OF STABLE PATCH PREDICTOR====\n', end='')
+    train_dataset_stable_patches, val_dataset_stable_patches, test_dataset_stable_patches = \
+        StablePatchPredictionDataset.load_data(diffs_field, config['VERBOSE'], config)
+    stable_patch_predictor = run_train_predictor(train_dataset_stable_patches, val_dataset_stable_patches,
+                                                 neural_editor, config=config)
     print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
     test_neural_editor_model(neural_editor, config)
-    print('\n====STARTING COMMIT MSG GENERATOR EVALUATION====\n', end='')
-    print('\n====BEAM SEARCH====\n')
-    test_commit_message_generation_model(commit_message_generator, config, diffs_field, greedy=False)
-    print('\n====GREEDY====\n')
-    test_commit_message_generation_model(commit_message_generator, config, diffs_field, greedy=True)
+    print('\n====STARTING STABLE PATCH PREDICTOR EVALUATION====\n', end='')
+    test_stable_patch_predictor_model(stable_patch_predictor, diffs_field, config)
 
 
 if __name__ == "__main__":

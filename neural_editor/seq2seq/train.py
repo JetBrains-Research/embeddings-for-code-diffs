@@ -1,34 +1,31 @@
-import os
-import pickle
 import pprint
 import sys
 from pathlib import Path
-from typing import Tuple, List, Dict
+from typing import List, Dict
 
 import torch
 from torch import nn
 from torchtext import data
 from torchtext.data import Field, Dataset
 
-from datasets.CommitMessageGenerationDataset import CommitMessageGenerationDataset
-from edit_representation.sequence_encoding import EditEncoder
-from neural_editor.seq2seq import EncoderDecoder
-from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
 from datasets.CodeChangesDataset import CodeChangesTokensDataset
-from neural_editor.seq2seq.encoder import Encoder
+from datasets.StablePatchPredictionDataset import StablePatchPredictionDataset
+from neural_editor.seq2seq import EncoderDecoder
+from neural_editor.seq2seq.Batch import rebatch
+from neural_editor.seq2seq.SimpleLossCompute import SimpleLossCompute
+from neural_editor.seq2seq.config import load_config, Config
 from neural_editor.seq2seq.experiments.BleuCalculation import BleuCalculation
 from neural_editor.seq2seq.test_utils import save_perplexity_plot, save_metric_plot
+from neural_editor.seq2seq.train_predictor import run_train_predictor
+from neural_editor.seq2seq.train_utils import make_model, \
+    run_epoch, print_examples, save_data_on_checkpoint, load_weights_of_best_model_on_validation, save_model
 from neural_editor.seq2seq.train_utils import output_accuracy_on_data, create_greedy_decode_method_with_batch_support, \
     calculate_top_k_accuracy
-from neural_editor.seq2seq.config import load_config, Config
-from neural_editor.seq2seq.train_utils import make_model, \
-    run_epoch, rebatch, print_examples
 
 
 def train(model: EncoderDecoder,
           train_data: Dataset, val_data: Dataset,
-          fields: Tuple[Field, Field, Field],
-          suffix_for_saving: str, config: Config) -> Dict[str, List[float]]:
+          diffs_field: Field, suffix_for_saving: str, config: Config) -> Dict[str, List[float]]:
     """
     :param model: model to train
     :param train_data: train data
@@ -38,13 +35,8 @@ def train(model: EncoderDecoder,
     :return: train and validation perplexities for each epoch
     """
     # optionally add label smoothing; see the Annotated Transformer
-    src_pad_index: int = fields[0].vocab.stoi[config['PAD_TOKEN']]
-    trg_pad_index: int = fields[1].vocab.stoi[config['PAD_TOKEN']]
-    diff_pad_index: int = fields[2].vocab.stoi[config['PAD_TOKEN']]
-    assert (src_pad_index == trg_pad_index)
-    assert (trg_pad_index == diff_pad_index)
-    pad_index = src_pad_index
-    trg_vocab = fields[1].vocab
+    pad_index: int = diffs_field.vocab.stoi[config['PAD_TOKEN']]
+    vocab = diffs_field.vocab
     criterion = nn.NLLLoss(reduction="sum", ignore_index=pad_index)
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=config['LEARNING_RATE'])
 
@@ -74,15 +66,15 @@ def train(model: EncoderDecoder,
     }
     decode_method = create_greedy_decode_method_with_batch_support(
         model, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
-        trg_vocab.stoi[config['SOS_TOKEN']],
-        trg_vocab.stoi[config['EOS_TOKEN']],
-        trg_vocab.stoi[config['UNK_TOKEN']],
-        len(trg_vocab)
+        vocab.stoi[config['SOS_TOKEN']],
+        vocab.stoi[config['EOS_TOKEN']],
+        vocab.stoi[config['UNK_TOKEN']],
+        len(vocab)
     )
     bleu_calculator = BleuCalculation(config)
 
     epochs_num: int = config['MAX_NUM_OF_EPOCHS']
-    best_metric_value: float = -1000000
+    best_metric_value: float = -10000000
     num_not_decreasing_steps: int = 0
     early_stopping_rounds: int = config['EARLY_STOPPING_ROUNDS']
     for epoch in range(epochs_num):
@@ -102,8 +94,7 @@ def train(model: EncoderDecoder,
         model.eval()
         with torch.no_grad():
             print_examples((rebatch(pad_index, x, val_data, config) for x in val_iter_for_print_examples),
-                           model, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
-                           fields[0].vocab, fields[1].vocab, config, n=3)
+                           model, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1, vocab, vocab, config, n=3)
 
             # TODO: consider if we should or not use teacher forcing on validation
             val_perplexity = run_epoch((rebatch(pad_index, t, val_data, config) for t in val_iter),
@@ -113,8 +104,8 @@ def train(model: EncoderDecoder,
                                                                                  [rebatch(pad_index, batch, val_data,
                                                                                           config) for batch in
                                                                                   val_iter],
-                                                                                 decode_method, trg_vocab,
-                                                                                 trg_vocab.stoi[config['EOS_TOKEN']],
+                                                                                 decode_method, vocab,
+                                                                                 vocab.stoi[config['EOS_TOKEN']],
                                                                                  len(val_data))
             train_logs['val_ppl'].append(val_perplexity)
             train_logs['val_acc'].append(correct_all_k[0] / total)
@@ -140,26 +131,6 @@ def train(model: EncoderDecoder,
             save_data_on_checkpoint(model, train_logs, suffix_for_saving, config)
 
     return train_logs
-
-
-def save_model(model: nn.Module, model_suffix: str, config: Config) -> None:
-    torch.save(model.state_dict(), os.path.join(config['OUTPUT_PATH'], f'model_state_dict_{model_suffix}.pt'))
-    torch.save(model, os.path.join(config['OUTPUT_PATH'], f'model_{model_suffix}.pt'))
-    print(f'Model saved {model_suffix}!')
-
-
-def load_weights_of_best_model_on_validation(model: nn.Module, suffix: str, config: Config) -> None:
-    model.load_state_dict(torch.load(os.path.join(config['OUTPUT_PATH'],
-                                                  f'model_state_dict_best_on_validation_{suffix}.pt')))
-
-
-def save_data_on_checkpoint(model: nn.Module,
-                            train_logs: Dict[str, List[float]],
-                            suffix: str,
-                            config: Config) -> None:
-    save_model(model, f'checkpoint_{suffix}', config)
-    with open(os.path.join(config['OUTPUT_PATH'], f'train_logs_{suffix}.pkl'), 'wb') as train_logs_file:
-        pickle.dump(train_logs, train_logs_file)
 
 
 def test_on_unclassified_data(model: EncoderDecoder,
@@ -194,19 +165,14 @@ def test_on_unclassified_data(model: EncoderDecoder,
         print(f'Test perplexity: {test_perplexity}')
 
 
-def run_train(train_dataset: Dataset, val_dataset: Dataset,
-              fields: Tuple[Field, Field, Field],
-              suffix_for_saving: str,
-              edit_encoder: EditEncoder, encoder: Encoder,
-              config: Config, only_make_model=False) -> EncoderDecoder:
+def run_train(train_dataset: Dataset, val_dataset: Dataset, diffs_field: Field,
+              suffix_for_saving: str, config: Config, only_make_model=False) -> EncoderDecoder:
     pprint.pprint(config.get_config())
     config.save()
 
-    model: EncoderDecoder = make_model(len(fields[0].vocab),
-                                       len(fields[1].vocab),
-                                       fields[1].vocab.unk_index,
-                                       edit_encoder=edit_encoder,
-                                       encoder=encoder,
+    model: EncoderDecoder = make_model(len(diffs_field.vocab),
+                                       len(diffs_field.vocab),
+                                       diffs_field.vocab.unk_index,
                                        edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
                                        emb_size=config['WORD_EMBEDDING_SIZE'],
                                        hidden_size_encoder=config['ENCODER_HIDDEN_SIZE'],
@@ -220,13 +186,13 @@ def run_train(train_dataset: Dataset, val_dataset: Dataset,
     if only_make_model:
         # for debugging purposes only
         return model
-    train_logs = train(model, train_dataset, val_dataset, fields, suffix_for_saving, config)
+    train_logs = train(model, train_dataset, val_dataset, diffs_field, suffix_for_saving, config)
     print(train_logs)
     save_data_on_checkpoint(model, train_logs, suffix_for_saving, config)
     save_perplexity_plot([train_logs['train_ppl'], train_logs['val_ppl']], ['train', 'validation'],
                          f'loss_{suffix_for_saving}.png', config)
     save_metric_plot(train_logs['val_bleu'], 'bleu',
-                         f'bleu_{suffix_for_saving}.png', config)
+                     f'bleu_{suffix_for_saving}.png', config)
     save_metric_plot(train_logs['val_acc'], 'accuracy',
                      f'accuracy_{suffix_for_saving}.png', config)
     load_weights_of_best_model_on_validation(model, suffix_for_saving, config)
@@ -238,20 +204,17 @@ def main():
     config_path = None if len(sys.argv) < 3 else Path(sys.argv[2])
     config = load_config(is_test, config_path)
     print('\n====STARTING TRAINING OF NEURAL EDITOR====\n', end='')
-    config.set_cmg_mode(False)
     train_dataset, val_dataset, test_dataset, diffs_field = \
         CodeChangesTokensDataset.load_data(config['VERBOSE'], config)
-    fields = (diffs_field, diffs_field, diffs_field)
-    neural_editor = run_train(train_dataset, val_dataset, fields,
-                              'neural_editor', edit_encoder=None, encoder=None, config=config,
+    neural_editor = run_train(train_dataset, val_dataset, diffs_field,
+                              'neural_editor', config=config,
                               only_make_model=not config['USE_EDIT_REPRESENTATION'])
-    print('\n====STARTING TRAINING OF COMMIT MESSAGE GENERATOR====\n', end='')
-    config.set_cmg_mode(True)
-    train_dataset_commit, val_dataset_commit, test_dataset_commit, fields_commit = \
-        CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
-    commit_message_generator = run_train(train_dataset_commit, val_dataset_commit, fields_commit,
-                                         'commit_msg_generator', neural_editor.edit_encoder, neural_editor.encoder, config=config)
-    return neural_editor, commit_message_generator
+    print('\n====STARTING TRAINING OF STABLE PATCH PREDICTOR====\n', end='')
+    train_dataset_stable_patches, val_dataset_stable_patches, test_dataset_stable_patches = \
+        StablePatchPredictionDataset.load_data(diffs_field, config['VERBOSE'], config)
+    stable_patch_predictor = run_train_predictor(train_dataset_stable_patches, val_dataset_stable_patches,
+                                                 neural_editor, config=config)
+    return neural_editor, stable_patch_predictor
 
 
 if __name__ == "__main__":

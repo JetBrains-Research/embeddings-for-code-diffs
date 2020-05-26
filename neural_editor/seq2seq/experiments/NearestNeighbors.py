@@ -13,7 +13,7 @@ from neural_editor.seq2seq import EncoderDecoder
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.experiments.BleuCalculation import BleuCalculation
 from neural_editor.seq2seq.test_utils import save_predicted
-from neural_editor.seq2seq.train_utils import rebatch
+from neural_editor.seq2seq.Batch import rebatch
 
 
 class FeaturesType(Enum):
