@@ -1,8 +1,11 @@
+import pickle
 import random
 import sys
+from collections import Counter
 from pathlib import Path
 
 from datasets.PatchNet.PatchNetDataset import PatchNetDataset
+from datasets.PatchNet.tokenizers import PygmentsCTokenizer
 from datasets.dataset_utils import get_indices_for_train_val_test
 
 
@@ -95,8 +98,29 @@ def mine_dataset() -> None:
     patch_net_dataset.write_data()
 
 
+def apply_tokenizer_again():
+    if len(sys.argv) != 2:
+        print('Usage: <root where to save processed data>')
+        exit(1)
+    root = Path(sys.argv[1])
+    filenames = ['prev.txt', 'updated.txt']
+    counter = Counter()
+    tokenizer = PygmentsCTokenizer()
+    for filename in filenames:
+        lines = root.joinpath(filename).read_text().splitlines(keepends=False)
+        lines_to_save = []
+        for line in lines:
+            tokens, line_counter = tokenizer.tokenize(line)
+            lines_to_save.append(' '.join(tokens))
+            counter += line_counter
+        root.joinpath('filtered_' + filename).write_text('\n'.join(lines_to_save))
+    with root.joinpath('identifier_names_counter.pkl').open('wb') as counter_file:
+        pickle.dump(counter, counter_file)
+
+
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # partition_data()
     # split_on_train_test_val()
-    mine_dataset()
+    # mine_dataset()
+    apply_tokenizer_again()
