@@ -1,3 +1,5 @@
+import pickle
+from collections import defaultdict, Counter
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional
 from distutils.util import strtobool
@@ -16,6 +18,9 @@ class Commit:
         self.prev_updated_generator = GitDiffPrevUpdatedGenerator()
         self.code = None if lazy_initialization else self.get_code()
 
+    def get_identifier_names_counter(self) -> Counter:
+        return self.code[1]
+
     def get_prev(self) -> List[str]:
         return self.get_code_field('prev')
 
@@ -25,9 +30,9 @@ class Commit:
     def get_code_field(self, field: str) -> List[str]:
         if self.code is None:
             self.code = self.get_code()
-        return self.code[field]
+        return self.code[0][field]
 
-    def get_code(self) -> Dict[str, List[str]]:
+    def get_code(self) -> Tuple[Dict[str, List[str]], Counter]:
         commits = list(RepositoryMining(self.repository, single=self.commit_hash).traverse_commits())
         assert(len(commits) == 1)
         commit = commits[0]
@@ -50,18 +55,22 @@ class PatchNetDataset:
         self.root = root
         self.description_filepath = description_filepath
         self.repository_path = str(linux_repository_filepath.absolute())
-        self.data_samples = PatchNetDataset.extract_data_samples(self.description_filepath, self.repository_path)
+        self.data_samples, self.identifier_names_counter = \
+            PatchNetDataset.extract_data_samples(self.description_filepath, self.repository_path)
 
     @staticmethod
-    def extract_data_samples(description_filepath: Path, repository_path: str) -> List[DataSample]:
+    def extract_data_samples(description_filepath: Path, repository_path: str) -> Tuple[List[DataSample], Counter]:
         examples_text_data = PatchNetDataset.get_examples_text_data(description_filepath)
         data_samples = []
+        identifier_names_counter = Counter()
         for idx, example_text_data in tqdm(list(enumerate(examples_text_data))):
             commit_hash = PatchNetDataset.extract_commit_hash_field(example_text_data)
             stable = PatchNetDataset.extract_stable_field(example_text_data)
-            data_sample = DataSample(Commit(repository_path, commit_hash), stable, idx)
+            commit = Commit(repository_path, commit_hash)
+            data_sample = DataSample(commit, stable, idx)
             data_samples.append(data_sample)
-        return data_samples
+            identifier_names_counter += commit.get_identifier_names_counter()
+        return data_samples, identifier_names_counter
 
     @staticmethod
     def extract_commit_hash_field(example_text_data: Tuple[str, str]) -> str:
@@ -98,4 +107,6 @@ class PatchNetDataset:
         self.root.joinpath('updated.txt').write_text('\n'.join(updated_file_lines))
         self.root.joinpath('trg.txt').write_text('\n'.join(trg_file_lines))
         self.root.joinpath('ids.txt').write_text('\n'.join(ids_file_lines))
+        with self.root.joinpath('identifier_names_counter.pkl').open('wb') as counter_file:
+            pickle.dump(self.identifier_names_counter, counter_file)
 

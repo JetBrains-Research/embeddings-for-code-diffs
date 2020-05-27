@@ -98,5 +98,5 @@ def mine_dataset() -> None:
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # partition_data()
-    split_on_train_test_val()
-    # mine_dataset()
+    # split_on_train_test_val()
+    mine_dataset()

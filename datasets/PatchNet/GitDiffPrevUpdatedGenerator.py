@@ -1,4 +1,5 @@
-from typing import Dict, List
+from collections import Counter
+from typing import Dict, List, Tuple
 
 import pydriller
 
@@ -14,14 +15,20 @@ class SimpleGitDiffProcessor:
         super().__init__()
         self.tokenizer = PygmentsCTokenizer()
 
-    def get_prev_and_updated(self, diff_output: str) -> Dict[str, List[str]]:
+    def apply_tokenizer(self, lines, tokens_list, identifier_names_counter):
+        tokens, counter = self.tokenizer.tokenize(''.join(lines))
+        tokens_list += tokens
+        identifier_names_counter += counter
+
+    def get_prev_and_updated(self, diff_output: str) -> Tuple[Dict[str, List[str]], Counter]:
         prev_tokens, updated_tokens = [], []
         prev_lines, updated_lines = [], []
         diff_lines = diff_output.splitlines(keepends=True)
+        identifier_names_counter = Counter()
         for i, diff_line in enumerate(diff_lines):
             if self.is_new_hunk(diff_line) and i != 0:
-                prev_tokens += self.tokenizer.tokenize(''.join(prev_lines))
-                updated_tokens += self.tokenizer.tokenize(''.join(updated_lines))
+                self.apply_tokenizer(prev_lines, prev_tokens, identifier_names_counter)
+                self.apply_tokenizer(updated_lines, updated_tokens, identifier_names_counter)
                 prev_lines, updated_lines = [], []
             if self.is_common_line(diff_line):
                 processed_line = self.process_common_line(diff_line)
@@ -33,9 +40,9 @@ class SimpleGitDiffProcessor:
             elif self.is_only_updated_line(diff_line):
                 processed_line = self.process_only_updated_line(diff_line)
                 updated_lines.append(processed_line)
-        prev_tokens += self.tokenizer.tokenize(''.join(prev_lines))
-        updated_tokens += self.tokenizer.tokenize(''.join(updated_lines))
-        return {'prev': prev_tokens, 'updated': updated_tokens}
+        self.apply_tokenizer(prev_lines, prev_tokens, identifier_names_counter)
+        self.apply_tokenizer(updated_lines, updated_tokens, identifier_names_counter)
+        return {'prev': prev_tokens, 'updated': updated_tokens}, identifier_names_counter
 
     def is_common_line(self, diff_line: str) -> bool:
         return diff_line.startswith(' ') or diff_line.startswith('@@')
@@ -75,10 +82,12 @@ class GitDiffPrevUpdatedGenerator:
         super().__init__()
         self.git_diff_processor = SimpleGitDiffProcessor()
 
-    def generate_prev_and_updated(self, commit: pydriller.Commit) -> Dict[str, List[str]]:
+    def generate_prev_and_updated(self, commit: pydriller.Commit) -> Tuple[Dict[str, List[str]], Counter]:
         prev_tokens, updated_tokens = [], []
+        identifier_names_counter = Counter()
         for modified_file in commit.modifications:
-            out = self.git_diff_processor.get_prev_and_updated(modified_file.diff)
-            prev_tokens += out['prev']
-            updated_tokens += out['updated']
-        return {'prev': prev_tokens, 'updated': updated_tokens}
+            prev_updated, counter = self.git_diff_processor.get_prev_and_updated(modified_file.diff)
+            prev_tokens += prev_updated['prev']
+            updated_tokens += prev_updated['updated']
+            identifier_names_counter += counter
+        return {'prev': prev_tokens, 'updated': updated_tokens}, identifier_names_counter
