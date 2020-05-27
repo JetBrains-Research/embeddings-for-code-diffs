@@ -3,7 +3,7 @@ import random
 import sys
 from collections import Counter
 from pathlib import Path
-
+from tqdm.auto import tqdm
 from datasets.PatchNet.PatchNetDataset import PatchNetDataset
 from datasets.PatchNet.tokenizers import PygmentsCTokenizer
 from datasets.dataset_utils import get_indices_for_train_val_test
@@ -109,7 +109,7 @@ def apply_tokenizer_again():
     for filename in filenames:
         lines = root.joinpath(filename).read_text().splitlines(keepends=False)
         lines_to_save = []
-        for line in lines:
+        for line in tqdm(lines):
             tokens, line_counter = tokenizer.tokenize(line)
             lines_to_save.append(' '.join(tokens))
             counter += line_counter
@@ -121,6 +121,6 @@ def apply_tokenizer_again():
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # partition_data()
-    # split_on_train_test_val()
+    split_on_train_test_val()
     # mine_dataset()
-    apply_tokenizer_again()
+    # apply_tokenizer_again()
