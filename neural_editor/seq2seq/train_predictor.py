@@ -1,14 +1,22 @@
+import os
+import pprint
+import sys
 import time
 from datetime import timedelta
+from pathlib import Path
 from typing import List, Dict, Optional
 
 import torch
 from torch import nn
 from torchtext import data
 
+from datasets.CodeChangesDataset import CodeChangesTokensDataset
+from datasets.StablePatchPredictionDataset import StablePatchPredictionDataset
 from neural_editor.seq2seq import EncoderPredictor
 from neural_editor.seq2seq.PredictorBatch import rebatch_predictor
 from neural_editor.seq2seq.PredictorLossCompute import PredictorLossCompute
+from neural_editor.seq2seq.analyze import test_neural_editor_model, test_stable_patch_predictor_model
+from neural_editor.seq2seq.config import load_config
 from neural_editor.seq2seq.experiments.PredictorMetricsCalculation import calculate_metrics, concat_predictions
 from neural_editor.seq2seq.test_utils import save_metrics_plot
 from neural_editor.seq2seq.train_utils import make_predictor, load_weights_of_best_model_on_validation, \
@@ -128,3 +136,31 @@ def run_train_predictor(train_dataset, val_dataset, neural_editor, config):
                           f'{key}_{suffix}.png', config, xlabel='iteration', ylabel=key)
     load_weights_of_best_model_on_validation(model, suffix, config)
     return model
+
+
+def main():
+    if len(sys.argv) != 3 and len(sys.argv) != 2:
+        print("arguments: <results_root_dir> <is_test (optional, default false)>.")
+        exit(1)
+    results_root_dir = sys.argv[1]
+    is_test = len(sys.argv) > 2 and sys.argv[2] == 'test'
+    config_path = Path(results_root_dir).joinpath('config.pkl')
+    config = load_config(is_test, config_path)
+    pprint.pprint(config.get_config())
+    train_dataset, val_dataset, test_dataset, diffs_field = \
+        CodeChangesTokensDataset.load_data(verbose=True, config=config)
+    neural_editor = torch.load(os.path.join(results_root_dir, 'model_best_on_validation_neural_editor.pt'),
+                               map_location=config['DEVICE'])
+    print('\n====STARTING TRAINING OF STABLE PATCH PREDICTOR====\n', end='')
+    train_dataset_stable_patches, val_dataset_stable_patches, test_dataset_stable_patches = \
+        StablePatchPredictionDataset.load_data(diffs_field, config['VERBOSE'], config)
+    stable_patch_predictor = run_train_predictor(train_dataset_stable_patches, val_dataset_stable_patches,
+                                                 neural_editor, config=config)
+    print('\n====STARTING STABLE PATCH PREDICTOR EVALUATION====\n', end='')
+    test_stable_patch_predictor_model(stable_patch_predictor, diffs_field, config)
+    print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
+    test_neural_editor_model(neural_editor, config)
+
+
+if __name__ == "__main__":
+    main()
