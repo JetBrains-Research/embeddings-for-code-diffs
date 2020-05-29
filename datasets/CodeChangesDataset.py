@@ -35,17 +35,22 @@ class CodeChangesTokensDataset(data.Dataset):
         with open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated, \
                 open(os.path.join(path, 'trg.txt'), mode='r', encoding='utf-8') as stable:
+            total = 0
+            errors = 0
             for prev_line, updated_line, stable_line in zip(prev, updated, stable):
+                total += 1
                 prev_line, updated_line, stable_line = prev_line.strip(), updated_line.strip(), stable_line.strip()
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
                                                    leave_only_changed=config['LEAVE_ONLY_CHANGED'])
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
                                                  diff[0], diff[1], diff[2]))
                 if not is_correct:
-                    print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
+                    errors += 1
+                    # print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
                     [prev_line, updated_line, diff[0], diff[1], diff[2], int(stable_line), len(examples)], fields))
+        print(f'Errors: {errors} / {total} = {errors / total}')
         super(CodeChangesTokensDataset, self).__init__(examples, fields)
 
     @staticmethod

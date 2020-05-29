@@ -11,8 +11,8 @@ import torch.backends.cudnn
 class Config:
     _CONFIG = {
         'IS_TEST': False,
-        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet/neural_editor',
-        'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet/predictor',
+        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_2',
+        'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_2',
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',
@@ -24,7 +24,7 @@ class Config:
         'LOWER': True,  # TODO: find out correlation between copying mechanism and lowering msg, it is tricky parameter
         'SEED': 9382,
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-        'TOKEN_MIN_FREQ': 1,
+        'TOKEN_MIN_FREQ': 100,
         'LEARNING_RATE': 0.0001,
         'MAX_NUM_OF_EPOCHS': 1000,
         'EDIT_REPRESENTATION_SIZE': 16,
