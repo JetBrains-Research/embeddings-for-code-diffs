@@ -20,7 +20,7 @@ from neural_editor.seq2seq.config import load_config
 from neural_editor.seq2seq.experiments.PredictorMetricsCalculation import calculate_metrics, concat_predictions
 from neural_editor.seq2seq.test_utils import save_metrics_plot
 from neural_editor.seq2seq.train_utils import make_predictor, load_weights_of_best_model_on_validation, \
-    save_model
+    save_model, make_model
 
 
 def aggregate_metrics(model: EncoderPredictor, total_metrics_dict: Optional[Dict[str, List]],
@@ -149,8 +149,21 @@ def main():
     pprint.pprint(config.get_config())
     train_dataset, val_dataset, test_dataset, diffs_field = \
         CodeChangesTokensDataset.load_data(verbose=True, config=config)
-    neural_editor = torch.load(os.path.join(results_root_dir, 'model_best_on_validation_neural_editor.pt'),
-                               map_location=config['DEVICE'])
+    if config['USE_EDIT_REPRESENTATION']:
+        neural_editor = torch.load(os.path.join(results_root_dir, 'model_best_on_validation_neural_editor.pt'),
+                                   map_location=config['DEVICE'])
+    else:
+        neural_editor = make_model(len(diffs_field.vocab),
+                                   len(diffs_field.vocab),
+                                   diffs_field.vocab.unk_index,
+                                   edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
+                                   emb_size=config['WORD_EMBEDDING_SIZE'],
+                                   hidden_size_encoder=config['ENCODER_HIDDEN_SIZE'],
+                                   hidden_size_decoder=config['DECODER_HIDDEN_SIZE'],
+                                   num_layers=config['NUM_LAYERS'],
+                                   dropout=config['DROPOUT'],
+                                   use_bridge=config['USE_BRIDGE'],
+                                   config=config)
     print('\n====STARTING TRAINING OF STABLE PATCH PREDICTOR====\n', end='')
     train_dataset_stable_patches, val_dataset_stable_patches, test_dataset_stable_patches = \
         StablePatchPredictionDataset.load_data(diffs_field, config['VERBOSE'], config)
