@@ -1,13 +1,15 @@
 import pickle
+import time
 from collections import defaultdict, Counter
+from datetime import timedelta
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional
 from distutils.util import strtobool
 
 from pydriller import RepositoryMining
-from tqdm.auto import tqdm
 
 from datasets.PatchNet.GitDiffPrevUpdatedGenerator import GitDiffPrevUpdatedGenerator
+from datasets.PatchNet.LevenshteinFilesPrevUpdatedGenerator import LevenshteinFilesPrevUpdatedGenerator
 
 
 class Commit:
@@ -15,7 +17,7 @@ class Commit:
         super().__init__()
         self.repository = repository
         self.commit_hash = commit_hash
-        self.prev_updated_generator = GitDiffPrevUpdatedGenerator()
+        self.prev_updated_generator = LevenshteinFilesPrevUpdatedGenerator()
         self.code = None if lazy_initialization else self.get_code()
 
     def get_identifier_names_counter(self) -> Counter:
@@ -63,13 +65,20 @@ class PatchNetDataset:
         examples_text_data = PatchNetDataset.get_examples_text_data(description_filepath)
         data_samples = []
         identifier_names_counter = Counter()
-        for idx, example_text_data in tqdm(list(enumerate(examples_text_data))):
+        start = time.time()
+        for idx, example_text_data in enumerate(examples_text_data):
             commit_hash = PatchNetDataset.extract_commit_hash_field(example_text_data)
             stable = PatchNetDataset.extract_stable_field(example_text_data)
             commit = Commit(repository_path, commit_hash)
             data_sample = DataSample(commit, stable, idx)
             data_samples.append(data_sample)
             identifier_names_counter += commit.get_identifier_names_counter()
+            if (idx + 1) % 50 == 0:
+                end = time.time()
+                duration = end - start
+                print(f'Processed {idx + 1} / {len(examples_text_data)} samples')
+                print(f'Time elapsed: {str(timedelta(seconds=duration))}')
+                start = end
         return data_samples, identifier_names_counter
 
     @staticmethod
