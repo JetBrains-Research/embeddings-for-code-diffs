@@ -38,6 +38,10 @@ class PygmentsCTokenizer(object):
     def count_identifier_names(tokens: List[Tuple[str, Any]]) -> Counter:
         return Counter([token[1] for token in tokens if token[0] in Token.Name])
 
+    @staticmethod
+    def count_tokens(tokens: List[Tuple[str, Any]]) -> Counter:
+        return Counter([token for token in tokens])
+
     def in_banned_token_types(self, token_type, token: str) -> bool:
         if token_type in Token.Comment.Hashbang:
             print(f'Hashbang: {token}')
@@ -52,6 +56,6 @@ class PygmentsCTokenizer(object):
             return False
 
     def preprocess_token(self, token):
-        if token[0] in Token.Literal and token[1] not in ['0', '1', '"', "'"]:
-            return "<LITERAL>"
+        # if token[0] in Token.Literal and token[1] not in ['0', '1', '"', "'"]:
+        #     return "<LITERAL>"
         return token[1].strip().replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ').replace('\t', ' ').strip()

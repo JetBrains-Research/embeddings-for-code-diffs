@@ -20,7 +20,7 @@ class Commit:
         self.prev_updated_generator = LevenshteinFilesPrevUpdatedGenerator()
         self.code = None if lazy_initialization else self.get_code()
 
-    def get_identifier_names_counter(self) -> Counter:
+    def get_counter(self) -> Counter:
         return self.code[1]
 
     def get_prev(self) -> List[str]:
@@ -55,16 +55,17 @@ class PatchNetDataset:
     def __init__(self, root: Path, description_filepath: Path, linux_repository_filepath: Optional[Path]) -> None:
         super().__init__()
         self.root = root
-        self.description_filepath = description_filepath
-        self.repository_path = str(linux_repository_filepath.absolute())
-        self.data_samples, self.identifier_names_counter = \
-            PatchNetDataset.extract_data_samples(self.description_filepath, self.repository_path)
+        if description_filepath is not None:
+            self.description_filepath = description_filepath
+            self.repository_path = str(linux_repository_filepath.absolute())
+            self.data_samples, self.tokens_counter = \
+                PatchNetDataset.extract_data_samples(self.description_filepath, self.repository_path)
 
     @staticmethod
     def extract_data_samples(description_filepath: Path, repository_path: str) -> Tuple[List[DataSample], Counter]:
         examples_text_data = PatchNetDataset.get_examples_text_data(description_filepath)
         data_samples = []
-        identifier_names_counter = Counter()
+        counter = Counter()
         start = time.time()
         for idx, example_text_data in enumerate(examples_text_data):
             commit_hash = PatchNetDataset.extract_commit_hash_field(example_text_data)
@@ -72,14 +73,14 @@ class PatchNetDataset:
             commit = Commit(repository_path, commit_hash)
             data_sample = DataSample(commit, stable, idx)
             data_samples.append(data_sample)
-            identifier_names_counter += commit.get_identifier_names_counter()
+            counter += commit.get_counter()
             if (idx + 1) % 50 == 0:
                 end = time.time()
                 duration = end - start
                 print(f'Processed {idx + 1} / {len(examples_text_data)} samples')
                 print(f'Time elapsed: {str(timedelta(seconds=duration))}')
                 start = end
-        return data_samples, identifier_names_counter
+        return data_samples, counter
 
     @staticmethod
     def extract_commit_hash_field(example_text_data: Tuple[str, str]) -> str:
@@ -108,14 +109,22 @@ class PatchNetDataset:
         print(f'Unstable samples: {len(unstable_patches)} ({round(len(unstable_patches) / len(self.data_samples), 4)})')
 
     def write_data(self) -> None:
-        prev_file_lines = [' '.join(data_sample.commit.get_prev()) for data_sample in self.data_samples]
-        updated_file_lines = [' '.join(data_sample.commit.get_updated()) for data_sample in self.data_samples]
+        prev_file_lines = [' '.join([t[1] for t in data_sample.commit.get_prev()]) for data_sample in self.data_samples]
+        updated_file_lines = [' '.join([t[1] for t in data_sample.commit.get_updated()]) for data_sample in self.data_samples]
         trg_file_lines = [str(int(data_sample.stable)) for data_sample in self.data_samples]
         ids_file_lines = [str(data_sample.idx) for data_sample in self.data_samples]
         self.root.joinpath('prev.txt').write_text('\n'.join(prev_file_lines))
         self.root.joinpath('updated.txt').write_text('\n'.join(updated_file_lines))
         self.root.joinpath('trg.txt').write_text('\n'.join(trg_file_lines))
         self.root.joinpath('ids.txt').write_text('\n'.join(ids_file_lines))
-        with self.root.joinpath('identifier_names_counter.pkl').open('wb') as counter_file:
-            pickle.dump(self.identifier_names_counter, counter_file)
+        with self.root.joinpath('tokens_counter.pkl').open('wb') as counter_file:
+            pickle.dump(self.tokens_counter, counter_file)
+        with self.root.joinpath('data_samples.pkl').open('wb') as counter_file:
+            pickle.dump(self.data_samples, counter_file)
+
+    def load(self) -> None:
+        with self.root.joinpath('tokens_counter.pkl').open('rb') as counter_file:
+            self.tokens_counter = pickle.load(counter_file)
+        with self.root.joinpath('data_samples.pkl').open('rb') as counter_file:
+            self.data_samples = pickle.load(counter_file)
 

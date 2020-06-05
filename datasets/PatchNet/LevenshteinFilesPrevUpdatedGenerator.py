@@ -24,9 +24,8 @@ class FilesDiffProcessor:
         prev_tokens = self.tokenizer.tokenize_with_types(file_before)
         updated_tokens = self.tokenizer.tokenize_with_types(file_after)
         cut_prev_tokens, cut_updated_tokens = self.cut_sequences(prev_tokens, updated_tokens)
-        identifier_names_counter = PygmentsCTokenizer.count_identifier_names(cut_prev_tokens + cut_updated_tokens)
-        return {'prev': [t[1] for t in cut_prev_tokens], 'updated': [t[1] for t in cut_updated_tokens]}, \
-               identifier_names_counter
+        counter = PygmentsCTokenizer.count_tokens(cut_prev_tokens + cut_updated_tokens)
+        return {'prev': cut_prev_tokens, 'updated': cut_updated_tokens}, counter
 
     def cut_sequences(self, prev_tokens, updated_tokens):
         cut_ranges = self.get_ranges_to_extract([t[1] for t in prev_tokens], [t[1] for t in updated_tokens])
@@ -112,15 +111,15 @@ class LevenshteinFilesPrevUpdatedGenerator:
 
     def generate_prev_and_updated(self, commit: pydriller.Commit) -> Tuple[Dict[str, List[str]], Counter]:
         prev_tokens, updated_tokens = [], []
-        identifier_names_counter = Counter()
+        total_counter = Counter()
         try:
             for prev, updated in LevenshteinFilesPrevUpdatedGenerator.extract_prev_updated_files(commit):
                 prev_updated, counter = self.files_diff_processor.get_prev_and_updated(prev, updated)
                 prev_tokens += prev_updated['prev']
                 updated_tokens += prev_updated['updated']
-                identifier_names_counter += counter
+                total_counter += counter
             if len(prev_tokens) == 0 or len(updated_tokens) == 0:
                 print(f'No changes found for commit with hash {commit.hash}')
         except Exception as e:
             print(f'Error for commit {commit.hash}: {e}, {e.__class__}')
-        return {'prev': prev_tokens, 'updated': updated_tokens}, identifier_names_counter
+        return {'prev': prev_tokens, 'updated': updated_tokens}, total_counter

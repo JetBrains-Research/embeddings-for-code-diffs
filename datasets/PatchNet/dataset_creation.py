@@ -118,9 +118,25 @@ def apply_tokenizer_again():
         pickle.dump(counter, counter_file)
 
 
+def load_dataset() -> None:
+    if len(sys.argv) < 2:
+        print('Usage: <root where to save processed data>')
+        exit(1)
+    root = Path(sys.argv[1])
+    dataset_description_file = None
+    linux_repository_filepath = None
+    if not root.is_dir():
+        print(f'No such directory: {root.absolute()}')
+    patch_net_dataset = PatchNetDataset(root, dataset_description_file, linux_repository_filepath)
+    patch_net_dataset.load()
+    print(patch_net_dataset.tokens_counter)
+    print(patch_net_dataset.data_samples)
+
+
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # partition_data()
     # split_on_train_test_val()
     mine_dataset()
+    # load_dataset()
     # apply_tokenizer_again()
