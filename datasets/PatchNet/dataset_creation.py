@@ -2,11 +2,37 @@ import pickle
 import random
 import sys
 from collections import Counter
+from datetime import timezone
 from pathlib import Path
+from typing import List
+
+from pydriller import RepositoryMining
 from tqdm.auto import tqdm
 from datasets.PatchNet.PatchNetDataset import PatchNetDataset
 from datasets.PatchNet.tokenizers import PygmentsCTokenizer
 from datasets.dataset_utils import get_indices_for_train_val_test
+
+
+def get_timestamps(commit_hashes, linux_path) -> List[float]:
+    timestamps = []
+    for commit_hash in tqdm(commit_hashes):
+        commits = list(RepositoryMining(str(linux_path.absolute()), single=commit_hash).traverse_commits())
+        commit = commits[0]
+        timestamp = commit.author_date.replace(tzinfo=timezone.utc).timestamp()
+        timestamps.append(timestamp)
+    return timestamps
+
+
+def extract_timestamps():
+    if len(sys.argv) != 4:
+        print('Usage: <root where to save processed data> <hash commits file> <path to linux repo>')
+        exit(1)
+    root = Path(sys.argv[1])
+    linux_path = Path(sys.argv[3])
+    commit_hashes = Path(sys.argv[2]).read_text().splitlines(keepends=False)[::2]
+    commit_hashes = [commit_hash.split(': ')[-1] for commit_hash in commit_hashes]
+    commit_timestamps = get_timestamps(commit_hashes, linux_path)
+    root.joinpath('timestamps.txt').write_text('\n'.join([str(t) for t in commit_timestamps]))
 
 
 def split_on_train_test_val():
@@ -136,7 +162,7 @@ def load_dataset() -> None:
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # partition_data()
-    # split_on_train_test_val()
-    mine_dataset()
+    extract_timestamps()
+    # mine_dataset()
     # load_dataset()
     # apply_tokenizer_again()

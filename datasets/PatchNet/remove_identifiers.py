@@ -95,7 +95,6 @@ def replace_low_frequency_tokens():
     print(f'Vocab size: {len(vocab)}')
     print(f'Number of tokens to leave: {len(tokens_to_leave)}')
     print(f'To be removed: {len(vocab.keys() - tokens_to_leave)}')
-    return
     new_prev_lines = replace_low_frequency_tokens_from_lines(prev_lines, tokens_to_leave)
     new_updated_lines = replace_low_frequency_tokens_from_lines(updated_lines, tokens_to_leave)
     root.joinpath('replaced_low_frequency_tokens_prev.txt').write_text('\n'.join(new_prev_lines))
@@ -115,6 +114,27 @@ def remove_empty():
     after_size = len(data)
     print(f'Empty lines: {before_size - after_size} / {before_size} = {(before_size - after_size) / before_size}')
     return
+    filenames_lines = {filename: [] for filename in filenames}
+    for data_sample in data:
+        for i, filename in enumerate(filenames_lines):
+            filenames_lines[filename].append(data_sample[i])
+    for filename, lines in filenames_lines.items():
+        root.joinpath(filename).write_text('\n'.join(lines))
+
+
+def remove_too_long_sequences():
+    if len(sys.argv) != 3:
+        print('Usage: <root where to save processed data> <max sequence length>')
+        exit(1)
+    root = Path(sys.argv[1])
+    max_len = int(sys.argv[2])
+    filenames = ['prev.txt', 'updated.txt', 'trg.txt', 'ids.txt']
+
+    data = list(zip(*[root.joinpath(filename).read_text().splitlines(keepends=False) for filename in filenames]))
+    before_size = len(data)
+    data = [el for el in data if len(el[0].split()) <= max_len and len(el[1].split()) <= max_len]
+    after_size = len(data)
+    print(f'Lines to be removed: {before_size - after_size} / {before_size} = {(before_size - after_size) / before_size}')
     filenames_lines = {filename: [] for filename in filenames}
     for data_sample in data:
         for i, filename in enumerate(filenames_lines):
