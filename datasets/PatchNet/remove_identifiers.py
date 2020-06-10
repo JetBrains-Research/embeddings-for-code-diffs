@@ -94,6 +94,7 @@ def replace_low_frequency_tokens():
     print(f'Max len in tokens: {max((max(len(prev.split()), len(updated.split())) for prev, updated in zip(prev_lines, updated_lines)))}')
     print(f'Vocab size: {len(vocab)}')
     print(f'Number of tokens to leave: {len(tokens_to_leave)}')
+    print(f'To be removed: {len(vocab.keys() - tokens_to_leave)}')
     return
     new_prev_lines = replace_low_frequency_tokens_from_lines(prev_lines, tokens_to_leave)
     new_updated_lines = replace_low_frequency_tokens_from_lines(updated_lines, tokens_to_leave)
@@ -102,7 +103,7 @@ def replace_low_frequency_tokens():
 
 
 def remove_empty():
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         print('Usage: <root where to save processed data>')
         exit(1)
     root = Path(sys.argv[1])
@@ -113,6 +114,7 @@ def remove_empty():
     data = [el for el in data if el[0] != '' and el[1] != '']
     after_size = len(data)
     print(f'Empty lines: {before_size - after_size} / {before_size} = {(before_size - after_size) / before_size}')
+    return
     filenames_lines = {filename: [] for filename in filenames}
     for data_sample in data:
         for i, filename in enumerate(filenames_lines):
