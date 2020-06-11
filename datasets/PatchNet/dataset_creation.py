@@ -5,6 +5,7 @@ from collections import Counter
 from datetime import timezone
 from pathlib import Path
 from typing import List
+import numpy as np
 
 from pydriller import RepositoryMining
 from tqdm.auto import tqdm
@@ -33,6 +34,49 @@ def extract_timestamps():
     commit_hashes = [commit_hash.split(': ')[-1] for commit_hash in commit_hashes]
     commit_timestamps = get_timestamps(commit_hashes, linux_path)
     root.joinpath('timestamps.txt').write_text('\n'.join([str(t) for t in commit_timestamps]))
+
+
+def create_k_folds():
+    if len(sys.argv) != 4:
+        print('Usage: <root where to save processed data> <timestamps file> <number of folds>')
+        exit(1)
+    root = Path(sys.argv[1])
+    filenames = ['prev.txt', 'updated.txt', 'trg.txt', 'ids.txt']
+    data = list(zip(*[root.joinpath(filename).read_text().splitlines(keepends=False) for filename in filenames]))
+    timestamps = [float(l) for l in Path(sys.argv[2]).read_text().splitlines(keepends=False)]
+    timestamps = [timestamps[int(data_sample[3])] for data_sample in data]
+    k = int(sys.argv[3])
+    sort_idx = np.argsort(timestamps)
+    sorted_data = []
+    for idx in sort_idx:
+        sorted_data.append(data[idx])
+    folds = []
+    fold_size = round(len(sorted_data) / k)
+    cur_idx = 0
+    for i in range(k):
+        next_idx = len(sorted_data) if i + 1 == k else cur_idx + fold_size
+        folds.append(sorted_data[cur_idx: next_idx])
+        cur_idx = next_idx
+    double_folds = folds + folds
+    test_id = k - 1
+    for i in range(k):
+        data_to_write = {
+            'test': double_folds[test_id],
+            'val': double_folds[test_id - 1],
+            'train': [el for l in double_folds[test_id - 4:test_id - 1] for el in l]
+        }
+        fold_folder = root.joinpath(f'fold_{i + 1}')
+        fold_folder.mkdir()
+        for k, v in data_to_write.items():
+            folder = fold_folder.joinpath(k)
+            folder.mkdir()
+            filenames_lines = {filename: [] for filename in filenames}
+            for v_data_sample in v:
+                for i, filename in enumerate(filenames_lines):
+                    filenames_lines[filename].append(v_data_sample[i])
+            for filename, lines in filenames_lines.items():
+                folder.joinpath(filename).write_text('\n'.join(lines))
+        test_id += 1
 
 
 def split_on_train_test_val():
@@ -162,7 +206,8 @@ def load_dataset() -> None:
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # partition_data()
-    extract_timestamps()
+    create_k_folds()
+    # extract_timestamps()
     # mine_dataset()
     # load_dataset()
     # apply_tokenizer_again()
