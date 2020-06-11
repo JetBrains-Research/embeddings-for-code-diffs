@@ -59,7 +59,9 @@ def train_classifier(model, train_dataset, val_dataset, config):
     epochs_num = config['MAX_NUM_OF_EPOCHS']
     early_stopping_rounds = config['EARLY_STOPPING_ROUNDS_CLASSIFIER']
     evaluation_rounds = config['EVALUATION_ROUNDS_CLASSIFIER']
-    min_val_loss: float = 1000000
+    best_on_metric = config['BEST_ON_PREDICTOR']
+    sign = 1 if best_on_metric == 'loss' else -1
+    min_metric_value: float = 1000000
     num_not_decreasing_steps: int = 0
 
     criterion = nn.BCEWithLogitsLoss(reduction="mean")
@@ -101,9 +103,9 @@ def train_classifier(model, train_dataset, val_dataset, config):
                 total_loss, total_nseqs, y_true, y_pred_probs = 0, 0, [], []
 
                 val_metrics = validate(model, [rebatch_predictor(b) for b in val_iter], val_loss_function, val_metrics)
-                if val_metrics['loss'][-1] < min_val_loss:
+                if sign * val_metrics[best_on_metric][-1] < min_metric_value:
                     save_model(model, 'best_on_validation_predictor', config)
-                    min_val_loss = val_metrics['loss'][-1]
+                    min_metric_value = sign * val_metrics[best_on_metric][-1]
                     num_not_decreasing_steps = 0
                 else:
                     num_not_decreasing_steps += 1

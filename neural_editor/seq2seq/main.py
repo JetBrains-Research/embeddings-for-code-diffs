@@ -27,10 +27,10 @@ def main():
         StablePatchPredictionDataset.load_data(diffs_field, config['VERBOSE'], config)
     stable_patch_predictor = run_train_predictor(train_dataset_stable_patches, val_dataset_stable_patches,
                                                  neural_editor, config=config)
-    print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
-    test_neural_editor_model(neural_editor, config)
     print('\n====STARTING STABLE PATCH PREDICTOR EVALUATION====\n', end='')
     test_stable_patch_predictor_model(stable_patch_predictor, diffs_field, config)
+    print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
+    test_neural_editor_model(neural_editor, config)
 
 
 if __name__ == "__main__":
