@@ -203,10 +203,25 @@ def load_dataset() -> None:
     print(patch_net_dataset.data_samples)
 
 
+def convert_to_patchnet_format_list_of_commits():
+    if len(sys.argv) < 4:
+        print('Usage: <root> <commits_filename> <commits_new_filename>')
+        exit(1)
+    root = Path(sys.argv[1])
+    commits_file = root.joinpath(sys.argv[2])
+    commits_new_file = root.joinpath(sys.argv[3])
+    commits_file_lines = commits_file.read_text().splitlines(keepends=False)
+    commit_hashes = [l.split(': ')[-1] for l in commits_file_lines[::2]]
+    commit_labels = [l.split(': ')[-1] for l in commits_file_lines[1::2]]
+    new_lines = [f'{l[0]}: {l[1]}' for l in zip(commit_hashes, commit_labels)]
+    commits_new_file.write_text('\n'.join(new_lines))
+
+
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # partition_data()
-    create_k_folds()
+    # create_k_folds()
+    convert_to_patchnet_format_list_of_commits()
     # extract_timestamps()
     # mine_dataset()
     # load_dataset()
