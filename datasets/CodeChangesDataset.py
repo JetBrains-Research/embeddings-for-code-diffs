@@ -27,19 +27,22 @@ class CodeChangesTokensDataset(data.Dataset):
         fields = [('src', field), ('trg', field),
                   ('diff_alignment', field), ('diff_prev', field), ('diff_updated', field),
                   ('stable', Field(sequential=False, use_vocab=False)),
-                  ('ids', Field(sequential=False, use_vocab=False))]
+                  ('ids', Field(sequential=False, use_vocab=False)),
+                  ('original_ids', Field(sequential=False, use_vocab=False))]
         examples = []
         differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
                         config['ADDITION_TOKEN'], config['UNCHANGED_TOKEN'],
                         config['PADDING_TOKEN'])
         with open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated, \
-                open(os.path.join(path, 'trg.txt'), mode='r', encoding='utf-8') as stable:
+                open(os.path.join(path, 'trg.txt'), mode='r', encoding='utf-8') as stable, \
+                open(os.path.join(path, 'ids.txt'), mode='r', encoding='utf-8') as original_ids:
             total = 0
             errors = 0
-            for prev_line, updated_line, stable_line in zip(prev, updated, stable):
+            for prev_line, updated_line, stable_line, original_id_line in zip(prev, updated, stable, original_ids):
                 total += 1
-                prev_line, updated_line, stable_line = prev_line.strip(), updated_line.strip(), stable_line.strip()
+                prev_line, updated_line, stable_line, original_id_line = \
+                    prev_line.strip(), updated_line.strip(), stable_line.strip(), original_id_line.strip()
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
                                                    leave_only_changed=config['LEAVE_ONLY_CHANGED'])
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
@@ -49,7 +52,8 @@ class CodeChangesTokensDataset(data.Dataset):
                     # print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
-                    [prev_line, updated_line, diff[0], diff[1], diff[2], int(stable_line), len(examples)], fields))
+                    [prev_line, updated_line, diff[0], diff[1], diff[2], int(stable_line),
+                     len(examples), int(original_id_line)], fields))
         print(f'Errors: {errors} / {total} = {errors / total}')
         super(CodeChangesTokensDataset, self).__init__(examples, fields)
 

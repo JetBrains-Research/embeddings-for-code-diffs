@@ -16,6 +16,7 @@ class Config:
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',
+        'COMMIT_HASHES_PATH': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/commits_and_stable_jul28_patchnet_format',
         'BLEU_PERL_SCRIPT_PATH': './experiments/multi-bleu.perl',  # Path to BLEU script calculator
         'UNK_TOKEN': "<unk>",
         'PAD_TOKEN': "<pad>",
@@ -64,7 +65,7 @@ class Config:
         'MAKE_CUDA_REPRODUCIBLE': False,
     }
 
-    _PATH_KEYS = ['DATASET_ROOT', 'DATASET_ROOT_COMMIT', 'OUTPUT_PATH', 'BLEU_PERL_SCRIPT_PATH']
+    _PATH_KEYS = ['DATASET_ROOT', 'DATASET_ROOT_COMMIT', 'OUTPUT_PATH', 'BLEU_PERL_SCRIPT_PATH', 'COMMIT_HASHES_PATH']
 
     def __getitem__(self, key: str) -> Any:
         if key in self._PATH_KEYS:

@@ -60,13 +60,14 @@ class Batch:
     def __init__(self, src: Tuple[Tensor, Tensor], trg: Tuple[Tensor, Tensor],
                  diff_alignment: Tuple[Tensor, Tensor],
                  diff_prev: Tuple[Tensor, Tensor], diff_updated: Tuple[Tensor, Tensor],
-                 ids: Tensor, dataset: Dataset,
+                 ids: Tensor, original_ids: Tensor, dataset: Dataset,
                  pad_index: int, config: Config) -> None:
         src, src_lengths = src  # B * SrcSeqLen, B
         # TODO_DONE: remove first sos token, it makes results worse
         # src = src[1:]
         # src_lengths = src_lengths - 1
         self.ids = ids
+        self.original_ids = original_ids
         self.oov_vocab, self.oov_indices = Batch.create_oov_vocab(ids, dataset, config)
         self.oov_vocab_reverse = {value: key for key, value in self.oov_vocab.items()}
         self.oov_num = len(self.oov_vocab)
@@ -117,4 +118,4 @@ def rebatch(pad_idx: int, batch: torchtext.data.Batch, dataset: Dataset, config:
     """Wrap torchtext batch into our own Batch class for pre-processing"""
     # These fields are added dynamically by PyTorch
     return Batch(batch.src, batch.trg, batch.diff_alignment,
-                 batch.diff_prev, batch.diff_updated, batch.ids, dataset, pad_idx, config)
+                 batch.diff_prev, batch.diff_updated, batch.ids, batch.original_ids, dataset, pad_idx, config)

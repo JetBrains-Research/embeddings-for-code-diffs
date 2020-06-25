@@ -18,6 +18,7 @@ from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalcul
 from neural_editor.seq2seq.experiments.BleuCalculation import BleuCalculation
 from neural_editor.seq2seq.experiments.PredictorExamplesPrinting import PredictorExamplesPrinting
 from neural_editor.seq2seq.experiments.PredictorMetricsCalculation import PredictorMetricsCalculation
+from neural_editor.seq2seq.experiments.SaveNeuralEditorVectors import SaveNeuralEditorVectors
 from neural_editor.seq2seq.test_utils import save_predicted
 
 
@@ -37,6 +38,7 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
         print('Neural editor will not be tested because edit representations are not used.')
         return diffs_field
     train_dataset_test_size_part = take_part_from_dataset(train_dataset, len(test_dataset))
+    save_neural_editor_vectors_experiment = SaveNeuralEditorVectors(model, diffs_field, config)
     accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
                                                           greedy=False, config=config)
     bleu_calculation_experiment = BleuCalculation(config)
@@ -44,6 +46,12 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
     model.eval()
     model.unset_edit_representation()
     with torch.no_grad():
+        # Saving ne vectors
+        measure_experiment_time(
+            lambda: save_neural_editor_vectors_experiment.conduct(train_dataset, val_dataset, test_dataset,
+                                                                  'all three datasets')
+        )
+
         # Accuracy
         test_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(test_dataset, 'Test dataset')
