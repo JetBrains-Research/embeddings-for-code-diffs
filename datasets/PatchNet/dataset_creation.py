@@ -69,6 +69,35 @@ def create_k_folds():
         test_id += 1
 
 
+def create_k_folds_for_patchnet():
+    if len(sys.argv) != 6:
+        print('Usage: <path to out file> <commit hashes file> <timestamps file> <number of folds> <path where to save data>')
+        exit(1)
+    patchnet_out_file = Path(sys.argv[1])
+    data = read_patchnet_out_file(patchnet_out_file)
+    commit_hashes = [l.split(':')[0] for l in Path(sys.argv[2]).read_text().splitlines(keepends=False)]
+    commit_hashes_to_id = {h: i for i, h in enumerate(commit_hashes)}
+    timestamps = [float(l) for l in Path(sys.argv[3]).read_text().splitlines(keepends=False)]
+    timestamps = [timestamps[commit_hashes_to_id[sample[1]]] for sample in data]
+    k = int(sys.argv[4])
+    root = Path(sys.argv[5])
+    folds = split_on_folds(data, k, timestamps)
+    double_folds = folds + folds
+    test_id = k - 1
+    for i in range(k):
+        data_to_write = {
+            'test': double_folds[test_id],
+            'training': [el for l in double_folds[test_id - 4:test_id] for el in l]
+        }
+        fold_folder = root.joinpath(f'fold_{i + 1}')
+        fold_folder.mkdir(exist_ok=True)
+        for k, v in data_to_write.items():
+            file_to_write = fold_folder.joinpath(f'{k}_data.out')
+            lines_to_write = [l for sample in v for l in sample[0]]
+            file_to_write.write_text('\n'.join(lines_to_write))
+        test_id += 1
+
+
 def split_on_folds(data, k, timestamps):
     sort_idx = np.argsort(timestamps)
     sorted_data = []
@@ -85,17 +114,23 @@ def split_on_folds(data, k, timestamps):
 
 
 def remove_examples_by_hash_from_patchnet(data_filepath: Path, hashes_to_remove):
+    data = read_patchnet_out_file(data_filepath)
+    filtered_data = [sample for sample in data if sample[1] not in hashes_to_remove]
+    lines_to_write = [l for sample in filtered_data for l in sample[0]]
+    data_filepath.write_text('\n'.join(lines_to_write))
+
+
+def read_patchnet_out_file(data_filepath):
     lines = [l for l in data_filepath.read_text().splitlines(keepends=False)]
     data_sample_start_id = [i for i, l in enumerate(lines) if l.startswith('commit: ')]
     data = []
     for i in range(len(data_sample_start_id)):
+        commit_hash = lines[data_sample_start_id[i]].split(': ')[-1]
         if i != len(data_sample_start_id) - 1:
-            data.append(lines[data_sample_start_id[i]:data_sample_start_id[i + 1]])
+            data.append((lines[data_sample_start_id[i]:data_sample_start_id[i + 1]], commit_hash))
         else:
-            data.append(lines[data_sample_start_id[i]:])
-    filtered_data = [sample for sample in data if sample[0].split(': ')[-1] not in hashes_to_remove]
-    lines_to_write = [l for sample in filtered_data for l in sample]
-    data_filepath.write_text('\n'.join(lines_to_write))
+            data.append((lines[data_sample_start_id[i]:], commit_hash))
+    return data
 
 
 def remove_from_dataset_by_ids(root: Path, ids_to_remove):
@@ -276,8 +311,9 @@ def convert_to_patchnet_format_list_of_commits():
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # partition_data()
-    # create_k_folds()
-    keep_only_intersection_of_commits()
+    create_k_folds()
+    # create_k_folds_for_patchnet()
+    # keep_only_intersection_of_commits()
     # convert_to_patchnet_format_list_of_commits()
     # extract_timestamps()
     # mine_dataset()
