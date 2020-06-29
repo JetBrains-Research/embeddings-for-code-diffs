@@ -11,11 +11,11 @@ import torch.backends.cudnn
 class Config:
     _CONFIG = {
         'IS_TEST': False,
-        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_2',
+        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_5_canonicalized_low_frequency_10_intersected/patchnet_timestamps/fold_1',
         'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_2',
         'TRAIN_STABLE_PATCH_PREDICTOR': False,
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
-        'TOKENS_CODE_CHUNK_MAX_LEN': 100,
+        'TOKENS_CODE_CHUNK_MAX_LEN': 400,
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',
         'COMMIT_HASHES_PATH': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/commits_and_stable_jul28_patchnet_format',
         'BLEU_PERL_SCRIPT_PATH': './experiments/multi-bleu.perl',  # Path to BLEU script calculator
@@ -26,10 +26,10 @@ class Config:
         'LOWER': True,  # TODO: find out correlation between copying mechanism and lowering msg, it is tricky parameter
         'SEED': 9382,
         'DEVICE': torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-        'TOKEN_MIN_FREQ': 100,
+        'TOKEN_MIN_FREQ': 1,
         'LEARNING_RATE': 0.0001,
         'MAX_NUM_OF_EPOCHS': 1000,
-        'EDIT_REPRESENTATION_SIZE': 16,
+        'EDIT_REPRESENTATION_SIZE': 256,
         'WORD_EMBEDDING_SIZE': 128,
         'ENCODER_HIDDEN_SIZE': 128,
         'DECODER_HIDDEN_SIZE': 256,
@@ -41,8 +41,8 @@ class Config:
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
         'EARLY_STOPPING_ROUNDS': 10,
-        'EVALUATION_ROUNDS_CLASSIFIER': 100,  # in batches
-        'EARLY_STOPPING_ROUNDS_CLASSIFIER': 30,  # in evaluation rounds
+        'EVALUATION_ROUNDS_CLASSIFIER': 1000000,  # in batches
+        'EARLY_STOPPING_ROUNDS_CLASSIFIER': 50,  # in evaluation rounds
         'BEAM_SIZE': 50,
         'NUM_GROUPS': 1,
         'DIVERSITY_STRENGTH': None,
