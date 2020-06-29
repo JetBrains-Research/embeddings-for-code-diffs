@@ -12,6 +12,7 @@ from tqdm.auto import tqdm
 from datasets.PatchNet.PatchNetDataset import PatchNetDataset
 from datasets.PatchNet.tokenizers import PygmentsCTokenizer
 from datasets.dataset_utils import get_indices_for_train_val_test
+from neural_editor.seq2seq.experiments.PredictorMetricsCalculation import calculate_metrics
 
 
 def get_timestamps(commit_hashes, linux_path) -> List[float]:
@@ -43,7 +44,7 @@ def create_k_folds():
     root = Path(sys.argv[1])
     filenames = ['prev.txt', 'updated.txt', 'trg.txt', 'ids.txt']
     data = list(zip(*[root.joinpath(filename).read_text().splitlines(keepends=False) for filename in filenames]))
-    timestamps = [float(l) for l in Path(sys.argv[2]).read_text().splitlines(keepends=False)]
+    timestamps = [float(l) if l != 'None' else None for l in Path(sys.argv[2]).read_text().splitlines(keepends=False)]
     timestamps = [timestamps[int(data_sample[3])] for data_sample in data]
     k = int(sys.argv[3])
     folds = split_on_folds(data, k, timestamps)
@@ -308,8 +309,25 @@ def convert_to_patchnet_format_list_of_commits():
     commits_new_file.write_text('\n'.join(new_lines))
 
 
+def calculate_performance_metrics_for_patchnet_model():
+    if len(sys.argv) != 3:
+        print('Usage: <test data out file> <root with data>')
+        exit(1)
+    test_labels = np.array([1 if l.split(': ')[-1] == 'true' else 0
+                            for l in Path(sys.argv[1]).read_text().splitlines(keepends=False)
+                            if l.startswith('label:')])
+    root = Path(sys.argv[2])
+    pred_probs = np.array([float(l) for l in root.joinpath('prediction.txt').read_text().splitlines(keepends=False)])
+    pred_labels = pred_probs.round()
+    metrics = calculate_metrics(test_labels, pred_labels, pred_probs)
+    for metric, value in metrics.items():
+        print(f'{metric}: {round(value, 3)}')
+    root.joinpath('metrics.txt').write_text(str(metrics))
+
+
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
+    # split_on_train_test_val()
     # partition_data()
     create_k_folds()
     # create_k_folds_for_patchnet()
@@ -319,3 +337,4 @@ if __name__ == "__main__":
     # mine_dataset()
     # load_dataset()
     # apply_tokenizer_again()
+    # calculate_performance_metrics_for_patchnet_model()
