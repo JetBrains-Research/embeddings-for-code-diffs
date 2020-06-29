@@ -13,6 +13,7 @@ class Config:
         'IS_TEST': False,
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_2',
         'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_2',
+        'TRAIN_STABLE_PATCH_PREDICTOR': False,
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
         'TOKENS_CODE_CHUNK_MAX_LEN': 100,
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',

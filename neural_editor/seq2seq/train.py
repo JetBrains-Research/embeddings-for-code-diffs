@@ -74,7 +74,7 @@ def train(model: EncoderDecoder,
     bleu_calculator = BleuCalculation(config)
 
     epochs_num: int = config['MAX_NUM_OF_EPOCHS']
-    best_metric_value: float = -10000000
+    best_metric_value: float = -1e15
     num_not_decreasing_steps: int = 0
     early_stopping_rounds: int = config['EARLY_STOPPING_ROUNDS']
     for epoch in range(epochs_num):

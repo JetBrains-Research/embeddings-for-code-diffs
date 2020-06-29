@@ -23,12 +23,15 @@ def main():
                               'neural_editor', config=config,
                               only_make_model=not config['USE_EDIT_REPRESENTATION'])
     print('\n====STARTING TRAINING OF STABLE PATCH PREDICTOR====\n', end='')
-    train_dataset_stable_patches, val_dataset_stable_patches, test_dataset_stable_patches = \
-        StablePatchPredictionDataset.load_data(diffs_field, config['VERBOSE'], config)
-    stable_patch_predictor = run_train_predictor(train_dataset_stable_patches, val_dataset_stable_patches,
-                                                 neural_editor, config=config)
-    print('\n====STARTING STABLE PATCH PREDICTOR EVALUATION====\n', end='')
-    test_stable_patch_predictor_model(stable_patch_predictor, diffs_field, config)
+    if config['TRAIN_STABLE_PATCH_PREDICTOR']:
+        train_dataset_stable_patches, val_dataset_stable_patches, test_dataset_stable_patches = \
+            StablePatchPredictionDataset.load_data(diffs_field, config['VERBOSE'], config)
+        stable_patch_predictor = run_train_predictor(train_dataset_stable_patches, val_dataset_stable_patches,
+                                                     neural_editor, config=config)
+        print('\n====STARTING STABLE PATCH PREDICTOR EVALUATION====\n', end='')
+        test_stable_patch_predictor_model(stable_patch_predictor, diffs_field, config)
+    else:
+        print('NO STABLE PATCH PREDICTOR WILL BE TRAINED')
     print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
     test_neural_editor_model(neural_editor, config)
 
