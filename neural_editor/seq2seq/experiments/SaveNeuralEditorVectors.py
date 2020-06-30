@@ -73,3 +73,5 @@ class SaveNeuralEditorVectors:
                 path3 = path2.joinpath(data_type)
                 path3.mkdir(exist_ok=True)
                 pickle.dump(dataset_dicts[vector_type][data_type], path3.joinpath('ne_vectors.pkl').open(mode='wb'))
+                pickle.dump(dataset_dicts[vector_type][data_type], path3.joinpath('ne_vectors_2.pkl').open(mode='wb'),
+                            protocol=2)
