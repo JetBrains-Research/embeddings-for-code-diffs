@@ -4,15 +4,102 @@ import sys
 from collections import Counter
 from datetime import timezone
 from pathlib import Path
-from typing import List
+from typing import List, Tuple, Dict
 import numpy as np
 
-from pydriller import RepositoryMining
+from pydriller import RepositoryMining, ModificationType
 from tqdm.auto import tqdm
 from datasets.PatchNet.PatchNetDataset import PatchNetDataset
 from datasets.PatchNet.tokenizers import PygmentsCTokenizer
 from datasets.dataset_utils import get_indices_for_train_val_test
 from neural_editor.seq2seq.experiments.PredictorMetricsCalculation import calculate_metrics
+from neural_editor.seq2seq.test_utils import save_patchnet_metric_plot
+
+
+def get_changed_files(commit_hashes, linux_path) -> Tuple[List[int], List[int]]:
+    c_extensions = ['.c', '.cpp', '.h', '.hpp', '.cc']
+    changed_files_num = []
+    changed_c_files_num = []
+    for commit_hash in tqdm(commit_hashes):
+        commits = list(RepositoryMining(str(linux_path.absolute()), single=commit_hash).traverse_commits())
+        commit = commits[0]
+        changed_files = 0
+        changed_c_files = 0
+        for modification in commit.modifications:
+            changed_files += 1
+            filename = modification.filename
+            for c_extension in c_extensions:
+                if filename.endswith(c_extension):
+                    changed_c_files += 1
+                    break
+        changed_files_num.append(changed_files)
+        changed_c_files_num.append(changed_c_files)
+    return changed_files_num, changed_c_files_num
+
+
+def extract_changed_files_num():
+    if len(sys.argv) != 4:
+        print('Usage: <root where to save processed data> <hash commits file> <path to linux repo>')
+        exit(1)
+    root = Path(sys.argv[1])
+    linux_path = Path(sys.argv[3])
+    commit_hashes = Path(sys.argv[2]).read_text().splitlines(keepends=False)[::2]
+    commit_hashes = [commit_hash.split(': ')[-1] for commit_hash in commit_hashes]
+    changed_files, changed_c_files = get_changed_files(commit_hashes, linux_path)
+    root.joinpath('changed_files.txt').write_text('\n'.join([str(t) for t in changed_files]))
+    root.joinpath('changed_c_files.txt').write_text('\n'.join([str(t) for t in changed_c_files]))
+
+
+def print_changed_files_information():
+    if len(sys.argv) != 2:
+        print('Usage: <file with changed files numbers>')
+        exit(1)
+    changed_files_numbers = np.array([int(l) for l in Path(sys.argv[1]).read_text().splitlines(keepends=False)])
+    print(f'Mean: {np.mean(changed_files_numbers)}')
+    print(f'Std: {np.std(changed_files_numbers)}')
+    print(f'Median: {np.median(changed_files_numbers)}')
+    print(f'Min: {np.min(changed_files_numbers)}')
+    print(f'Max: {np.max(changed_files_numbers)}')
+
+
+def extract_metric_from_line(line, metric_type) -> float:
+    return float(line.split(metric_type)[-1].split()[0].split(',')[0])
+
+
+def draw_metrics_plots_patchnet_training():
+    if len(sys.argv) != 4:
+        print('Usage: <root where to save processed data> <path to training log file> <frequency_type>')
+        exit(1)
+    root = Path(sys.argv[1])
+    training_log_lines = Path(sys.argv[2]).read_text().splitlines(keepends=False)
+    frequency_type = sys.argv[3]
+    metrics = read_metrics(frequency_type, training_log_lines)
+    for metric_type in metrics:
+        save_patchnet_metric_plot(metrics[metric_type], metric_type, str(root.absolute()))
+
+
+def read_metrics(frequency_type, training_log_lines) -> Dict[str, List[float]]:
+    metrics = {'loss': [], 'acc': []}
+    if frequency_type == 'steps':
+        for line in training_log_lines:
+            for metric_type in metrics:
+                if metric_type in line:
+                    metric_value = extract_metric_from_line(line, metric_type)
+                    metrics[metric_type].append(metric_value)
+    elif frequency_type == 'epochs':
+        epoch_metrics = {'loss': [], 'acc': []}
+        for line in training_log_lines:
+            for metric_type in metrics:
+                if metric_type + ' ' in line:
+                    metric_value = extract_metric_from_line(line, metric_type)
+                    epoch_metrics[metric_type].append(metric_value)
+            if 'at epoch' in line:
+                for metric_type in epoch_metrics:
+                    metrics[metric_type].append(np.mean(epoch_metrics[metric_type]))
+                epoch_metrics = {'loss': [], 'acc': []}
+    else:
+        raise Exception('Unknown frequency type! Possible values: epochs, steps.')
+    return metrics
 
 
 def get_timestamps(commit_hashes, linux_path) -> List[float]:
@@ -310,12 +397,15 @@ def convert_to_patchnet_format_list_of_commits():
 
 
 def calculate_performance_metrics_for_patchnet_model():
+    skip = [260, 282, 1133, 2494, 2677, 4704, 5214, 5693, 6562, 6926, 7533, 7998, 9544, 9682, 9816, 9897, 9998, 10325, 11029, 11226, 12268, 12748, 12837, 13349, 13432, 13608, 13742, 14146, 14585, 15609, 16185]
+
     if len(sys.argv) != 3:
         print('Usage: <test data out file> <root with data>')
         exit(1)
     test_labels = np.array([1 if l.split(': ')[-1] == 'true' else 0
                             for l in Path(sys.argv[1]).read_text().splitlines(keepends=False)
                             if l.startswith('label:')])
+    test_labels = np.delete(test_labels, skip)
     root = Path(sys.argv[2])
     pred_probs = np.array([float(l) for l in root.joinpath('prediction.txt').read_text().splitlines(keepends=False)])
     pred_labels = pred_probs.round()
@@ -338,3 +428,6 @@ if __name__ == "__main__":
     # load_dataset()
     # apply_tokenizer_again()
     calculate_performance_metrics_for_patchnet_model()
+    # draw_metrics_plots_patchnet_training()
+    # extract_changed_files_num()
+    # print_changed_files_information()

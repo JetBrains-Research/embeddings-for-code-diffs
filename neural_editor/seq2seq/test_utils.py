@@ -90,6 +90,15 @@ def save_metric_plot(metric_values: List[float], label: str, filepath: str, conf
     plt.clf()
 
 
+def save_patchnet_metric_plot(metric_values: List[float], label: str, root: str) -> None:
+    plt.title(f"{label} per Iteration")
+    plt.xlabel("Iteration")
+    plt.ylabel("Metric")
+    plt.plot(metric_values)
+    plt.savefig(os.path.join(root, f'{label}.png'))
+    plt.clf()
+
+
 def load_defects4j_dataset(diffs_field: Field, config: Config) -> Tuple[Dataset, List[str]]:
     filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
     dataset = CodeChangesTokensDataset(config['DEFECTS4J_PATH'], diffs_field, config, filter_predicate)
