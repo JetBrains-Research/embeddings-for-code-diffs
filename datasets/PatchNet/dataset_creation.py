@@ -328,20 +328,21 @@ def partition_data():
 
 
 def mine_dataset() -> None:
-    if len(sys.argv) != 4:
-        print('Usage: <root where to save processed data> <path to file with description of dataset> '
-              '<path to local copy of linux git repository>')
+    if len(sys.argv) != 4 and len(sys.argv) != 3:
+        print('Usage: <root where to save processed data> <path to local copy of linux git repository> '
+              '<path to file with description of dataset>')
         exit(1)
     root = Path(sys.argv[1])
-    dataset_description_file = Path(sys.argv[2])
-    linux_repository_filepath = Path(sys.argv[3])
+    linux_repository_filepath = Path(sys.argv[2])
+    dataset_description_file = Path(sys.argv[3]) if len(sys.argv) == 4 else None
     if not root.is_dir():
         print(f'No such directory: {root.absolute()}')
-    if not dataset_description_file.is_file():
+    if dataset_description_file is not None and not dataset_description_file.is_file():
         print(f'No such file: {dataset_description_file.absolute()}')
         exit(1)
     if not linux_repository_filepath.is_dir():
         print(f'No such directory: {linux_repository_filepath.absolute()}')
+        exit(1)
     patch_net_dataset = PatchNetDataset(root, dataset_description_file, linux_repository_filepath)
     patch_net_dataset.print_statistics()
     patch_net_dataset.write_data()
@@ -424,10 +425,10 @@ if __name__ == "__main__":
     # keep_only_intersection_of_commits()
     # convert_to_patchnet_format_list_of_commits()
     # extract_timestamps()
-    # mine_dataset()
+    mine_dataset()
     # load_dataset()
     # apply_tokenizer_again()
-    calculate_performance_metrics_for_patchnet_model()
+    # calculate_performance_metrics_for_patchnet_model()
     # draw_metrics_plots_patchnet_training()
     # extract_changed_files_num()
     # print_changed_files_information()
