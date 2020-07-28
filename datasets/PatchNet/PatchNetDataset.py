@@ -52,7 +52,7 @@ class DataSample:
 
 class PatchNetDataset:
     LINUX_REPOSITORY = 'https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git'
-    SINCE_DATE = datetime(year=2009, month=6, day=23, hour=21, minute=48, second=1, tzinfo=timezone.utc)
+    SINCE_DATE = datetime(year=2009, month=6, day=23, hour=12, minute=48, second=1, tzinfo=timezone.utc)
     TO_DATE = datetime(year=2009, month=6, day=23, hour=22, minute=48, second=1, tzinfo=timezone.utc)
     MAX_DIFF_LENGTH = 100
 
@@ -95,16 +95,15 @@ class PatchNetDataset:
         data_samples = []
         start = time.time()
         commits = list(RepositoryMining(repository_path, since=PatchNetDataset.SINCE_DATE, to=PatchNetDataset.TO_DATE,
-                                        only_no_merge=True,
-                                        only_modifications_with_file_types=['.c', '.h']).traverse_commits())
+                                        only_no_merge=True).traverse_commits())
         duration = time.time() - start
         print(f'PyDriller found commits since {PatchNetDataset.SINCE_DATE} to {PatchNetDataset.TO_DATE} for '
               f'{str(timedelta(seconds=duration))}\n')
         counter = Counter()
         start = time.time()
         for idx, commit in enumerate(commits):
-            if PatchNetDataset.is_greater_than_max_number_of_lines_in_diff(commit):
-                print(f'Commit with hash {commit.hash} is too long measuring number of lines in git diff')
+            if not PatchNetDataset.is_commit_correct(commit):
+                print(f'Commit with hash {commit.hash} is incorrect')
                 continue
             commit = Commit(repository_path, commit.hash, commit)
             data_sample = DataSample(commit, False, idx)
@@ -119,12 +118,14 @@ class PatchNetDataset:
         return data_samples, counter
 
     @staticmethod
-    def is_greater_than_max_number_of_lines_in_diff(commit: pydriller.Commit):
+    def is_commit_correct(commit: pydriller.Commit):
         total_num_of_lines = 0
         for modification in commit.modifications:
             if modification.change_type == ModificationType.MODIFY:
                 total_num_of_lines += len(modification.diff.splitlines())
-        return total_num_of_lines > PatchNetDataset.MAX_DIFF_LENGTH
+            if not modification.filename.endswith('.c') and not modification.filename.endswith('.h'):
+                return False
+        return total_num_of_lines <= PatchNetDataset.MAX_DIFF_LENGTH
 
     @staticmethod
     def extract_commit_hash_field(example_text_data: Tuple[str, str]) -> str:
