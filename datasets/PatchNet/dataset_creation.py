@@ -1,7 +1,7 @@
 import pickle
 import random
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import timezone
 from pathlib import Path
 from typing import List, Tuple, Dict
@@ -14,7 +14,7 @@ from datasets.PatchNet.tokenizers import PygmentsCTokenizer
 from datasets.dataset_utils import get_indices_for_train_val_test
 from neural_editor.seq2seq.experiments.PredictorMetricsCalculation import calculate_metrics
 from neural_editor.seq2seq.test_utils import save_patchnet_metric_plot
-
+import os
 
 def get_changed_files(commit_hashes, linux_path) -> Tuple[List[int], List[int]]:
     c_extensions = ['.c', '.cpp', '.h', '.hpp', '.cc']
@@ -398,7 +398,8 @@ def convert_to_patchnet_format_list_of_commits():
 
 
 def calculate_performance_metrics_for_patchnet_model():
-    skip = [260, 282, 1133, 2494, 2677, 4704, 5214, 5693, 6562, 6926, 7533, 7998, 9544, 9682, 9816, 9897, 9998, 10325, 11029, 11226, 12268, 12748, 12837, 13349, 13432, 13608, 13742, 14146, 14585, 15609, 16185]
+    # skip = [260, 282, 1133, 2494, 2677, 4704, 5214, 5693, 6562, 6926, 7533, 7998, 9544, 9682, 9816, 9897, 9998, 10325, 11029, 11226, 12268, 12748, 12837, 13349, 13432, 13608, 13742, 14146, 14585, 15609, 16185]
+    skip = []
 
     if len(sys.argv) != 3:
         print('Usage: <test data out file> <root with data>')
@@ -414,6 +415,43 @@ def calculate_performance_metrics_for_patchnet_model():
     for metric, value in metrics.items():
         print(f'{metric}: {round(value, 3)}')
     root.joinpath('metrics.txt').write_text(str(metrics))
+
+
+def concat_pre_train_datasets():
+    if len(sys.argv) != 2:
+        print('Usage: <root with data>')
+        exit(1)
+    root = Path(sys.argv[1])
+    root_concat = root.joinpath('pre_train')
+    root_concat.mkdir(exist_ok=True)
+    concatenated_dataset = PatchNetDataset(root_concat, None, None)
+    for folder in os.listdir(str(root)):
+        if folder.startswith('pre_train_'):
+            pre_train_root = root.joinpath(folder)
+            pre_train_dataset = PatchNetDataset(pre_train_root, None, None)
+            pre_train_dataset.load()
+            concatenated_dataset.add(pre_train_dataset)
+    concatenated_dataset.filter_empty()
+    concatenated_dataset.write_data()
+
+
+def unite_two_datasets():
+    if len(sys.argv) != 4:
+        print('Usage: <root with data 1> <root with data 2> <root for output>')
+        exit(1)
+    root_dataset1 = Path(sys.argv[1])
+    root_dataset2 = Path(sys.argv[2])
+    root_output = Path(sys.argv[3])
+
+    dataset1 = PatchNetDataset(root_dataset1, None, None)
+    dataset1.load()
+    dataset2 = PatchNetDataset(root_dataset2, None, None)
+    dataset2.load()
+    output_dataset = PatchNetDataset(root_output, None, None)
+    output_dataset.add(dataset1)
+    output_dataset.add(dataset2)
+    output_dataset.filter_empty()
+    output_dataset.write_data()
 
 
 if __name__ == "__main__":
@@ -432,3 +470,5 @@ if __name__ == "__main__":
     # draw_metrics_plots_patchnet_training()
     # extract_changed_files_num()
     # print_changed_files_information()
+    # concat_pre_train_datasets()
+    # unite_two_datasets()

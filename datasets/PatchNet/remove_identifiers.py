@@ -144,4 +144,5 @@ def remove_too_long_sequences():
 
 
 if __name__ == "__main__":
-    replace_low_frequency_tokens()
+    # replace_low_frequency_tokens()
+    remove_empty()

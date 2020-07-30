@@ -62,12 +62,16 @@ class PatchNetDataset:
         self.description_filepath = description_filepath
         self.repository_path = str(linux_repository_filepath.absolute()) if linux_repository_filepath is not None \
             else linux_repository_filepath
-        if self.description_filepath is not None:
-            self.data_samples, self.tokens_counter = \
-                PatchNetDataset.extract_data_samples(self.description_filepath, self.repository_path)
+        if self.repository_path is not None:
+            if self.description_filepath is not None:
+                self.data_samples, self.tokens_counter = \
+                    PatchNetDataset.extract_data_samples(self.description_filepath, self.repository_path)
+            else:
+                self.data_samples, self.tokens_counter = \
+                    PatchNetDataset.extract_data_samples_for_pre_train(self.repository_path)
         else:
-            self.data_samples, self.tokens_counter = \
-                PatchNetDataset.extract_data_samples_for_pre_train(self.repository_path)
+            self.data_samples = []
+            self.tokens_counter = Counter()
 
     @staticmethod
     def extract_data_samples(description_filepath: Path, repository_path: str) -> Tuple[List[DataSample], Counter]:
@@ -175,3 +179,14 @@ class PatchNetDataset:
             self.tokens_counter = pickle.load(counter_file)
         with self.root.joinpath('data_samples.pkl').open('rb') as counter_file:
             self.data_samples = pickle.load(counter_file)
+
+    def filter_empty(self):
+        size_before = len(self.data_samples)
+        self.data_samples = [sample for sample in self.data_samples
+                             if len(sample.commit.get_prev()) != 0 and len(sample.commit.get_updated()) != 0]
+        size_after = len(self.data_samples)
+        print(f'After removing of empties left: {size_after} / {size_before} = {size_after / size_before}')
+
+    def add(self, other_dataset):
+        self.data_samples += other_dataset.data_samples
+        self.tokens_counter += other_dataset.tokens_counter
