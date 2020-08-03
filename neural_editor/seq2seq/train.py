@@ -166,21 +166,22 @@ def test_on_unclassified_data(model: EncoderDecoder,
 
 
 def run_train(train_dataset: Dataset, val_dataset: Dataset, diffs_field: Field,
-              suffix_for_saving: str, config: Config, only_make_model=False) -> EncoderDecoder:
+              suffix_for_saving: str, config: Config, only_make_model=False, model=None) -> EncoderDecoder:
     pprint.pprint(config.get_config())
     config.save()
 
-    model: EncoderDecoder = make_model(len(diffs_field.vocab),
-                                       len(diffs_field.vocab),
-                                       diffs_field.vocab.unk_index,
-                                       edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
-                                       emb_size=config['WORD_EMBEDDING_SIZE'],
-                                       hidden_size_encoder=config['ENCODER_HIDDEN_SIZE'],
-                                       hidden_size_decoder=config['DECODER_HIDDEN_SIZE'],
-                                       num_layers=config['NUM_LAYERS'],
-                                       dropout=config['DROPOUT'],
-                                       use_bridge=config['USE_BRIDGE'],
-                                       config=config)
+    if model is None:
+        model: EncoderDecoder = make_model(len(diffs_field.vocab),
+                                           len(diffs_field.vocab),
+                                           diffs_field.vocab.unk_index,
+                                           edit_representation_size=config['EDIT_REPRESENTATION_SIZE'],
+                                           emb_size=config['WORD_EMBEDDING_SIZE'],
+                                           hidden_size_encoder=config['ENCODER_HIDDEN_SIZE'],
+                                           hidden_size_decoder=config['DECODER_HIDDEN_SIZE'],
+                                           num_layers=config['NUM_LAYERS'],
+                                           dropout=config['DROPOUT'],
+                                           use_bridge=config['USE_BRIDGE'],
+                                           config=config)
     # noinspection PyTypeChecker
     # reason: PyCharm doesn't understand that EncoderDecoder is child of nn.Module
     if only_make_model:

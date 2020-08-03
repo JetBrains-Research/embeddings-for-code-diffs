@@ -12,7 +12,7 @@ class Config:
     _CONFIG = {
         'IS_TEST': False,
         'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_5_canonicalized_low_frequency_10_intersected/patchnet_timestamps/fold_1',
-        'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_2',
+        'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_5_canonicalized_low_frequency_10_intersected/patchnet_timestamps/fold_1',
         'TRAIN_STABLE_PATCH_PREDICTOR': False,
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
         'TOKENS_CODE_CHUNK_MAX_LEN': 400,
