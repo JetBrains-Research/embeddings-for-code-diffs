@@ -135,6 +135,7 @@ def remove_too_long_sequences():
     data = [el for el in data if len(el[0].split()) <= max_len and len(el[1].split()) <= max_len]
     after_size = len(data)
     print(f'Lines to be removed: {before_size - after_size} / {before_size} = {(before_size - after_size) / before_size}')
+    return
     filenames_lines = {filename: [] for filename in filenames}
     for data_sample in data:
         for i, filename in enumerate(filenames_lines):
@@ -146,3 +147,4 @@ def remove_too_long_sequences():
 if __name__ == "__main__":
     # replace_low_frequency_tokens()
     remove_empty()
+    # remove_too_long_sequences()

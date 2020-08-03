@@ -16,6 +16,7 @@ from neural_editor.seq2seq.experiments.PredictorMetricsCalculation import calcul
 from neural_editor.seq2seq.test_utils import save_patchnet_metric_plot
 import os
 
+
 def get_changed_files(commit_hashes, linux_path) -> Tuple[List[int], List[int]]:
     c_extensions = ['.c', '.cpp', '.h', '.hpp', '.cc']
     changed_files_num = []
@@ -132,7 +133,16 @@ def create_k_folds():
     filenames = ['prev.txt', 'updated.txt', 'trg.txt', 'ids.txt']
     data = list(zip(*[root.joinpath(filename).read_text().splitlines(keepends=False) for filename in filenames]))
     timestamps = [float(l) if l != 'None' else None for l in Path(sys.argv[2]).read_text().splitlines(keepends=False)]
-    timestamps = [timestamps[int(data_sample[3])] for data_sample in data]
+    none_timestamps = [timestamps[int(data_sample[3])] for data_sample in data]
+    none_data = data
+    data = []
+    timestamps = []
+    print(f'Before {len(none_timestamps)}')
+    for timestamp, data_sample in zip(none_timestamps, none_data):
+        if timestamp is not None:
+            data.append(data_sample)
+            timestamps.append(timestamp)
+    print(f'Before {len(timestamps)}')
     k = int(sys.argv[3])
     folds = split_on_folds(data, k, timestamps)
     double_folds = folds + folds
@@ -418,20 +428,23 @@ def calculate_performance_metrics_for_patchnet_model():
 
 
 def concat_pre_train_datasets():
-    if len(sys.argv) != 2:
-        print('Usage: <root with data>')
+    if len(sys.argv) != 3:
+        print('Usage: <root with data> <path to commits to remove>')
         exit(1)
     root = Path(sys.argv[1])
+    commits_to_remove = {l.split(':')[0] for l in Path(sys.argv[2]).read_text().splitlines(keepends=False)}
     root_concat = root.joinpath('pre_train')
     root_concat.mkdir(exist_ok=True)
     concatenated_dataset = PatchNetDataset(root_concat, None, None)
-    for folder in os.listdir(str(root)):
+    for folder in sorted(os.listdir(str(root))):
         if folder.startswith('pre_train_'):
             pre_train_root = root.joinpath(folder)
             pre_train_dataset = PatchNetDataset(pre_train_root, None, None)
             pre_train_dataset.load()
+            print(f'Size of {pre_train_root}: {len(pre_train_dataset.data_samples)}')
             concatenated_dataset.add(pre_train_dataset)
     concatenated_dataset.filter_empty()
+    concatenated_dataset.remove_commits(commits_to_remove)
     concatenated_dataset.write_data()
 
 
@@ -454,16 +467,28 @@ def unite_two_datasets():
     output_dataset.write_data()
 
 
+def remove_static_object_from_dataset():
+    if len(sys.argv) != 2:
+        print('Usage: <root>')
+        exit(1)
+    root = Path(sys.argv[1])
+    dataset = PatchNetDataset(root, None, None)
+    dataset.load()
+    for sample in dataset.data_samples:
+        del sample.commit.prev_updated_generator
+    dataset.write_data()
+
+
 if __name__ == "__main__":
     # cut_dataset(200, shuffle=False)
     # split_on_train_test_val()
     # partition_data()
-    # create_k_folds()
+    create_k_folds()
     # create_k_folds_for_patchnet()
     # keep_only_intersection_of_commits()
     # convert_to_patchnet_format_list_of_commits()
     # extract_timestamps()
-    mine_dataset()
+    # mine_dataset()
     # load_dataset()
     # apply_tokenizer_again()
     # calculate_performance_metrics_for_patchnet_model()
@@ -471,4 +496,5 @@ if __name__ == "__main__":
     # extract_changed_files_num()
     # print_changed_files_information()
     # concat_pre_train_datasets()
+    # remove_static_object_from_dataset()
     # unite_two_datasets()

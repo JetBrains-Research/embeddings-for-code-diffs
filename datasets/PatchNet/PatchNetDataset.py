@@ -1,15 +1,14 @@
 import pickle
 import time
-from collections import defaultdict, Counter
+from collections import Counter
 from datetime import timedelta, datetime, timezone
+from distutils.util import strtobool
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional
-from distutils.util import strtobool
 
 import pydriller
 from pydriller import RepositoryMining, ModificationType
 
-from datasets.PatchNet.GitDiffPrevUpdatedGenerator import GitDiffPrevUpdatedGenerator
 from datasets.PatchNet.LevenshteinFilesPrevUpdatedGenerator import LevenshteinFilesPrevUpdatedGenerator
 
 
@@ -171,8 +170,8 @@ class PatchNetDataset:
         self.root.joinpath('commit_hashes.txt').write_text('\n'.join(commit_hashes_file_lines))
         with self.root.joinpath('tokens_counter.pkl').open('wb') as counter_file:
             pickle.dump(self.tokens_counter, counter_file)
-        with self.root.joinpath('data_samples.pkl').open('wb') as counter_file:
-            pickle.dump(self.data_samples, counter_file)
+        with self.root.joinpath('data_samples.pkl').open('wb') as data_sample_file:
+            pickle.dump(self.data_samples, data_sample_file)
 
     def load(self) -> None:
         with self.root.joinpath('tokens_counter.pkl').open('rb') as counter_file:
@@ -186,6 +185,22 @@ class PatchNetDataset:
                              if len(sample.commit.get_prev()) != 0 and len(sample.commit.get_updated()) != 0]
         size_after = len(self.data_samples)
         print(f'After removing of empties left: {size_after} / {size_before} = {size_after / size_before}')
+
+    def remove_commits(self, commits_to_remove):
+        size_before = len(self.data_samples)
+        left_data_samples = []
+        for sample in self.data_samples:
+            if sample.commit.commit_hash not in commits_to_remove:
+                left_data_samples.append(sample)
+            else:
+                for token in sample.commit.get_prev() + sample.commit.get_updated():
+                    self.tokens_counter[token] -= 1
+        self.data_samples = left_data_samples
+        size_after = len(self.data_samples)
+        print(f'Number of commits to remove: {len(commits_to_remove)}')
+        print(f'After removing of commits: {size_after} / {size_before} = {size_after / size_before}')
+        print(f'Number of removed commits from total: {size_before - size_after} / {len(commits_to_remove)} = '
+              f'{(size_before - size_after) / len(commits_to_remove)}')
 
     def add(self, other_dataset):
         self.data_samples += other_dataset.data_samples
