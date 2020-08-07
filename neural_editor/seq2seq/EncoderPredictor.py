@@ -21,6 +21,7 @@ class EncoderPredictor(nn.Module):
         predictor_input_size = encoder.hidden_size * 2 + edit_encoder.hidden_size * 2
         predictor_hidden_size = int(predictor_input_size / 2)
         self.predictor_net = nn.Sequential(
+            nn.Dropout(p=0.5),
             nn.Linear(predictor_input_size, predictor_hidden_size),
             nn.ReLU(),
             nn.Linear(predictor_hidden_size, 1)
