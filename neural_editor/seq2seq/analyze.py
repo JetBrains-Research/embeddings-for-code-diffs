@@ -44,7 +44,6 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
     bleu_calculation_experiment = BleuCalculation(config)
 
     model.eval()
-    model.unset_edit_representation()
     with torch.no_grad():
         # Saving ne vectors
         measure_experiment_time(

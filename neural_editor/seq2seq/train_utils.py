@@ -24,6 +24,7 @@ from neural_editor.seq2seq.Generator import Generator
 from neural_editor.seq2seq.config import Config
 from neural_editor.seq2seq.decoder.Decoder import Decoder
 from neural_editor.seq2seq.encoder.Encoder import Encoder
+from neural_editor.seq2seq.encoder.SrcEncoder import SrcEncoder
 
 
 def make_model(src_vocab_size: int, vocab_size: int, unk_index: int,
@@ -39,7 +40,8 @@ def make_model(src_vocab_size: int, vocab_size: int, unk_index: int,
     generator = Generator(hidden_size_decoder, vocab_size)
     embedding = nn.Embedding(src_vocab_size, emb_size)
     edit_encoder = EditEncoder(embedding, 3 * emb_size, edit_representation_size, num_layers, dropout)
-    encoder = Encoder(embedding, emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout)
+    src_encoder = SrcEncoder(embedding, emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout)
+    encoder = Encoder(src_encoder, edit_encoder)
     model: EncoderDecoder = EncoderDecoder(
         encoder,
         Decoder(generator, embedding, emb_size, edit_representation_size,
@@ -49,17 +51,16 @@ def make_model(src_vocab_size: int, vocab_size: int, unk_index: int,
                 dropout=dropout, bridge=use_bridge,
                 use_edit_representation=config['USE_EDIT_REPRESENTATION'],
                 use_copying_mechanism=config['USE_COPYING_MECHANISM']),
-        edit_encoder, embedding, generator)
+        embedding, generator)
     model.to(config['DEVICE'])
     return model
 
 
-def make_predictor(edit_encoder: EditEncoder, encoder: Encoder, config: Config) -> EncoderPredictor:
+def make_predictor(encoder: Encoder, config: Config) -> EncoderPredictor:
     if config['FREEZE_EDIT_ENCODER_WEIGHTS']:
-        freeze_weights(edit_encoder)
         freeze_weights(encoder)
 
-    model: EncoderDecoder = EncoderPredictor(encoder, edit_encoder)
+    model: EncoderDecoder = EncoderPredictor(encoder)
     model.to(config['DEVICE'])
     return model
 

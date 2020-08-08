@@ -129,7 +129,7 @@ def train_classifier(model, train_dataset, val_dataset, config):
 
 def run_train_predictor(train_dataset, val_dataset, neural_editor, config):
     suffix = 'predictor'
-    model = make_predictor(neural_editor.edit_encoder, neural_editor.encoder, config)
+    model = make_predictor(neural_editor.encoder, config)
     train_metrics, val_metrics = train_classifier(model, train_dataset, val_dataset, config)
     print(f'Train: {train_metrics}')
     print(f'Validation: {val_metrics}')
