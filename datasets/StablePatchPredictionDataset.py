@@ -6,7 +6,7 @@ from torchtext import data
 from torchtext.data import Field, Dataset
 
 from datasets.dataset_utils import create_filter_predicate_on_length
-from datasets.hunks_splitting import diff_sequences_and_add_hunks
+from datasets.HunkSplitter import HunkSplitter
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
 
@@ -23,12 +23,13 @@ class StablePatchPredictionDataset(data.Dataset):
         differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
                         config['ADDITION_TOKEN'], config['UNCHANGED_TOKEN'],
                         config['PADDING_TOKEN'])
+        hunk_splitter = HunkSplitter(config['CONTEXT_SIZE_FOR_HUNKS'], differ, config)
         with open(os.path.join(path, 'trg.txt'), mode='r', encoding='utf-8') as stable, \
                 open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
             for stable_line, prev_line, updated_line in zip(stable, prev, updated):
                 stable_line, prev_line, updated_line = stable_line.strip(), prev_line.strip(), updated_line.strip()
-                diff, prev_line, updated_line = diff_sequences_and_add_hunks(prev_line, updated_line, differ, config)
+                diff, prev_line, updated_line = hunk_splitter.diff_sequences_and_add_hunks(prev_line, updated_line)
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
                                                  diff[0], diff[1], diff[2]))
                 if not is_correct:

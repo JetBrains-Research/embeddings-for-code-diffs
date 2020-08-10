@@ -16,6 +16,7 @@ class Config:
         'TRAIN_STABLE_PATCH_PREDICTOR': True,
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
         'TOKENS_CODE_CHUNK_MAX_LEN': 400,
+        'CONTEXT_SIZE_FOR_HUNKS': 10,
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',
         'COMMIT_HASHES_PATH': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/commits_and_stable_jul28_patchnet_format',
         'BLEU_PERL_SCRIPT_PATH': './experiments/multi-bleu.perl',  # Path to BLEU script calculator
