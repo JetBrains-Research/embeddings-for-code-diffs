@@ -65,6 +65,9 @@ class Config:
         'SAVE_MODEL_EVERY': 5,
         'PRINT_EVERY_iTH_BATCH': 5,
         'MAKE_CUDA_REPRODUCIBLE': False,
+        'MAX_NUMBER_OF_EXAMPLES_TRAIN': None,
+        'MAX_NUMBER_OF_EXAMPLES_VAL': None,
+        'MAX_NUMBER_OF_EXAMPLES_TEST': None,
     }
 
     _PATH_KEYS = ['DATASET_ROOT', 'DATASET_ROOT_COMMIT', 'OUTPUT_PATH', 'BLEU_PERL_SCRIPT_PATH', 'COMMIT_HASHES_PATH']
@@ -92,6 +95,9 @@ class Config:
         self._CONFIG['BATCH_SIZE'] = 5
         self._CONFIG['VAL_BATCH_SIZE'] = 5
         self._CONFIG['TEST_BATCH_SIZE'] = 5
+        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_TRAIN'] = 512
+        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_VAL'] = 128
+        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_TEST'] = 128
 
 
 def load_config(is_test: bool, path_to_config: Path = None) -> Config:

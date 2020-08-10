@@ -64,11 +64,11 @@ class CodeChangesTokensDataset(data.Dataset):
                       train: str = 'train', val: str = 'val', test: str = 'test') -> Tuple[Dataset, Dataset, Dataset]:
         filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
         train_data: Dataset = CodeChangesTokensDataset(os.path.join(path, train), field, config, filter_predicate,
-                                                       max_size=512)
+                                                       max_size=config['MAX_NUMBER_OF_EXAMPLES_TRAIN'])
         val_data: Dataset = CodeChangesTokensDataset(os.path.join(path, val), field, config, filter_predicate,
-                                                     max_size=128)
+                                                     max_size=config['MAX_NUMBER_OF_EXAMPLES_VAL'])
         test_data: Dataset = CodeChangesTokensDataset(os.path.join(path, test), field, config, filter_predicate,
-                                                      max_size=128)
+                                                      max_size=config['MAX_NUMBER_OF_EXAMPLES_TEST'])
         return train_data, val_data, test_data
 
     @staticmethod
