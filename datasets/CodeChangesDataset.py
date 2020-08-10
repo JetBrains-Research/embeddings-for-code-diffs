@@ -7,6 +7,8 @@ from torchtext import data
 from torchtext.data import Field, Dataset
 
 from datasets.dataset_utils import create_filter_predicate_on_length
+from datasets.hunks_splitting import split_on_hunks, leave_only_changed, insert_new_hunk_token_into_sequence, \
+    insert_new_hunk_token_into_diff
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
 
@@ -14,7 +16,7 @@ from neural_editor.seq2seq.config import Config
 class CodeChangesTokensDataset(data.Dataset):
     """Defines a dataset for code changes. It parses text files with tokens"""
 
-    def __init__(self, path: str, field: Field, config: Config, filter_pred) -> None:
+    def __init__(self, path: str, field: Field, config: Config, filter_pred, max_size=None) -> None:
         """Create a TranslationDataset given paths and fields.
 
         Arguments:
@@ -41,10 +43,24 @@ class CodeChangesTokensDataset(data.Dataset):
             errors = 0
             for prev_line, updated_line, stable_line, original_id_line in zip(prev, updated, stable, original_ids):
                 total += 1
+                if max_size is not None and total > max_size:
+                    break
+
                 prev_line, updated_line, stable_line, original_id_line = \
                     prev_line.strip(), updated_line.strip(), stable_line.strip(), original_id_line.strip()
                 diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
-                                                   leave_only_changed=config['LEAVE_ONLY_CHANGED'])
+                                                   leave_only_changed=False)
+                diff_hunk_ids, prev_hunk_ids, updated_hunk_ids = split_on_hunks(diff,
+                                                                                config['UNCHANGED_TOKEN'],
+                                                                                config['PADDING_TOKEN'])
+                if config['LEAVE_ONLY_CHANGED']:
+                    diff, diff_hunk_ids = leave_only_changed(diff, diff_hunk_ids, config['UNCHANGED_TOKEN'])
+                prev_line = ' '.join(insert_new_hunk_token_into_sequence(prev_line.split(' '), prev_hunk_ids,
+                                                                         config['HUNK_TOKEN']))
+                updated_line = ' '.join(insert_new_hunk_token_into_sequence(updated_line.split(' '), updated_hunk_ids,
+                                                                            config['HUNK_TOKEN']))
+                diff = insert_new_hunk_token_into_diff(diff, diff_hunk_ids, config['HUNK_TOKEN'],
+                                                       config['UNCHANGED_TOKEN'])
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
                                                  diff[0], diff[1], diff[2]))
                 if not is_correct:
@@ -61,9 +77,12 @@ class CodeChangesTokensDataset(data.Dataset):
     def load_datasets(path: str, field: Field, config: Config,
                       train: str = 'train', val: str = 'val', test: str = 'test') -> Tuple[Dataset, Dataset, Dataset]:
         filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
-        train_data: Dataset = CodeChangesTokensDataset(os.path.join(path, train), field, config, filter_predicate)
-        val_data: Dataset = CodeChangesTokensDataset(os.path.join(path, val), field, config, filter_predicate)
-        test_data: Dataset = CodeChangesTokensDataset(os.path.join(path, test), field, config, filter_predicate)
+        train_data: Dataset = CodeChangesTokensDataset(os.path.join(path, train), field, config, filter_predicate,
+                                                       max_size=None)
+        val_data: Dataset = CodeChangesTokensDataset(os.path.join(path, val), field, config, filter_predicate,
+                                                     max_size=None)
+        test_data: Dataset = CodeChangesTokensDataset(os.path.join(path, test), field, config, filter_predicate,
+                                                      max_size=None)
         return train_data, val_data, test_data
 
     @staticmethod
@@ -83,7 +102,8 @@ class CodeChangesTokensDataset(data.Dataset):
         return train_data, val_data, test_data, diffs_field
 
     @staticmethod
-    def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field, config: Config) -> None:
+    def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field,
+                        config: Config) -> None:
         """ This prints some useful stuff about our data sets. """
 
         print("Data set sizes (number of sentence pairs):")
