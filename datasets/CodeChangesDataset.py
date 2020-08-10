@@ -1,5 +1,4 @@
 import os
-import sys
 from typing import Tuple
 
 from torch.utils.data import Dataset
@@ -7,8 +6,7 @@ from torchtext import data
 from torchtext.data import Field, Dataset
 
 from datasets.dataset_utils import create_filter_predicate_on_length
-from datasets.hunks_splitting import split_on_hunks, leave_only_changed, insert_new_hunk_token_into_sequence, \
-    insert_new_hunk_token_into_diff
+from datasets.hunks_splitting import diff_sequences_and_add_hunks
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
 
@@ -48,19 +46,7 @@ class CodeChangesTokensDataset(data.Dataset):
 
                 prev_line, updated_line, stable_line, original_id_line = \
                     prev_line.strip(), updated_line.strip(), stable_line.strip(), original_id_line.strip()
-                diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
-                                                   leave_only_changed=False)
-                diff_hunk_ids, prev_hunk_ids, updated_hunk_ids = split_on_hunks(diff,
-                                                                                config['UNCHANGED_TOKEN'],
-                                                                                config['PADDING_TOKEN'])
-                if config['LEAVE_ONLY_CHANGED']:
-                    diff, diff_hunk_ids = leave_only_changed(diff, diff_hunk_ids, config['UNCHANGED_TOKEN'])
-                prev_line = ' '.join(insert_new_hunk_token_into_sequence(prev_line.split(' '), prev_hunk_ids,
-                                                                         config['HUNK_TOKEN']))
-                updated_line = ' '.join(insert_new_hunk_token_into_sequence(updated_line.split(' '), updated_hunk_ids,
-                                                                            config['HUNK_TOKEN']))
-                diff = insert_new_hunk_token_into_diff(diff, diff_hunk_ids, config['HUNK_TOKEN'],
-                                                       config['UNCHANGED_TOKEN'])
+                diff, prev_line, updated_line = diff_sequences_and_add_hunks(prev_line, updated_line, differ, config)
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
                                                  diff[0], diff[1], diff[2]))
                 if not is_correct:
@@ -78,11 +64,11 @@ class CodeChangesTokensDataset(data.Dataset):
                       train: str = 'train', val: str = 'val', test: str = 'test') -> Tuple[Dataset, Dataset, Dataset]:
         filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
         train_data: Dataset = CodeChangesTokensDataset(os.path.join(path, train), field, config, filter_predicate,
-                                                       max_size=None)
+                                                       max_size=512)
         val_data: Dataset = CodeChangesTokensDataset(os.path.join(path, val), field, config, filter_predicate,
-                                                     max_size=None)
+                                                     max_size=128)
         test_data: Dataset = CodeChangesTokensDataset(os.path.join(path, test), field, config, filter_predicate,
-                                                      max_size=None)
+                                                      max_size=128)
         return train_data, val_data, test_data
 
     @staticmethod

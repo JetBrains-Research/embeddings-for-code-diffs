@@ -6,6 +6,7 @@ from torchtext import data
 from torchtext.data import Field, Dataset
 
 from datasets.dataset_utils import create_filter_predicate_on_length
+from datasets.hunks_splitting import diff_sequences_and_add_hunks
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
 
@@ -27,8 +28,7 @@ class StablePatchPredictionDataset(data.Dataset):
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
             for stable_line, prev_line, updated_line in zip(stable, prev, updated):
                 stable_line, prev_line, updated_line = stable_line.strip(), prev_line.strip(), updated_line.strip()
-                diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
-                                                   leave_only_changed=config['LEAVE_ONLY_CHANGED'])
+                diff, prev_line, updated_line = diff_sequences_and_add_hunks(prev_line, updated_line, differ, config)
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
                                                  diff[0], diff[1], diff[2]))
                 if not is_correct:

@@ -1,6 +1,22 @@
 from typing import List, Tuple
 
 
+def diff_sequences_and_add_hunks(prev_line, updated_line, differ, config):
+    diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
+                                       leave_only_changed=False)
+    diff_hunk_ids, prev_hunk_ids, updated_hunk_ids = split_on_hunks(diff,
+                                                                    config['UNCHANGED_TOKEN'],
+                                                                    config['PADDING_TOKEN'])
+    if config['LEAVE_ONLY_CHANGED']:
+        diff, diff_hunk_ids = leave_only_changed(diff, diff_hunk_ids, config['UNCHANGED_TOKEN'])
+    prev_line = ' '.join(insert_new_hunk_token_into_sequence(prev_line.split(' '), prev_hunk_ids,
+                                                             config['HUNK_TOKEN']))
+    updated_line = ' '.join(insert_new_hunk_token_into_sequence(updated_line.split(' '), updated_hunk_ids,
+                                                                config['HUNK_TOKEN']))
+    diff = insert_new_hunk_token_into_diff(diff, diff_hunk_ids, config['HUNK_TOKEN'])
+    return diff, prev_line, updated_line
+
+
 def split_on_hunks(diff: Tuple[List[str], List[str], List[str]],
                    equality_sign: str, padding_token: str, context_size=10) -> Tuple[List[int], List[int], List[int]]:
     prev_indices = []
@@ -47,20 +63,24 @@ def leave_only_changed(diff: Tuple[List[str], List[str], List[str]], diff_hunk_i
 
 
 def insert_new_hunk_token_into_sequence(sequence: List[str], sequence_hunk_ids: List[int], new_hunk_token: str) -> List[str]:
-    result_sequence = []
+    result_sequence = [new_hunk_token]
     cur_idx = 0
     for i in range(len(sequence)):
         if cur_idx < len(sequence_hunk_ids) and i == sequence_hunk_ids[cur_idx]:
             result_sequence.append(new_hunk_token)
             cur_idx += 1
         result_sequence.append(sequence[i])
+    # because of removing unchanged tokens sometimes hunk tokens should be inserted in the end
+    while cur_idx < len(sequence_hunk_ids):
+        result_sequence.append(new_hunk_token)
+        cur_idx += 1
     return result_sequence
 
 
 def insert_new_hunk_token_into_diff(diff: Tuple[List[str], List[str], List[str]], diff_hunk_ids: List[int],
-                                    new_hunk_token: str, equality_token: str) -> Tuple[List[str], List[str], List[str]]:
+                                    new_hunk_token: str) -> Tuple[List[str], List[str], List[str]]:
     return (
-        insert_new_hunk_token_into_sequence(diff[0], diff_hunk_ids, equality_token),
+        insert_new_hunk_token_into_sequence(diff[0], diff_hunk_ids, new_hunk_token),
         insert_new_hunk_token_into_sequence(diff[1], diff_hunk_ids, new_hunk_token),
         insert_new_hunk_token_into_sequence(diff[2], diff_hunk_ids, new_hunk_token),
     )
