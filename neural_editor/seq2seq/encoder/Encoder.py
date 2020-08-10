@@ -12,7 +12,7 @@ from neural_editor.seq2seq.encoder import SrcEncoder
 
 class Encoder(nn.Module):
 
-    def __init__(self, src_encoder: SrcEncoder, edit_encoder: EditEncoder) -> None:
+    def __init__(self, src_encoder: SrcEncoder, edit_encoder: EditEncoder, config) -> None:
         super(Encoder, self).__init__()
         self.src_encoder = src_encoder
         self.edit_encoder = edit_encoder
@@ -23,6 +23,7 @@ class Encoder(nn.Module):
         self.src_attention = BahdanauAttention(hidden_size=self.src_encoder.hidden_size,
                                                key_size=self.src_encoder.hidden_size * 2,
                                                query_size=None)
+        self.config = config
 
     def forward(self, batch: Batch) -> Tuple[Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
         edit_final, src_final = self.encode(batch)
@@ -72,7 +73,8 @@ class Encoder(nn.Module):
         hunks = hunks.permute(2, 1, 0, 3)
         # hunks: [NumLayers, B, MaxNumberOfHunksInBatch, H]
 
-        mask = torch.zeros((hunks.shape[0], hunks.shape[1], hunks.shape[2]), dtype=torch.bool)
+        mask = torch.zeros((hunks.shape[0], hunks.shape[1], hunks.shape[2]),
+                           dtype=torch.bool, device=self.config['DEVICE'])
         for batch_id, n in enumerate(hunk_numbers_per_example):
             mask[:, batch_id, :n] = True
 

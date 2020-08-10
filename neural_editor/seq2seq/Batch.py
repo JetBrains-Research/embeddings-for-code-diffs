@@ -5,7 +5,7 @@ import torchtext
 from torch import Tensor
 from torchtext.data import Dataset
 
-from neural_editor.batch_utils import split_sequences_on_hunks
+from neural_editor.seq2seq.batch_utils import split_sequences_on_hunks
 from neural_editor.seq2seq.config import Config
 
 
@@ -95,16 +95,16 @@ class Batch:
         self.hunk_numbers = (self.src == self.hunk_index).sum(dim=-1)
         self.diff_alignment_hunks, self.diff_alignment_hunk_lengths = \
             split_sequences_on_hunks(self.diff_alignment, self.hunk_index, self.pad_index,
-                                     self.sos_index, self.eos_index)
+                                     self.sos_index, self.eos_index, config['DEVICE'])
         self.diff_prev_hunks, self.diff_prev_hunk_lengths = \
             split_sequences_on_hunks(self.diff_prev, self.hunk_index, self.pad_index,
-                                     self.sos_index, self.eos_index)
+                                     self.sos_index, self.eos_index, config['DEVICE'])
         self.diff_updated_hunks, self.diff_updated_hunk_lengths = \
             split_sequences_on_hunks(self.diff_updated, self.hunk_index, self.pad_index,
-                                     self.sos_index, self.eos_index)
+                                     self.sos_index, self.eos_index, config['DEVICE'])
         self.src_hunks, self.src_hunk_lengths = \
             split_sequences_on_hunks(self.src, self.hunk_index, self.pad_index,
-                                     self.sos_index, self.eos_index)
+                                     self.sos_index, self.eos_index, config['DEVICE'])
 
         self.trg = None
         self.trg_y = None

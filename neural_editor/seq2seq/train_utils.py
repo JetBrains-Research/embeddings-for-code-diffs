@@ -41,7 +41,7 @@ def make_model(src_vocab_size: int, vocab_size: int, unk_index: int,
     embedding = nn.Embedding(src_vocab_size, emb_size)
     edit_encoder = EditEncoder(embedding, 3 * emb_size, edit_representation_size, num_layers, dropout)
     src_encoder = SrcEncoder(embedding, emb_size, hidden_size_encoder, num_layers=num_layers, dropout=dropout)
-    encoder = Encoder(src_encoder, edit_encoder)
+    encoder = Encoder(src_encoder, edit_encoder, config)
     model: EncoderDecoder = EncoderDecoder(
         encoder,
         Decoder(generator, embedding, emb_size, edit_representation_size,
