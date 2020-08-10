@@ -27,6 +27,13 @@ class HunkSplitter:
         return diff, prev_line, updated_line
 
     def split_on_hunks(self, diff: Tuple[List[str], List[str], List[str]]) -> Tuple[List[int], List[int], List[int]]:
+        """
+        Algorithm:
+        If met changed token,
+        then monitor unchanged context.
+        If it is enough to form full context (== context_size),
+        then add this as a separate hunk. It does not care about preceding context, if it is full or not.
+        """
         prev_indices = []
         updated_indices = []
         diff_indices = []
