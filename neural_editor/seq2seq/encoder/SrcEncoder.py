@@ -18,7 +18,7 @@ class SrcEncoder(nn.Module):
         self.rnn = nn.LSTM(input_size, hidden_size, num_layers,
                            batch_first=True, bidirectional=True, dropout=dropout)
 
-    def forward(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor]]:
+    def forward(self, x: Tensor, lengths: Tensor) -> Tuple[Tensor, Tuple[Tensor, Tensor]]:
         """
         Applies a bidirectional LSTM to sequence of embeddings x.
         The input mini-batch x needs to be sorted by length.
@@ -31,7 +31,11 @@ class SrcEncoder(nn.Module):
             Tuple[[NumLayers, B, NumDirections * SrcEncoderH], [NumLayers, B, NumDirections * SrcEncoderH]]
         ]
         """
-        x, lengths = self.embed(batch.src), batch.src_lengths
+        x = self.embed(x)
+
+        lengths, lengths_mask = torch.sort(lengths, descending=True)
+        x = x[lengths_mask, :, :]
+
         packed = pack_padded_sequence(x, lengths, batch_first=True)  # [RealTokenNumberWithoutPad, SecSeqLen]
         # packed seq, [NumLayers * NumDirections, B, SrcEncoderH], [NumLayers * NumDirections, B, SrcEncoderH]
         output, (h_n, c_n) = self.rnn(packed)
@@ -45,4 +49,5 @@ class SrcEncoder(nn.Module):
         bwd_cell = c_n[1:c_n.size(0):2]  # [NumLayers, B, SrcEncoderH]
         c_n = torch.cat([fwd_cell, bwd_cell], dim=2)  # [NumLayers, B, NumDirections * SrcEncoderH]
 
-        return output, (h_n, c_n)
+        lengths_mask_reverse = torch.argsort(lengths_mask)
+        return output[lengths_mask_reverse, :], (h_n[:, lengths_mask_reverse, :], c_n[:, lengths_mask_reverse, :])

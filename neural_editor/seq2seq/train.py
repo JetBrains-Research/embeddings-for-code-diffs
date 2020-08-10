@@ -84,7 +84,7 @@ def train(model: EncoderDecoder,
 
         print(f'Epoch {epoch} / {epochs_num}')
         model.train()
-        train_perplexity = run_epoch((rebatch(pad_index, b, train_data, config) for b in train_iter),
+        train_perplexity = run_epoch((rebatch(b, train_data, config) for b in train_iter),
                                      model, train_loss_function,
                                      train_batches_num,
                                      print_every=config['PRINT_EVERY_iTH_BATCH'])
@@ -93,16 +93,15 @@ def train(model: EncoderDecoder,
 
         model.eval()
         with torch.no_grad():
-            print_examples((rebatch(pad_index, x, val_data, config) for x in val_iter_for_print_examples),
+            print_examples((rebatch(x, val_data, config) for x in val_iter_for_print_examples),
                            model, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1, vocab, vocab, config, n=3)
 
             # TODO: consider if we should or not use teacher forcing on validation
-            val_perplexity = run_epoch((rebatch(pad_index, t, val_data, config) for t in val_iter),
+            val_perplexity = run_epoch((rebatch(t, val_data, config) for t in val_iter),
                                        model, val_loss_function,
                                        val_batches_num, print_every=config['PRINT_EVERY_iTH_BATCH'])
             correct_all_k, total, max_top_k_predicted = calculate_top_k_accuracy([1],
-                                                                                 [rebatch(pad_index, batch, val_data,
-                                                                                          config) for batch in
+                                                                                 [rebatch(batch, val_data, config) for batch in
                                                                                   val_iter],
                                                                                  decode_method, vocab,
                                                                                  vocab.stoi[config['EOS_TOKEN']],
@@ -159,7 +158,7 @@ def test_on_unclassified_data(model: EncoderDecoder,
     model.eval()
     output_accuracy_on_data(model, train_data, val_data, test_data, diffs_field.vocab, pad_index, config)
     with torch.no_grad():
-        test_perplexity = run_epoch((rebatch(pad_index, t, config) for t in test_iter),
+        test_perplexity = run_epoch((rebatch(t, test_data, config) for t in test_iter),
                                     model, test_loss_function,
                                     test_batches_num, print_every=-1)
         print(f'Test perplexity: {test_perplexity}')

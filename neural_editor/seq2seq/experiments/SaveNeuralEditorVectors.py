@@ -33,7 +33,7 @@ class SaveNeuralEditorVectors:
                                           sort_within_batch=True,
                                           sort_key=lambda x: (len(x.src), len(x.trg)),
                                           device=self.config['DEVICE'])
-            dataset_iterators[data_type] = [rebatch(self.pad_index, batch, dataset, self.config) for batch in data_iterator]
+            dataset_iterators[data_type] = [rebatch(batch, dataset, self.config) for batch in data_iterator]
 
         dataset_dicts = self.get_dataset_dicts(dataset_iterators)
         self.save_dataset_dicts(dataset_dicts)

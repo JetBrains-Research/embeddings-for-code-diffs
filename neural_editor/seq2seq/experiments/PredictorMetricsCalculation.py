@@ -45,7 +45,7 @@ class PredictorMetricsCalculation:
         data_iter = data.Iterator(dataset, batch_size=self.config['VAL_BATCH_SIZE'], train=False,
                                   sort_within_batch=True, sort_key=lambda x: len(x.src), repeat=False,
                                   device=self.config['DEVICE'])
-        data_iter = [rebatch_predictor(b) for b in data_iter]
+        data_iter = [rebatch_predictor(b, dataset, self.config) for b in data_iter]
         y_true, y_pred_probs = [], []
         for batch in data_iter:
             batch_pred_probs = self.model.predict(batch)

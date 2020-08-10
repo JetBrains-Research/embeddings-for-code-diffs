@@ -326,7 +326,7 @@ def output_accuracy_on_data(model: EncoderDecoder,
             print_examples_iterator = data.Iterator(dataset, batch_size=1, train=False, sort=False,
                                                     repeat=False, device=config['DEVICE'])
             print(f'==={label} EXAMPLES===')
-            print_examples((rebatch(pad_index, x, config) for x in print_examples_iterator),
+            print_examples((rebatch(x, dataset, config) for x in print_examples_iterator),
                            model, config['TOKENS_CODE_CHUNK_MAX_LEN'],
                            vocab, vocab, config, n=3)
             accuracy_iterator = data.Iterator(dataset, batch_size=config['TEST_BATCH_SIZE'], train=False,
@@ -334,7 +334,7 @@ def output_accuracy_on_data(model: EncoderDecoder,
                                               sort_key=lambda x: (len(x.src), len(x.trg)),
                                               repeat=False,
                                               device=config['DEVICE'])
-            accuracy = calculate_accuracy((rebatch(pad_index, t, config) for t in accuracy_iterator),
+            accuracy = calculate_accuracy((rebatch(t, dataset, config) for t in accuracy_iterator),
                                           model,
                                           config['TOKENS_CODE_CHUNK_MAX_LEN'],
                                           vocab, config)

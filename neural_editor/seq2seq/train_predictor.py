@@ -83,7 +83,7 @@ def train_classifier(model, train_dataset, val_dataset, config):
         print(f'Epoch {epoch} / {epochs_num}')
 
         total_loss, total_nseqs, y_true, y_pred_probs = 0, 0, [], []
-        batched_train_iter = [rebatch_predictor(b) for b in train_iter]
+        batched_train_iter = [rebatch_predictor(b, train_dataset, config) for b in train_iter]
         for i, batch in enumerate(batched_train_iter, 1):
             if num_not_decreasing_steps == early_stopping_rounds:
                 print(f'Training was early stopped on epoch {epoch} with early stopping rounds {early_stopping_rounds}')
@@ -102,7 +102,7 @@ def train_classifier(model, train_dataset, val_dataset, config):
                 train_metrics = aggregate_metrics(model, train_metrics, y_true, y_pred_probs, total_loss / total_nseqs)
                 total_loss, total_nseqs, y_true, y_pred_probs = 0, 0, [], []
 
-                val_metrics = validate(model, [rebatch_predictor(b) for b in val_iter], val_loss_function, val_metrics)
+                val_metrics = validate(model, [rebatch_predictor(b, val_dataset, config) for b in val_iter], val_loss_function, val_metrics)
                 if sign * val_metrics[best_on_metric][-1] < min_metric_value:
                     save_model(model, 'best_on_validation_predictor', config)
                     min_metric_value = sign * val_metrics[best_on_metric][-1]
