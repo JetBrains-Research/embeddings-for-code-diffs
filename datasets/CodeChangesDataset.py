@@ -1,4 +1,6 @@
 import os
+import sys
+from pathlib import Path
 from typing import Tuple
 
 from torch.utils.data import Dataset
@@ -26,7 +28,6 @@ class CodeChangesTokensDataset(data.Dataset):
         """
         fields = [('src', field), ('trg', field),
                   ('diff_alignment', field), ('diff_prev', field), ('diff_updated', field),
-                  ('stable', Field(sequential=False, use_vocab=False)),
                   ('ids', Field(sequential=False, use_vocab=False)),
                   ('original_ids', Field(sequential=False, use_vocab=False))]
         examples = []
@@ -35,29 +36,27 @@ class CodeChangesTokensDataset(data.Dataset):
                         config['PADDING_TOKEN'])
         hunk_splitter = HunkSplitter(config['CONTEXT_SIZE_FOR_HUNKS'], differ, config)
         with open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
-                open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated, \
-                open(os.path.join(path, 'trg.txt'), mode='r', encoding='utf-8') as stable, \
-                open(os.path.join(path, 'ids.txt'), mode='r', encoding='utf-8') as original_ids:
+                open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
             total = 0
             errors = 0
-            for prev_line, updated_line, stable_line, original_id_line in zip(prev, updated, stable, original_ids):
+            original_ids_file = Path(os.path.join(path, 'ids.txt'))
+            original_ids = original_ids_file.read_text().splitlines(keepends=False) if original_ids_file.is_file() else None
+            for prev_line, updated_line in zip(prev, updated):
                 total += 1
                 if max_size is not None and total > max_size:
                     break
-
-                prev_line, updated_line, stable_line, original_id_line = \
-                    prev_line.strip(), updated_line.strip(), stable_line.strip(), original_id_line.strip()
+                original_id = int(original_ids[total - 1]) if original_ids is not None else total - 1
+                prev_line, updated_line = prev_line.strip(), updated_line.strip()
                 diff, prev_line, updated_line = hunk_splitter.diff_sequences_and_add_hunks(prev_line, updated_line)
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
                                                  diff[0], diff[1], diff[2]))
                 if not is_correct:
                     errors += 1
-                    # print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
+                    print(f'Incorrect {total - 1} example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
-                    [prev_line, updated_line, diff[0], diff[1], diff[2], int(stable_line),
-                     len(examples), int(original_id_line)], fields))
-        print(f'Errors: {errors} / {total} = {errors / total}')
+                    [prev_line, updated_line, diff[0], diff[1], diff[2], len(examples), original_id], fields))
+            print(f'Errors: {errors} / {total} = {errors / total}')
         super(CodeChangesTokensDataset, self).__init__(examples, fields)
 
     @staticmethod
@@ -111,7 +110,6 @@ class CodeChangesTokensDataset(data.Dataset):
         print("diff_alignment:", " ".join(vars(train_data[0])['diff_alignment']))
         print("diff_prev     :", " ".join(vars(train_data[0])['diff_prev']))
         print("diff_updated  :", " ".join(vars(train_data[0])['diff_updated']))
-        print("stable        :", vars(train_data[0])['stable'], '\n')
 
         print("Most common words:")
         print("\n".join(["%10s %10d" % x for x in field.vocab.freqs.most_common(10)]), "\n")

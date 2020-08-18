@@ -20,6 +20,7 @@ class EncoderDecoder(nn.Module):
         self.decoder = decoder
         self.target_embed = target_embed
         self.generator = generator
+        self.edit_final = None
 
     def forward(self, batch: Batch) -> Tuple[Tensor, Tuple[Tensor, Tensor], Tensor, Tensor, Tensor]:
         """
@@ -39,6 +40,12 @@ class EncoderDecoder(nn.Module):
                               batch.trg, batch.trg_mask, None)
         return decoded
 
+    def set_edit_representation(self, batch: Batch) -> None:
+        self.edit_final, _, _ = self.encoder(batch)
+
+    def unset_edit_representation(self) -> None:
+        self.edit_final = None
+
     def encode(self, batch: Batch) -> Tuple[Tuple[Tensor, Tensor], Tensor, Tuple[Tensor, Tensor]]:
         """
         Encodes edits and prev sequences
@@ -49,7 +56,9 @@ class EncoderDecoder(nn.Module):
             Tuple[[NumLayers, B, NumDirections * SrcEncoderH], [NumLayers, B, NumDirections * SrcEncoderH]]
         ]
         """
-        return self.encoder(batch)
+        edit_final_current, src_output, src_final = self.encoder(batch)
+        edit_final = self.edit_final if self.edit_final is not None else edit_final_current
+        return edit_final, src_output, src_final
 
     def decode(self, batch: Batch, edit_final: Tuple[Tensor, Tensor],
                encoder_output: Tensor, encoder_final: Tuple[Tensor, Tensor],

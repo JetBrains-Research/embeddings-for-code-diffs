@@ -11,14 +11,16 @@ import torch.backends.cudnn
 class Config:
     _CONFIG = {
         'IS_TEST': False,
-        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_5_canonicalized_low_frequency_10_intersected/patchnet_timestamps/fold_1',
+        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
         'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_5_canonicalized_low_frequency_10_intersected/patchnet_timestamps/fold_1',
+        'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
+        'TUFANO_LABELED_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/50_100',
         'TRAIN_STABLE_PATCH_PREDICTOR': True,
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
-        'TOKENS_CODE_CHUNK_MAX_LEN': 400,
+        'TOKENS_CODE_CHUNK_MAX_LEN': 300,
         'CONTEXT_SIZE_FOR_HUNKS': 10,
         'OUTPUT_PATH': '../../../embeddings-for-code-diffs-data/last_execution/',
-        'COMMIT_HASHES_PATH': '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/commits_and_stable_jul28_patchnet_format',
+        'COMMIT_HASHES_PATH': None,
         'BLEU_PERL_SCRIPT_PATH': './experiments/multi-bleu.perl',  # Path to BLEU script calculator
         'UNK_TOKEN': "<unk>",
         'PAD_TOKEN': "<pad>",
@@ -71,10 +73,11 @@ class Config:
         'MAX_NUMBER_OF_EXAMPLES_TEST': None,
     }
 
-    _PATH_KEYS = ['DATASET_ROOT', 'DATASET_ROOT_COMMIT', 'OUTPUT_PATH', 'BLEU_PERL_SCRIPT_PATH', 'COMMIT_HASHES_PATH']
+    _PATH_KEYS = ['DATASET_ROOT', 'DATASET_ROOT_COMMIT', 'TUFANO_LABELED_0_50_PATH', 'TUFANO_LABELED_50_100_PATH',
+                  'OUTPUT_PATH', 'BLEU_PERL_SCRIPT_PATH', 'COMMIT_HASHES_PATH']
 
     def __getitem__(self, key: str) -> Any:
-        if key in self._PATH_KEYS:
+        if key in self._PATH_KEYS and self._CONFIG[key] is not None:
             return os.path.abspath(os.path.join(os.path.dirname(__file__), self._CONFIG[key]))
         return self._CONFIG[key]
 
@@ -87,18 +90,14 @@ class Config:
 
     def change_config_for_test(self) -> None:
         self._CONFIG['IS_TEST'] = True
-        self._CONFIG['DATASET_ROOT'] = \
-            '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_test/neural_editor'
-        self._CONFIG['DATASET_ROOT_COMMIT'] = \
-            '../../../embeddings-for-code-diffs-data/datasets/stable_patches_detection/PatchNet_test/predictor'
         self._CONFIG['EVALUATION_ROUNDS_CLASSIFIER'] = 2
         self._CONFIG['MAX_NUM_OF_EPOCHS'] = 2
         self._CONFIG['BATCH_SIZE'] = 5
         self._CONFIG['VAL_BATCH_SIZE'] = 5
         self._CONFIG['TEST_BATCH_SIZE'] = 5
-        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_TRAIN'] = 512
-        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_VAL'] = 128
-        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_TEST'] = 128
+        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_TRAIN'] = 64
+        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_VAL'] = 32
+        self._CONFIG['MAX_NUMBER_OF_EXAMPLES_TEST'] = 32
 
 
 def load_config(is_test: bool, path_to_config: Path = None) -> Config:
