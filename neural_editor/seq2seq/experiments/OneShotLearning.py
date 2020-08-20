@@ -30,7 +30,7 @@ class OneShotLearning:
                                                 verbose=False)
 
     def conduct(self, dataset: Dataset, classes: List[str], dataset_label: str) -> None:
-        print(f'Start conducting one shot learning experiment for {dataset_label}...')
+        print(f'Start conducting one shot learning experiment for {dataset_label}...', flush=True)
         data_iterator = data.Iterator(dataset, batch_size=1,
                                       sort=False, train=False, shuffle=False, device=self.config['DEVICE'])
         current_class = None
@@ -74,7 +74,7 @@ class OneShotLearning:
         for correct_top_specific_k, k in zip(correct_top_k_other_edit_representation, self.topk_values):
             print(f'Top-{k} accuracy on {dataset_label} for other edit representations: '
                   f'{correct_top_specific_k} / {total_other_edit_representation} = '
-                  f'{correct_top_specific_k / total_other_edit_representation}')
+                  f'{correct_top_specific_k / total_other_edit_representation}', flush=True)
         self.print_examples(correct_examples, is_correct=True)
         self.print_examples(incorrect_examples, is_correct=False)
 

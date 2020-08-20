@@ -18,6 +18,7 @@ from neural_editor.seq2seq.experiments.AccuracyCalculation import AccuracyCalcul
 from neural_editor.seq2seq.experiments.BleuCalculation import BleuCalculation
 from neural_editor.seq2seq.experiments.EditRepresentationVisualization import EditRepresentationVisualization
 from neural_editor.seq2seq.experiments.NearestNeighbors import NearestNeighbors, FeaturesType
+from neural_editor.seq2seq.experiments.OneShotLearning import OneShotLearning
 from neural_editor.seq2seq.test_utils import load_defects4j_dataset, load_labeled_dataset, save_predicted
 
 
@@ -74,7 +75,7 @@ def test_commit_message_generation_model(model: EncoderDecoder, config: Config, 
 def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
     train_dataset, val_dataset, test_dataset, diffs_field = \
         CodeChangesTokensDataset.load_data(verbose=True, config=config)
-    if not config['USE_EDIT_REPRESENTATION']:
+    if not config['ANALYZE_NE']:
         print('Neural editor will not be tested because edit representations are not used.')
         return diffs_field
     train_dataset_test_size_part = take_part_from_dataset(train_dataset, len(test_dataset))
@@ -87,12 +88,21 @@ def test_neural_editor_model(model: EncoderDecoder, config: Config) -> Field:
     accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
                                                           greedy=False, config=config)
     bleu_calculation_experiment = BleuCalculation(config)
-    visualization_experiment = EditRepresentationVisualization(model, diffs_field, config)
+    one_shot_learning_experiment = OneShotLearning(model, diffs_field, config)
 
     model.eval()
     model.unset_edit_representation()
     with torch.no_grad():
         # Accuracy
+        measure_experiment_time(
+            lambda: one_shot_learning_experiment.conduct(tufano_labeled_0_50_dataset, tufano_labeled_0_50_classes,
+                                                         'Tufano Labeled 0 50 Code Changes')
+        )
+        measure_experiment_time(
+            lambda: one_shot_learning_experiment.conduct(tufano_labeled_50_100_dataset, tufano_labeled_50_100_classes,
+                                                         'Tufano Labeled 50 100 Code Changes')
+        )
+
         test_max_top_k_predicted = measure_experiment_time(
             lambda: accuracy_calculation_experiment.conduct(test_dataset, 'Test dataset')
         )

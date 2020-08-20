@@ -22,21 +22,22 @@ def main():
     fields = (diffs_field, diffs_field, diffs_field)
     neural_editor = run_train(train_dataset, val_dataset, fields,
                               'neural_editor', edit_encoder=None, encoder=None, config=config,
-                              only_make_model=not config['USE_EDIT_REPRESENTATION'])
-    print('\n====STARTING TRAINING OF COMMIT MESSAGE GENERATOR====\n', end='')
-    config.set_cmg_mode(True)
-    train_dataset_commit, val_dataset_commit, test_dataset_commit, fields_commit = \
-        CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
-    commit_message_generator = run_train(train_dataset_commit, val_dataset_commit, fields_commit,
-                                         'commit_msg_generator', neural_editor.edit_encoder, neural_editor.encoder,
-                                         config=config)
+                              only_make_model=not config['TRAIN_NE'])
     print('\n====STARTING NEURAL EDITOR EVALUATION====\n', end='')
     test_neural_editor_model(neural_editor, config)
-    print('\n====STARTING COMMIT MSG GENERATOR EVALUATION====\n', end='')
-    print('\n====BEAM SEARCH====\n')
-    test_commit_message_generation_model(commit_message_generator, config, diffs_field, greedy=False)
-    print('\n====GREEDY====\n')
-    test_commit_message_generation_model(commit_message_generator, config, diffs_field, greedy=True)
+    if config['TRAIN_CMG']:
+        print('\n====STARTING TRAINING OF COMMIT MESSAGE GENERATOR====\n', end='')
+        config.set_cmg_mode(True)
+        train_dataset_commit, val_dataset_commit, test_dataset_commit, fields_commit = \
+            CommitMessageGenerationDataset.load_data(diffs_field, config['VERBOSE'], config)
+        commit_message_generator = run_train(train_dataset_commit, val_dataset_commit, fields_commit,
+                                             'commit_msg_generator', neural_editor.edit_encoder, neural_editor.encoder,
+                                             config=config)
+        print('\n====STARTING COMMIT MSG GENERATOR EVALUATION====\n', end='')
+        print('\n====BEAM SEARCH====\n')
+        test_commit_message_generation_model(commit_message_generator, config, diffs_field, greedy=False)
+        print('\n====GREEDY====\n')
+        test_commit_message_generation_model(commit_message_generator, config, diffs_field, greedy=True)
 
 
 if __name__ == "__main__":

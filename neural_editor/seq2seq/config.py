@@ -10,13 +10,14 @@ import torch.backends.cudnn
 
 class Config:
     _CONFIG = {
+        'TRAIN_CMG': False,
         'IS_TEST': False,
         'IS_COMMIT_GENERATION': False,
-        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_100',
+        'DATASET_ROOT': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes/0_50',
         'DATASET_ROOT_COMMIT': '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Tufano',
         'FREEZE_EDIT_ENCODER_WEIGHTS': True,
-        'TOKENS_CODE_CHUNK_MAX_LEN': 100,
-        'MSG_MAX_LEN': 15,
+        'TOKENS_CODE_CHUNK_MAX_LEN': 121,
+        'MSG_MAX_LEN': 30,
         'DEFECTS4J_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/Defects4J',
         'TUFANO_LABELED_0_50_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/0_50',
         'TUFANO_LABELED_50_100_PATH': '../../../embeddings-for-code-diffs-data/datasets/java/tufano_code_changes/labeled/50_100',
@@ -42,21 +43,20 @@ class Config:
         'ENCODER_HIDDEN_SIZE': 128,
         'DECODER_HIDDEN_SIZE': 256,
         'NUM_LAYERS': 2,
-        'USE_EDIT_REPRESENTATION': True,
-        'WORD_EMBEDDING_SIZE_COMMIT': 128,  # TODO: not used
-        'ENCODER_HIDDEN_SIZE_COMMIT': 128,  # TODO: not used
-        'DECODER_HIDDEN_SIZE_COMMIT': 256,  # TODO: not used
+        'ANALYZE_NE': True,
+        'TRAIN_NE': True,
+        'USE_EDIT_REPRESENTATION': False,
         'NUM_LAYERS_COMMIT': 2,
-        'USE_COPYING_MECHANISM': True,
+        'USE_COPYING_MECHANISM': {'cmg': True, 'ne': False},
         'CONDUCT_EVALUATION_ON_TUFANO_AND_DEFECTS4J': False,
         'TEACHER_FORCING_RATIO': 0.9,
         'DROPOUT': 0.2,
         'USE_BRIDGE': True,
-        'EARLY_STOPPING_ROUNDS': {'ne': 100, 'cmg': 80},
-        'BEAM_SIZE': 50,
+        'EARLY_STOPPING_ROUNDS': {'ne': 25, 'cmg': 100},
+        'BEAM_SIZE': 5,
         'NUM_GROUPS': 1,
         'DIVERSITY_STRENGTH': None,
-        'TOP_K': [1, 3, 5, 10, 50],
+        'TOP_K': [1, 3, 5],
         'BEST_ON': {'ne': 'PPL', 'cmg': 'BLEU'},
         'START_BEST_FROM_EPOCH': 0,
         'REPLACEMENT_TOKEN': 'замена',
@@ -102,7 +102,7 @@ class Config:
     def change_config_for_test(self) -> None:
         self._CONFIG['IS_TEST'] = True
         self._CONFIG['DATASET_ROOT'] = \
-            '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset_test/partitioned/neural_editor'
+            '../../../embeddings-for-code-diffs-data/datasets/java/tufano_bug_fixes_test/0_50'
         self._CONFIG['DATASET_ROOT_COMMIT'] = \
             '../../../embeddings-for-code-diffs-data/datasets/commit_message_generation/Jiang/filtered_dataset_test/partitioned/commit_message_generator'
         self._CONFIG['TUFANO_LABELED_0_50_PATH'] = \
