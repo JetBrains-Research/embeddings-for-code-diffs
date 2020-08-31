@@ -47,7 +47,7 @@ class AccuracyCalculation:
                                       device=self.config['DEVICE'])
         correct_all_k, total, max_top_k_predicted = \
             calculate_top_k_accuracy(self.topk_values,
-                                     [rebatch(self.pad_index, batch, dataset, self.config) for batch in data_iterator],
+                                     [rebatch(batch, dataset, self.config) for batch in data_iterator],
                                      self.decode_method, self.trg_vocab, self.eos_index, len(dataset))
         for correct_top_k, k in zip(correct_all_k, self.topk_values):
             print(f'Top-{k} accuracy: {correct_top_k} / {total} = {correct_top_k / total}')

@@ -21,7 +21,7 @@ class PredictorExamplesPrinting:
                                   device=self.config['DEVICE'])
         vocab = dataset.fields['src'].vocab
         for i, batch in enumerate(data_iter, 1):
-            batch = rebatch_predictor(batch)
+            batch = rebatch_predictor(batch, dataset, self.config)
             print(f'\n====EXAMPLE {i}====')
             print(f'ID: {batch.ids[0].data.item()}')
             src = batch.src.cpu().numpy()[0, 1:-1]

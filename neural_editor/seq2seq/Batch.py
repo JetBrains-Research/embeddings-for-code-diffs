@@ -1,10 +1,11 @@
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict
 
 import torch
 import torchtext
 from torch import Tensor
 from torchtext.data import Dataset
 
+from neural_editor.seq2seq.batch_utils import split_sequences_on_hunks
 from neural_editor.seq2seq.config import Config
 
 
@@ -43,7 +44,8 @@ class Batch:
         return trg
 
     @staticmethod
-    def create_scatter_indices(src: Tensor, ids: Tensor, oov_indices: Tensor, pad_index: int, dataset: Dataset) -> Tensor:
+    def create_scatter_indices(src: Tensor, ids: Tensor, oov_indices: Tensor, pad_index: int,
+                               dataset: Dataset) -> Tensor:
         # TODO: optimizer and get rid of this method
         # TODO: consider to exclude from scatter_indices <s> and </s> (but it looks like a bad idea)
         trg_vocab = dataset.fields['trg'].vocab
@@ -60,8 +62,13 @@ class Batch:
     def __init__(self, src: Tuple[Tensor, Tensor], trg: Tuple[Tensor, Tensor],
                  diff_alignment: Tuple[Tensor, Tensor],
                  diff_prev: Tuple[Tensor, Tensor], diff_updated: Tuple[Tensor, Tensor],
-                 ids: Tensor, original_ids: Tensor, dataset: Dataset,
-                 pad_index: int, config: Config) -> None:
+                 ids: Tensor, original_ids: Tensor,
+                 dataset: Dataset, config: Config) -> None:
+        self.hunk_index = dataset.fields['src'].vocab.stoi[config['HUNK_TOKEN']]
+        self.pad_index = dataset.fields['src'].vocab.stoi[config['PAD_TOKEN']]
+        self.sos_index = dataset.fields['src'].vocab.stoi[config['SOS_TOKEN']]
+        self.eos_index = dataset.fields['src'].vocab.stoi[config['EOS_TOKEN']]
+
         src, src_lengths = src  # B * SrcSeqLen, B
         # TODO_DONE: remove first sos token, it makes results worse
         # src = src[1:]
@@ -71,19 +78,33 @@ class Batch:
         self.oov_vocab, self.oov_indices = Batch.create_oov_vocab(ids, dataset, config)
         self.oov_vocab_reverse = {value: key for key, value in self.oov_vocab.items()}
         self.oov_num = len(self.oov_vocab)
-        self.scatter_indices = Batch.create_scatter_indices(src, ids, self.oov_indices, pad_index, dataset)
+        self.scatter_indices = Batch.create_scatter_indices(src, ids, self.oov_indices, self.pad_index, dataset)
 
         self.diff_alignment, self.diff_alignment_lengths = diff_alignment  # B * SeqAlignedLen, B
-        self.diff_alignment_mask = (self.diff_alignment != pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
+        self.diff_alignment_mask = (self.diff_alignment != self.pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
         self.diff_prev, self.diff_prev_lengths = diff_prev  # B * SeqAlignedLen, B
-        self.diff_prev_mask = (self.diff_prev != pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
+        self.diff_prev_mask = (self.diff_prev != self.pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
         self.diff_updated, self.diff_updated_lengths = diff_updated  # B * SeqAlignedLen, B
-        self.diff_updated_mask = (self.diff_updated != pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
+        self.diff_updated_mask = (self.diff_updated != self.pad_index).unsqueeze(-2)  # B * 1 * SeqAlignedLen
 
         self.src = src  # B * SrcSeqLen
         self.src_lengths = src_lengths  # B
-        self.src_mask = (src != pad_index).unsqueeze(-2)  # B * 1 * SrcSeqLen
+        self.src_mask = (src != self.pad_index).unsqueeze(-2)  # B * 1 * SrcSeqLen
         self.nseqs = src.size(0)
+
+        self.hunk_numbers = (self.src == self.hunk_index).sum(dim=-1)
+        self.diff_alignment_hunks, self.diff_alignment_hunk_lengths = \
+            split_sequences_on_hunks(self.diff_alignment, self.hunk_index, self.pad_index,
+                                     self.sos_index, self.eos_index, config['DEVICE'])
+        self.diff_prev_hunks, self.diff_prev_hunk_lengths = \
+            split_sequences_on_hunks(self.diff_prev, self.hunk_index, self.pad_index,
+                                     self.sos_index, self.eos_index, config['DEVICE'])
+        self.diff_updated_hunks, self.diff_updated_hunk_lengths = \
+            split_sequences_on_hunks(self.diff_updated, self.hunk_index, self.pad_index,
+                                     self.sos_index, self.eos_index, config['DEVICE'])
+        self.src_hunks, self.src_hunk_lengths = \
+            split_sequences_on_hunks(self.src, self.hunk_index, self.pad_index,
+                                     self.sos_index, self.eos_index, config['DEVICE'])
 
         self.trg = None
         self.trg_y = None
@@ -97,9 +118,9 @@ class Batch:
             self.trg = trg[:, :-1]  # B * (TrgSeqLen - 1), removing eos from sequences
             self.trg_lengths = trg_lengths  # B
             self.trg_y = trg[:, 1:]  # B * (TrgSeqLen - 1), removing sos from sequences
-            self.trg_mask = (self.trg_y != pad_index)  # B * (TrgSeqLen - 1)
+            self.trg_mask = (self.trg_y != self.pad_index)  # B * (TrgSeqLen - 1)
             self.trg_y_extended_vocab = Batch.get_extended_target(self.trg_y, ids, dataset, self.oov_vocab)
-            self.ntokens = (self.trg_y != pad_index).data.sum().item()
+            self.ntokens = (self.trg_y != self.pad_index).data.sum().item()
 
         self.src = self.src.to(config['DEVICE'])
         self.src_mask = self.src_mask.to(config['DEVICE'])
@@ -114,8 +135,8 @@ class Batch:
         return self.nseqs
 
 
-def rebatch(pad_idx: int, batch: torchtext.data.Batch, dataset: Dataset, config: Config) -> Batch:
+def rebatch(batch: torchtext.data.Batch, dataset: Dataset, config: Config) -> Batch:
     """Wrap torchtext batch into our own Batch class for pre-processing"""
     # These fields are added dynamically by PyTorch
     return Batch(batch.src, batch.trg, batch.diff_alignment,
-                 batch.diff_prev, batch.diff_updated, batch.ids, batch.original_ids, dataset, pad_idx, config)
+                 batch.diff_prev, batch.diff_updated, batch.ids, batch.original_ids, dataset, config)

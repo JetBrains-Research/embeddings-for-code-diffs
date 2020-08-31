@@ -1,11 +1,13 @@
 import os
 import sys
+from pathlib import Path
 from typing import Tuple
 
 from torch.utils.data import Dataset
 from torchtext import data
 from torchtext.data import Field, Dataset
 
+from datasets.HunkSplitter import HunkSplitter
 from datasets.dataset_utils import create_filter_predicate_on_length
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
@@ -14,7 +16,7 @@ from neural_editor.seq2seq.config import Config
 class CodeChangesTokensDataset(data.Dataset):
     """Defines a dataset for code changes. It parses text files with tokens"""
 
-    def __init__(self, path: str, field: Field, config: Config, filter_pred) -> None:
+    def __init__(self, path: str, field: Field, config: Config, filter_pred, max_size=None) -> None:
         """Create a TranslationDataset given paths and fields.
 
         Arguments:
@@ -26,44 +28,47 @@ class CodeChangesTokensDataset(data.Dataset):
         """
         fields = [('src', field), ('trg', field),
                   ('diff_alignment', field), ('diff_prev', field), ('diff_updated', field),
-                  ('stable', Field(sequential=False, use_vocab=False)),
                   ('ids', Field(sequential=False, use_vocab=False)),
                   ('original_ids', Field(sequential=False, use_vocab=False))]
         examples = []
         differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
                         config['ADDITION_TOKEN'], config['UNCHANGED_TOKEN'],
                         config['PADDING_TOKEN'])
+        hunk_splitter = HunkSplitter(config['CONTEXT_SIZE_FOR_HUNKS'], differ, config)
         with open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
-                open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated, \
-                open(os.path.join(path, 'trg.txt'), mode='r', encoding='utf-8') as stable, \
-                open(os.path.join(path, 'ids.txt'), mode='r', encoding='utf-8') as original_ids:
+                open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
             total = 0
             errors = 0
-            for prev_line, updated_line, stable_line, original_id_line in zip(prev, updated, stable, original_ids):
+            original_ids_file = Path(os.path.join(path, 'ids.txt'))
+            original_ids = original_ids_file.read_text().splitlines(keepends=False) if original_ids_file.is_file() else None
+            for prev_line, updated_line in zip(prev, updated):
                 total += 1
-                prev_line, updated_line, stable_line, original_id_line = \
-                    prev_line.strip(), updated_line.strip(), stable_line.strip(), original_id_line.strip()
-                diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
-                                                   leave_only_changed=config['LEAVE_ONLY_CHANGED'])
+                if max_size is not None and total > max_size:
+                    break
+                original_id = int(original_ids[total - 1]) if original_ids is not None else total - 1
+                prev_line, updated_line = prev_line.strip(), updated_line.strip()
+                diff, prev_line, updated_line = hunk_splitter.diff_sequences_and_add_hunks(prev_line, updated_line)
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
                                                  diff[0], diff[1], diff[2]))
                 if not is_correct:
                     errors += 1
-                    # print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
+                    print(f'Incorrect {total - 1} example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
-                    [prev_line, updated_line, diff[0], diff[1], diff[2], int(stable_line),
-                     len(examples), int(original_id_line)], fields))
-        print(f'Errors: {errors} / {total} = {errors / total}')
+                    [prev_line, updated_line, diff[0], diff[1], diff[2], len(examples), original_id], fields))
+            print(f'Errors: {errors} / {total} = {errors / total}')
         super(CodeChangesTokensDataset, self).__init__(examples, fields)
 
     @staticmethod
     def load_datasets(path: str, field: Field, config: Config,
                       train: str = 'train', val: str = 'val', test: str = 'test') -> Tuple[Dataset, Dataset, Dataset]:
         filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
-        train_data: Dataset = CodeChangesTokensDataset(os.path.join(path, train), field, config, filter_predicate)
-        val_data: Dataset = CodeChangesTokensDataset(os.path.join(path, val), field, config, filter_predicate)
-        test_data: Dataset = CodeChangesTokensDataset(os.path.join(path, test), field, config, filter_predicate)
+        train_data: Dataset = CodeChangesTokensDataset(os.path.join(path, train), field, config, filter_predicate,
+                                                       max_size=config['MAX_NUMBER_OF_EXAMPLES_TRAIN'])
+        val_data: Dataset = CodeChangesTokensDataset(os.path.join(path, val), field, config, filter_predicate,
+                                                     max_size=config['MAX_NUMBER_OF_EXAMPLES_VAL'])
+        test_data: Dataset = CodeChangesTokensDataset(os.path.join(path, test), field, config, filter_predicate,
+                                                      max_size=config['MAX_NUMBER_OF_EXAMPLES_TEST'])
         return train_data, val_data, test_data
 
     @staticmethod
@@ -83,7 +88,8 @@ class CodeChangesTokensDataset(data.Dataset):
         return train_data, val_data, test_data, diffs_field
 
     @staticmethod
-    def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field, config: Config) -> None:
+    def print_data_info(train_data: Dataset, valid_data: Dataset, test_data: Dataset, field: Field,
+                        config: Config) -> None:
         """ This prints some useful stuff about our data sets. """
 
         print("Data set sizes (number of sentence pairs):")
@@ -104,7 +110,6 @@ class CodeChangesTokensDataset(data.Dataset):
         print("diff_alignment:", " ".join(vars(train_data[0])['diff_alignment']))
         print("diff_prev     :", " ".join(vars(train_data[0])['diff_prev']))
         print("diff_updated  :", " ".join(vars(train_data[0])['diff_updated']))
-        print("stable        :", vars(train_data[0])['stable'], '\n')
 
         print("Most common words:")
         print("\n".join(["%10s %10d" % x for x in field.vocab.freqs.most_common(10)]), "\n")

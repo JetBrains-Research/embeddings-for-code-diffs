@@ -43,7 +43,7 @@ class OneShotLearning:
         correct_examples = []
         incorrect_examples = []
         for i, batch in enumerate(data_iterator):
-            batch = rebatch(self.pad_index, batch, dataset, self.config)
+            batch = rebatch(batch, dataset, self.config)
             y = classes[i]
             if y != current_class:
                 self.model.set_edit_representation(batch)

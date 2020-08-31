@@ -76,7 +76,7 @@ class NearestNeighbors:
                                           sort_within_batch=True,
                                           sort_key=lambda x: (len(x.src), len(x.trg)),
                                           device=self.config['DEVICE'])
-            data_iterator = (rebatch(self.pad_index, batch, dataset, self.config) for batch in data_iterator)
+            data_iterator = (rebatch(batch, dataset, self.config) for batch in data_iterator)
             for batch in data_iterator:
                 batch_features = batch.src.detach().numpy()
                 if dataset_features is None:
@@ -98,7 +98,7 @@ class NearestNeighbors:
                                           sort_within_batch=True,
                                           sort_key=lambda x: (len(x.src), len(x.trg)),
                                           device=self.config['DEVICE'])
-            data_iterator = (rebatch(self.pad_index, batch, dataset, self.config) for batch in data_iterator)
+            data_iterator = (rebatch(batch, dataset, self.config) for batch in data_iterator)
             for batch in data_iterator:
                 edit_final, _, encoder_final = self.model.encode(batch)
                 edit_final, encoder_final = edit_final[0][-1], encoder_final[0][-1]

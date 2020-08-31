@@ -32,12 +32,14 @@ class BahdanauAttention(nn.Module):
         """
         assert mask is not None, "mask is required"
 
-        # We first project the query (the decoder state).
-        # The projected keys (the encoder states) were already pre-computated.
-        query = self.query_layer(query)  # [B, 1, DecoderH]
-
         # Calculate scores.
-        scores = self.energy_layer(torch.tanh(query + proj_key))  # [B, SrcSeqLen, 1]
+        if query is not None:
+            # We first project the query (the decoder state).
+            # The projected keys (the encoder states) were already pre-computated.
+            query = self.query_layer(query)  # [B, 1, DecoderH]
+            scores = self.energy_layer(torch.tanh(query + proj_key))  # [B, SrcSeqLen, 1]
+        else:
+            scores = self.energy_layer(torch.tanh(proj_key))
         scores = scores.squeeze(2).unsqueeze(1)  # [B, 1, SrcSeqLen]
 
         # Mask out invalid positions.
