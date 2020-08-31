@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/miniconda3/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/miniconda3/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/main.py", line 40, in <module>
+    main()
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/main.py", line 31, in main
+    test_neural_editor_model(neural_editor, config)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/analyze.py", line 103, in test_neural_editor_model
+    accuracy_calculation_experiment = AccuracyCalculation(model, diffs_field, config['TOKENS_CODE_CHUNK_MAX_LEN'] + 1,
+TypeError: __init__() missing 2 required positional arguments: 'greedy' and 'config'
+srun: error: cn-015: task 0: Exited with exit code 1

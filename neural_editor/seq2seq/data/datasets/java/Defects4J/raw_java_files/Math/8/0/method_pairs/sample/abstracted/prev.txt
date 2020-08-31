@@ -1,0 +1,1 @@
+public TYPE_1 [ ] METHOD_1 ( int VAR_1 ) throws TYPE_2 { if ( VAR_1 <= 0 ) { throw new TYPE_2 ( VAR_2 , VAR_1 ) ; } final TYPE_1 [ ] out = ( TYPE_1 [ ] ) TYPE_3 . METHOD_2 ( VAR_3 . get ( 0 ) . getClass ( ) , VAR_1 ) ; for ( int i = 0 ; i < VAR_1 ; i ++ ) { out [ i ] = METHOD_1 ( ) ; } return out ; }

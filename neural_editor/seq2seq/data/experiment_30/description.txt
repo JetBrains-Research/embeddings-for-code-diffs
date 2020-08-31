@@ -1,0 +1,3 @@
+Same as 29, but LEAVE_ONLY_CHANGED is false.
+
+Observations: t-SNE looks worse than in 29, probably because too much information for dimension = 16. best val perplexity is better (1.15 vs 1.20). Also test accuracy and other accuracies look a little bit higher BUT transfer learning is much worse, because looks like edit representation memorizes a lot of unchanged parts of diff.

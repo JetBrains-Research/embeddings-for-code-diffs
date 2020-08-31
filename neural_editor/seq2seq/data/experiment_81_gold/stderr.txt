@@ -1,0 +1,35 @@
+Traceback (most recent call last):
+  File "/miniconda3/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/miniconda3/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/main.py", line 40, in <module>
+    main()
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/main.py", line 31, in main
+    test_neural_editor_model(neural_editor, config)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/analyze.py", line 139, in test_neural_editor_model
+    lambda: visualization_experiment.conduct(tufano_labeled_0_50_dataset,
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/analyze.py", line 25, in measure_experiment_time
+    ret = func()
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/analyze.py", line 141, in <lambda>
+    classes=tufano_labeled_0_50_classes)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/experiments/EditRepresentationVisualization.py", line 28, in conduct
+    self.visualization_for_classified_dataset(dataset, filename, classes, threshold)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/experiments/EditRepresentationVisualization.py", line 43, in visualization_for_classified_dataset
+    visualize_tsne(representations[select_ind], new_classes, filename, self.config)
+  File "/mnt/embeddings-for-code-diffs/neural_editor/seq2seq/test_utils.py", line 35, in visualize_tsne
+    sns.lmplot('x', 'y', data=df, hue='classes' if classes is not None else None, fit_reg=False)
+  File "/miniconda3/lib/python3.7/site-packages/seaborn/regression.py", line 617, in lmplot
+    facets.map_dataframe(regplot, x, y, **regplot_kws)
+  File "/miniconda3/lib/python3.7/site-packages/seaborn/axisgrid.py", line 833, in map_dataframe
+    self._facet_plot(func, ax, args, kwargs)
+  File "/miniconda3/lib/python3.7/site-packages/seaborn/axisgrid.py", line 851, in _facet_plot
+    func(*plot_args, **plot_kwargs)
+  File "/miniconda3/lib/python3.7/site-packages/seaborn/regression.py", line 810, in regplot
+    x_jitter, y_jitter, color, label)
+  File "/miniconda3/lib/python3.7/site-packages/seaborn/regression.py", line 114, in __init__
+    self.dropna("x", "y", "units", "x_partial", "y_partial")
+  File "/miniconda3/lib/python3.7/site-packages/seaborn/regression.py", line 66, in dropna
+    setattr(self, var, val[not_na])
+IndexError: invalid index to scalar variable.
+srun: error: cn-016: task 0: Exited with exit code 1

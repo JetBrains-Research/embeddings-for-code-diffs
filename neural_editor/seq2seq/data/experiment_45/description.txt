@@ -1,0 +1,10 @@
+Same as 43, but EDIT_REPRESENTATION_SIZE=512 not 16 and LEAVE_ONLY_CHANGED_TOKENS=False. Expectations: performance should be much better than in 43 (or a little bit better if copying mechanism is vital for this dataset).
+
+Observations:
+Loss plots are almost the same. t-SNE looks worse because full target is remembered (512, False). But that was expected.
+45 vs 43
+best_val_perplexity: 12.87 vs 15.41 (better)
+train_acc: 0.46 vs 0.44 (better)
+test_acc: 0.040 vs 0.028 (better)
+test_acc top-50: 0.114 vs 0.103 (better)
+Interestingly, but test_acc is not high as was expected. I don't why, I was expecting that model will learn that it has target inside edit representation vector. Also train_acc isn't much higher too. But that can explained by small sampling (300).

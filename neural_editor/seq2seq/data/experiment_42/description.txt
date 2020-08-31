@@ -1,0 +1,8 @@
+Same as 29 (and no filtering of requires_grad for optimizer as in 41) but sos token in src is cut (src = src[:, 1:]). Should be almost the same as in 29 and 41.
+
+Observations:
+41 vs 29
+best val perplexity: 1.2077066608862586 vs 1.2045294114504908 (worse)
+test acc: 0.5694944301628106 vs 0.5703513281919451 (worse)
+one shot learning acc: 0.08950617283950617 vs 0.09567901234567901 (worse)
+All accuracies are almost the same, difference is about 1%. Decision: do not cut sos token in src.

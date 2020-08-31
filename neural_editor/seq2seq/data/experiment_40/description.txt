@@ -1,0 +1,8 @@
+Should be totally same as 29 experiment. Here I want to check that if we set USE_COPYING_MECHANISM=False then we get totally the same results as we were getting before copying mechanism implementation.
+
+Observations:
+                       40                       29
+best_val_perplexity: 1.2044586950175997 vs 1.2045294114504908
+test acc: 0.5665809768637532 vs 0.5703513281919451
+one shot learning acc: 0.09259259259259259 vs 0.09567901234567901
+The biggest difference in accuracy is about 1%, so we can conclude that experiment went successfully.

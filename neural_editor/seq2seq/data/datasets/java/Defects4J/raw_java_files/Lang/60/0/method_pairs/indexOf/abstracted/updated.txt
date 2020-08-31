@@ -1,0 +1,1 @@
+public int METHOD_1 ( char VAR_1 , int VAR_2 ) { VAR_2 = ( VAR_2 < 0 ? 0 : VAR_2 ) ; if ( VAR_2 >= size ) { return - 1 ; } char [ ] VAR_3 = buffer ; for ( int i = VAR_2 ; i < size ; i ++ ) { if ( VAR_3 [ i ] == VAR_1 ) { return i ; } } return - 1 ; }

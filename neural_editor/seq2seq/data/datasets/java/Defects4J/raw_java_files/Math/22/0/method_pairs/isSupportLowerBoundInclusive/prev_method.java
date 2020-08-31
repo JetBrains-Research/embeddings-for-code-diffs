@@ -1,0 +1,4 @@
+
+    public boolean isSupportLowerBoundInclusive() {
+        return true;
+    }

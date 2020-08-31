@@ -1,0 +1,1 @@
+public boolean equals ( TYPE_1 VAR_1 ) { if ( this == VAR_1 ) { return true ; } if ( VAR_1 instanceof TYPE_2 ) { TYPE_2 VAR_2 = ( TYPE_2 ) VAR_1 ; return method . equals ( VAR_2 . method ) ; } else { return method . equals ( VAR_1 ) ; } }

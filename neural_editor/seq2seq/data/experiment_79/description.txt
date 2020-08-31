@@ -1,0 +1,29 @@
+Totally the same as 73, but fixed bug with beam search BLEU and also it will run on cuda and probably finish.
+
+ERRORED EVALUATION MUST BE RUN AGAIN!
+
+Observations:
+neural editor is trained good enough based on plots
+cmg model is trained badly ppl doesn't go down, accuracy can grow (is 0.003), maybe early stopping based on accuracy?
+
+neural editor
+best_val_perplexity: 1.16
+last_train_perplexity: 1.24 (epoch 136)
+test_acc: 0.48
+train_acc_test_size: 
+train_acc_test_size top-50: 
+BLEU test: 
+BLEU train: 
+hyp_len / ref_len (on test): 
+
+commit message generator
+best_val_perplexity: 562.43
+last_train_perplexity: 46.64 (epoch 53)
+test_acc: 0 (best 0.003)
+train_acc_test_size: 
+train_acc_test_size top-50: 
+BLEU test: 
+BLEU train: 
+hyp_len / ref_len (on test): 
+
+Conclusions: 

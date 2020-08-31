@@ -1,0 +1,19 @@
+Same as 59 but EDIT_REPRESENTATION_SIZE=1. Expectations: same results.
+
+Observations:
+66 vs 62
+Loss plot looks pretty the same as in 59, but in this experiment training was a little bit longer.
+
+neural editor
+
+commit message generator
+best_val_perplexity: 58.41 vs 60.79 (a little bit better)
+last_train_perplexity: 10.37 vs 11.22 (a little bit better)
+test_acc: 0.097 vs 0.073 (better)
+train_acc_test_size: 0.105 vs 0.078 (better)
+train_acc_test_size top-50: 0.225 vs 0.217 (better)
+BLEU test: 25.05 vs 23.36 (better)
+BLEU train: 25.67 vs 24.03 (better)
+hyp_len / ref_len (on test): 0.517 vs 0.501
+
+Conclusions: BLEU is better on 1.7 which is big enough. We should consider to put 1 as edit representation size. This can be explained because even if it is always zeros it disctracts from predicting only based on src a little bit.

@@ -1,0 +1,1 @@
+public TYPE_1 METHOD_1 ( TYPE_2 < TYPE_3 > VAR_1 , TYPE_4 field , TYPE_5 < TYPE_4 > VAR_6 , TYPE_3 VAR_2 ) { TYPE_5 < TYPE_3 > VAR_3 = new TYPE_6 < TYPE_3 > ( ) ; for ( TYPE_3 VAR_4 : VAR_1 ) { if ( field . getType ( ) . METHOD_2 ( VAR_4 . getClass ( ) ) ) { VAR_3 . add ( VAR_4 ) ; } } return VAR_5 . METHOD_1 ( VAR_3 , field , VAR_6 , VAR_2 ) ; }

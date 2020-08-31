@@ -1,0 +1,18 @@
+Same as 74 but try to run on CUDA.
+
+Observations: plots are very similar
+
+75 vs 69
+neural editor
+
+commit message generator
+best_val_perplexity: 59.71 vs 59.94 (almost same)
+last_train_perplexity: 1.83 vs 1.76 (almost same)
+test_acc: 0.018 vs 0.018 (same)
+train_acc_test_size: 0.018 vs 0.018 (same)
+train_acc_test_size top-5: 0.034 vs 0.045 (worse)
+BLEU test: 15.38 vs 15.27 (almost same)
+BLEU train: 15.76 vs 15.71 (almost same)
+hyp_len / ref_len (on test): 0.432 vs 0.431 (almost same)
+
+Conclusions: results reproduced, top-5 train acc can be worse because probs are very similar...

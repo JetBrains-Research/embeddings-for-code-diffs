@@ -1,0 +1,10 @@
+Config is the same as in 39. And diff with 29 (golden config) is only dataset for training. But this version is from copying_mechanism branch with USE_COPYING_MECHANISM=False, therefore results can be slightly different from 39. Expectations from experiment: results should be almost the same as in 39.
+
+Observations:
+Loss plots are a lot different which is bad because should be pretty the same.
+43 vs 39
+best_val_perplexity: 15.41 vs 8.76 (worse)
+train_acc: 0.44 vs 0.32 (better)
+test_acc: 0.028 vs 0.027 (better)
+test_acc top-50: 0.103 vs 0.097 (better)
+Test_acc is pretty the same because model is able to predict correctly only few simple examples. Therefore both models (39 and 41) are able to predict same small amount of examples.

@@ -1,0 +1,28 @@
+Same as 59, but neural editor is trained. And it is trained on the same data as the cmg model.
+
+Observations:
+63 vs 59
+Loss plot looks pretty the same as in 59.
+
+neural editor 
+best_val_perplexity: 6.93 vs not defined
+last_train_perplexity: 1.45 vs not defined
+test_acc: 0.123 vs not defined
+train_acc_test_size: 0.388 vs not defined
+train_acc_test_size top-50: 0.657 vs not defined
+BLEU test: 70.32 vs not defined
+BLEU train: 88.52 vs not defined
+hyp_len / ref_len (on test): 0.853 vs not defined
+
+commit message generator
+best_val_perplexity: 58.31 vs 60.79 (better)
+last_train_perplexity: 9.46 vs 11.22 (better)
+test_acc: 0.101 vs 0.073 (better)
+train_acc_test_size: 0.108 vs 0.078 (better)
+train_acc_test_size top-50: 0.235 vs 0.217 (better)
+BLEU test: 25.36 vs 23.36 (better)
+BLEU train: 25.90 vs 24.03 (better)
+hyp_len / ref_len (on test): 0.516 vs 0.501 (better)
+
+Conclusions: If we consider that neural editor gets very high results (BLEU 70 on test) and very poor results on cmg task (25 BLEU on test), then probably the problem is that commit diff doesn't identify (contain enough information) the commit message (for example commit message for binary files). If we compare with 59 than we get better results, looks like in this case edit vector representations work.
+If we think about how we can improve edit vector representations, then we should probably attach encoded src to edit vector representation. This can improve our results. Notice that src encoded by cmg model is quite different. 

@@ -1,0 +1,1 @@
+public TYPE_1 METHOD_1 ( TYPE_2 field ) { TYPE_3 VAR_1 = field . METHOD_1 ( ) ; if ( VAR_1 != null && VAR_1 instanceof TYPE_4 ) { TYPE_3 VAR_2 = ( ( TYPE_4 ) VAR_1 ) . METHOD_2 ( ) [ 0 ] ; if ( VAR_2 instanceof TYPE_1 ) { return ( TYPE_1 ) VAR_2 ; } else if ( VAR_2 instanceof TYPE_4 ) { return ( TYPE_1 ) ( ( TYPE_4 ) VAR_2 ) . METHOD_3 ( ) ; } } return VAR_3 class ; }

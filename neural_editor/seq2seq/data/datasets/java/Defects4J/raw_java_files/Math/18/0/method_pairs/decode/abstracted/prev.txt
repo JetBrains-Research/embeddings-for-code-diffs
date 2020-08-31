@@ -1,0 +1,1 @@
+public double [ ] METHOD_1 ( final double [ ] x ) { if ( VAR_1 == null ) { return x ; } double [ ] VAR_2 = new double [ x . length ] ; for ( int i = 0 ; i < x . length ; i ++ ) { double diff = VAR_1 [ 1 ] [ i ] - VAR_1 [ 0 ] [ i ] ; VAR_2 [ i ] = diff * x [ i ] + VAR_1 [ 0 ] [ i ] ; } return VAR_2 ; }

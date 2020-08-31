@@ -1,0 +1,17 @@
+Try to understand why model2.5 has worse perfomance. It happens when we add copying mechanism.
+I guess that happens because ne is trained very good.
+Therefore here I will lower early stopping steps for ne.
+
+Comparison with 108 (ne early stopping rounds 25 -> 10)
+108_4 vs 108:
+ne
+early stopped on: 51 vs 204
+best val ppl: 3.24 vs 2.76 (epoch 41 vs 179)
+
+cmg
+early stopped on: 1301 vs 695
+best val BLEU: 41.14 vs 40.6 (epoch 1201 vs 595)
+acc (on best val BLEU): 0.241 vs 0.235
+ppl (on best val BLEU): 144.59 vs 173.57
+
+Conclusion: ne is trained almost the same, cmg is trained better, probably because of huge number of early stopping rounds (500).

@@ -1,0 +1,23 @@
+
+
+
+
+Comment,Pattern,handleBlockComment,Pattern.compile,comment,indexOf,
+VAR_2,VAR_5,VAR_1,VAR_6,VAR_3,VAR_4,
+
+
+
+
+
+
+"(/|(\n[ \t]*))\\*[ \t]*
+    if (p.matcher(comment.getValue()).find()) {
+      errorReporter.warning(
+          SUSPICIOUS_COMMENT_WARNING,
+          sourceName,
+          comment.getLineno(), ","/* 
+      errorReporter.warning(
+          SUSPICIOUS_COMMENT_WARNING,
+          sourceName,
+          comment.getLineno(), ",
+STRING_2,STRING_1,

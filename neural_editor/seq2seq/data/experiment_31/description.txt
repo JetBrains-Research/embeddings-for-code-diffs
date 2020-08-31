@@ -1,0 +1,3 @@
+Same as 29, but edit representation dim 512
+
+Observations: t-SNE looks almost the same, but this configuration contains more "маленьких сгусток". best val perplexity is better (1.17 vs 1.20). Accuracy is much higher than in 29, but transfer learning is a little bit worse (0.089 vs 0.096). Also top-50 accuracy on train 300 is 1.0. Looks like huge dimension for small change sequence (leave only changed is true) helps for model better to memorize transformations and leads to small overfitting. But looks like increasing dim can help, for example (32, True) looks like good configuration.

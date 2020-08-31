@@ -1,0 +1,1 @@
+public boolean METHOD_1 ( final double [ ] x ) { if ( VAR_1 == null ) { return true ; } final double [ ] VAR_2 = METHOD_2 ( VAR_1 [ 0 ] ) ; final double [ ] VAR_3 = METHOD_2 ( VAR_1 [ 1 ] ) ; for ( int i = 0 ; i < x . length ; i ++ ) { if ( x [ i ] < VAR_2 [ i ] ) { return false ; } if ( x [ i ] > VAR_3 [ i ] ) { return false ; } } return true ; }

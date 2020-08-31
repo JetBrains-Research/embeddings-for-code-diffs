@@ -1,0 +1,24 @@
+Same as 55, but no neural editor is used.
+
+Observations:
+57 vs 55
+neural editor 
+best_val_perplexity: not defined vs 2.86
+last_train_perplexity: not defined vs 1.66
+test_acc: not defined vs 0.081
+train_acc_test_size: not defined vs 0.03
+train_acc_test_size top-50: not defined vs 0.07
+BLEU test: not defined vs 54.91
+BLEU train: not defined vs 62.25
+
+commit message generator
+best_val_perplexity: 33.16 vs 32.57 (a little bit worse)
+last_train_perplexity: 10.2 vs 9.07 (worse)
+test_acc: 0.197 vs 0.202 (a little bit worse)
+train_acc_test_size: 0.211 vs 0.217 (a little bit worse)
+train_acc_test_size top-50: 0.263 vs 0.267 (a little bit worse)
+BLEU test: 32.39 vs 32.79 (a little bit worse)
+BLEU train: 32.78 vs 33.65 (a little bit worse)
+
+Conclusions: all metrics are A LITTLE BIT worse which isn't enough to judge that vector representation help. Maybe we should not freeze weights?
+

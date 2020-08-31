@@ -1,0 +1,14 @@
+NodeTraversal,Node,Token,NodeUtil,
+TYPE_1,TYPE_2,TYPE_4,TYPE_3,
+getAncestors,getParent,isBlock,isComma,isCall,isExprResult,isSimpleOperatorType,getNext,getCompiler,getJSDocInfo,getLastChild,getChildCount,makeError,isStatement,isName,isExpressionResultUsed,report,getFirstChild,mayHaveSideEffects,isString,visit,isQualifiedName,
+METHOD_10,METHOD_3,METHOD_22,METHOD_2,METHOD_4,METHOD_17,METHOD_12,METHOD_7,METHOD_14,METHOD_16,METHOD_9,METHOD_6,METHOD_20,METHOD_21,METHOD_8,METHOD_11,METHOD_19,METHOD_5,METHOD_13,METHOD_18,METHOD_1,METHOD_15,
+ancestorType,parent,USELESS_CODE_ERROR,level,gramps,an,isResultUsed,Token.EXPR_RESULT,Token.COMMA,isSimpleOp,Token.FOR,problemNodes,Token.BLOCK,
+VAR_5,VAR_1,VAR_12,VAR_11,VAR_3,VAR_4,VAR_9,VAR_6,VAR_2,VAR_10,VAR_8,VAR_13,VAR_7,
+
+
+
+
+2,4,
+INT_1,INT_2,
+"This code lacks side-effects. Is there a bug?","Is there a missing '+' on the previous line?","' operator is not being used.","The result of the '","eval",
+STRING_2,STRING_3,STRING_5,STRING_4,STRING_1,

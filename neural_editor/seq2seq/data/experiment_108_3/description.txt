@@ -1,0 +1,16 @@
+Rerun of 108. Try to understand why model2.5 doesn't have BLEU > 90 on cmg task at the end of the training.
+Try to make early stopping rounds bigger (cmg 100 -> 500, ne 50 -> 200).
+
+Comparison with 108
+108_3 vs 108:
+ne
+early stopped on: 297 vs 204
+best val ppl: 2.78 vs 2.76 (epoch 247 vs 179)
+
+cmg
+early stopped on: 1999 vs 695
+best val BLEU: 41.74 vs 40.6 (epoch 1499 vs 595)
+acc (on best val BLEU): 0.241 vs 0.235
+ppl (on best val BLEU): 208.61 vs 173.57
+
+Conclusion: ne is trained almost the same, cmg is trained better, probably because of huge number of early stopping rounds (500).

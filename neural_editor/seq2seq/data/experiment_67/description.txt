@@ -1,0 +1,7 @@
+Try to reproduce Jiang's. Same as 59, but model with best BLEU score is saved. Expectation: correct reproduction.
+
+Best accuracy with greedy decoding on validation is > 0.23 and 0.23 is reached in first 255 epochs. 0.22 is reached in 195 epochs, therefore 100 early stopping rounds is enough for accuracy. For BLEU and ppl too, therefore we should set early stepping rounds to 100.
+
+Greedy BLEU goes to plateau after big increase on first epoch. Probably early stopping with beam search bleu will help. 
+
+Val greedy acc grows and val greedy bleu just fluctuates around 3. No correlation between them which is strange. We should look at correct predictions of greedy decoding. We definitely need experiment on early stopping by accuracy with early stopping rounds 100.

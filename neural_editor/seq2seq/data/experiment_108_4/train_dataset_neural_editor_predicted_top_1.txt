@@ -1,0 +1,1160 @@
+ppp b / changelog . md <nl> * storm - 464 : simulated time advanced after test cluster exits causes intermittent test failures <nl>
+ppp b / . travis . yml <nl> env : <nl> branches : <nl>
+ppp b / stratosphere - clients / pom . xml <nl> < configuration > <nl> < archive > <nl> < manifest > <nl>
+ppp b / modules / apps / foundation / frontend - taglib / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . travis . yml <nl> before_script : <nl>
+ppp b / build . xml <nl> / > <nl> < / delete > <nl>
+ppp b / . travis . yml <nl> cache : <nl> before_cache : <nl>
+ppp b / pom . xml <nl> < / repository > <nl> < repository > <nl>
+ppp b / src / org / opensolaris / opengrok / history / directoryhistoryparser . java <nl> public class directoryhistoryparser implements historyparser { <nl> repository repository ) { <nl> return null ; <nl> } <nl>
+ppp b / build . gradle <nl> buildscript { <nl> allprojects { <nl> group ' com . makeramen ' <nl> version ' 1 . 2 . 0 ' <nl> repositories { <nl> mavencentral ( ) <nl> } <nl>
+ppp b / modules / apps / collaboration / item - selector / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / clj / backtype / storm / daemon / executor . clj <nl> sampler ( : sampler executor - data ) <nl>
+ppp b / h2o - genmodel / src / main / java / hex / genmodel / tools / package - info . java <nl>
+ppp b / . gitignore <nl> . project <nl> . settings <nl> <nl> target <nl>
+ppp b / test / cpp / otfmessageheadertest . cpp <nl> protected : <nl> virtual int onerror ( const error & e ) <nl>
+ppp b / server / sonar - web / src / main / webapp / web - inf / db / migrate
+ppp b / qa / vagrant / src / test / resources / packaging / scripts / module_and_plugin_test_cases . bash <nl> fi <nl> remove_plugin ingest - geoip <nl>
+ppp b / h2o - algos / src / test / java / hex / deeplearning / deeplearningspiralstest . java <nl> public class deeplearningspiralstest extends testutil { <nl>
+ppp b / hazelcast / src / main / java / com / hazelcast / cache / impl / nearcache / nearcachecontext . java <nl>
+ppp b / seriesguide / res / layout / preferences . xml <nl> android : title = " @ string / pref_autoupdate " / > <nl>
+ppp b / build . gradle <nl> subprojects { <nl> } <nl>
+ppp b / website / _config . yml <nl> collections : <nl>
+ppp b / subprojects / dependency - management / dependency - management . gradle <nl> dependencies { <nl> testcompile libraries . groovy <nl> integtestruntime project
+ppp b / jsonpointer . java <nl> public class jsonpointer { <nl> } <nl>
+ppp b / changelog . md <nl> * storm - 1504 : add serializer and instruction for avrogenericrecordbolt <nl> # # 1 . 0 . 0 <nl>
+ppp b / examples / . gitignore <nl> / data / <nl> / hbase / <nl>
+ppp b / processing . js <nl> p . fill ( 255 ) ; <nl> } else { <nl>
+ppp b / . travis . yml <nl> android : <nl>
+ppp b /
+ppp b / handlebar / src / main / resources / com / sampullara / mustache / mimes . txt <nl> application
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / xsl - content / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / spongecommon <nl> subproject commit b9e381a847dc473803ba7ba7f865f84b308bca8a <nl>
+ppp b / modules / apps / foundation / frontend - js / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . gradle <nl> group = ' uk . co . real_logic ' <nl> allprojects { <nl> apply
+ppp b / . gitignore <nl> thumbs . db <nl> . m2 <nl>
+ppp b / modules / apps / collaboration / item - selector / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / readme . md <nl> overview <nl> = =
+ppp b / ext / nokogiri / extconf . rb <nl> end <nl>
+ppp b / modules / apps / web - experience / portlet - configuration / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / blogs / blogs - demo / bnd . bnd <nl> bundle - name : liferay blogs demo <nl>
+ppp b / src / main / java / com / alibaba / druid / pool / druidabstractdatasourcembean . java <nl>
+ppp b / java / org / apache / coyote / response . java <nl> public final class response { <nl> * request processing . <nl> * / <nl> public void seterrorexception ( exception ex ) { <nl> errorexception = ex ; <nl> } <nl>
+ppp b / readme . md <nl> class employee { <nl> @ indexed boolean active = false ; <nl>
+ppp b / deploy_javadoc . sh <nl> set - ex <nl>
+ppp b / build . gradle <nl> buildscript { <nl> } <nl>
+ppp b / src / gwt / src / org / rstudio / studio / client / projects / ui / prefs / projectsharingpreferencespane . java <nl>
+ppp b / languagetool - language - modules / en / src / main / resources / org / languagetool / resource / en / hunspell / spelling . txt <nl> well - known <nl> screenshot <nl> automata <nl>
+ppp b / modules / apps / collaboration / comment / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / pom . xml <nl> < exclude > bin / * * < / exclude > <nl>
+ppp b / tools / layoutlib / bridge / src / com / android / layoutlib / bridge / impl / renderaction . java <nl>
+ppp b / changelog . md <nl> # # unreleased <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 21 . 1 . 2 ' <nl>
+ppp b / modules / apps / foundation / frontend - js / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / python / build / plugin - list . txt <nl> python - rest <nl> pycharm - flask <nl> pycharm <nl> numpy <nl>
+ppp b / engine / src / core / com / jme3 / cinematic / events / motiontrack . java <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / nested - portlets / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / jetty - jmx / src / test / resources / jetty - logging . properties <nl>
+ppp b / common / buildcraft / factory / tileminingwell . java <nl> public class tileminingwell extends tilemachine implements imachine , ipowerrecep <nl>
+ppp b / modules / apps / foundation / portal - template / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / bin / alluxio - fuse . sh <nl> fi <nl> get_env <nl> check_java_version & & check_tfuse_jar <nl>
+ppp b / make / common . mk <nl> endif <nl> translator_deps =
+ppp b / . travis . yml <nl> language : java <nl>
+ppp b / application / linkbubble / build . gradle <nl> buildscript { <nl> } <nl> / / manifest version information ! <nl>
+ppp b / readme . md <nl> the fabric will get this value
+ppp b / osmand - kernel / osmand / src / common . h <nl> # ifndef android <nl> # define gnu_hash_map <nl> #
+ppp b / v8 / renderscript / rs_support / android . mk <nl> local_src_files : = \ <nl>
+ppp b / changelog . md <nl> changelog <nl> * * next release * * <nl> * allow fetching restrictions
+ppp b / modules / apps / foundation / portal - instances / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / python / testsrc / com / jetbrains / python / pyformattertest . java <nl>
+ppp b / src / org / wordpress / android / addaccount . java <nl> public class addaccount extends activity { <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 19 . 0 . 3 ' <nl>
+ppp b / changes . txt <nl> 0 . 5 . 0
+ppp b / library / src / org / lucasr / twowayview / twowayview . java <nl>
+ppp b / modules / apps / web - experience / site / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / java / org / jivesoftware / util / log . java <nl> public class log { <nl>
+ppp b / status <nl> patches proposed to backport : <nl> * warn if connector can not use external executors <nl>
+ppp b / actor - server / version . sbt <nl> \ no
+ppp b / jooq / src / main / java / org / jooq / impl / altertableimpl . java <nl>
+ppp b / notice . txt <nl> android async http client library <nl>
+ppp b / modules / apps / foundation / expando / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / users - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / makefile <nl> clean : ndk - clean <nl> distclean
+ppp b / python / helpers / tools / stdlib_packages . txt <nl> aifc <nl> antigravity <nl>
+ppp b / . gitignore <nl> dependency - reduced - pom . xml . bak <nl> killbill . h2
+ppp b / src / test / groovy / groovymethodstest . groovy <nl> class groovymethodstest extends groovytestcase { <nl> string getcmd ( ) { <nl>
+ppp b / modules / apps / foundation / portal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / library / src / main / java / com / prolificinteractive / materialcalendarview / titlechanger . java <nl>
+ppp b / build . gradle <nl> subprojects { <nl> - > <nl> } <nl>
+ppp b / ratpack - site / ratpack - site . gradle <nl> apply plugin : " ratpack - groovy " <nl>
+ppp b / libs / hwui / android . common . mk <nl> endif <nl> # defaults for atrace_tag and log_tag for libhwui <nl>
+ppp b / media / java / android / media / mtpdatabase . java <nl> public class mtpdatabase { <nl>
+ppp b / compiler / build . gradle <nl> protobuf { <nl> } <nl> } <nl> generateprototasks { <nl>
+ppp b / . project <nl> < ? xml version = " 1 . 0 " encoding = " utf - 8
+ppp b / portal - impl / src / com / liferay / portlet / documentlibrary / service / impl / dlfileentrymetadatalocalserviceimpl . java <nl>
+ppp b /
+ppp b / common / buildcraft / factory / tileautoworkbench . java <nl> public class tileautoworkbench extends tileentity implements ispecialinventory { <nl> } <nl> @ override <nl>
+ppp b / build . gradle <nl> buildscript { <nl> ext { <nl>
+ppp b / . gitignore <nl> build <nl> build_ * <nl> build - * <nl>
+ppp b / modules / apps / foundation / roles / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . txt <nl> * feature : added custom charset support to request ( thanks eric genet ) <nl>
+ppp b / core / java / android / preference / preferenceactivity . java <nl>
+ppp b / debian / cassandra . postinst <nl> case " $ 1 " in <nl>
+ppp b / . gitignore <nl> gradle . properties <nl> modules / core / core . iml <nl>
+ppp b / modules / apps / foundation / portal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / third - party / org - apache - felix - configadmin / build . gradle <nl>
+ppp b / build . gradle <nl> ext { <nl> compilesdkversion = 19 <nl> buildtoolsversion = ' 19 . 0 . 1 ' <nl> versioncode = 222 <nl> versionname = ' 12 - beta6 ' <nl> } <nl>
+ppp b / modules / apps / foundation / portal - security / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / infrastructure / ace / www / ace2_inner . js <nl>
+ppp b / pom . xml <nl> < plugin > <nl> < groupid > edu . illinois < / groupid > <nl>
+ppp b / bin / storm <nl> config_opts = [ ] <nl> conffile = " " <nl> jar_jvm_opts = os .
+ppp b / framework / project . properties <nl> # indicates whether an apk should be generated for each density . <nl>
+ppp b / src / lombok / core / version . java <nl> package lombok . core ; <nl>
+ppp b / modules / apps / collaboration / message - boards / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / enterprise / pom . xml <nl>
+ppp b / . travis . yml <nl> android : <nl> # - sys - img - armeabi - v7a -
+ppp b / gradle . properties <nl>
+ppp b / test / readme . md <nl> project . properties has a library reference to . . / framework . <nl>
+ppp b / . travis . yml <nl> language : android
+ppp b / spongecommon <nl> subproject commit fa58f7d0944a6b7fac7bae48d27608665654c5ce <nl>
+ppp b / test / webapp - 3 . 0 / bug49196 . jsp <nl> limitations under the license . <nl> - % > <nl>
+ppp b / bin / buckd <nl> case $ arg in <nl> ; <nl>
+ppp b / pom . xml <nl> < groupid > com . zaxxer < / groupid > <nl>
+ppp b / webapps / docs / changelog . xml <nl> < / fix > <nl> < / changelog > <nl> < / subsection > <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > io . netty < / groupid > <nl>
+ppp b / tests / project . properties <nl> # project structure . <nl> # project target . <nl> target = android - 17 <nl>
+ppp b / src / com / owncloud / android / ui / fragment / extendedlistfragment . java <nl>
+ppp b / readme . md <nl> protected void onactivityresult ( int requestcode , int resultcode , intent data ) { <nl>
+ppp b / osmand / build . gradle <nl> repositories { <nl> } <nl> } <nl> mavencentral ( ) <nl>
+ppp b / xabber / build . gradle <nl> repositories { <nl> } <nl> ext { <nl> smackversion = ' 4 . 1 . 4 ' <nl> } <nl> dependencies { <nl>
+ppp b / src / com / google / javascript / jscomp / diagnosticgroups . java <nl> public class diagnosticgroups { <nl>
+ppp b / readme . md <nl> datasourceclassname = org . postgresql . ds . pgsimpledatasource <nl> datasource . user = test <nl>
+ppp b / sample / src / main / java / com / mypopsy / floatingsearchview / mainactivity . java <nl>
+ppp b / modules / apps / foundation / petra / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / authors <nl> simon flannery ( ericsson ) <nl> steven parkes
+ppp b / h2o - py / requirements . txt <nl> mysqlclient <nl> recommonmark <nl>
+ppp b / portal - impl / src / com / liferay / portal / staging / stagingimpl . java <nl>
+ppp b / cmakelists . txt <nl> project ( " hdr_histogram " ) <nl> # set ( cmake_c_compiler " clang " ) <nl>
+ppp b / app / models / stream . rb <nl> class stream <nl>
+ppp b / changes . txt <nl> unreleased <nl> use new sys
+ppp b / src / org / geometerplus / android / fbreader / library / librarybaseactivity . java <nl> abstract class librarybaseactivity extends baseactivity implements menuitem . onme <nl>
+ppp b / packaging / . gitmodules <nl> [ submodule " tools / yajsw " ] <nl> path =
+ppp b / modules / apps / web - experience / site - navigation / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / portal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / gwt / src / org / rstudio / core / client / theme / res / themestyles . css <nl>
+ppp b / enterprise / main / java / org / neo4j / kernel / ha / masterclient . java <nl> public class masterclient extends communicationprotocol implements master , chann <nl>
+ppp b / core / java / android / webkit / websettings . java <nl> public class websettings { <nl> if ( mblocknetworkloads ! = flag ) { <nl> mblocknetworkloads = flag ; <nl> verifynetworkaccess ( ) ; <nl> ) ; <nl> ; <nl> } <nl> } <nl>
+ppp b / py2 / testdir_r / myr . tests <nl> testdir_golden / runit_nopass_naivebayes_3_golden . r <nl> testdir_golden / runit_nopass_pca_2_golden . r <nl> testdir_golden
+ppp b / . travis . yml <nl> language : java <nl>
+ppp b
+ppp b / modules / apps / foundation / login / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / gradle . properties <nl> version_name = 2 . 6
+ppp b / core / src / test / scala / unit / kafka / message / messagecompressiontest . scala <nl> class messagecompressiontest extends junitsuite { <nl>
+ppp b / testng . xml <nl> limitations under the license . <nl>
+ppp b / portal - web / docroot / html / taglib / ui / search_iterator / page . jsp <nl> if ( rowchecker ! = null ) { <nl>
+ppp b / . travis . yml <nl> before_install : <nl> # - export
+ppp b / packaging / standalone / src / main / distribution / shell - scripts / bin / neo4j <nl>
+ppp b / . gitignore <nl> server . log <nl> hs_err_pid *
+ppp b / build / windows / make . sh <nl> else <nl>
+ppp b / gradle . properties <nl> project . ext { <nl> version_name = 1 . 0 . 10 - snapshot <nl> version_code = 7 <nl> group = pl . droidsonroids . gif <nl>
+ppp b / ext / java / nokogiri / xmlnamespace . java <nl> public class xmlnamespace extends rubyobject { <nl> this . href = href ; <nl>
+ppp b / src / test / groovy / bugs / subscriptandexpressionbug . groovy <nl> class subscriptandexpressionbug extends groovytestcase { <nl>
+ppp b / src / cpp / core / filelocktests . cpp <nl> # include < core / filelock . hpp > <nl> #
+ppp b / modules / apps / twitter / twitter - web / bnd . bnd <nl> bundle - name : liferay twitter web <nl>
+ppp b / modules / apps / collaboration / blogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / gradle . properties <nl> version_name = 1 . 1 . 1 - snapshot <nl>
+ppp b / src / cpp / session / resources / markdown_help . html <nl> at the bottom of the document : <nl>
+ppp b / liquibase - core / src / main / java / liquibase / structure / core / databaseobjectfactory . java <nl> public class databaseobjectfactory { <nl> return standardtypes ; <nl> } <nl>
+ppp b / telephony / java / com / android / internal / telephony / iccprovider . java <nl> public class iccprovider extends contentprovider { <nl> } <nl> } <nl> if ( textutils . isempty ( tag ) ) ; <nl> return 0 ; <nl> } <nl>
+ppp b / twidere / build . gradle <nl> android { <nl> applicationid " org . mariotaku . twidere " <nl>
+ppp b / portal - web / docroot / html / themes / _styled / css / application . css <nl> position : fixed ; <nl> } <nl>
+ppp b / astrid / src / com / todoroo / astrid / activity / astridactivity . java <nl>
+ppp b / pom . xml <nl> < groupid > com . zaxxer < / groupid > <nl>
+ppp b / src / com / yahoo / platform / yui / compressor / yuicompressor . java <nl> public class yuicompressor { <nl> } <nl>
+ppp b / actor - server / version . sbt <nl> \ no
+ppp b / modules / apps / web - experience / layout / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . gitignore <nl> menudrawer - samples / * <nl> ! menudrawer - samples / androidmanifest . xml <nl> !
+ppp b / src / edu / stanford / nlp / sentiment / evaluate . java <nl> public class evaluate { <nl> } <nl>
+ppp b / subprojects / docs / src / samples / cpp / exe / build . gradle <nl> executables { <nl> / / add some additional compiler arguments <nl>
+ppp b / modules / apps / collaboration / mentions / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / users - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changes . txt <nl> changes for crate <nl> unreleased <nl>
+ppp b / res / layout / drawer_list_item . xml <nl> android : paddingright = " 16dp " <nl>
+ppp b / src / org / geometerplus / android / fbreader / libraryservice / sqlitebooksdatabase . java <nl> final class sqlitebooksdatabase extends booksdatabase { <nl>
+ppp b / src / doc / alerts . xml <nl> this list the alerts <nl> 10029 cookie poisoning <nl>
+ppp b / build . xml <nl> $ date $ <nl>
+ppp b / changelog . txt <nl> 0 . 73 . 0 ( 04 nov 2014 ) <nl>
+ppp b / modules / apps / foundation / portal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / status <nl> patches proposed to backport : <nl> * fix
+ppp b / core / res / res / values - sw600dp / dimens . xml <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > org . apache . hcatalog < / groupid > <nl>
+ppp b / src / net / java / sip / communicator / util / conferenceinfodocument . java <nl> public class conferenceinfodocument <nl>
+ppp b / src / java / org / httpkit / server / wsdecoder . java <nl> public class wsdecoder { <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / readme . md <nl> how to get beta releases : <nl> * gsf id <nl> * serial # <nl> *
+ppp b / osmand / src / net / osmand / plus / sherpafy / tourviewactivity . java <nl> public class tourviewactivity extends sherlockfragmentactivity { <nl>
+ppp b / modules / apps / foundation / frontend - css / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / compiler / tests / org / jetbrains / jet / junit3runnerwithinners . java <nl> public class junit3runnerwithinners extends runner implements filterable , sortab <nl>
+ppp b / src / main / java / org / jboss / netty / util / threadrenamingrunnable . java <nl> public class threadrenamingrunnable implements runnable { <nl>
+ppp b / community / pom . xml <nl> < groupid > jline < / groupid > <nl> < artifactid > jline < / artifactid > <nl>
+ppp b / portal - impl / src / com / liferay / portlet / journal / model / impl / journalarticleimpl . java <nl>
+ppp b / handler / src / main / java / io / netty / handler / ssl / sslhandshakecompletionevent . java <nl>
+ppp b / java_deps / jars . mk <nl> jsr305_source_jar = jsr305 - 2 . 0 . 1 . jar <nl>
+ppp b / src / main / java / org / bukkit / event / player / playerportalevent . java <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / directory / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / seriesguide / res / layout / show_info_wide . xml <nl> style = " @ style / scrollinglayout " <nl>
+ppp b / collectionviews2 / src / org / freeflow / layouts / vgridlayout . java <nl> public class vgridlayout extends abstractlayout { <nl>
+ppp b / examples / google_cheese / mvnexec . sh <nl> # ! / bin / bash <nl> args = $ @ <nl> mvn
+ppp b / modules / apps / foundation / hello - soy / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / portal - impl / src / com / liferay / portal / upload / uploadservletrequestimpl . java <nl> public class uploadservletrequestimpl <nl>
+ppp b / community / changes . txt <nl> 1 . 3 .
+ppp b / readme . md <nl> no , because it ' s too difficult to implement something like xprivacy on these os ' <nl>
+ppp b / community / pom . xml <nl> < parent > <nl> < groupid > org . neo4j < / groupid > <nl>
+ppp b / modules / apps / web - experience / trash / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / pom . xml <nl> < plugin > <nl> < groupid > de . thetaphi < / groupid > <nl>
+ppp b / modules / apps / foundation / portal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b
+ppp b / hazelcast - client / src / main / java / com / hazelcast / client / spi / proxymanager . java <nl>
+ppp b / docs / makefile <nl> default : <nl> mook <nl>
+ppp b / core / src / main / java / com / graphhopper / routing / util / tarjansstronglyconnectedcomponentsalgorithm . java <nl>
+ppp b / . travis . yml <nl> android : <nl>
+ppp b / . gitignore <nl> nbactions . xml <nl> . ds_store <nl> graylog2 - server
+ppp b / . travis . yml <nl> language : android <nl>
+ppp b / src / cpp / session / modules / clang / rcompilationdatabase . cpp <nl>
+ppp b / common / buildcraft / builders / tileabstractbuilder . java <nl> public abstract class tileabstractbuilder extends tilebuildcraft implements itil <nl> mjprev = mjstored ; <nl> mjunchangedcycles = 0 ; <nl> } <nl>
+ppp b / . gitmodules <nl> [ submodule " submodules / dslv
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / wordpress / build . gradle <nl> android { <nl> defaultconfig { <nl>
+ppp b / tools / db - upgrade / readme . txt <nl>
+ppp b / modules / apps / collaboration / invitation / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / gradle / javaprojects . gradle <nl> task springsnapshottest ( type : test ) { <nl>
+ppp b / app / build . gradle <nl> android { <nl> applicationid " io . github . hidroh . materialistic " <nl>
+ppp b / portal - impl / src / com / liferay / portlet / messageboards / service / impl / mbcategorylocalserviceimpl . java <nl>
+ppp b / modules / apps / web - experience / portlet - configuration / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / js / package . json <nl> " main " : " rebound . js " , <nl>
+ppp b / docs / interaction_based_testing . rst <nl> just like mocking interfaces ; the only additional requirement is to put ` ` cglib - <nl>
+ppp b / core / java / android / view / accessibility / accessibilitynodeinfo . java <nl> public class accessibilitynodeinfo implements parcelable { <nl>
+ppp b / changelog . md <nl> changelog <nl> * * next release * * <nl> * . .
+ppp b / . gitignore <nl> dist <nl> cabal - dev <nl> * . pyc <nl> build / <nl>
+ppp b / core / java / android / webkit / webview . java <nl> public class webview extends absolutelayout <nl>
+ppp b / server / pom . xml <nl> < dependencies > <nl> < dependency > <nl>
+ppp b / src / org / geometerplus / fbreader / fbreader / switchprofileaction . java <nl> class switchprofileaction extends fbaction { <nl>
+ppp b / modules / apps / foundation / portal - remote / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / r / makefile <nl> endif <nl> clean : <nl>
+ppp b / library / androidmanifest . xml <nl> - > <nl> < manifest xmlns : android = " http : / /
+ppp b / src / com / google / inject / injectorimpl . java <nl> class injectorimpl implements injector { <nl>
+ppp b / hibernate - core / hibernate - core . gradle <nl> dependencies { <nl> compile ( libraries . classmate ) <nl>
+ppp b / pom . xml <nl> < / execution - times > <nl> < / balancers > <nl>
+ppp b / changelog . md <nl> # # 0 . 11 . 0 <nl>
+ppp b / build . properties <nl> grails . version = 0 . 3 - snapshot <nl> grails .
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 23 . 0 . 0 ' <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / microblogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / daocore / src / de / greenrobot / dao / internal / fastcursor . java <nl> final public class fastcursor implements cursor { <nl> throw new unsupportedoperationexception ( ) ; <nl> } <nl>
+ppp b / src / gwt / src / org / rstudio / studio / client / workbench / views / source / editors / editingtargetcodeexecution . java <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / app / build . gradle <nl> ext { <nl> plugin_bigdesk_version = ' 2 . 2 . 2c ' <nl>
+ppp b / debian / control <nl> architecture : all <nl> section : admin <nl> priority : optional <nl> depends : $ { <nl> :
+ppp b / subprojects / groovy - xml / src / main / java / groovy / xml / markupbuilder . java <nl>
+ppp b / . gitignore <nl> build / * <nl> dist / *
+ppp b / runtime / python3 / src / antlr4 / atn / lexeratnsimulator . py <nl> class lexeratnsimulator ( atnsimulator ) : <nl>
+ppp b / gradle . properties <nl> group = com . jakewharton
+ppp b / . travis . yml <nl> install : mvn install - - quiet - dskiptests = true - dgpg . skip = true <nl> language : <nl> jdk : openjdk7 <nl>
+ppp b / library / pom . xml <nl> < groupid > com . jayway . maven . plugins . android . generation2 < / groupid > <nl>
+ppp b / runeclipse <nl> # ! / bin / sh <nl> ant & & cp dist / lombok . jar
+ppp b / modules / apps / web - experience / product - navigation / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / subprojects / tooling - api / tooling - api . gradle <nl> dependencies { <nl>
+ppp b / modules / apps / web - experience / export - import / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / testsuite / src / test / java / org / hibernate / test / criteria / longinelementstest . java <nl> public class longinelementstest extends functionaltestcase { <nl>
+ppp b / releasenotes . md <nl> * [ cb - 4198 ] bin / create should handle spaces in activity better . <nl> * [ cb -
+ppp b / hazelcast / src / main / java / com / hazelcast / util / healthmonitor . java <nl>
+ppp b / res / layout / external_player_fragment . xml <nl> < linearlayout <nl> android : layout_width = " match_parent " <nl>
+ppp b / owncloud - android - library <nl> subproject <nl>
+ppp b / . gitignore <nl> . settings <nl> . metadata <nl> . factorypath <nl> bin <nl>
+ppp b / src / test / groovy / script / markuptestscript . groovy <nl> import groovy . xml . markupbuilder ; <nl> class bean { <nl> string b <nl> } <nl> ; <nl> t t = new bean <nl>
+ppp b / src / cpp / server / extras / apparmor / rstudio - server . in <nl>
+ppp b / build . gradle <nl> sourcesets { <nl> test . include " * * / * test . class " <nl> tasks . withtype ( compile ) { <nl> options . warnings = false <nl> } <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / actor - server / version . sbt <nl> \ no
+ppp b / test . properties <nl> clustering , \ <nl> custom fields , \ <nl> databases , \ <nl>
+ppp b / pom . xml <nl> < modelversion > 4 . 0 . 0 < / modelversion > <nl>
+ppp b / pom . xml <nl> < / argline > <nl>
+ppp b / modules / apps / screens / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / app / src / main / java / com / timotuominen / app / utils / abstractviewmodel . java <nl>
+ppp b / sample - app / build . gradle <nl> android { <nl>
+ppp b / . travis . yml <nl> env : <nl> android : <nl>
+ppp b / community / pom . xml <nl> < parent > <nl> < groupid > org . neo4j < / groupid > <nl>
+ppp b / spongecommon <nl> subproject commit 2b08f34484698d131f069300c197fdce30776414 <nl>
+ppp b / changelog . md <nl> # # 0 . 11 . 0 <nl>
+ppp b / portal - impl / src / com / liferay / portlet / routerimpl . java <nl>
+ppp b / package . json <nl> { <nl> " version "
+ppp b / cmds / hid / android . mk <nl> include $ ( clear_vars ) <nl>
+ppp b / modules / apps / foundation / portal - scripting / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / packages / systemui / src / com / android / systemui / statusbar / stack / notificationstackscrolllayout . java <nl>
+ppp b / src / main / java / org / elasticsearch / cluster / clusterchangedevent . java <nl> public class clusterchangedevent { <nl>
+ppp b / native / include / android / input . h <nl>
+ppp b / build . properties <nl> grails . version = 0
+ppp b / . gitignore <nl> log <nl> / tools / liferay - doclet <nl> / tools / selenium
+ppp b / readme . md <nl> dependencies { <nl> # # use it in java <nl> add com : github .
+ppp b / modules / apps / foundation / portal - cache / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / main / resources / es - plugin . properties <nl> plugin = org . elasticsearch .
+ppp b / source / com / intellij / openapi / vcs / changes / changelistmanagerimpl . java <nl>
+ppp b / imageviewtouch / project . properties <nl> # project target . <nl> target = android - 17 <nl>
+ppp b / changes . txt <nl> changes for crate <nl> unreleased <nl>
+ppp b / danmakuflamemaster / src / main / java / master / flame / danmaku / controller / drawhandler . java <nl>
+ppp b / app / build . gradle <nl> android { <nl> ext { <nl>
+ppp b / readme . md <nl> how to get beta releases : <nl>
+ppp b / spring - core / src / main / java / org / springframework / core / generictyperesolver . java <nl>
+ppp b / res / meta - inf / tomcat - websocket . jar / web - fragment . xml <nl>
+ppp b / pom . xml <nl> < / parent > <nl> < groupid > ch . acra < / groupid > <nl>
+ppp b / modules / apps / screens / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / pom . xml <nl> < / parent > <nl> < artifactid > mybatis < / artifactid > <nl>
+ppp b / etherpad / etc / etherpad . localdev - default .
+ppp b / build . xml <nl> encoding = " iso - 8859 - 1 " > <nl>
+ppp b / osmand / res / values / phrases . xml <nl>
+ppp b / doc / release - notes / official . md <nl>
+ppp b / . idea / dictionaries / ignatov . xml <nl> < component name = " projectdictionarystate " > <nl>
+ppp b / readme . md <nl> dependencies { <nl> you can
+ppp b / design / tests / src / android / support / design / testutils / viewpageractions . java <nl> public class viewpageractions { <nl>
+ppp b / flink - scala / pom . xml <nl> under the license . <nl>
+ppp b / python / educational - python / build . gradle <nl> subprojects { <nl> sourcesets { <nl> main { <nl>
+ppp b / readme . md <nl> sample two : replace the original method . <nl> @ override <nl> protected object replacehookedmethod
+ppp b / modules / apps / foundation / frontend - theme / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / examples / moduleexample / app / build . gradle <nl> android { <nl> release { <nl>
+ppp b / modules / apps / sync / sync - api / bnd . bnd <nl> bundle - name : liferay sync api <nl>
+ppp b / spring - core / src / main / java / org / springframework / core / annotation / synthesizedannotation . java <nl>
+ppp b / admin - ui / build . gradle <nl> apply plugin : ' java ' <nl> / / we
+ppp b / . travis . yml <nl> android : <nl> script :
+ppp b / changelog . md <nl> # # 0 . 10 . 0 <nl>
+ppp b / pom . xml <nl> < / plugin > <nl> < plugin > <nl> < artifactid > <nl>
+ppp b / build . gradle <nl> subprojects { <nl> project . ext { <nl> guavaversion = ' 18 . 0 ' <nl>
+ppp b / modules / apps / forms - and - workflow / polls / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . xml <nl> < project name = " checkstyle
+ppp b / spongecommon <nl> subproject commit a5b65261577914081929ef4607428560f410466c <nl>
+ppp b / build . gradle <nl> task clean ( type : delete ) { <nl> ext { <nl>
+ppp b / src / org / mockito / internal / junit / friendlyexceptionmaker . java <nl> class friendlyexceptionmaker { <nl> this . detecter = detecter ; <nl>
+ppp b / spring - boot - starter - admin - client / pom . xml <nl> < dependency > <nl>
+ppp b / scripts / install - dependencies . sh <nl> function install_maps ( ) { <nl> done <nl> } <nl>
+ppp b / modules / apps / foundation / portal - store / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . travis . yml <nl> language : java <nl> jdk : <nl>
+ppp b / pom . xml <nl> < groupid > com . zaxxer < / groupid > <nl>
+ppp b / modules / apps / foundation / frontend - css / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changes . txt <nl> unreleased <nl> fix :
+ppp b / src / com / fsck / k9 / helper / notificationbuilder . java <nl> public class notificationbuilder extends notificationcompat . builder { <nl>
+ppp b / credits <nl> / home / secupwn / github / android
+ppp b / jetty - webapp / src / main / config / modules / webapp . mod <nl> [ depend ] <nl>
+ppp b / readme . md <nl> enum suit { <nl> to
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / test / groovy / tree / smalltreetest . groovy <nl> class smalltreetest extends groovytestcase { <nl>
+ppp b
+ppp b / src / com / fsck / k9 / controller / messaginglistener . java <nl> public class messaginglistener { <nl>
+ppp b / project / build . properties <nl> # project properties <nl> # tue feb 23 21 : 08 : 43 pst 2010 <nl>
+ppp b / services / java / com / android / server / am / activitystack . java <nl>
+ppp b / processing . js <nl> p . textsize ( curtextsize ) ; <nl> / / set the background to a light gray <nl>
+ppp b / haskell / ua - parser . cabal <nl> name : ua - parser <nl>
+ppp b / modules / apps / collaboration / microblogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . gitignore <nl> actor - apps / library / actor
+ppp b / core / java / android / webkit / webviewdatabase . java <nl> public class webviewdatabase { <nl> } <nl>
+ppp b / build / src / main / resources / bin / domain . sh <nl> if $ linux | | $ solaris ; then <nl>
+ppp b / trunk / jlanguagetool / changes . txt <nl> languagetool change log <nl> api : deprecated
+ppp b / src / main / com / mongodb / queryoperators . java <nl> public class queryoperators { <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / core / src / main / java / org / acegisecurity / intercept / web / filterinvocationdefinitionsourceeditor . java <nl>
+ppp b / readme . md <nl> license <nl> see the license for the specific language governing permissions and <nl> limitations
+ppp b / modules / apps / foundation / frontend - taglib / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / jps / . gitignore <nl> samples / <nl> . idea / workspace . xml <nl>
+ppp b / . gitignore <nl> / target / <nl>
+ppp b / libraries / javascriptappengine / initialization / loadsourcemap . js <nl> * of patent rights can be found in the patents file in the same directory . <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / server / sonar - web / pom . xml <nl> < / goals > <nl> < configuration > <nl>
+ppp b / hazelcast / src / main / java / com / hazelcast / util / sortedqueryresultset . java <nl>
+ppp b / modules / apps / collaboration / blogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / tsdb . in <nl> test - d " $ pkgdatadir " | | test - n " $ abs_srcdir $ abs_builddir " | | { <nl>
+ppp b / . travis . yml <nl> android : <nl> components
+ppp b / src / test / java / com / fasterxml / jackson / databind / node
+ppp b / trunk / jlanguagetool / changes . txt <nl> languagetool change
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > org . mockito < / groupid > <nl>
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / tests / drivers / generic - api - test . vala <nl>
+ppp b / src / com / jwetherell / algorithms / data_structures / segmenttree . java <nl> public abstract class segmenttree < d extends segmenttree . data > { <nl>
+ppp b / . travis . yml <nl> android : <nl> #
+ppp b / gradle . properties <nl> version_name = 1 .
+ppp b / src / doc / alerts . xml <nl> this list the alerts <nl>
+ppp b / res / layout / activity_muc_details . xml <nl> android : background = " # eee " <nl> android : ems = " 10 " <nl>
+ppp b / portal - impl / src / com / liferay / portal / action / updatelanguageaction . java <nl>
+ppp b / src / org / wordpress / android / ui / themes / themepreviewfragment . java <nl>
+ppp b / common / buildcraft / core / itemwrench . java <nl> public class itemwrench extends itembuildcraft implements itoolwrench { <nl>
+ppp b / jetty - jspc - maven - plugin / pom . xml <nl> < / plugin > <nl>
+ppp b / spongecommon <nl> subproject commit 303ae09f92055330a133082b82edc3a13fdd4b41 <nl>
+ppp b / version . txt <nl> 0 . newline at end of file <nl>
+ppp b / core / server / src / main / java / alluxio / worker / block / blockworker . java <nl>
+ppp b / changelog . txt <nl> 2 . 14 .
+ppp b / modules / apps / foundation / portal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / cpp / core / system / win32childprocess . cpp <nl>
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / nested - portlets / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / pom . xml <nl> < / plugin > <nl> < plugin > <nl>
+ppp b / graphics / java / android / graphics / drawable / colordrawable . java <nl> public class colordrawable extends drawable { <nl>
+ppp b / fml <nl> subproject commit e1529845384f4935b7c11d4d36d25db51c0b9a31 <nl>
+ppp b / portal - impl / src / com / liferay / portal / lar / exportimportimpl . java <nl>
+ppp b / advanced / pom . xml <nl> < parent > <nl> < groupid > org . neo4j < / groupid > <nl>
+ppp b / gradle . properties <nl> pom_name = rosie - framework <nl>
+ppp b / / requirements / / <nl>
+ppp b
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / cypher - plugin / pom . xml <nl> < parent > <nl>
+ppp b / platform / util / resources / misc / registry . properties <nl> ide . perprojectmodality . description = new modality approach . all dialogs are docume <nl>
+ppp b / externs / browser / html5 . js <nl> mutationrecord . prototype . addednodes ; <nl> mutationrecord . prototype . removednodes ; <nl>
+ppp b / services / java / com / android / server / inputmethodmanagerservice . java <nl> public class inputmethodmanagerservice extends iinputmethodmanager . stub <nl>
+ppp b / pom . xml <nl> < version > $ { findbugs . maven . plugin . version } < / version > <nl>
+ppp b / res / layout / statusnewactivity_title_layout . xml <nl> android : gravity = " center_vertical " > <nl>
+ppp b / . gitignore <nl> atlassian - ide - plugin . xml
+ppp b / test / com / xtremelabs / droidsugar / fakes / viewtest . java <nl> public class viewtest { <nl>
+ppp b / changelog . md <nl> see for more information about xprivacy 3 [ this faq ] ( https : / / github . com <nl>
+ppp b / libs / openpgp - api - lib <nl> subproject <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > org . elasticsearch < / groupid > <nl>
+ppp b / src / main / com / mongodb / replicasetstatus . java <nl> public class replicasetstatus { <nl> } <nl> if ( best
+ppp b / modules / graylog2 - rest - client <nl> subproject <nl>
+ppp b / lib / src / com / jfeinstein / jazzyviewpager / jazzyviewpager . java <nl> public class jazzyviewpager extends viewpager { <nl>
+ppp b / modules / apps / foundation / frontend - theme / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / product - navigation / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / grails - resources / src / grails / grails - app / conf / datasource . groovy <nl> environments { <nl> testonborrow = true <nl>
+ppp b / dummy - commit . txt <nl> change
+ppp b / . hgtags <nl> d04a8ef4ccb004651167f793b8f0c92577bc2f65 0 . 1 <nl>
+ppp b / changes <nl> [ 1 . 5 . 3 ] <nl>
+ppp b / owncloud - android - library <nl> subproject <nl>
+ppp b / library / src / com / sothree / slidinguppanel / slidinguppanellayout . java <nl> public class slidinguppanellayout extends viewgroup { <nl>
+ppp b / portal - service / src / com / liferay / portlet / dynamicdatamapping / registry / defaultddmformfieldtypesettings . java <nl>
+ppp b / . gitignore <nl> . settings <nl> . svn <nl>
+ppp b / java / org / apache / catalina / startup / contextconfig . java <nl> public class contextconfig <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / portal - settings / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / presto - raptor / src / main / java / com / facebook / presto / raptor / storage / orcpagesource . java <nl>
+ppp b / wordpress / build . gradle <nl> android { <nl> targetsdkversion 23 <nl>
+ppp b / modules / apps / collaboration / microblogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . gradle <nl> subprojects { <nl> repositories { <nl>
+ppp b / owncloud - android - library <nl> subproject <nl>
+ppp b / modules / apps / foundation / login / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / portal - search / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / moco - doc / releasenotes . md <nl> # # shell <nl> * added version
+ppp b / wordpress / src / main / java / org / wordpress / android / models / readerpost . java <nl>
+ppp b / build . gradle <nl> buildscript { <nl> jcenter ( ) <nl> } <nl> dependencies { <nl> classpath ' com . android . tools . build : gradle : 2 . 1 . 0 ' <nl> } <nl> } <nl>
+ppp b / server / sonar - web / src / main / less / init / base . less <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / js / js . libraries / src / html5 / storage . kt <nl> public val sessionstorage : storage = noimpl <nl>
+ppp b / spring - aop / src / main / java / org / springframework / aop / aspectj / runtimetestwalker . java <nl>
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / wordpress / src / main / res / layout / menu_drawer . xml <nl> android : layout_width = " match_parent " <nl>
+ppp b / java / org / apache / catalina / ha / session / deltarequest . java <nl> public class deltarequest implements externalizable { <nl> } <nl>
+ppp b / test / net / java / sip / communicator / slick / protocol / icq / testoperationsettypingnotifications . java <nl> public class testoperationsettypingnotifications <nl>
+ppp b / library / androidmanifest . xml <nl> < uses - sdk <nl> android : minsdkversion = " 5 "
+ppp b / src / gwt / acesupport / acemode / r_code_model . js <nl> var rcodemodel = function ( doc , tokenizer , statepattern , codebeginpattern ) { <nl> } <nl> } <nl> return result ; <nl> ; <nl> } <nl> } <nl>
+ppp b / graylog2 - web - interface / . eslintrc <nl> " no - nested - ternary " : 1 , <nl>
+ppp b / aeron - client / src / main / java / uk / co / real_logic / aeron / conductor / managedbuffer . java <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / engine / src / main / java / org / terasology / rendering / headless / headlessmaterial . java <nl>
+ppp b / android / sdk / build . gradle <nl> apply plugin : ' com . android . library ' <nl>
+ppp b / app / build . gradle <nl> android { <nl> applicationid " io . github . hidroh . materialistic " <nl>
+ppp b / moco - runner / build . gradle <nl> buildscript { <nl> } <nl> project . ext { <nl> logbackversion = ' 1 . 1 . 3 ' <nl> commonscliversion = ' 1 . 3 . 1 ' <nl> } <nl>
+ppp b / src / test / com / mongodb / dbtest . java <nl> package com . mongodb ; <nl> import com . mongodb
+ppp b / ios / phyweb / third - party / uribeacon <nl> subproject <nl>
+ppp b / . travis . yml <nl> jdk : <nl>
+ppp b / src / edu / stanford / nlp / trees / grammaticalrelation . java <nl> public class grammaticalrelation implements comparable < grammaticalrelation > , ser <nl>
+ppp b / actor - server / version . sbt <nl> \ no
+ppp b / . travis . yml <nl> language : java <nl> script : mvn verify <nl>
+ppp b / src / com / google / javascript / jscomp / parsing / parserrunner . java <nl> public class parserrunner { <nl>
+ppp b / src / reference / docbook / expressions . xml <nl> boolean truevalue = <nl> < / programlisting > <nl>
+ppp b / jaxrs / pom . xml <nl> < dependencies > <nl> < dependency > <nl>
+ppp b / assets / android_models . properties <nl> gt - i9100 = samsung galaxy s ii <nl> gt - i9100t = samsung galaxy s ii <nl>
+ppp b / src / main / com / mongodb / dbcollection . java <nl> public abstract class dbcollection { <nl>
+ppp b / community / cypher / changes . txt <nl> < not yet
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / processing . js <nl> code + = ajax ( filenames [ j ] ) + " ; \ n " ; <nl>
+ppp b / build . xml <nl> < target name = " javadoc " > <nl>
+ppp b / shared - resources / ratpack / ratpack - version
+ppp b / pom . xml <nl> < properties > <nl>
+ppp b / components / camel - jgroups / pom . xml <nl> < dependency > <nl>
+ppp b / modules / apps / foundation / frontend - js / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / graylog2 - server / src / main / java / org / graylog2 / metrics / reporter / graylog2reporter . java <nl>
+ppp b / changelog . md <nl> # # 0 . 11 . 0 <nl>
+ppp b / build . gradle <nl> buildscript { <nl> repositories { <nl>
+ppp b / gradle . properties - example <nl> wp . db_secret
+ppp b / modules / apps / foundation / portal - search / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / portal - impl / src / portal . properties <nl>
+ppp b / vm / rt / robovm / org_robovm_rt_vm . c <nl>
+ppp b / modules / apps / ip - geocoder / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . xml <nl> plugins : $ { lp .
+ppp b / java / java - tests / testdata / refactoring / inplaceintroducefield / beforeassignmentreplaceall_after . java <nl> class test { <nl>
+ppp b / src / org / wordpress / android / ui / reader / readeractivity . java <nl>
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / app / controllers / userscontroller . java <nl> import play . mvc . result ; <nl> import views . helpers . permissions ; <nl>
+ppp b / flexibleadapter / build . gradle <nl> android { <nl> minsdkversion 14 <nl> targetsdkversion 22 <nl> versioncode 4 <nl> versionname " 2015 . 07 . 20 " <nl> } <nl> buildtypes { <nl> release { <nl>
+ppp b / spongecommon <nl> subproject commit 18188da5edf87b573b724ed873a61ae9a5b23186 <nl>
+ppp b / spongecommon <nl> subproject commit bb1540103cff3f0ac35cd34163645770cba2f8c2 <nl>
+ppp b / modules / apps / foundation / xstream / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / gradle . properties <nl> pom_name = dexter <nl> pom_artifact_id = dexter <nl> pom_packaging = aar <nl>
+ppp b / changelog . md <nl> # # 0 . 9
+ppp b / modules / apps / collaboration / flags / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / seriesguide / src / com / battlelancer / seriesguide / seriesguideapplication . java <nl> public class seriesguideapplication extends application { <nl>
+ppp b / portal - impl / src / com / liferay / portal / security / pacl / checker / filechecker . java <nl>
+ppp b / gradle / daemon / syncanyd . skel <nl> daemon_running ( ) { <nl> id = $ ( daemon_get_pid ) <nl>
+ppp b / modules / apps / foundation / frontend - js / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / java / org / apache / catalina / core / aprlifecyclelistener . java <nl> public class aprlifecyclelistener <nl>
+ppp b / build . gradle <nl> allprojects { <nl> all { <nl> resolutionstrategy { <nl>
+ppp b / src / main / java / com / xtremelabs / robolectric / shadowlogger . java <nl> public class shadowlogger { <nl>
+ppp b / portal - impl / src / com / liferay / portlet / documentlibrary / asset / dlfileentryassetrenderer . java <nl> public class dlfileentryassetrenderer <nl>
+ppp b / servers / src / test / java / tachyon / worker / block / tieredblockstoretests . java <nl>
+ppp b / app / build . gradle <nl> android { <nl>
+ppp b / usage / databasemodules . md <nl> public class test { <nl>
+ppp b / androidannotations / pom . xml <nl> < artifactid > maven - release - plugin < / artifactid > <nl>
+ppp b / android / mode / . gitignore <nl> . ds_store <nl>
+ppp b / src / com / interview / linklist / copylinklistwitharbitpointer . java <nl> public class copylinklistwitharbitpointer { <nl> current . next = newnode ; <nl>
+ppp b / python / helpers / pycharm / pytest_teamcity . py <nl> import os <nl> <nl>
+ppp b / modules / apps / collaboration / microblogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / rest - api - spec / test / scroll / 10_basic . yaml <nl>
+ppp b / src / main / java / com / alibaba / druid / support / logging / logfactory . java <nl> public class logfactory { <nl>
+ppp b / lib / nokogiri / ffi / xml / namespace . rb <nl>
+ppp b / core / java / android / transition / transition . java <nl> public abstract class transition implements cloneable { <nl>
+ppp b / build . xml <nl> print admincontrol . invoke ( appmanager , ' startapplication ' , ' liferay - portal ' ) <nl>
+ppp b / compiler / frontend / src / jet / iterators . jet <nl> package jet <nl>
+ppp b / test / org / apache / catalina / startup / testcontextconfigannotation . java <nl> public class testcontextconfigannotation extends testcase { <nl>
+ppp b / src / cpp / session / include / session / sessionconstants . hpp <nl>
+ppp b / . gitignore <nl> . classpath <nl> . project <nl>
+ppp b / advanced / pom . xml <nl> < parent > <nl>
+ppp b / pom . xml <nl> < groupid > com . zaxxer < / groupid > <nl>
+ppp b / . gitignore <nl> package . json <nl> gruntfile . js <nl> . gradle / <nl>
+ppp b / samples / gallery / androidmanifest . xml <nl> < uses - sdk android : minsdkversion = " 4 " <nl>
+ppp b / . gitignore <nl> gen <nl> . classpath <nl> . settings <nl>
+ppp b / modules / apps / collaboration / flags / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / astrid / res / layout / tag_settings_activity . xml <nl> android : layout_alignparenttop = " true " <nl>
+ppp b / src / edu / stanford / nlp / trees / enuniversalpos . tsurgeon <nl> fw = target < . . . {
+ppp b / microbench / readme . md <nl>
+ppp b / modules / apps / collaboration / blogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / robospice - samples <nl> subproject <nl>
+ppp b / . travis . yml <nl> before_install : <nl> script :
+ppp b / pom . xml <nl> see also : properties section and profiles section . <nl> - > <nl> < configuration > <nl>
+ppp b / libraries / stdlib / src / kotlin / collections / indexingiterator . kt <nl> package kotlin <nl> / * * <nl> *
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 21 . 1 . 1 ' <nl>
+ppp b / scripts / war . groovy <nl> default_deps = [ <nl> default_j5_deps = [ <nl> " hibernate - annotations
+ppp b / spongecommon <nl> subproject commit 1a0fbf26bc1eb37b460da897fdd21604d725df49 <nl>
+ppp b / modules / apps / web - experience / export - import / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / readme . md <nl>
+ppp b / src / java / org / apache / cassandra / transport / messages / resultmessage . java <nl>
+ppp b / changelog . md <nl> changelog <nl> * * next release * * <nl> * updated french translation
+ppp b / plugins / git4idea / src / git4idea / checkin / gitcheckinenvironment . java <nl> public class gitcheckinenvironment implements checkinenvironment { <nl> @ override <nl> public boolean isrefreshaftercommitneeded ( ) { <nl> return false ; <nl> } <nl> @ nullable <nl>
+ppp b / externs / html5 . js <nl> webworker . prototype . dispatchevent = function ( evt ) { } ; <nl>
+ppp b / pom . xml <nl> < / parent > <nl> < groupid > ch . acra < / groupid > <nl>
+ppp b / modules / apps / collaboration / recent - documents / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / blogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / configuration - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / install . sh <nl> grails_version = 2 . 2 . 1 <nl> # install prerequisites <nl> sudo yum -
+ppp b / seriesguide / src / main / androidmanifest . xml <nl> < / receiver > <nl> < service <nl>
+ppp b / portal - impl / src / portal . properties <nl> module . framework . properties . osgi . console = 11311 <nl> # # <nl> # # web web application bundles <nl> # # # <nl>
+ppp b / modules / apps / web - experience / staging / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > org . apache . zookeeper < / groupid > <nl>
+ppp b / modules / apps / foundation / portal - search / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / portal - configuration / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 21 . 1 . 1 ' <nl>
+ppp b / community / main / java / org / neo4j / kernel / highlyavailablegraphdatabase . java <nl> public class highlyavailablegraphdatabase implements graphdatabaseservice , respo <nl>
+ppp b / . gitignore <nl> target <nl> / grails - plugin - i18n / bin / <nl>
+ppp b / moco - shell / moco <nl> function install { <nl>
+ppp b / modules / apps / foundation / users - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / gradle . properties <nl> version = 0 . 11 <nl> ideaversion = 2016 . 1 <nl>
+ppp b / notice <nl> apache callback <nl> copyright 2011 the apache
+ppp b / packaging / manual / pom . xml <nl> < configuration > <nl> < executable > make < / executable > <nl> < arguments > <nl>
+ppp b / app / build . gradle <nl> android { <nl>
+ppp b / gremlin . bat <nl> : : windows launcher script
+ppp b / modules / apps / foundation / users - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / extensions / processing - inspector . js <nl> bug tracking : http : / / processing - js . lighthouseapp . com <nl>
+ppp b / spring - jdbc / src / main / java / org / springframework / jdbc
+ppp b / app / build . gradle <nl> repositories { <nl> apply plugin : ' com . android . application ' <nl>
+ppp b / src / main / java / com / fasterxml / jackson / core / jsonfactory . java <nl> public class jsonfactory <nl>
+ppp b / contributors <nl> lombok contributors : <nl> reinier zwitserloot <
+ppp b / src / com / facebook / buck / event / logevent . java <nl> public class logevent extends abstractbuckevent { <nl>
+ppp b / mobile / blackberry / application . properties <nl> icon = icon . png <nl> # for both <nl> description =
+ppp b / . travis . yml <nl> sudo : false <nl> language
+ppp b / media / java / android / media / audiorecord . java <nl>
+ppp b / pom . xml <nl> xx : + usestringcache <nl>
+ppp b / grails - async / build . gradle <nl> dependencies { <nl>
+ppp b / . gitignore <nl> # need <nl> bin / * <nl>
+ppp b / owncloud - android - library <nl> subproject <nl>
+ppp b / v7 / recyclerview / src / android / support / v7 / widget / recyclerview . java <nl> public class recyclerview extends viewgroup { <nl>
+ppp b / docs / reference / analysis / tokenfilters / minhash - tokenfilter . asciidoc <nl> [ [ analysis - minhash - tokenfilter ] ] <nl>
+ppp b / integration - tests / src / test / java / tachyon / client / fileinstreamintegrationtest . java <nl> public class fileinstreamintegrationtest { <nl>
+ppp b / deploy / vagrant / vagrantfile <nl> vagrant . configure ( vagrantfile_api_version ) do | config | <nl> is_vb : is_vb , <nl>
+ppp b / . gitignore <nl> target / <nl> build / <nl> *
+ppp b / modules / apps / foundation / roles / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / doc / native_protocol . spec <nl> table of contents <nl> 0x0005 all <nl> 0x0006 local_quorum <nl> 0x0007 each_quorum <nl>
+ppp b / modules / apps / web - experience / export - import / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / camel - core / src / main / java / org / apache / camel / component / properties / propertiescomponent . java <nl>
+ppp b / osmand / src / net / osmand / plus / helpers /
+ppp b / changelog . md <nl> # # 2 . 0 . 0 <nl>
+ppp b / project / build . properties <nl> project . name = metrics <nl> sbt . version = 0 . 7 . 4 <nl>
+ppp b / modules / apps / foundation / frontend - js / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 21 . 1 . 2 ' <nl>
+ppp b / . travis . yml <nl> android : <nl> sudo : false <nl> jdk : <nl>
+ppp b / pom . xml <nl> < module > builder < /
+ppp b / modules / apps / web - experience / portlet - configuration / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / license <nl> the mit license <nl> copyright ( c
+ppp b / modules / apps / foundation / map / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / layout / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / portal - settings / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / community / kernel / src / main / java / org / neo4j / unsafe / impl / batchimport / staging / configuration . java <nl> public interface configuration <nl> @ override <nl> public int movingaveragesize ( ) <nl> { <nl> return 100 ; <nl> } <nl> @ override <nl>
+ppp b / findbugs / findbugs - exclude . xml <nl> < / match > <nl> < match > <nl>
+ppp b / src / main / java / org / elasticsearch / monitor / jvm / hotthreads . java <nl> public class hotthreads { <nl> continue ; <nl>
+ppp b / changelog . md <nl> see for more information about xprivacy 3 [ this faq ] ( https : / / github . com <nl>
+ppp b / build . bash <nl> eof <nl> [ $ d = = $ static ] & & continue <nl>
+ppp b / src / main / java / org / scribe / model / verb . java <nl>
+ppp b / build . gradle <nl> task clean ( type : delete ) { <nl> ext { <nl>
+ppp b / gradle / wrapper / gradle - wrapper . properties <nl> distributionbase = gradle_user_home <nl> distributionpath = wrapper / dists <nl>
+ppp b / modules / apps / web - experience / xsl - content / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / trunk / jlanguagetool / src / java / org / languagetool / synthesis / basesynthesizer . java <nl> import morfologik . stemming . worddata ; <nl>
+ppp b / library / src / main / java / com / github / amlcurran / showcaseview / showcaseview . java <nl>
+ppp b / app / src / processing / app / base . java <nl>
+ppp b / rctvideo . m <nl> static nsstring * const playbackbufferemptykeypath = @ " playbackbufferempty " ; <nl> [ self useplayerviewcontroller ] ; <nl>
+ppp b / framework / src / org / apache / cordova / cordovawebviewimpl . java <nl>
+ppp b / library / pom . xml <nl> < dependency > <nl>
+ppp b / v4 / java / android / support / v4 / media / mediabrowsercompat . java <nl> public final class mediabrowsercompat { <nl>
+ppp b / community / pom . xml <nl> < parent > <nl> < groupid > org . neo4j < / groupid > <nl>
+ppp b / pom . xml <nl> < groupid > com . puppycrawl . tools < / groupid > <nl>
+ppp b / statisticsplugin / src / org / gephi / statistics / plugin / inoutdegree . java <nl>
+ppp b / modules / jquery / src / main / webapp / jquery / jquery . atmosphere . js <nl>
+ppp b / test / com / facebook / buck / apple / appletestintegrationtest . java <nl> public class appletestintegrationtest { <nl> } <nl>
+ppp b / changelog . md <nl> changelog <nl> * replaced wiki links by links to github <nl> * added menu to clear usage data <nl>
+ppp b / . travis . yml <nl> after_success : <nl> env : <nl>
+ppp b / trunk / languagetool / dict - de / affix / deutsch . aff <nl> sfx v 0 a iv <nl>
+ppp b / hibernate - envers / hibernate - envers . gradle <nl> sourcesets { <nl> } <nl> } <nl> compiletestjava { <nl> classpath + = configurations . hibernatejpamodelgentool <nl> } <nl>
+ppp b / robobinding / pom . xml <nl> < tagletartifact > <nl> < groupid > org . robobinding < / groupid > <nl>
+ppp b / android - reactive - location / . gitignore <nl>
+ppp b / modules / apps / web - experience / layout / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . md <nl> changelog <nl> * updated dutch translation <nl> * updated russian translation <nl>
+ppp b / checkstyle / style . xml <nl> < property name = " headerfile " value = " checkstyle / fileheader . txt " / > <nl>
+ppp b / changelog <nl> * ( planned ) css selectors priority <nl>
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = '
+ppp b / example / src / main / java / com / github / lzyzsd / jsbridge / example / mainactivity . java <nl>
+ppp b / modules / apps / foundation / expando / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . md <nl> * storm - 1868 : modify tridentkafkawordcount to run in distributed mode <nl>
+ppp b / community / cypher / src / docs / dev / ql / functions / index . asciidoc <nl>
+ppp b / modules / apps / foundation / portal - scripting / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / bigbluebutton - apps / build . gradle <nl> repositories { <nl> } <nl> } <nl> mavenrepo urls : ' http
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . md <nl> changelog <nl> = = =
+ppp b / jme3 - core / src / main / resources / common / shaderlib / multisample . glsllib <nl> # extension gl_arb_texture_multisample : enable <nl> uniform int m_numsamples ; <nl>
+ppp b / website / . gitignore <nl> src / react - native / docs / * * <nl> core / metadata <nl>
+ppp b / java / typemigration / src / com / intellij / refactoring / typemigration / intentions / convertatomictolongadderintention . java <nl> public class convertatomictolongadderintention extends psielementbaseintentionac <nl> @ override <nl> public boolean startinwriteaction ( ) { <nl> return true ; <nl> } <nl> @ notnull <nl>
+ppp b / changelog . txt <nl> * feature : rsa -
+ppp b / pom . xml <nl> < / action > <nl> < / pluginexecution > <nl> < / pluginexecutions > <nl> < / lifecyclemappingmetadata > <nl> < / configuration > <nl> < < / > <nl>
+ppp b / gradle - mvn - push . gradle <nl> afterevaluate { project - > <nl>
+ppp b / ios / childbrowser / childbrowsercommand . h <nl> # ifdef cordova_framework <nl>
+ppp b / media / java / android / media / utils . java <nl> class utils { <nl> } <nl>
+ppp b / modules / apps / web - experience / staging / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / libs / rs / rsprogramfragment . cpp <nl> programfragment : : programfragment ( context * rsc , const char * shadertext , <nl>
+ppp b / modules / apps / collaboration / message - boards / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . travis . yml <nl> language : java <nl> jdk : <nl>
+ppp b / enterprise / pom . xml <nl> < parent > <nl> < groupid > org . neo4j < / groupid > <nl>
+ppp b / modules / apps / web - experience / site - navigation / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / pom . xml <nl> < executions > <nl> < execution
+ppp b / . travis . yml <nl> android : <nl> platform -
+ppp b / dependencies / common / install - packages . cmd <nl> goto : eof <nl> set package = % 1 <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / actor - server / version . sbt <nl> \ no
+ppp b / portal - impl / src / com / liferay / portal / lar / exportimporthelperimpl . java <nl>
+ppp b / libraries / components / touchable / touchableopacity . js <nl> var touchableopacity = react . createclass ( { <nl> getdefaultprops : function ( ) { <nl> return { <nl> activeopacity : 0 . 5 , <nl> } <nl> ; <nl> } <nl>
+ppp b / modules / apps / web - experience / xsl - content / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / dummy - commit . txt <nl> change
+ppp b / graylog2 - server / src / main / java / org / graylog2 / security / restpermissions . java <nl> public class restpermissions { <nl>
+ppp b / modules / apps / collaboration / microblogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . md <nl>
+ppp b / modules / apps / sync / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl> commit = 35909fb28aa52d83cf04056c91023bcc73dbc936 <nl>
+ppp b / h2o - zookeeper / build . gradle <nl> apply plugin : ' idea ' <nl>
+ppp b / core / pom . xml <nl> < / reporting > <nl> < properties > <nl> < antlrpluginversion >
+ppp b / hazelcast - client / src / main / java / com / hazelcast / client / connection / router . java <nl>
+ppp b / readme . md <nl> presentation tier patterns are the top - most level of the application , this is co <nl>
+ppp b / . travis . yml <nl> android : <nl> tools <nl>
+ppp b / build . gradle <nl> buildscript { <nl> mavencentral ( ) <nl> } <nl> dependencies { <nl> classpath ' com . android . tools . build : gradle : 1 . 0 . 1 . <nl> } <nl> } <nl>
+ppp b / modules / apps / collaboration / comment / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / compiler / testdata / diagnostics / tests / override / extendfunctionclass . jet <nl> package extendfunctionclass <nl> class < !
+ppp b / readme . md <nl> previews work inside layout files , menu resource files sadly do not support prev <nl>
+ppp b / hibernate - core / hibernate - core . gradle <nl> dependencies { <nl> transitive = true <nl> } <nl> provided (
+ppp b / modules / apps / foundation / web - proxy / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / twidere / build . gradle <nl> android { <nl> applicationid " org . mariotaku . twidere " <nl> minsdkversion 14 <nl>
+ppp b / app / build . gradle <nl> android { <nl> } <nl> } <nl> sourcesets { <nl>
+ppp b / src / antlr4 / parserrulecontext . py <nl> class parserrulecontext ( rulecontext ) : <nl> return contexts <nl>
+ppp b
+ppp b / modules / apps / foundation / portal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / net / java / sip / communicator / impl / msghistory / messagehistoryserviceimpl . java <nl> public class messagehistoryserviceimpl <nl>
+ppp b / manual / pom . xml <nl> < configuration > <nl> < executable > make < / executable > <nl> < arguments > <nl>
+ppp b / circle . yml <nl> # <nl> # build
+ppp b / python / helpers / pydev / _pydev_bundle / _pydev_filesystem_encoding . py <nl> def __getfilesystemencoding ( ) : <nl> ' ' ' <nl>
+ppp b / docs / content / css / docs . css <nl> .
+ppp b / core / java / android / text / boringlayout . java <nl> public class boringlayout extends layout implements textutils . ellipsizecallback <nl>
+ppp b / . travis . yml <nl> language : java <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / actor - server / version . sbt <nl> \ no
+ppp b / pom . xml <nl> < properties > <nl> < ! - - you can add any specific project
+ppp b / common / net / minecraftforge / common / fakeplayer . java <nl> public class fakeplayer extends entityplayermp <nl>
+ppp b / changelog . md <nl> * storm - 1868 : modify tridentkafkawordcount to run in distributed mode <nl> # # 1 . 0 . 3 <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / server / sonar - web / src / main / less / issues . less <nl> . issues - workspace - component - viewer { <nl> padding : 1px 10px ; <nl>
+ppp b / src / rajawali / renderer / rajawalirenderer . java <nl> public class rajawalirenderer implements glsurfaceview . renderer , inode { <nl>
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . travis . yml <nl> language : java <nl>
+ppp b / portal - impl / src / portal . properties <nl> # # hot deploy <nl> # # <nl>
+ppp b / . travis . yml <nl> addons : <nl> project : <nl> name : " zaproxy / zaproxy " <nl>
+ppp b / languagetool - language - modules / de / src / main / resources / org / languagetool / resource / de / hunspell / spelling . txt <nl> restaurantempfehlung <nl> restaurantempfehlungen <nl>
+ppp b / core / java / android / service / voice / voiceinteractionservice . java <nl> public class voiceinteractionservice extends service { <nl>
+ppp b / changelog . md <nl> # 1 . 3 . 4 april 6 , 2016 <nl> * adds an
+ppp b / trunk / jlanguagetool / changes . txt <nl> languagetool change log <nl>
+ppp b / modules / apps / layout / layout - service / build . gradle <nl>
+ppp b / k9mail / src / main / java / com / fsck / k9 / activity / messagecompose . java <nl>
+ppp b / portal - impl / test / integration / com / liferay / portal / lar / assetpublisherexportimporttest . java <nl> public class assetpublisherexportimporttest <nl> } <nl> @ test <nl> public void testsortybyassetvocabulary ( ) throws exception { <nl> dotestsortbyassetvocabulary ( false ) ; <nl> } <nl>
+ppp b / webroot / rollup - js / kairosdbtargetctrl . js <nl> function kairosdbtargetctrl ( $ scope , $ modalinstance , kairosdbdatasource , rollup ) <nl>
+ppp b / pom . xml <nl> < profile > <nl> < id > doclint - java8 - disable < / id > <nl>
+ppp b / . gitignore <nl> bin / <nl> # netbeans specific files / directories <nl>
+ppp b / modules / apps / foundation / contacts / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / platform / lang - impl / src / com / intellij / util / indexing / filebasedindeximpl . java <nl>
+ppp b / test / test_jruby . rb <nl> load file . join
+ppp b / changelog . txt <nl> 0 . 79 <nl>
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / test / org / apache / catalina / core / testasynccontextimpl . java <nl> public class testasynccontextimpl extends tomcatbasetest { <nl> } <nl>
+ppp b / include / media / pvplayer . h <nl> private : <nl> char * mdatasourcepath ; <nl> bool misdatasourceset ; <nl>
+ppp b / . gitignore <nl> target <nl> / grails - web
+ppp b / python / helpers / pycharm / django_test_runner . py <nl> from tcunittest import teamcitytestrunner , teamcitytestresult <nl> from tcmessages import
+ppp b / r / h2orclient - package / h2orclient . rproj <nl> rnwweave : sweave <nl> latex : pdflatex <nl> buildtype
+ppp b / services / core / java / com / android / server / notification / notificationusagestats . java <nl> public class notificationusagestats { <nl>
+ppp b / core / java / android / bluetooth / ibluetoothheadsetphone . aidl <nl>
+ppp b / modules / apps / foundation / users - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / petra / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . md <nl> # # 0 . 9 . 3 - incubating <nl>
+ppp b / react / base / rctdevmenu . m <nl> rct_export_module ( ) <nl> [ commands registerkeycommandwithinput : @ " i " <nl>
+ppp b / build - scripts / daily_build . sh <nl> git pull - - rebase 2 > & 1 > > $ log_file <nl>
+ppp b / modules / apps / sync / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . gitignore <nl> / . project <nl> / .
+ppp b / . travis . yml <nl> android : <nl> components
+ppp b / docs / versions . cfg <nl> requests = 2 . 2 . 0 <nl> sqlalchemy = 0 . 9 . 1 <nl> sphinx
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . md <nl> # # 0 . 11 . 0 <nl>
+ppp b / driver / src / main / org / mongodb / get . java <nl> package org . mongodb ; <nl> public enum get { <nl>
+ppp b / . gitignore <nl> . classpath <nl> . project <nl> . settings <nl>
+ppp b / plugins / sonar - core - plugin / src / main / resources / org / sonar / l10n / core . properties <nl>
+ppp b / portal - service / src / com / liferay / portal / kernel / util / documentconversionutil . java <nl>
+ppp b / modules / apps / foundation / map / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / net / java / sip / communicator / impl / protocol / irc / chatroommemberircimpl . java <nl>
+ppp b / . gitignore <nl> local . properties <nl> . project
+ppp b / presto - spi / src / main / java / com / facebook / presto / spi / standarderrorcode . java <nl>
+ppp b / build . gradle <nl> configure ( subprojects . findall { project - > project . name = ~ subshadowre } ) { <nl> } <nl> } <nl> assemble { <nl> dependson copynatives <nl> } <nl> } <nl> \ no newline at end of file <nl>
+ppp b / library - core / build . gradle <nl> if ( project . hasproperty ( ' pushall ' ) | | project .
+ppp b / aeron - client / src / main / cpp / cncfiledescriptor . h <nl> using namespace aeron : : concurrent ; <nl>
+ppp b / authors <nl> v . anestis <nl> vince francis ( lifemarks ) <nl> wolfgang jung <nl>
+ppp b / modules / apps / collaboration / blogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . gradle <nl> subprojects { <nl> apply plugin : " groovy " <nl>
+ppp b / . hgtags <nl> aad229e4371b3b1f4a2b346761c04b8d866c3272 1 . 0 <nl> 0000000000000000000000000000000000000000 roboguice
+ppp b / enterprise / pom . xml <nl> < parent > <nl> < groupid > org . neo4j < / groupid > <nl>
+ppp b / build / assembly . xml <nl> < filemode > 0777 < / filemode > <nl> < / fileset > <nl> < / filesets > <nl> < / assemblyi > <nl>
+ppp b / . travis . yml <nl> language : java <nl>
+ppp b / modules / apps / web - experience / portlet - configuration / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . md <nl> * eliminate explicit storage of task - > component in zookeeper <nl> # # 0
+ppp b / sonar - server / src / main / js / third - party / keymaster . js <nl> / /
+ppp b / build . gradle <nl> subprojects { <nl>
+ppp b / lib / nokogiri / css / xpath_visitor . rb <nl> module nokogiri <nl> case node . value . first <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / readme . md <nl> animate the " procentage " property to make the animation . <nl>
+ppp b / androidmanifest . xml <nl> android : anydensity = " true " <nl> / > <nl>
+ppp b / build . gradle <nl> subprojects { <nl> project . ext { <nl> guavaversion = ' 19 . 0 ' <nl>
+ppp b / src / main / java / org / jboss / netty / container / spring / nettyresourcefactory . java <nl>
+ppp b / ignition - location / ignition - location - lib / pom . xml <nl> < groupid > com . github . ignition < / groupid > <nl>
+ppp b / owncloud - android - library <nl> subproject <nl>
+ppp b / src / main / groovy / org / gradle / api / tasks / compile / antjavac . groovy <nl> import org . slf4j . loggerfactory <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / product - navigation / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / main / com / mongodb / objectid . java <nl> import com . mongodb . util . * ; <nl>
+ppp b / modules / apps / foundation / frontend - theme / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . travis . yml <nl> language : android <nl>
+ppp b / pom . xml <nl> < groupid > com . puppycrawl . tools < / groupid > <nl>
+ppp b / readme . asciidoc <nl> = todo : remove me when
+ppp b / externs / chrome . js <nl> var chrome = { } ; <nl>
+ppp b / readme . md <nl> how to get beta releases : <nl> * * next release * * <nl> *
+ppp b / robobinding / src / test / java / org / robobinding / attribute / propertyattributeparsertest . java <nl> public class propertyattributeparsertest <nl> { <nl>
+ppp b / jarscan . sh <nl> else <nl> fi <nl>
+ppp b / src / main / java / hex / dglm . java <nl> public abstract class dglm { <nl> _deviance = dev ; <nl>
+ppp b / . travis . yml <nl> language : java <nl> before_install :
+ppp b / version . gradle <nl> allprojects { <nl> ext { <nl>
+ppp b / presto - parser / src / main / antlr3 / com / facebook / presto / sql / parser / statement . g <nl> simplequery <nl> havingclause ? <nl> ; <nl>
+ppp b / tests / androidmanifest . xml <nl> < / application > <nl>
+ppp b / pom . xml <nl> < plugin > <nl> < groupid > io . fabric8 < / groupid > <nl>
+ppp b / readme . markdown <nl> usage : : python <nl> family
+ppp b / bin / build_release . sh <nl> mkdir - p $ dir <nl>
+ppp b / modules / apps / collaboration / comment / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / libs / minidns <nl> subproject commit 114bda4d3fde90d5c824884ce6b3f8ada846b435 <nl>
+ppp b / conf / cassandra . yaml <nl> keyspaces : <nl>
+ppp b / source / com / intellij / openapi / vfs / impl / local / localfilesystemimpl . java <nl>
+ppp b / project . clj <nl> ( defproject storm " 0 . 8 . 0 " <nl> : source
+ppp b / gradle . properties <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / portal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / readme . md <nl> # material dialogs <nl> ! [
+ppp b / res / menu / chat_screen_menu . xml <nl> < item android : id = " @ + id / menu_end_conversation " <nl>
+ppp b / titan - cassandra / src / test / java / com / thinkaurelius / titan / graphdb / thrift / thriftoperationcountingtest . java <nl> public class thriftoperationcountingtest extends titanoperationcountingtest { <nl> @ override <nl> public boolean storeusesconsistentkeylocker ( ) { <nl> return true ; <nl> } <nl> } <nl>
+ppp b / . gitignore <nl> target <nl> bin <nl> test - output <nl> . classpath <nl>
+ppp b / . gitignore <nl> bin <nl> gen <nl> gen * <nl> # eclipse <nl>
+ppp b / jetty - client / src / test / resources / jetty - logging . properties <nl>
+ppp b / h2o - docs / src / product / flow / packs / test / index . list <nl> cancel_rf_model_job . flow <nl>
+ppp b / distributed / pom . xml <nl> dstorage . configuration .
+ppp b / news . txt <nl> upgrading <nl> features <nl>
+ppp b / . gitignore <nl> / conf <nl> / dsl - support <nl> * . ipr <nl>
+ppp b / . gitignore <nl> / tool / target / <nl> / runtime / java / target / <nl>
+ppp b / src / com / fsck / k9 / k9 . java <nl> public class k9 extends application <nl>
+ppp b / pom . xml <nl>
+ppp b / gradle / versioning . gradle <nl> if ( finalrelease ) { <nl> issnapshot = true <nl> version
+ppp b / drivers / py / cqlsh <nl> if __name__ = = ' __main__ ' : <nl> readline . write_history_file ( history ) <nl>
+ppp b / math / src / main / java / org / apache / mahout / math / orthonormalityverifier . java <nl>
+ppp b / modules / apps / web - experience / trash / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / hikaricp / src / main / java / com / zaxxer / hikari / hikariconfig . java <nl> public class hikariconfig implements hikariconfigmbean <nl>
+ppp b / . travis / build . sh <nl> if [ - z " $ { travis_os_name + x } " ] ; then <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > org . slf4j < / groupid > <nl>
+ppp b / src / main / java / com / zaxxer / hikari / proxy / ihikariconnectionproxy . java <nl> public interface ihikariconnectionproxy extends connection , ibagmanagable <nl>
+ppp b / core / progress - proguard . txt <nl> - keep
+ppp b / python / src / com / jetbrains / python / inspections / pynonasciicharinspection . java <nl> public class pynonasciicharinspection extends pyinspection { <nl>
+ppp b / codeinsight / impl / com / intellij / codeinsight / template / macro / macrofactory . java <nl> public class macrofactory { <nl>
+ppp b / seriesguide / src / com / battlelancer / seriesguide / ui / upcomingfragment . java <nl>
+ppp b / bigbluebutton - html5 / app / client / main . coffee <nl> template . header . events <nl>
+ppp b / modules / apps / web - experience / site / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / ninja - core / src / site / markdown / documentation
+ppp b / servlet / src / main / java / io / undertow / servlet / core / managedservlet . java <nl>
+ppp b /
+ppp b / modules / apps / foundation / frontend - js / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / web / plugin - admin . jsp <nl> string line ; <nl>
+ppp b / tools / db - upgrade / readme . txt <nl>
+ppp b / policy / src / com / android / internal / policy / impl / phonewindowmanager . java <nl> public class phonewindowmanager implements windowmanagerpolicy { <nl> intent = mhomeintent ; <nl> } <nl> startactivityasuser ( mhomeintent , userhandle . current ) ; <nl> } <nl>
+ppp b / extendedapi / src / com / intellij / extapi / psi / astwrapperpsielement . java <nl>
+ppp b / python / src / com / jetbrains / python / psi / pyelementtype . java <nl> / * <nl> *
+ppp b / assertj - android - recyclerview - v7 / gradle . properties <nl> pom_artifact_id = assertj - android - cardview - v7 <nl> pom_name = assertj for android cardview v7 <nl> pom_packaging = = aar <nl> \ no newline at end of file <nl>
+ppp b / core / java / android / net / basenetworkstatetracker . java <nl>
+ppp b / trunk / jlanguagetool / rules / rules . dtd <nl> note for grammar rules : <nl> -
+ppp b / demo / src / main / java / com / aurelhubert / ahbottomnavigation / demo / demofragment . java <nl>
+ppp b / portal - impl / test / com / liferay / portal / repository / repositorytestsuite . java <nl>
+ppp b / modules / apps / foundation / frontend - js / frontend - js - metal - web / build . gradle <nl> configjsmodules { <nl>
+ppp b / src / biz / bokhorst / xprivacy / activityshare . java <nl> public class activityshare extends activity { <nl> / / set layout <nl>
+ppp b / modules / apps / collaboration / comment / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / packaging / operations / monitoring . txt <nl> long nodeidsinuse = manager . getprimitivesbean . getnumberofnodeidsinuse ( ) ; <nl>
+ppp b / modules / apps / foundation / frontend - editor / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b /
+ppp b / files / callsigns <nl> kk6jkq <nl> w6bb <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 21 . 1 . 1 ' <nl>
+ppp b / project / build . scala <nl> import com . typesafe . sbt . less . import . lesskeys <nl>
+ppp b / media / java / android / media / mediascanner . java <nl>
+ppp b / pom . xml <nl> < profile > <nl> < id > doclint - java8 - disable < / id > <nl>
+ppp b / src / main / java / hex / deeplearning / deeplearning . java <nl> public class deeplearning extends job . validatedjob { <nl>
+ppp b / readme . md <nl> repositories { <nl> } <nl> dependencies { <nl> compile ' com . github . markushi : android - ui : 1 . 0 ' <nl> } <nl> ` ` ` <nl>
+ppp b / pom . xml <nl> < groupid > ru . lanwen . verbalregex < / groupid > <nl>
+ppp b / gradle / docs . gradle <nl> task docprojectversioninfo ( type : copy ) { <nl>
+ppp b / gradle / start - emulator . sh <nl> echo no | android create avd - - force - n test
+ppp b / library / build . gradle <nl> android { <nl> / / applicationid " me . drakeet . materialdialog " <nl>
+ppp b / twitter4j - core / src / test / resources / test . properties - template <nl> id1 . password = <nl>
+ppp b / src / main / com / mongodb / writeresult . java <nl> public class writeresult { <nl> } <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > log4j < / groupid > <nl>
+ppp b / modules / apps / foundation / users - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / platform / platform - resources - en / src / search / ignore . txt <nl> let <nl> let ' s <nl> like <nl> likely <nl>
+ppp b / src / com / fsck / k9 / activity / folderlist . java <nl> public class folderlist extends k9listactivity <nl> } <nl> class folderviewholder <nl> { <nl> public public textview foldername ; <nl>
+ppp b / core / src / main / java / io / grpc / clientcall . java <nl> import javax . annotation . nullable ; <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / enterprise / pom . xml <nl> < / distributionmanagement > <nl> < / project <nl>
+ppp b / java / org / apache / catalina / ha / session / deltasession . java <nl> public class deltasession extends standardsession implements externalizable , clus <nl>
+ppp b / library / src / main / res / values / dimens . xml <nl>
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / gradle . properties <nl> group = com . jakewharton . threetenabp <nl> version_name = 1 .
+ppp b / build / build . xml <nl> destdir = " $ { compile . test . dir } " <nl>
+ppp b / tileview / build . gradle <nl> android { <nl> defaultconfig { <nl> minsdkversion 11 <nl> targetsdkversion 22 <nl> versioncode 22 <nl> versionname " 2 . 0 . 3 " <nl> } <nl> buildtypes { <nl>
+ppp b / changelog . txt <nl> 0 . 13 <nl> /
+ppp b / advanced / readme . txt <nl> neo4j graph database <nl>
+ppp b / patches / minecraft / net / minecraft / block /
+ppp b / core / java / android / widget / chronometer . java <nl> public class chronometer extends textview { <nl> } <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 19 . 1 . 0 ' <nl>
+ppp b / javascript / src / mount . jsx <nl> ' use strict ' ; <nl>
+ppp b / settings . gradle <nl> include ' : pxfetcher
+ppp b / ion / src / com / koushikdutta / ion / bitmap / exif . java <nl> public class exif { <nl>
+ppp b / version <nl> 0 . 9 . 0 . 1 <nl>
+ppp b / tracker . js <nl> } <nl> } ) . call ( eventtracker . prototype ) ; <nl>
+ppp b / changes . txt <nl> unreleased <nl> ` `
+ppp b / readme . md <nl> changelog <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > com . ircclouds . irc < / groupid > <nl>
+ppp b / readme . md <nl> # prelollipoptransition <nl> simple tool which
+ppp b / usermanagement / web / auth . html <nl> opayload . iss = sub ; <nl> opayload . sub = sub ; <nl>
+ppp b / android - iconify / src / main / java / com / joanzapata / android / iconify / icondrawable . java <nl>
+ppp b / server / sonar - web / src / main / less / components /
+ppp b / php / uaparser . php <nl> < ? php <nl> / * ! <nl>
+ppp b / modules / apps / foundation / expando / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / rankingapi / src / org / gephi / ranking / impl / abstractsizetransformer . java <nl> public abstract class abstractsizetransformer < target > extends abstracttransforme <nl>
+ppp b / modules / apps / screens / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / framework / src / org / apache / cordova / droidgap . java <nl> public class droidgap extends activity implements cordovainterface { <nl>
+ppp b / actor - server / version . sbt <nl> \ no
+ppp b / core / src / main / java / com / torodb / core / exceptions / user / uniqueindexviolationexception . java <nl>
+ppp b / presto - main / src / test / java / com / facebook / presto / server / testquerydriversoperator . java <nl>
+ppp b / wordpress / src / main / java / org / wordpress / android / models / note . java <nl>
+ppp b / . travis . yml <nl> android : <nl> android
+ppp b / src / main / java / com / jakewharton / disklrucache / disklrucache . java <nl> public final class disklrucache implements closeable { <nl>
+ppp b / . travis . yml <nl> language : java <nl> jdk :
+ppp b / modules / apps / collaboration / quick - note / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / h2o - py / h2o / model / model_base . py <nl>
+ppp b / rest - api - spec / test / percolate / 16_existing_doc . yaml <nl> id : 1 <nl> version
+ppp b / idea / testdata / completion / basic / custom / toplevelnonimportedpropertysrc / source . kt <nl> package foo .
+ppp b / modules / apps / web - experience / asset / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / java / org / jivesoftware / util / byteformat . java <nl> public class byteformat extends format { <nl>
+ppp b / java / org / apache / catalina / session / managerbase . java <nl> public abstract class managerbase extends lifecyclembeanbase <nl>
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / info / ata4 / unity / enums / textureformat . java <nl> public enum textureformat { <nl> dxt1 , <nl> unused11 , <nl> dxt5 , <nl> unused13 , <nl> unused14 , <nl> unused15 , <nl> unused16 , <nl>
+ppp b / conf / codestyle / intellij / license <nl> ~ <nl> ~ see the notice
+ppp b / bundles / config / pom . xml <nl> < packaging > pom < / packaging > <nl> < modules > <nl> <
+ppp b / modules / apps / collaboration / announcements / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . gitignore <nl> target <nl> . classpath <nl> .
+ppp b / modules / apps / screens / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . gitignore <nl> org . eclipse . ltk . core . refactoring . prefs <nl> gen <nl> local . properties <nl> ecbuild <nl>
+ppp b / astrid / src / com / todoroo / astrid / utility / constants . java <nl> public final class constants { <nl>
+ppp b / src / org / geometerplus / android / fbreader / library / libraryactivity . java <nl>
+ppp b / changelog . md <nl> version 23 * ( in development ) * <nl>
+ppp b / h2o - app / build . gradle <nl> dependencies { <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / invitation / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / monostate / readme . md <nl> tags : <nl> difficulty - beginner <nl> - - <nl> #
+ppp b / src / main / java / org / mapdb / pump . java <nl> public final class pump { <nl>
+ppp b / python / edu / build / pycharm_edu_build . gant <nl> public layouteducational ( string classespath , set usedjars ) { <nl>
+ppp b / modules / apps / foundation / configuration - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / web - experience / layout / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / osmand / res / layout / drawer_list_sub_header . xml <nl> android : capitalize = " characters " <nl> android : inputtype = " textcapcharacters " <nl>
+ppp b / src / com / fsck / k9 / activity / accounts . java <nl> public class accounts extends k9listactivity implements onitemclicklistener { <nl>
+ppp b / modules / apps / foundation / roles / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / readme . md <nl> you ' ll need ant installed <nl> todo : <nl> * set
+ppp b / pom . xml <nl> < groupid > com . mysema . querydsl < / groupid > <nl>
+ppp b / readme . md <nl> repositories { <nl> } <nl> dependencies { <nl> compile ' com . github . lzyzsd : jsbridge : 1 . 0 . 3 ' <nl> } <nl> ` ` ` <nl>
+ppp b / dialogplus / src / main / res / layout / dialog_list . xml <nl> < listview <nl>
+ppp b / astroboy / pom . xml <nl> < dependency > <nl> < groupid > org . roboguice < / groupid > <nl>
+ppp b / build . gradle <nl> subprojects { <nl> project . ext { <nl> guavaversion = ' 18 . 0 ' <nl>
+ppp b / pom . xml <nl> < version > 1 . 0 - snapshot < / version > <nl>
+ppp b / . gitignore <nl> target / <nl> tmp / <nl> gen - external - apklibs / <nl> out
+ppp b / changelog . txt <nl> 0 . 75 . 2 <nl>
+ppp b / modules / apps / collaboration / item - selector / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / v8 / renderscript / rs_support / android . mk <nl> local_src_files : = \ <nl>
+ppp b / querydsl - sql / src / main / java / com / mysema /
+ppp b / changelog . md <nl> # # 0 . 10 . 0 <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / item - selector / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / core / java / com / android / internal / app / ringtonepickeractivity . java <nl>
+ppp b / trunk / jlanguagetool / src / java / de / danielnaber / languagetool / messagesbundle . properties <nl> # english translation of languagetool <nl>
+ppp b / liquibase - core / pom . xml <nl> < properties > <nl>
+ppp b / src / net / java / sip / communicator / util / html2text . java <nl> public class html2text <nl>
+ppp b / test . properties <nl> testcase . url , \ <nl> testray . component . names , \ <nl>
+ppp b / pom . xml <nl> < groupid > com . puppycrawl . tools < / groupid > <nl>
+ppp b / brut . apktool . smali / build . gradle <nl> apply plugin : ' idea ' <nl> version = ' 2 . 0 . 6 ' <nl> def jarversion = version version <nl>
+ppp b / core / src / main / java / com / graphhopper / util / downloader . java <nl> public class downloader <nl>
+ppp b / common / buildcraft / transport / client / render / pipetransportrendereritems . java <nl>
+ppp b / actor - server / version . sbt <nl> \ no
+ppp b / gradle / ide . gradle <nl> topleveldirs = topleveldirs . collect { it . substring ( 1 ) } <nl>
+ppp b / etherpad / src / static / css / admin / admin . css <nl> # adminwelcome <nl> { <nl>
+ppp b / cropper / src / com / edmodo / cropper / cropimageview . java <nl> public class cropimageview extends framelayout { <nl>
+ppp b / pom . xml <nl> < / goals > <nl> < configuration > <nl>
+ppp b / . gitignore <nl> . idea / workspace . xml <nl> . idea / tasks . xml <nl>
+ppp b
+ppp b / java / org / apache / jasper / compiler / node . java <nl> abstract class node implements tagconstants { <nl>
+ppp b / twidere / build . gradle <nl> android { <nl> applicationid " org . mariotaku . twidere " <nl> minsdkversion 14 <nl> targetsdkversion 22 <nl> versioncode 107 <nl> versionname " 0 . 3 . 0 " <nl> multidexenabled true } <nl>
+ppp b / modules / apps / static / osgi / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / org / geometerplus / fbreader / network / authentication / litres / litresgenremap . java <nl> class litresgenremap { <nl> private litresgenremap ( ) { <nl> } <nl> } <nl> \ no newline at end of file <nl>
+ppp b / . travis . yml <nl> language : android <nl>
+ppp b / greendroid / greendroid / default . properties <nl> android . library = true <nl>
+ppp b / app / build . gradle <nl> android { <nl> applicationid ' com . mikepenz . lollipopshowcase ' <nl> minsdkversion 16 <nl> targetsdkversion 21 <nl> versioncode 201 <nl> versionname " 2 . 0 . 1 . } <nl> } <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / version . gradle <nl> allprojects { <nl> ext { <nl>
+ppp b / build / scripts / layouts . gant <nl> def layoutfull ( string home , string targetdirectory ) { <nl> fileset ( dir
+ppp b / core / java / android / app / activity . java <nl> public class activity extends contextthemewrapper <nl>
+ppp b / pom . xml <nl> < assetsdirectory > $ { project . basedir } / assets < / assetsdirectory > <nl>
+ppp b / media / libstagefright / nucachedsource2 . cpp <nl> status_t nucachedsource2
+ppp b / api / current . xml <nl> value = " 16843421 " <nl>
+ppp b / . arcconfig <nl> " arc_jira_lib " : " . arc_jira_lib " <nl> } , <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / media / jni / soundpool / soundpool . cpp <nl> static status_t decode ( int fd , int64_t offset , int64_t length , <nl>
+ppp b / . travis . yml <nl> env : <nl> ui_dir
+ppp b / build . gradle <nl> subprojects { subproject - > <nl> defaulttasks ' build ' <nl> group = ' org . hibernate ' <nl>
+ppp b / project / build . scala <nl> object general { <nl> val androidsettings = <nl> settings + + <nl> seq ( <nl> platformname : = " android - 10 " <nl> ) <nl> val <nl>
+ppp b / circle . yml <nl> general : <nl> artifacts : <nl>
+ppp b / changelog . md <nl> version 2 . 99 . x and version 3 . x will be available with a [ pro license
+ppp b
+ppp b / . gitignore <nl> libs / <nl> # generated files <nl> * /
+ppp b / modules / apps / web - experience / trash / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / test / org / apache / tomcat / util / net / jsse / openssl / testeropenssl . java <nl> public class testeropenssl { <nl>
+ppp b / modules / apps / collaboration / comment / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / announcements / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / marketplace / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / app / build . gradle <nl> android { <nl> buildtypes { <nl> release { <nl>
+ppp b / settings . gradle <nl> include ' daotestbase ' <nl> include
+ppp b / build . gradle <nl> subprojects { <nl> sourcecompatibility = ' 1 . 6 ' <nl>
+ppp b / readme . md <nl> download it from http : / / www . nvidia . com / content
+ppp b / python / src / com / jetbrains / python / psi / pyutil . java <nl> public class pyutil { <nl>
+ppp b / gradle . properties <nl> pom_name = dexter <nl> pom_artifact_id = dexter <nl> pom_packaging = aar <nl>
+ppp b / py / jprobe . py <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / graphhopper . sh <nl> elif [ " $ action " = " build " ] ; <nl>
+ppp b / spongecommon <nl> subproject commit 088066eed2948d45013c0a4a40e10833ab17836e <nl>
+ppp b / readme . md <nl> bukkit <nl> a minecraft
+ppp b / src / main / org / codehaus / groovy / antlr / groovy . g <nl> declarationstart ! <nl> ident <nl> ; <nl>
+ppp b / modules / apps / foundation / configuration - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / platform / forms_rt / forms_rt . iml <nl> < / content > <nl> < orderentry type = " inheritedjdk " / > <nl>
+ppp b / changelog . md <nl> * android m support <nl> *
+ppp b / . travis . yml <nl> language : java <nl>
+ppp b / changelog . md <nl> # # 0 . 11 . 0 <nl>
+ppp b / modules / apps / sync / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / samples / pom . xml <nl> < / parent > <nl> < groupid > org . springframework . security < / groupid > <nl>
+ppp b / common / buildcraft / api / recipes / assemblyrecipe . java <nl> package buildcraft . api . recipes ; <nl> import java
+ppp b / subprojects / core / src / main / groovy / org / gradle / api / artifacts / result / unresolveddependencyresult . java <nl>
+ppp b / modules / apps / foundation / portal - cache / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / processing / src / test / java / io / druid / query / select / selectqueryrunnertest . java <nl> public class selectqueryrunnertest <nl> ) <nl> ) <nl> ) <nl> ) ; <nl> verify verify ( expectedresults , , results ) ; <nl> } <nl>
+ppp b / camel - core / src / test / java / org / apache / camel / impl / myserialbean . java <nl>
+ppp b / . gitignore <nl> / dexlib2 / accessortestgenerator / build <nl> / smali / build <nl>
+ppp b / src / cpp / session / sessionconsoleprocess . cpp <nl> error consoleprocess : : start ( ) <nl> if ( started_ ) <nl>
+ppp b / media / libstagefright / codecs / aacdec / aacdecoder . cpp
+ppp b / hadoop - yarn - project / changes . txt <nl>
+ppp b / modules / apps / web - experience / journal / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . gitignore <nl> local . properties <nl> * ~ <nl> # eclipse project files <nl> . project <nl>
+ppp b / src / com / goide / runconfig / gorunconfigurationbase . java <nl> public abstract class gorunconfigurationbase < runningstate extends gorunningstate <nl>
+ppp b / build . gradle <nl> apply plugin : ' idea ' <nl> ext { <nl> bintraypublish = false <nl>
+ppp b / libraries / javascriptappengine / initialization / initializejavascriptappengine . js <nl> function setupcollections ( ) : void { <nl>
+ppp b / trunk / jlanguagetool / src / resource / ltcommunity / disabled_rules . properties <nl>
+ppp b / bigbluebutton - html5 / app / client / stylesheets / whiteboard . less <nl> padding : 0 ; <nl>
+ppp b / src / jackpal / androidterm / termview . java <nl> package jackpal . androidterm ; <nl> import android . content
+ppp b / modules / apps / foundation / portal - configuration / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / app / build . gradle <nl> def buildtime ( ) { <nl> } <nl> def versionmajor = 0 <nl>
+ppp b / lib / nokogiri . rb <nl> require ' nokogiri / html ' <nl> require ' nokogiri / decorators / slop ' <nl>
+ppp b / zipkin / src / main / java / zipkin / endpoint . java <nl> public final class endpoint { <nl>
+ppp b / . gitignore <nl> build / <nl> rebel . xml <nl> # shade
+ppp b / changes <nl> hikaricp changes <nl> changes between 2 .
+ppp b / sonar - core / src / main / java / org / sonar / core / user / authormapper . java <nl>
+ppp b / build . gradle <nl> buildscript { <nl> jcenter ( ) <nl> } <nl> dependencies { <nl> classpath ' com . android . tools . build : gradle : 2 . 1 . 3 ' <nl> } <nl> } <nl>
+ppp b / bin / templates / project / build . gradle <nl>
+ppp b / wordpress / src / main / res / layout / reader_fragment_post_detail . xml <nl> android : id = " @ + id / scroll_view_reader " <nl>
+ppp b / modules / apps / collaboration / bookmarks / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / packaging / readme . txt <nl> neo4j graph database <nl> = = = = = = = = = = = = = =
+ppp b / changes . txt <nl> * streams compression ( cassandra
+ppp b / twidere / build . gradle <nl> android { <nl> applicationid " org . mariotaku . twidere " <nl> minsdkversion 14 <nl>
+ppp b / pom . xml <nl> < groupid > com . github . ptgoetz < / groupid > <nl>
+ppp b / src / clojure / parallel / parallel . clj <nl> ( in - ns ' clojure . parallel ) <nl>
+ppp b / build . gradle <nl> buildscript { <nl> } <nl> } <nl> ext
+ppp b / observablescrollview - samples / build . gradle <nl> android { <nl>
+ppp b / src / test / shell / bazel / build <nl> sh_test ( <nl> " : test - deps " , <nl>
+ppp b / gradle . properties <nl> version_name = 2 . 1 . 0 <nl> version_code = 76 <nl>
+ppp b / tests / org / terasology / model / inventory / inventorytest . java <nl> public class inventorytest { <nl> } <nl>
+ppp b / modules / apps / foundation / users - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / frontend - theme / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . travis . yml <nl> rvm : <nl> 1
+ppp b / version . txt <nl> \ no newline at end of file <nl>
+ppp b / src / test / java / co / paralleluniverse / actors / behaviors / supervisortest . java <nl>
+ppp b / portal - service / src / com / liferay / portal / kernel / servlet / portalclassloaderservletcontextlistener . java <nl>
+ppp b / kvdocument / json - converter / pom . xml <nl>
+ppp b / src / main / org / codehaus / groovy / classgen / asmclassgenerator . java <nl> public class asmclassgenerator extends classgenerator { <nl> } <nl>
+ppp b / readme . asciidoc <nl> public class itemlistparcelconverter extends arraylistparcelconverter < item > { <nl> @ override <nl>
+ppp b / client / makefile <nl> endif <nl> setup : check <nl> @
+ppp b / media / java / android / media / audiomanager . java <nl> public class audiomanager { <nl> * @ hide <nl>
+ppp b / changelog . md <nl> # # 0 .
+ppp b / common / buildcraft / robots / boards / boardrobotgenericbreakblock . java <nl> public abstract class boardrobotgenericbreakblock extends redstoneboardrobot { <nl>
+ppp b / labs / meteor - client / app / . meteor / packages <nl> nemo64 : bootstrap <nl> less <nl>
+ppp b / changelog . md <nl> # # 0 . 11 . 0 <nl> * storm -
+ppp b / . travis . yml <nl> before_install : <nl> script :
+ppp b / library / src / main / java / com / klinker / android / sliding / slidingactivity . java <nl>
+ppp b / changes . txt <nl> * clean up ksmetadata , cfmetadata from unnecessary <nl>
+ppp b / owncloud - android - library <nl> subproject <nl>
+ppp b / src / main / org / codehaus / groovy / classgen / asmclassgenerator . java <nl>
+ppp b / modules / apps / web - experience / product - navigation / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / core / client / src / main / java / alluxio / client / lineage / alluxiolineage . java <nl>
+ppp b / modules / apps / adaptive - media / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . gradle <nl> allprojects { <nl> maven { url " http : /
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / portal - remote / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / python / testsrc / com / jetbrains / python / pythonalltestssuite . java <nl> public class pythonalltestssuite { <nl>
+ppp b /
+ppp b / gdx / jni / matrix4 . cpp <nl> # include " matrix4 . h " <nl> # include
+ppp b / config / gradle / common . gradle <nl> checkstyle { <nl> pmd { <nl> ignorefailures = true <nl>
+ppp b / plugins / properties / src / com / intellij / lang / properties / refactoring / rename / resourcebundlerenameutil . java <nl> public class resourcebundlerenameutil { <nl>
+ppp b / readme . md <nl> to do <nl> * something with animations to showcase animation control . <nl>
+ppp b / external / cacheword <nl> subproject commit c2bc847c98f3bcd533940bb6b25fbc35a6a2820b <nl>
+ppp b / modules / apps / foundation / web - proxy / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / realm / src / main / java / io / realm / realm . java <nl> public final class realm implements closeable { <nl> handler . sendemptymessage ( realm_changed ) ; <nl> } <nl> } <nl> } <nl> } <nl>
+ppp b / advanced / src / main / java / org / neo4j / server / rrd / scheduledjob . java <nl> public class scheduledjob <nl> } <nl> } ; <nl> public void runevery_seconds ( int seconds ) <nl> { <nl> } <nl>
+ppp b / ratpack - manual / ratpack - manual . gradle <nl> test { <nl>
+ppp b / portal - impl / src / com / liferay / portal / model / impl / layoutrevisionimpl . java <nl>
+ppp b / modules / apps / web - experience / layout / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / frontend - editor / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 19 . 1 . 0 ' <nl>
+ppp b / library / src / jp / co / cyberagent / android / gpuimage / gpuimage . java <nl> public class gpuimage { <nl> } <nl>
+ppp b / java / org / apache / catalina / webresources / cache . java <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > com . alibaba < / groupid > <nl>
+ppp b / modules / settings . gradle <nl> else { <nl> exclude " sdk / * / samples / " <nl> exclude "
+ppp b / java / debugger / impl / src / com / intellij / debugger / ui / javadebuggersupport . java <nl>
+ppp b / changelog . txt <nl> 0 . 81 <nl> * realm now works with kotlin ( m12 + )
+ppp b / media / java / android / media / audioservice . java <nl>
+ppp b / indexer / src / main / java / com / metamx / druid / indexer / hadoopdruidindexerconfig . java <nl>
+ppp b / . gitignore <nl> android / libs / graphhopper - * - android . jar <nl> * iml <nl> debug
+ppp b / modules / apps / foundation / hello - world / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > com . github . knightliao . apollo < / groupid > <nl>
+ppp b / pom . xml <nl> < plugin > <nl> < groupid > org . apache . maven . plugins < / groupid > <nl>
+ppp b / app / src / main / java / com / google / samples / apps / topeka / helper / answerhelper . java <nl>
+ppp b / core / java / android / webkit / findactionmodecallback . java <nl>
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 23 . 0 . 2 ' <nl>
+ppp b / building . txt <nl> for example : <nl>
+ppp b / tools / apt_deps . sh <nl> apt - get install - y zlib1g - dev \ <nl> libsasl2 - dev \ <nl>
+ppp b / ios / analytics / analyticsexampleswift / viewcontroller . swift <nl> import uikit <nl> @ objc ( viewcontroller
+ppp b / docs / rule / cxx_library . soy <nl> cxx_library ( <nl>
+ppp b / services / java / com / android / server / connectivityservice . java <nl> public class connectivityservice extends iconnectivitymanager . stub { <nl> } <nl>
+ppp b / changelog <nl> ( rb = 184310 ) <nl> move avroschemagenerator out of
+ppp b / conductor / src / main / java / com / bluelinelabs / conductor / changehandler / horizontalchangehandler . java <nl>
+ppp b / modules / apps / collaboration / microblogs / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / configuration - admin / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / test / org / codehaus / groovy / tools / compilertest . java <nl> public class compilertest extends groovytestcase { <nl>
+ppp b / src / de / danoeh / antennapod / appconfig . java <nl> package de . danoeh . antennapod ; <nl> public final class appconfig { <nl> public final static boolean debug = true ; <nl> } <nl>
+ppp b / src / test / shell / unittest . bash <nl> function run_suite ( ) { <nl> fi <nl>
+ppp b / seriesguide / build . gradle <nl> android { <nl> productflavors { <nl> free { <nl> packagename " com . battlelancer . seriesguide " <nl> versioncode 205 <nl> versionname " 11 - beta5 " <nl> } <nl> beta { <nl>
+ppp b / drm / java / android / drm / drmmanagerclient . java <nl> public class drmmanagerclient { <nl>
+ppp b / src / java / voldemort / server / voldemortconfig . java <nl> public class voldemortconfig implements serializable { <nl> private final long pusherpollms ; <nl>
+ppp b / build . gradle <nl> ext { <nl> avsgroup = ' com . wire ' <nl>
+ppp b / modules / apps / collaboration / wiki / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / modules / apps / foundation / portal - scheduler / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / pom . xml <nl> < ignores > <nl> < ignore
+ppp b / extensions / gdx - setup / src / com / badlogic / gdx / setup / resources / ios -
+ppp b / core / java / android / view / gesturedetector . java <nl>
+ppp b / core / java / android / widget / textview . java <nl>
+ppp b / changes <nl> assetmanager gets hook for handling loading failure .
+ppp b / modules / apps / foundation / frontend - js / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / subprojects / cpp / src / main / groovy / org / gradle / ide / visualstudio / visualstudioproject . java <nl>
+ppp b / changelog . md <nl> changelog <nl> * * next
+ppp b / build . gradle <nl> ext { <nl> buildtoolsversion = ' 21 . 1 . 1 ' <nl>
+ppp b / pom . xml <nl> < dependency > <nl> < groupid > $ { project . groupid } < / groupid > <nl>
+ppp b / owncloud - android - library <nl> subproject <nl>
+ppp b / readme . rst <nl> building a tarball is done by
+ppp b / iphone / clipboardplugin / clipboardplugin . m <nl> / / <nl>
+ppp b / jadx - core / src / main / java / jadx / core / codegen / classgen . java <nl>
+ppp b / wordpressutils / build . gradle <nl> android { <nl> buildtoolsversion " 21 . 1 . 1 " <nl> defaultconfig { <nl> versionname " 1 . 5 . 0 " <nl> minsdkversion 14 <nl> targetsdkversion 19 <nl> } <nl>
+ppp b / twidere / build . gradle <nl> android { <nl> applicationid " org . mariotaku . twidere " <nl>
+ppp b / modules / apps / forms - and - workflow / calendar / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / . travis . yml <nl> install : <nl> export
+ppp b / trunk / jlanguagetool / changes . txt <nl> languagetool change log <nl>
+ppp b / packages / systemui / res / layout / remote_input . xml <nl> android : background = " @ null " <nl>
+ppp b / changelog <nl> * float series index parsing has been fixed <nl>
+ppp b / modules / apps / foundation / frontend - js / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / changelog . md <nl> # # 2 . 0 . 0 <nl>
+ppp b / core / java / android / webkit / webview . java <nl> public class webview extends absolutelayout <nl>
+ppp b / modules / apps / foundation / frontend - theme / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>
+ppp b / src / main / org / codehaus / groovy / runtime / nullobject . java <nl>
+ppp b / readme . md <nl> both have a method called ` setswitchtypeface `
+ppp b / src / cpp / session / modules / sessionfiles . cpp <nl> # include " sessionfiles . hpp " <nl> #
+ppp b / trunk / jlanguagetool / changes . txt <nl> languagetool change log <nl> 1 . 7
+ppp b / changes . txt <nl> dev <nl> ( cassandra - 1285 ) <nl> * support for hadoop streaming
+ppp b / plugins / inspectiongadgets / src / com / siyeh / ig / logging / loggingconditiondisagreeswithlogstatementinspection . java <nl> public class loggingconditiondisagreeswithlogstatementinspection <nl> return ; <nl>
+ppp b / modules / apps / collaboration / document - library / . gitrepo <nl> ; <nl> [ subrepo ] <nl> cmdver = liferay <nl>

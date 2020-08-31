@@ -1,0 +1,18 @@
+Exactly the same as 69, we should obtain same results and understand why 70 has much BLEU much lower.
+
+Observations: plots are very similar
+
+74 vs 69
+neural editor
+
+commit message generator
+best_val_perplexity: 60.399 vs 59.94 (almost same)
+last_train_perplexity: 1.816 vs 1.76 (almost same)
+test_acc: 0.017 vs 0.018 (almost same)
+train_acc_test_size: 0.017 vs 0.018 (almost same)
+train_acc_test_size top-50: 0.026 vs 0.045 (worse)
+BLEU test: 14.37 vs 15.27 (almost same)
+BLEU train: 14.84 vs 15.71 (almost same)
+hyp_len / ref_len (on test): 0.411 vs 0.431 (almost same)
+
+Conclusions: results reproduced, top-50 train acc can be worse because training in 74 was on cpu...

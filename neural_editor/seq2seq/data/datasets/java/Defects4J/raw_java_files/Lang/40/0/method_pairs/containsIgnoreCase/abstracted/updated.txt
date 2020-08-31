@@ -1,0 +1,1 @@
+public static boolean METHOD_1 ( String str , String VAR_1 ) { if ( str == null || VAR_1 == null ) { return false ; } int VAR_2 = VAR_1 . length ( ) ; int VAR_3 = str . length ( ) - VAR_2 ; for ( int i = 0 ; i <= VAR_3 ; i ++ ) { if ( str . METHOD_2 ( true , i , VAR_1 , 0 , VAR_2 ) ) { return true ; } } return false ; }

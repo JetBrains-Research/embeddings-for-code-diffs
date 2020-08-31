@@ -1,0 +1,4 @@
+Same as 31 but LEAVE_ONLY_CHANGED is False.
+
+Observations: t-SNE is worse than in 31, because leave_only_changed is False. Also we significantly memorize target therefore we have bad t-SNE and very high accuracy on test (0.84). Best val perplexity is very low 1.06 vs 1.17. This agrees with high accuracy. Acurracy on train is 1.0 for top-3 vs 0.98, on test top-1 is 0.85 vs 0.67. So, on test data we are not worse than on train because model learnt that it has answer (target) in edit representation. And performance on transfer learning is much worse than in 31 (top-1 for same 0.52 vs 0.42, BUT for other top-1 is 0.03 vs 0.09).
+Conclusion: big edit representation size and leave all tokens in edit is bad idea because model learns that edit contains target.

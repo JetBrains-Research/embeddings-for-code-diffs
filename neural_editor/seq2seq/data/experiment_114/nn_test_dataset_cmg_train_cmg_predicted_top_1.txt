@@ -1,0 +1,1500 @@
+add blockoutstream in blockinstream
+changed default implementation of block . getextendedstate .
+remove ntlm module from pom
+adding a license comment .
+update sample app to use android - 19
+updated changelog
+fix npe , added null check in html2text .
+updated sample version code
+removed commons lib since now it ' s part of svn repository
+lps - 47580 if we remove the private - package directive the generated manifest will contain a wrong import ; we cannot do that
+fixing junit dep scope to test
+removed testing code
+fix invalid link to download ( it ' s deprecated ) - replace to releases
+lps - 61001 move java file
+lps - 52032 update sdk
+minecraftforge / fml @ 70570a863ffa6a3ba7e2dd30b471bb47615b8bf8 fix up possible cme
+ignore update ' modules / apps / collaboration / bookmarks / .
+change the ` setconfiguration ( ) ` to static
+remove a call which seems to serve no purpose and sometimes causes exceptions
+remove client softlink
+ignore gradle related files .
+bump up the version of support libraries
+ignore update ' modules / apps / collaboration / wiki / .
+ignore update ' modules / apps / marketplace / .
+fixing broken dropdown asset
+prepare for next version dev
+allow jetty to run in java 8 compact 3 profile
+ignore update ' modules / apps / sync / .
+added tag default / master for changeset a970aba8f8b5
+fixes # 167 by replacing the undefined ' mavenuser ' and ' mavenpassword ' with placeholders
+attaching javascript compression to the compile phase
+fixed cover for py booklet ( no crop marks )
+add shared element screenshots
+lps - 56199 moves icon
+bump version for nondex - maven - plugin to 1 . 1 . 1 ( # 3439 )
+added ruud s . to contributors list
+don ' t return null network .
+updated list
+fixed bug with services shutting down by itself
+ignore update ' modules / apps / foundation / license - manager / .
+ignore update ' modules / apps / web - experience / layout / .
+built new snapshot lib
+upgraded parent declaration in all trunks to use version 1 of parent - central .
+i always forget travis . yml fixes # 199
+added eclipse project settings to .
+missing break
+chore ( driver - compat ) add some error types to ignore by clirr
+upgraded to latest build with jochen ' s scoping changes
+add function graphic
+ignore auto - generated build . info . properties
+ignore update ' modules / apps / web - experience / site / .
+added oupls images for documentation .
+disable doc lint
+remove todo for bad idea
+keep phonestatusbar default constructor around .
+fix error with settext from layout
+update asm in coverage
+update libwebp
+fix directory bug in install_zmq .
+upgrade groovy to 2 . 4 . 6 to fix java 9 issues
+fixed updater tests .
+upgrade zkclient to 0 . 8
+remove key lookup for account screen ( not a good place )
+fix typo reported by @ earthgecko
+removing unimplemented method activescansessionurls from clientapi
+cut off traceback
+prepare release astyanax - 0 . 8 . 10 - snapshot
+removed method used for debugging purpouses
+lps - 55168 moves icon
+lps - 67469 lrdocs - 2841 remove build . gradle since that project is now empty "
+updated changelog
+ignore update ' modules / apps / collaboration / invitation / .
+ignore update ' modules / apps / foundation / map / .
+ignore update ' modules / apps / foundation / petra / .
+update the year for the manual .
+added readme for build status
+adding activiti - cdi to deploy profile in current trunk
+adding empty file
+updated todo . txt
+turn debug on for test diagnosis
+ignore update ' modules / apps / foundation / roles / .
+ignore update ' modules / apps / foundation / roles / .
+ignore update ' modules / apps / foundation / frontend - taglib / .
+added gitignore file .
+commits the binary for the jni speex encoder , decoder and resampler on mac os x and thus enables them .
+adding empty file
+removed unneeded kochiku config
+add button ui to unix
+upgraded guava to 14 . 0
+commented out a failing line
+add barchart wiki image
+prints the stack trace as well if there ' s something wrong
+lrqa - 28221 add youtube as a valid component
+bumped version to 5 . 0 . 0 - alpha4
+remove change from another pr to avoid confusion
+ignore update ' modules / apps / foundation / portal - configuration / .
+ignore update ' modules / apps / collaboration / wiki / .
+config - converter properly handles snitches and framed support .
+add debugging info for travis .
+lps - 65012 fix frontend - js - bundle - config - extender dir structure
+updated example and screenshots
+include outbound socket exceptions at debug level
+fix missing version for spring - core
+use correct param for heightmode in relativelayout horizontal measure
+unbreak accessiblewebview
+corrected to property syntax
+fix pants exclusives unit test .
+prepare version 21 . 1 . 0 - beta4 .
+ignore update ' modules / apps / web - experience / asset / .
+push version to 12 - beta9 , 230 .
+fixed reloading language level when iml - file is changed externally
+updating alloy to rev . 74847
+updated syntevo smartgit / hg icon
+rename the profile check - java - api to sanity - checks
+bump up release number .
+updated gitignore to exclude the lib directory
+ignore update ' modules / apps / collaboration / wiki / .
+include javacsv in the toolkit target .
+ignore update ' modules / apps / web - experience / site - navigation / .
+ignore update ' modules / apps / foundation / portal / .
+updated reference to library after merging paired pr
+changed permissions on run_example .
+add storm - 1737 to changelog
+exclude log4j in kafka dependency as well
+changed number of nodes for unittest to two instead of three to speed tests up
+updated copyright to 2015
+ignore update ' modules / apps / web - experience / asset / .
+built snapshot
+ignore update ' modules / apps / foundation / portal - configuration / .
+begin development of 1 . 11 .
+lps - 58332 fix typo in sql query
+ignore update ' modules / apps / web - experience / iframe / .
+fix build failure
+ignore " bin " directory ( created by eclipse )
+idea - 117674 please rebuild and commit runnerw . exe
+update build tools
+change the filtercriteria . onrecallselection ( ) to return the already assigned tag
+bumped version to 1 . 5 . 2 .
+ignore update ' modules / apps / web - experience / journal / .
+signed contributor ' s agreement .
+delete ant . jar - every build uses the installed ant , not the bundled one .
+fixed typo .
+increase the range of jdks that jaxb gets added into
+added storm - 1190 to changelog
+removed all big dataset tests
+adding gradle - app .
+ignore update ' modules / apps / ip - geocoder / .
+update msn lib
+added some 4 . 3 structs from rust
+add barchart wiki image
+bump up version
+added debug assertions
+update linux - x86 natives
+do not include svg - s in the default resource pack
+added twitter and rand example output files to .
+add histogram intrinsic to support library build .
+no longer require local jre for all builds
+log test failures at quiet level so we can see them on travisci .
+rename readme . md to readme - en .
+remove run icon from chunk when pending execution
+update changelog
+ignore update ' modules / apps / web - experience / staging / .
+prepare version 19 .
+add module common
+update news with data import improvements
+bump version to 2 . 1 . 2
+disable call log folder pref if call log is disabled
+build tools 21 . 1 . 2
+ignore update ' modules / apps / foundation / portal - template / .
+updating samples
+updated help for 2 . 1 . 0 release
+fix changes . txt
+use explicit aar dependency for smoothprogressbar .
+make windows minimizable
+lrqa - 28375 prep next , use latest
+prepare release imageloader - parent - 1 . 5 . 9 "
+bump common ref for multi - world worldborders .
+missing import
+ignore update ' modules / apps / collaboration / microblogs / .
+py - 1065 reformat and auto - import do not respect space - after - comma preference in multiline imports
+try another fix
+removing some redundant elements
+delete ic_launcher .
+update readme with more badge configurations
+implement keyguardgoingaway ( ) fixes build .
+lps - 55168 moves icon
+updated french translation
+remove nailed version for crate - docs - theme
+adding the cordovaexception class
+tweak startup script for older cygwin installations
+add xml - psi into core - analysis . jar ( required by java )
+lps - 45870 remove extra line break
+deleted old readme
+fixed npe in box . extendtoencompass , close # 1783
+bump common ref for multi - world worldborders .
+lps - 68814 add missing test property
+accidentally checked in a scratch file
+add notice . txt
+fix parameter name
+fix react warnings
+fix hun scrim
+provides a more recent snapshot of the wiki
+suppress unchecked warning
+get deprecation warnings
+added storm - 607 to changelog
+ignore update ' modules / apps / marketplace / .
+ignore update ' modules / apps / collaboration / recent - documents / .
+sqlutils surpport odps
+renamed readme . txt to readme . md
+update win64 nattttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttive
+add placeholder default route icon for webapp ( should have addedd this as part of r454 ) .
+added version dependency for checkstyle in anticipation of a java 8 supported checkstyle soon
+git ignore gradle . properties
+ignore update ' modules / apps / web - experience / staging / .
+removed the unnecessary run dependency reported by brian .
+removed the userlist ' s x button from the portrait view .
+testing build notify
+disable sonar - start module
+removed 2 . 4 . 6 jar
+using released version of jetty - enforcer - rules
+create readme . md
+update build tools
+updated gif
+prepare for next development iteration
+add missing method
+engines are standalone blocks
+added eclipse dotfiles to .
+use correct param for heightmode in relativelayout horizontal measure
+set snapshot version for next development cycle .
+moved glm pyunit to nopass due to intermittently failing more often than desired .
+ignore update ' modules / apps / collaboration / wiki / .
+fix timeout value not having a default .
+remove checkthread ( ) from findaddress
+bump common ref for multi - world worldborders .
+add storm - 1739 to changelog
+remove unused imports
+create readme . md
+removed groovy - all - 1 . 0 - jsr - 03 . jar .
+removing old image of test
+fixed typo in changelog
+add words suggested by users
+adds java_package option .
+fix gif url
+ignore update ' modules / apps / collaboration / wiki / .
+revert " fix 3041579 overscroll effect in notification area looks strange "
+test not masking gestures for two finger tap
+use jdk 7 in travis - ci
+remove dependency on groovy - json for compilation
+lps - 67914 why do we need this ?
+fixed test case
+prepare release hikaricp - 1 . 2 . 8
+updated slovak translation
+reset light count in lights ( )
+added back in author / revision info
+lps - 52032 released 1 . 0 . 2 , so prep for 1 . 0 . 3 snapshot
+add pullapprove config
+fix transitive dep issue
+ignore update ' modules / apps / web - experience / rss / .
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+ignore update ' modules / apps / foundation / portal - settings / .
+ignore update ' modules / apps / web - experience / export - import / .
+updated httpclient
+include sources for all files in ' fat ' binary jar
+fixed edu - 371 error in logic in boolean_operators .
+reduce eden space from 10 % to 1 %
+minimal json update version to 0 . 9 . 2
+fix # 198 , optimize initlazyview ( ) callback timing in the viewpager scene .
+added storm - 801 to changelog
+add a 192x192 xxxhdpi icon ( scaled down from 512x512 )
+ignore auto - generated build . info . properties
+fix cts test .
+fix gpslocationprovider to return gpsstatus and nmea events .
+added null pointer check .
+extra threads wait longer
+prepare release acra - 4 . 6 . 0
+reinstate spec .
+update changelog
+use the resolved context in contentresolver .
+don ' t add symlink tree to rule key
+pointing tsdb at / usr / share / opentsdb / bin / tsdb .
+update ppc64le natives
+ignore update ' modules / apps / collaboration / document - library / .
+remove unused views when we return to keyguard
+unbreak accessiblewebview
+fixed the dependency issue of camel - jaxb
+make jbosgi - http provided
+use correct hdpi search icon .
+prepare next development stage
+consolidate javax . servlet jars
+lps - 54745 update jar
+fix test data
+add image of dir tree to haxm
+add image for actionbar basics
+disable node integration tests temporarily
+bump version number to 2 . 0 . 5
+change the scope for spring - boot - starter - test to test .
+prepare next dev iteration
+updated support annotations
+ignore update ' modules / apps / foundation / frontend - editor / .
+update screenshots
+update location module
+ignore update ' modules / apps / foundation / map / .
+undo wiki images
+push version to 14 . 0 . 4 , 11267 .
+ignore update ' modules / apps / collaboration / blogs / .
+remove mention of groovy - 6226 ( configure eclipse plugin ) now that the issue is closed
+updated syntevo smartgit / hg icon
+improve stability of rctallocationtests
+ignore twitter - web 1 . 0 . 0 prep next
+bump version to 1 . 1 . 0 - snapshot
+add screenshot
+rm en strings = > app_name
+add words suggested by users
+ignore update ' modules / apps / collaboration / recent - documents / .
+prepare release hikaricp - 1 . 1 . 2
+ignore update ' modules / apps / foundation / portal - language / .
+add blockworkertest unit test .
+fixed docs link error
+remove useless assignment .
+ignore update ' modules / apps / collaboration / blogs / .
+bumped version number to 1 . 4 . 1
+travis only has android sdk 10 or higher
+add large suffix .
+proposed bug fix
+added dir ' .
+ignore update ' modules / apps / foundation / roles / .
+update xsoup to 0 . 2 . 1 # 75
+ignore update ' modules / apps / collaboration / bookmarks / .
+ignore update ' modules / apps / foundation / frontend - editor / .
+restore missing image
+fixing syncdoc task to avoid up - to - date message only because target directory already exists
+increased version code
+added fixme item
+added eclipse support .
+update linux amd64 natives
+ignore update ' modules / apps / foundation / frontend - editor / .
+ignore update ' modules / apps / foundation / configuration - admin / .
+fix typo ( concurrent_compacters - > concurrent_compactors ) in cassandra . yaml
+shrink notification area to contents
+upgraded parent declaration in all trunks to use version 1 of parent - central .
+add demo gif
+ignore update ' modules / apps / web - experience / product - navigation / .
+update readme
+fix a typo in credits
+added debug level pool statistics logging
+fix an npe if available ( ) is called before the input buffer is created .
+prepare version 21 . 1 . 3 .
+added asus transformer infinity to tested - device list
+update travis
+ignore update ' modules / apps / foundation / roles / .
+removes a nullpointerexception which is said to have been placed for the purposes of jmf compatibility but is inappropriate anyway .
+allow null to be cached in memory for unavailable urls
+gh - 425 - added empty context xml file to rest api
+fixed android backend . . .
+camel - 2185 reverted my last commit which can ' t do what i expect and caused camel - cxf build error
+fixed pom dep
+change game category image .
+add high res logo
+when building the simulator on linux , link ( only ) with libdl , as opposed to also making libdl a build target .
+remove minsdkversion and targetsdkversion to not conflict with apps .
+add my dummy mainclass to gitignore to prevent me from checking it in .
+added more gremlin pictures .
+add examples of ack and confirming
+documented cassandra - 594 in changelog
+fixed a typo xlst - > xslt
+lrqa - 17498 add edge as an option for browser type property
+added jake wharton to contributors .
+updating alloy to rev . 74847
+fix format
+missing a dep , thanks travis
+add getchildcount ( ) to pshape reference
+correct a typo
+fix build
+set last used on shutdown
+added plain icon screenshots
+remove warning about building summary2 .
+update idea 128x128 win icons
+ignore update ' modules / apps / collaboration / document - library / .
+updated setimage method in bootstrapthumbnail to use invalidate and requestlayout methods as recommended in android docs
+added code style settings for android studio
+making your app location aware .
+updated changelog
+preventing leak
+remove nonsensical test
+updated changelog
+add optimized version of jportaudio . dll for 64 - bit windows .
+updated the parent pom version to 4 which enforces you to use maven 2 . 1 or higher
+reverted pom to r2 since our build server can ' t handle r3
+deleting old libs that were not necessary .
+fixed test name for smart enter test
+saving blacklist and hold for moderation lists when dismissing dialog
+added an id to the execution phase
+prepare next release v0 . 88 . 4 - snapshot
+adding storm - 1103 to changelog . md
+add postsync so that the chrome stack has access .
+setting version to 1 . 0 . 87
+fixing glibc 2 . 4 problem on debian system .
+set min visualization iframe height 0
+removed scan interval
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+fix frameworksservicestests . apk to include libc + + .
+default update notifications
+synchronize isclosed .
+bump version to 0 . 6 . 2 - snapshot
+fix a numeric equality bug spotted by intellij
+ignore update ' modules / apps / foundation / configuration - admin / .
+fix up whitespace
+added storm - 1219 to changelog
+ignore the .
+ignore update ' modules / apps / foundation / petra / .
+accept ' indices ' and ' formulae '
+add icon # 1416
+remove 0 . 5 branch to release again .
+reset stanza queue when resetting xmppconnection
+prepare for next development iteration
+ignore update ' modules / apps / collaboration / microblogs / .
+revert " disable precompiled headers "
+ignore update ' modules / apps / foundation / frontend - editor / .
+removes changelog . ja . rdoc from the manifest
+documented get moco version from manifest
+rename intellilang configurable to " language injection "
+make console prompt text selectable
+add demo img
+add visiblefortesting to a constant
+lps - 43332 do not strip html from description in getsummary method
+added storm - 525 to changelog .
+cleaned up changelog for release 0 . 40 . 0
+ignore update ' modules / apps / foundation / portal - settings / .
+diagnostics project doesn ' t need cunit for int tests any more .
+set revision 3 . 3 . 5 .
+update maven conf for release
+fix # 675
+fix crash if flagging episodes .
+adding storm - 1616 to changelog . md
+tried new postprocessing , no luck yet
+include podspec in npm distribution
+fixed typo .
+add debugging info for travis .
+ignore update ' modules / apps / web - experience / asset / .
+ignore update ' modules / apps / collaboration / bookmarks / .
+ignore target directory
+ignore update ' modules / apps / foundation / portal - cache / .
+ignore update ' modules / apps / collaboration / blogs / .
+remove openjdk6
+removing outdated booklet pdfs
+removed 2 . 4 . 6 jar
+removed mockito 1 . 9 . 5 for incompatibility with current powermock
+don ' t reference the enclosing type instance when it ' s not used ( memory optimisation )
+we are using the individual jain - sip jars and no longer this one .
+add gzipped test for binary column from 0 / n / y
+adding more temp files to gitignore
+add screenshots
+fix testdata related to jvmname retention
+update versions . txt
+rubydebuggerproxy can both emulate catchpoint removal and use support provided by ruby - debug - ide
+reset p2p0 interface channel as well
+move compilation of clojure test source to the right phase .
+revert " rollback avs to 2 . 9 . 8 ( 2 . 9 . 3 was too far ) "
+handle empty preview appearance correctly .
+changed permissions on run_example .
+updated sample
+update doc commit pointer for 0 . 3 . 2 release
+ignore update ' modules / apps / web - experience / journal / .
+" updating samples to reflect recent changes . "
+updated changelog
+ignore update ' modules / apps / web - experience / journal / .
+updated changelog
+ignore update ' modules / apps / collaboration / microblogs / .
+print a message to the log when a file can ' t be opened on the client side .
+build 0 . 14 - stable on travis
+disable node integration tests temporarily
+do not merge fix build .
+changed permissions on run_example .
+remove a spurious symlink
+removing return statement so that the adapter always reloads the posts list after a post fetch .
+remove redundant encoding entry
+added compound visitor for dynamic type builder .
+ignore update ' modules / apps / foundation / portal - search / .
+adds annotations jar
+lps - 51079 - text box field can hide links and buttons on resize
+upgraded parent version .
+adding the like icon image
+add xxhdpi icon for free version .
+add " lateprovide " to the allowed suppression list in parserconfig . properties .
+update classpath for javadocing
+removed non - needed imports
+ignore update ' modules / apps / screens / .
+ignore update ' modules / apps / foundation / portal - remote / .
+delete duplicate application . properties
+fix rest test delete / 42_missing_parent to catch a routingmissingexception
+set local_min_sdk_version .
+updated changelog
+made the build messages from the manual less verbose .
+excluded nightlytest in the default build profile
+add check style to travis . yml
+lps - 45009 fix tests - > update the jar .
+ignore update ' modules / apps / foundation / frontend - editor / .
+lrqa - 28221 add youtube as a valid component
+added support to get right dialog from activity
+ignore update ' modules / apps / foundation / portal / .
+fix descriptor leak after accepting connections
+built new snapshot lib
+remove manual tag for worker_test
+rename code style jar
+update icons
+ignore update ' modules / apps / collaboration / flags / .
+implement size method for vector class .
+updated tck .
+reduce the amount of logging from the javadoc plugin .
+revert idea ' s xstream ; use own xstream in idetalk
+replace image for layout practice 5
+updated version
+update android iconics
+added private constructor .
+ignore update ' modules / apps / foundation / portal - security / .
+updated help for 2 . 1 . 0 release
+updating alloy to rev . 74847
+lps - 12050 portletclassloaderutil should release reference to portletclassloader after portalclassloaderservletcontextlistener context destory
+made logo smaller
+add os x artifact to ignore
+add jar containing base64 class
+ignore update ' modules / apps / collaboration / blogs / .
+updated read me
+missing key
+ignore update ' modules / apps / sync / .
+setting version to 1 . 0 . 111 - snapshot
+ignore update ' modules / apps / foundation / frontend - js / .
+findbugs plugin versionup
+prepare version 1 . 0 . 0 .
+fixing history
+prepare next development version .
+fix indent
+lps - 48650 rename it only
+updating all components to use version 3 of the parent pom .
+remove jars to avoid merging issue .
+fix the issue of new call failing in 3 - way call scenario .
+bump engine . io - client
+set the minimum number of threads = = to the maximum number of threads since threadpoolexecutor may not do what we hope .
+ignored rrd directory that someone keeps creating for me
+prepare for next development iteration
+added padding on sidebar icons so they don ' t touch the edge
+fix checkstyle problems with glusterfs module .
+make printer constructor public
+add proguard rule for android . app . notification
+remove unnecessary library jar
+reset log level to info
+upgraded netty to 4 . 0 . 22
+fix # 109 , file not unlocked after db close on windows .
+ignore update ' modules / apps / web - experience / portlet - configuration / .
+added hdrhistohram . jar to base directory for convenient downloading
+ignore update ' modules / apps / web - experience / export - import / .
+added the travis . yml file , maybe it will do something interesting
+ignore update ' modules / apps / foundation / roles / .
+recompiled bbb - deskshare - applet - 0 . 71 . jar with jdk 1 . 5 to work on mac os 10 . 5 . 6 under firefox
+adding standalone product category
+update ppc64le natives
+ignore update ' modules / apps / foundation / frontend - css / .
+started core project
+ignore update ' modules / apps / foundation / frontend - theme / .
+don ' t prompt use about data service ; if it is off then we don ' t do anything
+added storm - 1631 to changelog
+bump pegasus to 1 . 10 . 6
+add missing return statement .
+don ' t silently choose existing import statement when importing from project ( py - 7426 )
+actually fix dupe drop
+ignore update ' modules / apps / collaboration / blogs / .
+add xxhdpi launcher icons for beta and x . closes # 174 .
+added bin folder to bigbluebutton - web / .
+add python requirements file .
+remove copyright messages
+corrected to property syntax
+fix un - updated rule change
+fix failing test
+bump k9
+ignore update ' modules / apps / collaboration / recent - documents / .
+do not append assemblyid to generated zip and targz
+remove false annotation
+ignore update ' modules / apps / foundation / portal - security / .
+ignore update ' modules / apps / web - experience / site / .
+updated jain - sip ri ( version with improved tcp support )
+ignore update ' modules / apps / foundation / portal - scheduler / .
+change the gif pic
+add placeholder default route icon for webapp ( should have addedd this as part of r454 ) .
+follow change in parent .
+switched to latest spock snapshot
+enable long click on recipient select view
+setting version to 1 . 0 . 130 - snapshot
+ignore all .
+ignore update ' modules / apps / collaboration / mentions / .
+fixed a code typo
+add a few tests to the continuous run list
+revert " move test to nopass because it takes too long to run ~ 12hr .
+ignore update ' modules / apps / foundation / frontend - js / .
+copy the xml descriptors .
+ignore update ' modules / apps / web - experience / asset / .
+removed accidental change .
+ignore intellij files
+fix up whitespace
+added comment about zlandroidimagedata
+ignore update ' modules / apps / foundation / frontend - editor / .
+now prints an error message if permission is not available .
+remove develop . rst reference from the readme
+ignore update ' modules / apps / foundation / frontend - js / .
+relax restriction on empty strings for proxy callback url , as this should be an empty string if no proxy callback was requested during service ticket validation .
+lps - 66431 prep next , use latest
+prepare release checkstyle - 7 . 1 . 2
+added cython to py requirements
+fixed known type of dir ( ) for python 3 . x ( py - 8347 )
+bump version to 2 . 0 . 0 .
+set changes . txt git merge driver to union
+update changes
+replace app_konference .
+update sparc natives
+ignore update ' modules / apps / collaboration / item - selector / .
+fix issue displaying modals with new gridster
+ignore update ' modules / apps / sync / .
+reduce logging , use ' quiet '
+remove description of question 1 . 1
+update icons
+execute migrations .
+change chunk < t > to be a static inner class
+remove checked in # define subversion
+updating alloy to rev . 74847
+updated hibernate - annotations to 3 . 2 . 1 .
+fix changelog by adding a new empty section
+only require signing when releasing .
+remove duplicated configuration directive
+fix rtl layout in recent apps , landscape mode
+adding exception
+lps - 33820 pacl - update the filechecker with modern logic - include the actual root dir
+fix merged operation clipping
+default update notifications
+updated version
+fix minsdkversion for demo app
+add storm - 341 to changelog
+fix failing test
+updated bundled crash to 0 . 8 . 3
+do not append assemblyid to generated zip and targz
+replace obsolete trait keyword in newly added test
+reduce noise by maven - javadoc - plugin
+prepare library for release 2 . 1 . 4
+updated help for 2 . 1 . 0 release
+fix root project name .
+add custom config for plugins path as well
+fix critical dupe bug in awb
+still return a package suspsended dialog if there is no owner .
+update tutorial to create db utf8 by default
+updated faq
+updated gitignore
+added private constructor .
+update delve version
+remove unused pattern relationship image
+updated changelog
+bump version to r08 - snapshot
+fix calendarview to show the month title properly .
+prepare next development version .
+added makefile for r .
+don ' t cache source formatting for now
+remember change signature dialog size .
+add # 4399 to changes
+increasing heap size for tests
+some kernels have frandom and erandom
+ignore update ' modules / apps / web - experience / layout / .
+fixed pom . xml issue with distributed sub - project
+remove unused pattern relationship image
+removed unnecessary import
+updated reference to library after merging paired pr
+added debug assertions
+add exec header . sh
+updated tz database to version 2006m .
+trailing whitespace police
+added sparkapplication . destroy ( ) fixes # 151
+update capture gif
+fixing construction of handler in appwidgethost
+create readme . md
+upgrading parent version .
+create new xymarkerview ( # 2029 )
+always use version of the next version
+add new otp logo icons
+don ' t draw terminal content out of the terminal panel component ( idea - 125317 ) .
+update dlv
+make all ipreachabilitymonitor log messages have the same tag
+updated version to 1 . 3 . 0
+remove unnecessary import
+remove hardcoded position for scrolltoposition .
+update emitter version
+adding an xxxhdpi app icon .
+upgrade flow to 0 . 3 . 50
+updated the version number from v1 . 3 . 2 to v1 . 4 . 0
+core - 2136 mysql must quote partition as a keyword
+upgraded parent declaration in all trunks to use version 1 of parent - central .
+add image for preference subscreen
+ignore update ' modules / apps / foundation / portal - configuration / .
+added kindle branch
+update async http
+adds throwable - less exception
+updated reference for 1 . 0 . 8
+made grace period work for muc as well
+add ds_store to gitignore
+add additional key for fullscreen on ios7
+ignore update ' modules / apps / collaboration / bookmarks / .
+indicate update of dictionary in changes . txt
+attach testng sources
+use surefire 2 . 10 inherited from jboss - parent
+add support for java 7 - patch # 3403265
+update location module
+the dist and docs target now work with the github repo
+fixed travis build tools version
+made executable
+target java 7 for compilation
+jal 59 - add new images
+add additional key for fullscreen on ios7
+added relative path to the parent pom so that the user won ' t need to
+ignore update ' modules / apps / web - experience / product - navigation / .
+rename a few runits to have nopass .
+added gitignore .
+remove trove sources
+ignore update ' modules / apps / collaboration / blogs / .
+add missing return statement .
+setting version to 1 . 0 . 74
+set custom file name for 64 - bit winlauncher exe
+delete banner . png
+fix anonymous struct .
+removed dependency to android support library
+added source_code_repository_info . txt to .
+added buffer swap in display ( ) to solve the garbage problem
+upgraded jackson to 2 . 6 . 1
+removed rogue println .
+rename jsoup
+updated travis script
+ignore update ' modules / apps / foundation / frontend - js / .
+included signavio core components in the demo . setup
+updated read - me
+adding rdoc
+debug configuration changes
+updating alloy to 14cda6a
+fix typo
+fixed spelling errors
+fix javadoc warning .
+use 32dp size image for pictureinpictureaction icon
+appveyor skip verify to let it cache maven repo
+fix build
+ignore update ' modules / apps / collaboration / item - selector / .
+remove multidexenabled flag
+remove unused lib
+engines are standalone blocks
+lrqa - 27552 prep next , use latest
+adding empty script to " pack . sh " ghostdriver ( a reminder . . . )
+added header to buildall . sh
+delete the localrepo .
+update bitmaputils
+add smaller sized screenshots
+run button do not have rounded border
+updated version code .
+include coffeescript in pycharm 2 . 0 build
+added forbidannotationelementvaluecheck
+bump api version
+added tablet screenshot
+updating alloy to 5887563 ; lps - 31011
+setting version to 1 . 0 . 130
+colorize the success message that the exopackage test script prints .
+remove exception output
+ignore update ' modules / apps / foundation / portal / .
+don ' t require the sysctl file to exist when deleting it
+added appcompat & recyclerview libraries
+remove comment on private serialization constant
+generated javadoc to target folder
+core - 2136 mysql must quote partition as a keyword
+ignore update ' modules / apps / foundation / portal - security / .
+fix the missing break statement .
+added missing semi - colon .
+ignore update ' modules / apps / marketplace / .
+prepare version 25 . 0 . 2 .
+don ' t show crash dialog here
+update changelog for storm - 210
+refresh scss files in development
+remove useless outdated forbidden - api version in ` - pdev ` config .
+changed the observer diagram .
+ignore update ' modules / apps / foundation / portal - template / .
+ignore update ' modules / apps / web - experience / site / .
+changed readme
+ignore update ' modules / apps / foundation / contacts / .
+ignore update ' modules / apps / web - experience / asset / .
+add storm - 118 to changelog
+skip call log entries
+remove mlastnewintent as it is not used .
+fixed
+added travis
+sonar - 4746 fix textarea style for ie8 ( . . . )
+don ' t record style lint unless requested
+upgrade parent version .
+don ' t swallow unknown payload in the parser .
+removed unnecessary import leading to py - 3718 .
+fix handle ref in linux filemon
+add words suggested by users
+add support for travis - ci
+bump the version number to 2 . 2b1
+ignore update ' modules / apps / web - experience / product - navigation / .
+updated reference to library after merging paired pr
+use indexed color space for list widget preview image .
+and removed kframework - sw from contrib
+removed an unused image and source .
+adjust travis versions to test on
+removed allow backup attribute on manifest
+ignore bbb_conf_api .
+excluded nightlytest in the default build profile
+as7 - 2310 rename jboss - admin .
+remove sorting on post formats to fix # 284 .
+catch more exceptions during teardown ( )
+dispose previous root model when changing to a new one without events
+do not append assemblyid to generated zip and targz
+build fix
+removed system / framework / android .
+update multiwords . txt
+updated changelog
+updated version
+remove unneeded todo
+ignore update ' modules / apps / forms - and - workflow / polls / .
+changed components to use parent pom v 4 , producing source and javadoc jar packages .
+add storemeta which is an empty class for now
+fixed polyfill for backandroid
+updated fml
+fix build
+done groovy full
+ignore loading . gif for push dialog when generating icons classes
+updated libs
+lps - 61156 move basedbtestcase to portal - test - internal
+added missing @ implementation annotation that was breaking the build
+updated forms . asmcodegenerator for custom borderfactory client property
+smack 4 . 1 . 0 - rc5
+applied stefan ' s patch
+explicitly set default background color in rcttextview
+removing legacy dependencies
+ignore update ' modules / apps / foundation / portal - configuration / .
+ignore update ' modules / apps / foundation / contacts / .
+removed empty line .
+added changelog for server - advanced for 1 . 7
+added shippable builds
+set last_subscription_check after check
+lps - 62881 fix rebase
+lps - 65283 update jar
+fix typo in typo fix
+missing cast in a test case
+preventing upload of signing . properties
+fix npe when provider returns null cursor .
+include message history in stacktraces from error handler , making it easier to know where the problem was .
+fixed version number 2 . 0 . 0
+turn off active by default on tests
+add gitignore
+stop the app after rendering in this test .
+removed system / framework / android .
+updated libs
+rename jsonhelper to jsonhelper . java
+added a missing def
+removed groovy - all - 1 . 0 - jsr - 03 . jar .
+bump version
+update msn lib
+jal - 35 add image notes to non - proprietary licenses
+upgrade influxdb java client to support 1 . 0
+updated gitignore
+lps - 31148 index search does not allow leading wildcard
+tweak css for sub - sections
+add intention test to all tests suite
+added some comment
+compile warrings fixed
+remove rogue prinltn
+ignore update ' modules / apps / marketplace / .
+updated list
+give focus to text input in addtask activity
+exclude log4j in kafka dependency as well
+tryna merge dem files
+ignore update ' modules / apps / web - experience / site - navigation / .
+make pyunit nopass until hadoop namenodes created .
+changed version to 0 . 1 , since the 1 . 0 was just the default version which maven generates for you .
+changed permissions on run_example .
+downgrading server to jersey 1 . 3 due to issue with loading of external jax - rs packages .
+added missing implementation
+remove obsolete .
+add missing gradle . properties into ticker library module
+lrqa - 24908 add new property ' extraapps . plugins . includes ' for functional tests
+lps - 65093 deprecate destination name
+updated changelog
+add handler for download event
+added richard to the team - welcome aboard !
+ignore eclipse files
+updated to latest library version
+remove unnecessary dependency
+added storm - 1219 to changelog
+updated changelog
+updated text layout padding to be in - line with non - materialpreference layouts for xlarge screens .
+moved res directory for eclipse .
+update build tools
+added storm - 1425 to changelog
+bump common ref for multi - world worldborders .
+fix test data
+do not log cleanup failure
+updating alloy to 14cda6a
+remove round from settings
+added hdrhistohram . jar to base directory for convenient downloading
+add screenshots from sample application
+added cname support for gh - pages
+added some inspections to pythonalltestssuite
+lps - 15480 updated alloy - taglib . jar to 76596 , you must run " ant build - alloy - taglib " from trunk using jdk 5 .
+avoid npe on initial remap ( it was masked anyway , but better to check explicitly )
+add feilaoda as contributor
+fix rendering bug on sdk 23
+bump common ref for multi - world worldborders .
+help id ( py - 4108 )
+start next dev cycle ( 2 . 0 . 3 - snapshot )
+updated changelog for storm - 294
+update refs
+ignore update ' modules / apps / collaboration / mentions / .
+printing all threads stack trace , is making the console out put very large and not giving much info
+smack 4 . 0 . 6 - snapshot
+add ameba in " apps using smarttablayout " list
+ignore update ' modules / apps / collaboration / wiki / .
+force ast injected property check with staticcheckervisitor
+create contributing . md
+updated url
+build 0 . 14 - stable on travis
+prepare version 28 - beta1 .
+added translation using weblate ( asturian )
+don ' t run runit_nopass_rdoc_glm .
+ignore update ' modules / apps / collaboration / document - library / .
+add a log_tag for android . graphics . graphics jni .
+changed the styling of currently selected emoji button .
+add # 4399 to changes
+ignore update ' modules / apps / foundation / portal - search / .
+prepare release v1 . 1
+travis only has android sdk 10 or higher
+add project background image .
+one more time , improve rendering of login form with many oauth providers
+unpack localization during prepare - package phase
+forgotten folded text foreground ( + fixes editortextfield . setplaceholder rendering )
+bump version to 0 . 6 . 2 - snapshot
+prepare version 21 . 0 . 2 .
+added description to project
+added newline at end of percolate tests
+fix missing version for spring - core
+distinguish this branch ' s builds .
+using new release of the http - client .
+setting version to 1 . 0 . 15
+updated notice
+downgrade minsdk from 14 to 9
+add maven . test . failure . ignore to true
+remove failed test to troubleshoot
+fix a constructor declaration to match its definition .
+updating alloy to f3baf0c ; lps - 30466
+ignore update ' modules / apps / collaboration / document - library / .
+fixing my bad in deploy scripts
+add image for a notification view
+don ' t clear selection during repaint to avoid blinking of test ' s tree when selection is hold by a leaf of a collapsed node
+add new line
+dispatch up event to fix fling
+ignore loading . gif for push dialog when generating icons classes
+ignore loading . gif for push dialog when generating icons classes
+fixed loading of inner classes that have package prefixes .
+bumped version
+remove hardcoded version of commons - cli
+delete android - support - v4 .
+do not autoreload quick values by default
+set custom file name for 64 - bit winlauncher exe
+fix build
+ignore update ' modules / apps / foundation / frontend - theme / .
+fix database version cache logic
+add os x artifact to ignore
+ignore update ' modules / apps / collaboration / message - boards / .
+lps - 47449 - we should map all left / right properties .
+restore screen_check_period constant .
+change the permission of make . m to 644
+ignore update ' modules / apps / foundation / hello - world / .
+ignore emacs backup files
+updated changelog for storm - 421
+shebang lines must have a !
+add a dummy .
+now closes readablebytechannel after it has been read .
+updated version number
+add another 3 . 7 + note
+now render the correct texture for sub - mod pipes
+updated changelog
+add changes . txt for ndp .
+disables munging in animated to make dynamic dispatch work for private methods
+add words
+idea - 117674 please rebuild and commit runnerw . exe
+add an override annotation
+fixed door schematic saving , for # 1962
+fix api typo
+updated changes . txt with bug fix for incorrect column number .
+set project release version to 3 . 1 . 0 .
+fixed a bug in switching to freeswitch
+added failing test for json output
+add ' inheritdotparams ' roxygen keyword
+fix string16 operator + to actually work
+add storm - 1676 to changelog . md
+fixing history
+no longer skip integration tests on jenkins
+ignore update ' modules / apps / foundation / portal - security / .
+updated changes . txt
+add credentials for ci snapshot deployments .
+add readme
+updated gitignore
+updated build number
+revert inappropriate fix ( py - 20684 )
+ignore untranslated strings
+added dave parfitt to contributors . txt
+update elasticsearch to 1 . 6 . 2
+make blocksuppressalstatus constructor public so that it can be constructed by the provider .
+ignore update ' modules / apps / forms - and - workflow / polls / .
+add travis config .
+lowered check for 2g memory to under 1975
+tweak code sample
+add truth - 0 . 27 . jar to third_party / truth .
+adding " gl "
+remove mainclass . java from .
+ignore update ' modules / apps / foundation / portal - instances / .
+upgrade version .
+upgrade ant to 1 . 9 . 6
+fix returning wrong field
+ignore update ' modules / apps / collaboration / message - boards / .
+added ica root certificates .
+add forced default for text type files when it comes to git and line ending issues
+removed unnecessary dropdown icon
+fix travis error
+fix reboot loop due to npe .
+missing changes . txt for yarn - 2503 .
+deleting travis yml config file
+prepare version 23 - beta3 .
+disposing tree builder
+add helpshift dummy keys in gradle . properties - example
+added latest jar
+add notice . txt
+add readme . md
+updated library
+ignore directory - web 1 . 0 . 2 prep next
+add eclipseconfiguration gradle task
+fix wakelock
+removed unnecessary fully qualified class name .
+remove logging message from getscrollingcompentationtype
+add isshowing function to android softkeyboard plugin
+update ec2 - discovery submodule
+ignore tags / tags generated by ctags / etags .
+fix makefile for docs .
+push version to 11 . 1 , 209 .
+fix map in v2 sourcemap due to bad entry in base64 char map .
+fix minhash docs level
+remove dead code
+add icon
+ignore update ' modules / apps / web - experience / layout / .
+replace image for layout practice 5
+releasing new version of pegasus 1 . 9 . 12
+change chunk < t > to be a static inner class
+ignore temporary directory .
+add project icon to the art directory inside the project
+ignore update ' modules / apps / foundation / portal - configuration / .
+remove @ nullable annotation
+ignore update ' modules / apps / collaboration / wiki / .
+updated changelog
+updated dmg background image .
+hhh - 8499 - prepare for 4 . 3 beta4 release
+ignore update ' modules / apps / collaboration / wiki / .
+correctly set the window callback for toolbaractionbar
+added files via upload
+we are using the individual jain - sip jars and no longer this one .
+add a simple travis configuration
+update changelog
+updated read me
+add actor logo source files ;
+fixing a potential npe in asyncoperationstatus .
+added new migration file with the new attribute " notes "
+use gradle dynamic versioning for dnsjava
+add break statement so we don ' t fall through to adding too much to boarding time .
+ignore update ' modules / apps / collaboration / document - library / .
+add new dark attachment icon for dark theme
+fix travis by using latest platform tools required by lint .
+fix typo
+rogue line number for method declarations confuses ide debuggers
+added storm - 1219 to changelog
+ignore update ' modules / apps / collaboration / message - boards / .
+delete duplicate application . properties
+move cursor to the end of a word after correction popup alternates selection
+updated latest version in docs
+bump version numbers for release of pegasus 1 . 9 . 23
+disable additional invocation of site plugin , issue # 821
+fixed a typo in our golden results .
+smack 4 . 1 . 0 - alpha7 - snapshot
+ignore update ' modules / apps / foundation / frontend - js / .
+bump common ref for multi - world worldborders .
+web - 9926 remove 0xhh postfix ( property name )
+remove merge marker from changelog
+ignore update ' modules / apps / collaboration / document - library / .
+set the connection channel in paymentchannelserverlistener
+add plugin . version
+disable other flaky apple app test integration test
+suppress checkstyle warnings due to travis failure because of huge logs
+ignore osx and ide files
+added cache infinispan to root modules .
+add 1 . 4 . 0 label to many to many geo distance sort
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+adds an empty png for spellcheck languages without a flag ( they currently appear with the american flag ) .
+add travis here as well
+prepare for next development iteration
+add gradle javadoc task memory options to fix occasional mem alloc failures on travis ci
+upload 1 . 4 . 1 version .
+speed up post
+add placeholder for a new section in releasenotes . xml ( # 3399 )
+lps - 70007 add query string to the redirect url in cases when query string is not null
+ignore update ' modules / apps / foundation / web - proxy / .
+removed long col
+add words suggested by users
+fixed cancel button in landscape account activity
+updated parent version .
+bump version
+updated changelog
+added kindle branch
+adding storm - 625 to changelog .
+specify platform - tools version for travis .
+remove text capitalization in widget titles , closes # 1498
+adding a . 0 for easier post - release support .
+updated readme , cosmetic change test
+ignore update ' modules / apps / collaboration / wiki / .
+removed the background attribute completly .
+add blob docs to index
+ignore update ' modules / apps / foundation / portal - search / .
+fix thumb resolutions for phones
+updated springsource logo
+handle valueerror for json for linking data
+remove redundant call to createsdpoffer ( )
+modify images for actionbar item
+decompiler updated ( line separators )
+upgraded netty to 4 . 0 . 22
+fix the build
+prepared for next development iteration
+remove unnecessary import
+ignore update ' modules / apps / web - experience / trash / .
+lps - 52289 bump the version
+setting version to 1 . 0 . 152 - snapshot
+update nitpick lib
+fix order in build instructions
+ignore update ' modules / apps / foundation / roles / .
+only allow dpad center for key long press
+remove a file
+add gitkeep for assets
+updated codenarc version
+updated proguard rules .
+lps - 63528 duplicate util package , unify under service layer
+reset mchildrensortpending after sort
+ignore update ' modules / apps / collaboration / mentions / .
+e9c5ade 46ab5e1
+ignore update ' modules / apps / web - experience / asset / .
+ignore update ' modules / apps / web - experience / application - list / .
+ignore update ' modules / apps / foundation / frontend - js / .
+move vector drawables to proper drawable directory
+run the tests on oraclejdk7 and openjdk6 + 7
+update parent pom version ref
+fixed race condition
+fix bug where history is no longer being added to the history database
+fix splash progress disappearing on image repaint
+remove the static new dialog instance on cancel .
+bumping commit of submodule
+fixing incorrect import
+add missing tablet asset for heads up
+fixing typo in indent_style
+revised missing icon from paul
+fix a typo in credits
+modify dockerfile
+on virtual box , some ansible modules need selinux
+minecraftforge / fml @ 70570a863ffa6a3ba7e2dd30b471bb47615b8bf8 fix up possible cme
+fix reentrancy bug in serverimpl during shutdown
+ignore update ' modules / apps / collaboration / blogs / .
+revert previous commit
+changed dependencies back to snapshot versions after tagging
+add a missing include in documentsui android . mk .
+update pldroid - player - 1 . 1 . 3 .
+ignore update ' modules / apps / collaboration / wiki / .
+added screenshot outling making a change to the bbb client
+upgrade parent to 22
+moving to a proper maven source directory
+added new migration file with the new attribute " notes "
+kafka - 642 missed message magic version on last checkin .
+adding simple - servlet module
+update internal framework to api 18
+updated changelog
+fixed run sh syntax
+bump flow to 0 . 2 . 43 .
+added llvm bindings for passmanagerbuilder ( mac os x binaries ) .
+rename release - process .
+updated changelog
+remove extra blank line
+cleaned the directory for .
+fix changelog
+add support - v4 library
+ignore update ' modules / apps / foundation / frontend - js / .
+reset mchildrensortpending after sort
+fix switch fall - through
+removed extraneous jar
+updated gitignore ?
+lps - 66144 move js files
+lps - 56199 moves icon
+updated changelog
+ignore update ' modules / apps / foundation / portal - template / .
+make a global const array static
+fix build
+do not display the horizontal scroll bar on accordion medium mode
+updated android framework to 2 . 2r1 .
+upgrade enforce - victims - rule to 1 . 3 . 1
+ignore update ' modules / apps / foundation / contacts / .
+debug setup
+add repo
+upgraded the pom version to match the current trunk version
+bump up revision number .
+ensure self . geterrordisplayforchar always returns str
+upgrade enforce - victims - rule to 1 . 3 . 1
+bumping commit of submodule
+ignore update ' modules / apps / collaboration / wiki / .
+assign success variable a value
+gh - 57 voldemort - enable nio connector ( akkumar )
+delete profiles_settings .
+mitigates an issue with sample rate conversion in windows audio session api ( wasapi ) which leads to audio glitches .
+build script fix
+method ` handle ` of templateviewroute can throw exceptions
+add helpshift dummy keys in gradle . properties - example
+add actor logo source files ;
+ignore update ' modules / apps / web - experience / journal / .
+prepare for next development iteration
+ignore update ' modules / apps / web - experience / layout / .
+update version of build tools
+updating alloy to rev . 74847
+lps - 62826 configjsmodules supports multiple includes
+added ignored_columns .
+bump pegasus to 1 . 10 . 6
+replace menu title image
+lps - 63116 add lang props
+flush asked once cache too
+update natives
+ignore emacs backup files
+ignore update ' modules / apps / collaboration / document - library / .
+fixed
+fix npe , added null check in html2text .
+minecraftforge / fml @ 70570a863ffa6a3ba7e2dd30b471bb47615b8bf8 fix up possible cme
+ignore update ' modules / apps / foundation / petra / .
+upgraded logback to 1 . 1 . 6
+ignore target directory .
+prepared for next development iteration
+fix groovy - 226 .
+updated copyright to 2015
+upgrade apache commons collections to v3 . 2 . 2
+removed * .
+add project files to .
+setting tic tac toe to api level 19 for travis ci
+ignore update ' modules / apps / web - experience / iframe / .
+updating alloy to rev . 74847
+smack 4 . 1 . 0 - rc4 - snapshot
+missed file during previous commit .
+removed unneeded dependency
+keep it as a test dependencies
+cleaned the directory for .
+remove a call which seems to serve no purpose and sometimes causes exceptions
+add storm - 1939 to changelog
+make uploadmavencentral task , that encompasses other tasks
+add site deploy note
+remove lualatex ( divergent error reporting behavior , typically requires more custom invocation )
+remove the static new dialog instance on cancel .
+updated uri usage in blackberry phonegap .
+adding a . 0 for easier post - release support .
+remove unnecessary link_flags from consoleio project
+updating the version number
+rename updatedtriptimestest . java to triptimestest . java
+don ' t filter out calls to log . debug ( ) in com . facebook . buck . io
+ignore update ' modules / apps / web - experience / export - import / .
+remove dead code
+fix switch fall - through
+fix disable / enable upnp option in wizard .
+ignore update ' modules / apps / collaboration / blogs / .
+ignore update ' modules / apps / collaboration / wiki / .
+ignore update ' modules / apps / foundation / petra / .
+revert " make sure .
+lps - 59252 add layout into request so that we can fetch its group id when calculating locale .
+refactored stun4j lib
+added storm - 66 to changelog .
+help id ( py - 4107 )
+added storm - 264 to changelog
+use cascading 2 . 5 . 2
+ignore update ' modules / apps / web - experience / iframe / .
+ignore update ' modules / apps / foundation / petra / .
+ignore update ' modules / apps / marketplace / .
+prepare version 22 . 0 . 1 .
+include the .
+added betayota branch to the auto - merge list
+ignore update ' modules / apps / foundation / portal - store / .
+update branch info after push , because new remote branch may be created
+ignore files
+fixed incorrect method name in aloge .
+force 3 jvms even if multi - machine
+remove targetsdkversion from library .
+add info to readme
+lps - 51081 automatically clean the eclipse files before generating them to prevent merging
+update msn lib
+change game category image .
+added changelog for server - advanced for 1 . 7
+make the release plugin generate tags according to junit convention
+updated changelog
+removed unnecessary internal class
+make threads configurable through environment
+include message history in stacktraces from error handler , making it easier to know where the problem was .
+ignore update ' modules / apps / web - experience / site / .
+update ppc64le natives
+add buildcompat # isatleastnmr1 ( ) to api
+ignore gh - pages
+add xhdpi / xxhdpi versions of the stats widget header icon .
+add null check in header view to prevent npe .
+ignore update ' modules / apps / foundation / frontend - css / .
+remove unnecessary print
+add isplaying ( ) to animation objects
+ignore update ' modules / apps / web - experience / staging / .
+build new pre release b6
+ignore update ' modules / apps / foundation / frontend - js / .
+change the ignore file .
+ignore the classpath file .
+add changelog for v0 . 2
+removing removeoutheader from jaxb . index
+add and initialize readme . md
+bump to version alpha - 5
+adding image folder for flow documentation graphics
+updated changelog
+ignore update ' modules / apps / forms - and - workflow / polls / .
+add symbolic link from sonar - web to core . properties
+moved the spec tests directly into the implementation
+build script fix
+setting default name for multi - project
+built snapshot
+ignore update ' modules / apps / collaboration / wiki / .
+update dex . gradle
+updated changelog
+use 32dp size image for pictureinpictureaction icon
+upgraded guava to 16 . 0 . 1
+updating alloy to 14cda6a
+creates lock file parent dirs if necessary
+updating the template to target mininumsdktarget = 14
+add storm - 1450 to changelog
+remove mainclass . java from .
+don ' t use stlport .
+add end of line .
+removed music . ogg from pax
+ignore update ' modules / apps / foundation / portal - search / .
+adjust feature graphic for tablet
+updated changelog
+ignore bbb_conf_api .
+add the isvisible ( ) getter
+add additional clirr config
+remove unused field
+fix cassandra cli to respect timeout if schema does not settle patch by goffinet ; reviewed by jbellis for cassandra - 2187
+ignore update ' modules / apps / web - experience / site / .
+rename a few runits to have nopass .
+remove dependency on hadoop_ver
+renamed file to match class name
+fix stupid copy / paste typo .
+rename screen file
+turned off debug
+remove generic bsd placeholders
+to java 1 . 5
+explicitly declaring the locale of javadoc task as en_us
+fix pickblock ' ghost item ' bug when picking with a item selected .
+ignore pdf . jar
+ignore update ' modules / apps / collaboration / document - library / .
+ignoring bin directory
+ignore update ' modules / apps / collaboration / mentions / .
+ignore update ' modules / apps / collaboration / bookmarks / .
+upgrading tests to selenium 2 . 25 . 0
+explicitly include version in issue template
+this will use the embedded jgit instead of whatever git happens to be available in your environment .
+ignore update ' modules / apps / collaboration / directory / .
+bump gradle version
+zeppelin - 112 add comment for encoding
+bump common ref for multi - world worldborders .
+prepare for next development iteration
+fixing an issue with that damn bundle plugin again .
+fix test
+removed unused import .
+added a 32bit version of app_konference .
+added pirate flag
+fix a copy paste misprint
+fixed problem in j2eeconfig . xml
+setting default name for multi - project
+set the default rendered to not be opengl ; patch from ben .
+update maven ant tasks
+changed the more info link to point to the wiki .
+remove the unused inclusion of iostream from the jni code
+missing icon files .
+added reference to distribution .
+updated changelog
+suppress bogus warning in shardsorter
+add the snapshot of demo project
+delete okhttputils - 2_3_8 .
+updated jre 1 . 4 . 2_12 for windows
+add storm - 1102 to changelog . md
+fix eclipse
+set sudo to false to make travis - ci run faster
+update readme . md
+added codereview . rc to .
+this will use the embedded jgit instead of whatever git happens to be available in your environment .
+add colin decker to guava authors .
+add actor logo source files ;
+commits the binary for the jni speex encoder , decoder and resampler on mac os x and thus enables them .
+prepare release astyanax - 0 . 8 . 11 - snapshot
+ignore update ' modules / apps / foundation / roles / .
+added travis
+use the new indeterminate progress bar drawable .
+add forced default for text type files when it comes to git and line ending issues
+remove a spurious symlink
+fixed cancel button in landscape account activity
+ignore update ' modules / apps / web - experience / asset / .
+improves the developer logs in the dtls - srtp implementation .
+fix invalid link to download ( it ' s deprecated ) - replace to releases
+updated config to create tables .
+ignore update ' modules / apps / foundation / users - admin / .
+add abortonerror false - so that clean build runs without a problem
+added storm - 886 to changelog
+idea - 133873 refresh changed files after commit , because they can be modified by hooks
+downgrade cascading2 to wip - 176 ( was wip - 191 ) for compatibility .
+fixed failing test
+replaced old icons with new multi - size icon
+changed permissions on run_example .
+ignore gitk temporary files
+changed agrona dependency to be 0 . 1 to pull from maven when needed .
+on the off - chance anyone is referencing the plugin only require the library .
+updated search orb icon .
+upgrade junit to 4 . 8 . 2
+refactored stun4j lib
+upgrade apache commons collections to v3 . 2 . 2
+added debug level pool statistics logging
+update changelog
+remove unnecessary prop
+ignore update ' modules / apps / collaboration / message - boards / .
+copy ic_menu_search . png to ic_search_category_default .
+added sip - communicator logo
+release the version 1 . 0 . 2
+set org . gradle . daemon = false before running tests in travis build
+retroweave smack libs
+update to latest gradle plugin
+ignore update ' modules / apps / collaboration / message - boards / .
+ignore update ' modules / apps / collaboration / directory / .
+suppress incorrect warning
+remove unecessary < extension > element from maven - bundle - plugin
+add min sdk comment
+accidentally committed a test change to the android gradle plugin version .
+remove jvm debugger options from default cassandra . in . sh
+added relative path to the parent pom so that the user won ' t need to
+test fixes - social office - dependencies
+update to latest android gradle build tools 2 . 0 . 0
+add " lateprovide " to the allowed suppression list in parserconfig . properties .
+changed components to use parent pom v 4 , producing source and javadoc jar packages .
+don ' t run performance tests as part of java 9 int tests .
+added newline at end of percolate tests
+setting version to 1 . 0 . 100 - snapshot
+add adb devices to circle . yml
+ignore update ' modules / apps / collaboration / microblogs / .
+lps - 15480 updated alloy - taglib . jar to 76596 , you must run " ant build - alloy - taglib " from trunk using jdk 5 .
+move to nebuladotnetflixoss 2 . 2 . 5
+added urllib3 to requirements for py
+ignore update ' modules / apps / foundation / portal - store / .
+set debug level to line numbers only .
+use okhttp 1 . 3 . 0 .
+updated eurosport cert so that ssl tests now works again
+added gdx - mavenizer from team gemserk
+remove checkstyle xref warning
+add alternative method to create archive , fix typo
+fix find usage handler not returning android property as secondary element
+fixing memory leak
+added empty line
+delete readme . txt
+remove mention of libmysql - java
+give focus to text input in addtask activity
+ignore update ' modules / apps / foundation / contacts / .
+new svnkit , build 5066 .
+add jar for java / dd_plist
+updating alloy to 14cda6a
+do not show gpx export items at start
+missing library
+updated readme . md
+ignore update ' modules / apps / foundation / portal / .
+fix gradle plugin version do not merge
+move resource bundle to proper directory
+created popularmoviesview
+fix build
+delete quick - build . bat .
+increased new default max connection pool size to 25 .
+updated sample apk for 0 . 6 . 0
+added storm - 449 to changelog
+lowered check for 2g memory to under 1975
+starting 0 . 5 . 4 - snapshot
+get help for package completions
+remove rogue prinltn
+test travis ci .
+prepare for next development iteration
+fix test data
+actually run all the tests
+ignore update ' modules / apps / web - experience / asset / .
+remove some not needed fields in the jobs table
+remove unneeded dependecy on core - tests to fix build
+require android 23 for travis

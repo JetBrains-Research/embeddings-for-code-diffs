@@ -1,0 +1,4 @@
+
+    public double getFunctionValue() {
+        return optimaValues[0];
+    }

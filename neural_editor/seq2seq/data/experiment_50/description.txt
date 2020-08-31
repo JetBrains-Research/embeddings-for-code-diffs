@@ -1,0 +1,14 @@
+Same as 49, but empty prev_line and updated_line are allowed.
+Expectations: unknown.
+
+Observations:
+plots are pretty the same.
+Difference in dataset sizes: train = 26208 - 26013 = 195, val = 3000 - 2981 = 19, test = 3000 - 2982 = 18
+50 vs 49:
+best_val_perplexity: 2.39 vs 2.35 (a little bit worse)
+last_train_perplexity: 1.53 vs 1.41 (worse)
+test_acc: 0.137 vs 0.133 (a little bit better, 410 vs 396)
+train_acc_300: 0.18 vs 0.22 (worse)
+train_acc_300 top-50: 0.22 vs 0.25 (worse)
+
+Conclusions: performance is almost the same, train_acc can be lower because 300 approximation isn't enough.

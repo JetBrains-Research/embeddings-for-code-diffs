@@ -1,0 +1,654 @@
+revert `` support and grow exponentially
+add a wait for developer options link to appear before scrolling
+display correct status on error message
+fix npe in request for cdroms of wrong vm ''
+remove redundant method from constructor
+added colon and space after new password prompt in engine-config
+add post test for methodhandles.lookup.bind
+remove null check for method_1
+change move test which was duplicated
+remove systematic from assert
+fix coverity warnings
+fix logfilecompressor into interfaces
+fix 404 for getting
+remove unused imports
+fix potential npe in
+add a delay ( ) to messagebundletest teardown ( )
+issue warning upon restapisessionacquired
+misleading - > new/edit pinning- > new/edit vm
+fix bugs
+use a method instead of package
+remove connect availability
+set # method_6
+fix npe in browser resizing
+remove redundant commented error
+remove unused code
+menu xml editor on run once dialog
+correct eject type
+fix typo
+remove template disks text
+store the callbacks
+correctly handle return `` session ''
+use `` array '' instead of wrong
+add helper indicating
+remove null method_6
+processovfupdate - skip vms/templates without ovf
+fix typo
+fix memory leak change in events
+avoid triggering network type of schema migration
+fix stream for internal
+revert `` load store elimination . ''
+add cts tests for cdma ( ) call
+make the condition check logic
+fix typo
+fix percentage calculation
+add tests for methodhandle.bindto
+fix a problematic test
+allow disabling plug disks to quota ( # 845020 )
+fix replication retries in setting
+add exception
+implement queue - handle
+mark fields in favor
+fix singleton of ldapqueryexecutionbuilderimpl
+add a failing test for email with @
+use try-with-resource in try-with-resource
+fix log to use info and not error
+fix incorrect hasperdomainconfigs in
+revert `` use basic implementation in optimizing ''
+make async getstats calls in hostmonitoring
+enable hot plug availability
+exclude import vm from copyimagegroup cda
+fix ethernet and wifi ca n't be tuned seperately issue
+fix try-with-resource in method_1
+fix f5 shortcut being hijacked by edit topic in firefox
+unable to the userprofile annotation in cache
+fix provider isreadonlyaware flag
+bugfix
+fix stale openrepo in
+adding a user with test message
+generic type of postdeleteactionhandler : :fixparameters
+fix potential npe
+this is happening in lrx22g , so it need to go bak on more release
+replaced raw mocking
+fixed a bug in reboot state
+fix typo
+add tests for methodhandles.filterreturnvalue
+fix duplicate smartcards in dashboarddoesnotexist
+use no support for cdma
+decrement pending vm on 'run in paused mode '
+add missing rename
+do n't duplicate check inside networkservicecallback
+removal the method_7 field
+allow skipping vm command execution
+more efficient query for getting vms to monitor
+fix npe in watchdog
+do n't inject gerritserverconfigprovider
+fix method_1 singleton
+remove method_3 to set global in extension api
+add a message , only if it button on continue
+make async getstats calls in hostmonitoring
+set actionmode to state to received when rild
+extract type_3
+v2v-tooltip for xen 's uri field is not truncated
+add change_screen_below_related_info_block extension point
+revert `` enable string compression . ''
+change lsm lock scope to execution ''
+make cleanup public again
+remove unnecessary of provider always
+move gluster hook remove from collection to entity
+empty reported devices under nic
+do not suppress the emails during boot up phase
+@ inject getpermissionbyidquery daos
+fix message in setup
+fix nullpointerexception in index ( )
+enable hugepages when using engine engine
+remove low ram carveout for encryption
+add missing null check to string : :tochararray
+delete jobs in file
+remove a header when
+serialization/deserialization of snapshottype
+[ clonevm ] add default constructor with context
+replace response default with cdi
+importvmfromconfigurationcommandtest only for events logs results
+skipping down hosts in pm proxy selection
+replace redundant warnings suppression
+pass method_4 to method_4
+fix broken gpl paths in gerrit canonical
+add missing generics
+fix the threshold screen
+disable buttons when settings
+change the redundant type
+fix typo
+now we provide more info about the gradle build
+launcher activities are not flagged as unprotected anymore if they are not protected by permissions
+add test & nbsp ; stream in root
+fix submit and submit order
+commandbase - do n't update the command entity always
+fix new inject signature
+vdsselector simplification
+host activate -check gluster availability
+fix deprecated in
+update java.io.randomaccessfile modifiers
+fix incorrect tooltip reverse setting build
+allow import to check through the rest api
+fix geo rep session key parsing issue
+allow to set maxreviewers on a project from the webui
+fix pagertitlestrip positioning check find
+fix warning about id association events
+fix empty url in method_1
+unit test golden
+fix @ inject osrepository
+add some strict
+disks tab - fix quota visibility event handler
+enable sni for incorrect
+add support for < ( boolean )
+preserve fix
+fix a race condition for potential npe
+fixed an assertion in audiomanager
+remove @ inject osrepository
+fixed search in api ( )
+preserve vm numa pinning settings in ui
+add the account for
+fix map # method_1
+adapt to assign property
+enable display in try-with-resource on transfer
+fix test message
+fix memory leak test
+replicatedisk - prevent state on engine restart
+do n't use ssh keys
+fix npe raised in providerdaotest
+8u121-b13 the protobuf cache in root
+make sure used is always < = total
+inline useless constants
+extend all androidmanifest.xml string in ssh string
+ovfreader the default var_1 warning
+added default timezone to
+add divide operation
+add change_screen_below_related_info_block extension point
+fix permission of delete jobs to not look
+enforce xmlns : android declaration in merged manifest file
+fix detection of preferred hosts for numa nodes
+do n't clear var_2 syntax when
+fix cpu profile validation on import template
+extract import from glance ( # 854491 )
+remove null checks
+fix javascript & app classpaths
+@ inject getquotabyquotaidquery daos
+fix classcastexception in into unit
+add method_1 local variables
+host activate -check gluster availability
+fix splashservlettest
+make refresh ( )
+checkbox labels in install host dialog
+prevent stackoverflowerror in jettytreelogger
+fix button availability
+prevent changing to using suggestions
+fix cpu profile engine daos
+add a for string in the optimizing compiler
+use n't throw access for a pid
+add support in method_1 ( )
+fix iso domain list refresh npe
+follow its-base instead of for unknown
+update cookiemanagertest.java
+correct error reporting for georep delete
+include the vm
+update buildversiontest for 2.2 and 2.2.1
+revert `` revert `` load store elimination . '' ''
+revert accidental change in test
+fix npe on register
+ensure that tmp projects is called
+fix clearing event filters in notifier
+add the command to set
+fix button sub-tab re-design
+fix notifications fall have false positive
+for bonds mode=4 setting default xmit_hash_policy
+avoid zipexception when zip output has no entry
+queue smart http requests alongside ssh requests
+clean up editor fields before model objects
+v2v-tooltip for xen 's uri field is not truncated
+use the pending vm count in evenguestdistr . weight unit
+remove null check for method_1
+convert - use construct
+add missing initialization of vm-init model for pool
+[ ctsverifier ] release virtual display when we are done with it
+init variables in changenotes # method_1
+add the test
+make the index # create
+do not clear external id
+use libcore.os.umask for setting umask
+remove redundant warnings
+fixing typo
+display api for qos cinder
+fixing imports
+add path to hprof-conv
+fix unload available with error
+fix stackoverflowerror during hash code computation
+getallvmsnapshotsbyvmidquerytest remove arrays.aslist
+fix log message
+add predicate to find accounts by username
+locale safe paths
+8u121-b13 the protobuf cache in root
+fencevalidatortest spying
+remove trailing semicolon from sql statement
+fix in order to engine
+fix the name of the label
+fix method_1 for yuv allocations
+add null check for method_1 ( )
+add support for change-id triplet in single query
+fix typo
+do n't use deprecated files.tostring ( )
+@ inject getalldiskspartialdatabyvmidquery daos
+fix potential for backendcdromresourcetest
+allow ecdsa based public key authentication
+fix incorrect at start-up
+lint misreports missing layout_ [ width/height ]
+fix keyid.getcategory
+fix handling of
+fix remove of template watchdog
+a2dp up an a2dp state to necessary -1 when bt is turned off
+add extra message when manifest merging fails
+fix typo
+fix read while getting groups
+fix debug message for sustained extra
+remove unnecessary code urls
+add divide operation
+make embedded applets in telecom disconnectcause.reason_ims_access_blocked
+add reference for new property
+fix npe in abstractsizecolumn
+fix quota causes operation
+do n't use short-keyed tls/ssl cipher ( )
+in @ constant
+fix bug of assert library
+update prebuilts of simpleframework
+fix npe in shareable
+fix typo
+fix z-index of cursor in refreshhostdevicescommand
+fix npe during in classes
+update # method_4 test
+fix stale # test_customcurrencysymbol
+@ inject getallhostsquery daos
+fixing lock status
+make the password
+npe if the user does not have access to management network
+cleaning up serialversionuids
+add support for imsexternalconnection
+fix cts tests for methodhandles.permutearguments
+fix typo
+remove binding disablemetricmaker
+fix exception when clicking on binary file without being signed in
+fix minor cleanups text
+honor empty rules in method_1 method
+rename setvm_poolbeingdestroyed annotation
+init and @ override
+update to model 4.2.16 and metamodel 1.2.10
+unit test fix
+do n't run annotations57649test on low-ram devices
+adding context ctor to upgradeovirtnodeinternalcommand
+do n't web module
+fix a forgotten method_9
+fix findbugs warning about
+adjust spice channels name
+remove unused static from
+fix method_1 ( )
+fix memory leak test
+removing fencespmstorage verb and related classes
+add reference check for projects
+do n't depend on stacktracecreator.fillstacktrace ( )
+iconutils.extracticonids null resistant
+fix resource leak to property
+mismatch in dialog header
+do not send abandoned emails to all_comments watchers
+reset timezone only change time
+fix decimalformat test
+clean up various apis
+added targetsdkversion to the web to be consistent
+tostring may return null
+revert `` put drlcertfactory as first provider ''
+expand permission checks for transfers
+add `` save argument '' implementation
+avoid user unlock is done
+cleanup approve classes in updatevmdiskcommand
+fix vm in horizontalsplittable
+reflect the changes of getdexoptneeded in dexfile.java
+fix tests
+bll to support and empty user
+asynctasktype - uploadimagefromstream to
+fix findbugs issue
+support skipping delivery in )
+fix provided conversion
+add jpolymorphicmethodcall with bazel
+add exceptions for big5han and gb2312han in genrb
+remove a redundant method to 2.14-snapshot
+factor getcommit # method_2
+add a new for method_1 ( )
+fix bounds
+use no 's position of token
+extract fetching commit messages into injectable class
+add
+fixed redundant warning in event session
+add documentation on disk read only attribute
+revert `` more native jump-to-line as c++ . ''
+fix typo
+use subscribe pattern to avoid eager stream-events materialization
+changing rootdse parsing to include defaultnamingcontext
+remove unused var_2 variable
+adding plugin ssh stack trace timestamp
+fix findbugs warning
+do n't configure kdump when pm is disabled
+remove non-existent storage with illegal id
+add capability cipher
+fix of indexoutofboundse in host tab
+fix enter conversion in smsnumberutils.needtoconvert
+make runtime.availableprocessors report configured rather than on-line processors
+provisioning of vms created from templates tab fix
+fix flaky for in
+fix var_5 when fingerprintd died
+revert `` update test case name for new stagefright test ''
+fix bugs regarding workingdirectory test
+add sslsocket # method_1
+make 1917 less flaky
+@ inject getvmsbyvnicprofileidquery daos
+do n't allocate another identity matrix
+add @ out to the primary parameter of vm import
+sync file size and uploaded image 's actual size
+code assumes the implicit use of the current classloader
+add n't specify skip_mergeable
+vm.setstaticdata cleanup
+delete perrequestprojectcontrolcache
+clear var_2 in method_1
+update method_1 ( ) to use the new tm api
+fix memory leak to source
+fix nullpointerexception in method_1 ( )
+rest api for stop rebalance of volume
+set correct connection into target when
+remove bluetooth
+non admin user api - filtering storage domains ( # 783087 )
+fix vms
+add finish report on multi-host network commands
+fix the description to
+add basic auth about a common
+fix wrong error message
+remove nprogram since jack libraries
+unit test when
+add one less log to be more urls
+add timeout to communication with network provider
+@ inject network daos
+featuresupported method_3 usage
+prompt for mode setting only if setting is available
+fixed the system property in type_2
+fixes saving timestamps to db
+make the method_4 count set was chosen
+remove unnecessary # method_1 ( )
+do not double click
+add new render method that allows forcing a measure step
+signatureexception for wifi and
+fix its-base 's ctor
+clean up version.opequality from diskimagedynamic
+added states to block bitmap
+remove the subid from setnetworkselectionmodeautomatic
+add a test in enginelock
+fix memory leak due to filechannel.lock
+add @ inject osrepository to
+use telecom pendingintent
+support and restore ( )
+switch to default method cipher
+move trash out of assert
+@ inject getallhostsquery daos
+reduce ignore time in sun.security
+extract fetching commit messages into injectable class
+fix camera2.cts.cameramanagertest.testmanagergetdeviceidlist for tv
+fix the exception
+fix mispelling in network
+on change of owner group update the local owner group information
+fix delete labelwithcustomtooltip
+add logging support for bazel
+hide 'upgrade ' action label
+fix typos
+rollback of commit 2891ec527eed27d0c6460d66f51cb66a43373b6a
+fix unit tests for
+use booleancondition for # method_3
+enable vertical scrolling in bond dialog
+made digitlist public for testing
+remove deprecated method_3 usage
+fix typo
+make schemaversion # method_1 api
+set cmdcontext sessionid on commandbase ctr
+add patternfly style bar to show mode
+add some tests pass
+fix cts for connection time regression
+remove redundant check for cinder
+make the reporting rate in
+fixed uninstallpackage in dialog
+change time initialization to error
+fix preferences panel when setting topic is closed
+check for test for method_1 performance
+support passing arguments to invoke-static* instructions
+add sourceinfo.tostring ( )
+use a delay in groupnameeditdialogfragment in telephonymanager
+test should not clear after flush test
+@ inject getdiskbydiskidquery daos
+fix external help
+convert force-draft ssh module into a singlecommandpluginmodule
+do n't use enum
+fix name
+minor cleanup in an vm name
+fix what .getpeerhost ( ) test expects
+fixed misc of exception
+support passing arguments to invoke-static* instructions
+add the maxreposize quota to limit user 's disk
+include all command arguments in ssh log entry
+dereference cached bitmaps in eventlogger
+errata dialog filter
+revert `` revert `` expatparser lp64 fixes . '' ''
+do not change cache key when draft changes
+update moreunit prefs to update path
+fix context sensitive help paths / open in new tab
+do n't fall for accounts
+@ inject getjobsbyoffsetquery daos
+remove a redundant unlock check
+v2v-tooltip for xen 's uri field is not truncated
+fix typo
+use method_3 for evdo rev b
+fix method
+remove unused ignorewhitespace emails
+device method_4 api
+moved textwithtooltip changes
+avoid duplicate retrieve exception patch history
+removed zero access to broadcast
+test for loop
+fix adt tests after iandroidtarget
+replace method_3 ( ) should not constructor
+fix the method_1 ( ) test
+rng devices are updated during cluster downgrade
+fixed memory leak in handling
+unit tests when change
+delete jobs to be constant_case
+modify `` loadurl '' method that wait until getprogress returns 100
+use a pendingintent when opening old from a common
+moved textwithtooltip changes
+add api to support warning for attached storage domains
+fix typo
+add export template as ova to a given path on a host
+disable quota size checking is up first vm
+fix gitrefupdated binding
+add vfs check into incremental into incremental mode
+fix stale openrepo in
+rename postreviewview to stats
+remove setting parent command
+fixed uninstallpackage
+skip the method_1 test case
+rm processovfupdateforstoragepoolcommandtest disk
+do n't try on pause
+mismatch to bazel
+fix npe in external networks
+do n't use hotplug when updating instance type
+use plain epoch millis instead of datetime
+fix coverity issue in try-with-resource
+fix warnings
+support adding vnic profile validation
+guess default var_7 but allow layout to prevent
+remove unnecessary code
+fix upgrade of virt host in up state
+fix npe when unarchiving install
+wait lucene - operator about update
+attach disk - allow read-only for directlun
+gluster volume access control list validation added
+mention which mac address is used log
+remove phone command module
+host activate -check gluster availability
+move method_1 to smali based
+use a redundant array
+fix debug message to hostservice
+add license headers to generated stubs
+fixed potential npe in query
+asynctasktype - uploadimagefromstream to uploadimagetostream
+fix typo
+fix test of string.isnullorempty
+allow snapshots to get hashcode
+v2v-tooltip for xen 's uri field is not truncated
+make junit classes more compatible with standard
+make async getstats calls in hostmonitoring
+update mysql-connector-java to 6.0.6
+npe in picking first provider
+add method_1 ( )
+fix an error number for be synchronization
+fix compensation for
+add job http responses for clone-vm
+fix missing log4j dep
+fix selectortest # method_1
+remove deprecated config value
+rename admin screen to settings screen
+fix npe in carrier config
+fix npe in shareable
+@ inject hasadelementreconnectpermissionquery daos
+improve storage format our utc dates
+ovfparsertest methods naming conventions
+add one advertisement slot for gms core
+disable a test with test
+remove system.out
+refactor hostconnectivitychecker
+remove calls
+fix unused stubbing
+avoid npe when validating non-lun disks
+make escape when file is not found
+prevent npe in event handler
+do n't clear search update manager
+fix clone query into tracer
+change telephonysetpuk to get hashcode
+auditlogmessage for internal disk addition
+enable http password after device mode
+support for gerrit 2.12
+fix permission directory when looking up
+empty reported devices under nic
+fix securerandom # method_1
+fix broken with get
+avoid cache to method_2
+reduce the canonical url retrieval
+include uuid into group
+add logging # method_1
+fix npe when no creationdate given in ovfvmreader
+avoid parameter fix collectionincompatibletype
+use default method for <
+fix enter when setting topic
+support null pointer check in drawable ( )
+delete perrequestprojectcontrolcache
+populate values in keyvaluewidgets
+forceselectspm might fail
+fix for interpreter crash on new instance of class
+set felica link layer type conversion
+do n't use shell syntax when destroyed
+fixed findbugs warning
+fix default var_7 but logic for rest
+do n't report formatter sample on whole screen
+bump version to 1.1-a8
+username variable
+fix of windows ) in threadconfig
+fix getunderutilizedcpuhosts npe in livemigratevmdiskscommand
+fix cursor permission check in
+remove unused enum to queries
+rename getvlanparentquery
+remove jobs of ivdsasynccommands on engine startup
+import all patch data again from git to ensure it is accurate
+tiny fix for make template dialog 's focus traversal
+change telephonysetpuk to telephonysupplypuk
+use method_3 for setting a
+remove a meaningless @ nullable in mailmessage
+include the vm
+fix ui to preview ca topic
+allow skipping down before updating vds_interface
+remove redundant check for cinder
+add the input box
+support 'id for special characters in class
+avoid duplicate nfs parameters
+inline linq.importentitycomparator
+fix typo
+add job header as boolean
+fix delete of vms created
+fix an api
+fix the account attribute
+storagedisklistmodel generics
+adding type_4
+support clear leak in smsnumberutils.needtoconvert
+add a test for method_1
+added support for optionally select the target cluster
+fix the name of the selinux
+fix typo
+revert `` add missing null check to string : :tochararray ''
+bluetooth 5 spelling fixes
+avoid parameter type in enum
+fix npe in importvmfromexternalsourcemodel
+avoid enabling balloon device on vm edit
+test for bug 33137046
+do not follow symbolic link when deleting virtualenv
+ignore a problematic test
+increase arbitrary wait for boot
+fix test break in method_1
+fix typo
+add description permission to include defaultnamingcontext
+fix break break
+moved textwithtooltip changes
+fix error message
+fix npe
+support up memory leak in windows
+add a test for upon
+fix findbugs warning in hosts details
+replace method_3 from plugin
+fix line number in method_1
+revert `` use sun.security.provider.sun ''
+ticket:13442 project state when using is 0 to 0
+add exclusive locks to authenticated
+add exception to
+handle missing @ deprecated
+remove redundant else
+cache vm from configuration when cloning from snapshot
+set title - on create errors
+enable sni is always
+remove unnecessary advertiser from thread
+make the library negative service
+fix access for site administrators
+fix audit log of polled vms
+replace accountexternalid to type_3
+fix enter when ( ) returns
+fix nullpointerexception in method_1
+added variable replacements
+change random data generation in sscedaotest
+fix compilation error against gerrit master
+add note about kernels between 3.5 and 3.8
+fix nullpointerexception lint user
+fix not closing statement resource leak
+fix wrong path suggestions
+add shortcut in defaultreaddao.get
+utility class
+small code improvements
+fixing missing ( english ) auditlog values
+delete unnecessary calls creation
+fix tooltip in the encoder
+use the account instead of method_1
+explicitly bind changeindexcollection
+revert `` update test case for
+reuse input class from extension api
+remove unnecessary var assert
+disks tab - fix quota visibility event handler
+use validation only if template is not blank
+fix npe when vm does not exists on register
+fix getpath ( )

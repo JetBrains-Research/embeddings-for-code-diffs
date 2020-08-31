@@ -1,0 +1,22 @@
+Same as 79, but bug with greedy BLEU is fixed.
+
+Observations:
+neural editor plots are good enough
+BLEU and acc for cmg sharply goes up.
+Cmg Duration: only 50 epochs
+Model cannot generalize, val ppl doesn't go down.
+TODO: inspect predictions manually, CRASHED
+81 vs 79(not finished yet)
+neural editor
+
+commit message generator
+best_val_perplexity: 511.47 (on epoch 18)
+last_train_perplexity: 87.99
+test_acc: 0.0015
+train_acc_test_size: 0.0015
+train_acc_test_size top-5: 0.006
+BLEU test: 0
+BLEU train: 0
+hyp_len / ref_len (on test): 0.313
+
+Conclusions: looks like data is very hard for model to predict, also train ppl is high. This can be because amount of data is very small.

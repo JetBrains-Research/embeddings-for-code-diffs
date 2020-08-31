@@ -1,0 +1,1 @@
+public static int METHOD_1 ( String str , String VAR_1 ) { if ( isEmpty ( str ) || isEmpty ( VAR_1 ) ) { return VAR_2 ; } int VAR_3 = str . length ( ) ; for ( int i = 0 ; i < VAR_3 ; i ++ ) { char VAR_4 = str . METHOD_2 ( i ) ; if ( VAR_1 . METHOD_3 ( VAR_4 ) < 0 ) { return i ; } } return VAR_2 ; }

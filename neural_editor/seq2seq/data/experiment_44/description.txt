@@ -1,0 +1,10 @@
+Same as 43, but USE_COPYING_MECHANISM=True. Expectations: performance should be better than in 43.
+
+Observations:
+Loss plot has perturbations which is different from 43 loss plot. t-SNE looks much better than in 43.
+44 vs 43
+best_val_perplexity: 2.91 vs 15.41 (much better)
+train_acc: 0.03 vs 0.44 (worse)
+test_acc: 0.078 vs 0.028 (significantly better)
+test_acc top-50: 0.087 vs 0.103 (worse)
+It is obvious that train_acc 300 samples approximation isn't enought. Should be the same size as test dataset. BUT! We can guess that still test_acc and train_acc are comparable and absolute difference isn't so big. And 0.078 test_acc is a quite good result.

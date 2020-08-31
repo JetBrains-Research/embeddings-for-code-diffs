@@ -1,0 +1,23 @@
+Same as 69, but fixed bug: separate embedding for commit messages (target).
+
+Diffs between configs:
+'TOKENS_CODE_CHUNK_MAX_LEN' 100 -> 121
+msg_max_len = 30 (not existed before)
+gpu -> cpu
+
+70 vs 69
+All plots look pretty the same
+
+neural editor
+
+commit message generator
+best_val_perplexity: 102.72 vs 86.43 (worse) on epoch 4 vs 7, this ppl are for best saved, not best ppl
+last_train_perplexity: 1.72 vs 1.83 (better) this ppls are last, not best save as in google sheets
+test_acc: 0.016 vs 0.018 (worse)
+train_acc_test_size: 0.016 vs 0.018
+train_acc_test_size top-50: 0.024 vs 0.045
+BLEU test: 2.06 vs 15.27
+BLEU train: 2.09 vs 15.71
+hyp_len / ref_len (on test): 0.4 vs 0.431
+
+Observations: BLEU is much worse. Probably there is a bug somewhere, will run 69 with max len 121 and 100 and check that same results.

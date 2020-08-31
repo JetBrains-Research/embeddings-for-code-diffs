@@ -1,0 +1,9 @@
+(null): _log_init: Unable to open logfile `/var/log/slurm/slurmd.log': No such file or directory
+(null): _log_init: Unable to open logfile `/var/log/slurm/slurmd.log': No such file or directory
+(null): _log_init: Unable to open logfile `/var/log/slurm/slurmd.log': No such file or directory
+(null): _log_init: Unable to open logfile `/var/log/slurm/slurmd.log': No such file or directory
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** JOB 29512 ON cn-018 CANCELLED AT 2020-03-10T19:34:33 DUE TO TIME LIMIT ***
+slurmstepd: error: *** STEP 29512.0 ON cn-018 CANCELLED AT 2020-03-10T19:34:33 DUE TO TIME LIMIT ***
+srun: got SIGCONT
+srun: forcing job termination

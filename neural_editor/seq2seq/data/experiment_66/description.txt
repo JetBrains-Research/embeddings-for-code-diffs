@@ -1,0 +1,29 @@
+Same as 62 but neural editor is trained.
+
+Observations:
+66 vs 62
+Loss plot looks pretty the same as in 61.
+
+neural editor (compared with 65 when dataset filtered + filtered, here we have filtered_part + filtered_cmg_part)
+best_val_perplexity: 15.56 vs 7.88 (worse)
+last_train_perplexity: 1.42 vs 1.34 (worse)
+test_acc: 0.029 vs 0.028 (a little bit better)
+train_acc_test_size: 0.407 vs 0.254 (much better)
+train_acc_test_size top-50: 0.656 vs 0.594 (better) 
+BLEU test: 72.51 vs 76.77 (worse)
+BLEU train: 91.96 vs 90.07 (better)
+hyp_len / ref_len (on test): 0.950 vs 0.965 (worse)
+
+commit message generator
+best_val_perplexity: 67.02 vs 69.72 (better)
+last_train_perplexity: 11.67 vs 9.58 (worse)
+test_acc: 0.052 vs 0.065 (worse)
+train_acc_test_size: 0.073 vs 0.091 (worse)
+train_acc_test_size top-50: 0.234 vs 0.255 (worse)
+BLEU test: 23.72 vs 25.85 (worse)
+BLEU train: 24.25 vs 26.88 (worse)
+hyp_len / ref_len (on test): 0.515 vs 0.526 (worse)
+
+Conclusions: Looks like when dataset is reduced in 2 times then for neural editor is easier to remember the training data therfore train_acc is much higher. But train_perplexity is worse...strange a little bit...
+
+CMG model is worse in all except val perplexity. I think this poor performance can be because of neural editor as we've seen in previous experiment. Neural editor test_acc is very low and therefore edit representation vectors mislead cmg model.

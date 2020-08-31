@@ -1,0 +1,30 @@
+Same as 53, but BLEU calculation is added.
+
+Observations:
+Interestingly, but plots are similar but not the same. Maybe that's because I changed TOKENS_CODE_CHUNK_MAX_LEN from 104 to 121.
+
+55 vs 53
+neural editor:
+best_val_perplexity: 2.86 vs 2.88 (better)
+last_train_perplexity: 1.66 vs 1.57 (worse)
+test_acc: 0.081 vs 0.081 (same)
+train_acc_test_size: 0.03 vs 0.03 (same)
+train_acc_test_size top-50: 0.07 vs 0.07 (same) 
+BLEU test: 54.91 vs not defined
+BLEU train: 62.25 vs not defined
+
+commit message generator:
+best_val_perplexity: 32.57 vs 32.87 (better)
+last_train_perplexity: 9.07 vs 9.68 (better)
+test_acc: 0.202 vs 0.202 (same)
+train_acc_test_size: 0.217 vs 0.227 (worse)
+train_acc_test_size top-50: 0.267 vs 0.269 (worse)
+BLEU test: 32.79 vs not defined
+BLEU train: 33.65 vs not defined
+Conclusions: accuracy calculation experiment now takes 4:30 minutes for neural editor (vs 40 minutes in 53) and 1:30 minutes for cmg (vs 15 minutes in 53). There are two possible reasons:
+1. Change of TOKENS_CHUNK_MAX_LEN from 104 to 121 (will be tested in evaluation of 57 experiment).
+2. We store all predictions (not top-50) therefore we can consume lots of memory (less probable).
+
+Accuracy values are almost the same and doesn't differ. Also BLEU score is a little bit higher than Jiang's. Unfortunately it isn't much higher. Looks like further steps should be completely reproduce Jiang's paper results.
+
+ALSO: hyp_len is less than ref_len (4K vs 9K). In Jiang's paper they had almost the same hyp_len and ref_len.

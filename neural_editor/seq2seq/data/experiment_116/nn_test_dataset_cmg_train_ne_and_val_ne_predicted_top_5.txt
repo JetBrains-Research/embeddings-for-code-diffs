@@ -1,0 +1,4642 @@
+====NEW EXAMPLE====
+keep all jna methods ( some of them are accessed from native code )
+====NEW EXAMPLE====
+update chagelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / xstream / .
+====NEW EXAMPLE====
+add missing threads class to the make file
+====NEW EXAMPLE====
+reduced test iterations .
+====NEW EXAMPLE====
+bump engine . io - client
+====NEW EXAMPLE====
+fix builds without use_opengl_renderer
+====NEW EXAMPLE====
+also release android sources to npm
+====NEW EXAMPLE====
+cursortobulkcursoradapter . close must call mcursor . close instead of mcursor . deactivate .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+fixed command in readme .
+====NEW EXAMPLE====
+prepare release checkstyle - 6 . 11 . 2
+====NEW EXAMPLE====
+intalled - > installed typo in readme . md
+====NEW EXAMPLE====
+bump flow version
+====NEW EXAMPLE====
+removed non - needed imports
+====NEW EXAMPLE====
+add type information to extern for screen
+====NEW EXAMPLE====
+setting version to 1 . 0 . 118 - snapshot
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / server / .
+====NEW EXAMPLE====
+put the marker on the server ml file too
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / xstream / .
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+target java 7 for compilation
+====NEW EXAMPLE====
+building 4 . 6 runtime requires 4 . 5 antlr mvn plugin
+====NEW EXAMPLE====
+corrected to property syntax
+====NEW EXAMPLE====
+ignore history files
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - template / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / contacts / .
+====NEW EXAMPLE====
+prepare release v1 . 2
+====NEW EXAMPLE====
+bump engine . io - client
+====NEW EXAMPLE====
+fix error in docking station on chunk unload , fixes # 2898
+====NEW EXAMPLE====
+prepare version 20 . 1 . 1 .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+remove dependency on groovy - json for compilation
+====NEW EXAMPLE====
+restore original ianal - maven - plugin config ( changed by mistake in a7d325b )
+====NEW EXAMPLE====
+turned off debug
+====NEW EXAMPLE====
+fix bug of not setting the paint when we change the footer line height .
+====NEW EXAMPLE====
+add missing include for skpath
+====NEW EXAMPLE====
+adding storm - 1668 to changelog . md
+====NEW EXAMPLE====
+update to the latest support lib
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+bumped version number to 1 . 4 . 1
+====NEW EXAMPLE====
+correctly specify github release task
+====NEW EXAMPLE====
+mentioned hide offline feature in the changelog
+====NEW EXAMPLE====
+drop jdk6 from build matrix , we require java 7
+====NEW EXAMPLE====
+recycle style attributes typed array .
+====NEW EXAMPLE====
+skip tests in building alluxio instructions
+====NEW EXAMPLE====
+dont fail client module because there are no tests
+====NEW EXAMPLE====
+add wrapper project explictly to the core libs as it was dragged in before as a transitive dep of toolingapi .
+====NEW EXAMPLE====
+removed unused buck code .
+====NEW EXAMPLE====
+setting version to 1 . 0 . 112 - snapshot
+====NEW EXAMPLE====
+bumping version number and name for beta 2 .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / server / .
+====NEW EXAMPLE====
+dispose filetreenode
+====NEW EXAMPLE====
+require android 23 for travis
+====NEW EXAMPLE====
+added tostring ( ) method in neoapp . neoapprelationshiptype . . . otherwise
+====NEW EXAMPLE====
+prepare release phrase - 1 . 0 . 3
+====NEW EXAMPLE====
+add link to sqlcipher docs on intro page .
+====NEW EXAMPLE====
+fix wrong script name
+====NEW EXAMPLE====
+add storm - 829 to changelog . md
+====NEW EXAMPLE====
+lps - 45686 do not break words
+====NEW EXAMPLE====
+fix hun scrim
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / map / .
+====NEW EXAMPLE====
+fixed cancel button in landscape account activity
+====NEW EXAMPLE====
+lps - 67504 do not increase version
+====NEW EXAMPLE====
+updated version to 1 . 3 . 0
+====NEW EXAMPLE====
+install function should also be defined on the childbrowser , not the prototype , for complete consistency with ios api
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+ignore osx and ide files
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+make note of pull request
+====NEW EXAMPLE====
+remove preview license from travis config .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+fix msn , problem with server initiated adl commands and enabling msn tests again .
+====NEW EXAMPLE====
+added jungle tree to treetype enum - this fixes bukkit - 886
+====NEW EXAMPLE====
+require maven 3 . 0 .
+====NEW EXAMPLE====
+only use travelagent if supplied ; addresses bukkit - 3466
+====NEW EXAMPLE====
+added christopher deckers as author
+====NEW EXAMPLE====
+set version . txt
+====NEW EXAMPLE====
+eliminate unused rpubsenable function
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+updated setimage method in bootstrapthumbnail to use invalidate and requestlayout methods as recommended in android docs
+====NEW EXAMPLE====
+add documentation to ' use latest java 8 ' change
+====NEW EXAMPLE====
+added todo
+====NEW EXAMPLE====
+lps - 64414 no need to deploy sample - sql - builder when build - sample - sql target is called
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / trash / .
+====NEW EXAMPLE====
+added test case to k2jvmclitest .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / login / .
+====NEW EXAMPLE====
+update travis config
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+fix broken astroboy dep
+====NEW EXAMPLE====
+add logging of bintray user for ci
+====NEW EXAMPLE====
+increment gradle build tools
+====NEW EXAMPLE====
+added storm - 1837 to changelog
+====NEW EXAMPLE====
+set the source encoding to utf - 8 to remove a maven warning when building
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+bump version from 1 . 7 . 8 - > 1 . 7 . 9
+====NEW EXAMPLE====
+improved ' testing applications ' example
+====NEW EXAMPLE====
+add grails - java8 to the bom
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - security / .
+====NEW EXAMPLE====
+minecraftforge / fml @ 0d810c01fab99ac491c2277097a4198518fe6c75 mark jopt needed on the server , herp derp , blame abrar !
+====NEW EXAMPLE====
+remove ` data ` from .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / microblogs / .
+====NEW EXAMPLE====
+set component configurations correctly for trident spouts
+====NEW EXAMPLE====
+lps - 55026 add @ deprecated
+====NEW EXAMPLE====
+added extractnatives when running eclipse task
+====NEW EXAMPLE====
+set snapshot version for next development cycle .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+setting default name for multi - project
+====NEW EXAMPLE====
+starting 0 . 5 . 5 - snapshot
+====NEW EXAMPLE====
+allow state loss on fragment change
+====NEW EXAMPLE====
+update readme . md
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+smack 4 . 2 . 0 - alpha2 - snapshot
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / trash / .
+====NEW EXAMPLE====
+align async actioncodes
+====NEW EXAMPLE====
+added oraclejdk7 , openjdk6 , and openjdk7 to travis ci configuration .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+updated changes
+====NEW EXAMPLE====
+remove maven release plugin version declaration to make eclipse happy
+====NEW EXAMPLE====
+edited readme via github
+====NEW EXAMPLE====
+travis ci does not provide oraclejdk6
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / polls / .
+====NEW EXAMPLE====
+add my vote to cookie patch
+====NEW EXAMPLE====
+fixed an error in the pom . xml file
+====NEW EXAMPLE====
+remove rxjava - examples submodule
+====NEW EXAMPLE====
+adding a description for build - docs task
+====NEW EXAMPLE====
+fix touches on glowing region around panel .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+adding * .
+====NEW EXAMPLE====
+add apache logs folder
+====NEW EXAMPLE====
+update the menu in the preview of the video
+====NEW EXAMPLE====
+removing liquibase - osgi from parent project pom
+====NEW EXAMPLE====
+ensure that the build failed for the reason we expected .
+====NEW EXAMPLE====
+fixed inconsistent synchronization
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / application - list / .
+====NEW EXAMPLE====
+setting version to 1 . 0 . 149
+====NEW EXAMPLE====
+update travis
+====NEW EXAMPLE====
+avoid npe .
+====NEW EXAMPLE====
+relax flow jest - cli regex
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / invitation / .
+====NEW EXAMPLE====
+adding voldemort module
+====NEW EXAMPLE====
+fix comments
+====NEW EXAMPLE====
+fix a bug in controlleractivitycounter
+====NEW EXAMPLE====
+added rob dawson .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+added storm - 1423 to changelog
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+added storm - 132 to changelog
+====NEW EXAMPLE====
+enabled fast scrolling for season and episode lists .
+====NEW EXAMPLE====
+bump version to 2 . 1 . 2
+====NEW EXAMPLE====
+git should ignore the testng output directory
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / notifications / .
+====NEW EXAMPLE====
+catch the indexoutofboundsexception thrown by ansicolordiagnosticlistener .
+====NEW EXAMPLE====
+update apk
+====NEW EXAMPLE====
+make translucentconversionlistener a systemapi
+====NEW EXAMPLE====
+fixed typo
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+uses shell at compile time
+====NEW EXAMPLE====
+updated the gitignore file to ignore eclips config files .
+====NEW EXAMPLE====
+removed rogue text from build file .
+====NEW EXAMPLE====
+made user presenter .
+====NEW EXAMPLE====
+ignore gradle . properties
+====NEW EXAMPLE====
+lps - 45685 prevent caching ajax requests in dl
+====NEW EXAMPLE====
+changed version
+====NEW EXAMPLE====
+added relative path to the parent pom so that the user won ' t need to
+====NEW EXAMPLE====
+enable iiner class creation
+====NEW EXAMPLE====
+even less debug info .
+====NEW EXAMPLE====
+upgraded logback to 1 . 1 . 7
+====NEW EXAMPLE====
+prepare next release v0 . 89 . 1 - snapshot
+====NEW EXAMPLE====
+adding words suggested by users
+====NEW EXAMPLE====
+bumping versioncode 207 for 4 . 5 . 1 release
+====NEW EXAMPLE====
+the new snack bar hide too quick if clear previous snacks .
+====NEW EXAMPLE====
+prevent new ripples when max reached
+====NEW EXAMPLE====
+add irc notifications to travis
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+add travis status badge to readme .
+====NEW EXAMPLE====
+prepare version 18 - beta1 .
+====NEW EXAMPLE====
+fixing junit version number to 4 . 11 again
+====NEW EXAMPLE====
+fix merge conflict resolution
+====NEW EXAMPLE====
+remove an @ override that is not needed .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - template / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / bookmarks / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / flags / .
+====NEW EXAMPLE====
+fix typo which cause stack overflow if children ( ) was called
+====NEW EXAMPLE====
+added more useful properties for reduce phase handling .
+====NEW EXAMPLE====
+ignore files
+====NEW EXAMPLE====
+add missing break
+====NEW EXAMPLE====
+fix hive ptest2 logging configuration ( gopal v reviewed by sergey shelukhin )
+====NEW EXAMPLE====
+reveal getpositionforview ( view )
+====NEW EXAMPLE====
+handle generic back action from stack reducer
+====NEW EXAMPLE====
+fix frameworksservicestests . apk to include libc + + .
+====NEW EXAMPLE====
+testapp no longer overrides ' grails . env ' setting - fixes grails - 1988 .
+====NEW EXAMPLE====
+make groovyconsole hard - coded output limit configurable
+====NEW EXAMPLE====
+updated samples
+====NEW EXAMPLE====
+inject java
+====NEW EXAMPLE====
+update changes
+====NEW EXAMPLE====
+remove unnecessary dependency on clang headers .
+====NEW EXAMPLE====
+updated faq
+====NEW EXAMPLE====
+plugins should not enforce dependencies
+====NEW EXAMPLE====
+add explanation on adding dependencies of maven - release - plugin
+====NEW EXAMPLE====
+ignore blogs - demo 1 . 0 . 2 prep next
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+revert " lps - 48038 sf "
+====NEW EXAMPLE====
+potentially resolve # 811
+====NEW EXAMPLE====
+use default junit parallelism
+====NEW EXAMPLE====
+optimized imports
+====NEW EXAMPLE====
+update demo
+====NEW EXAMPLE====
+removed sysout from animchannel
+====NEW EXAMPLE====
+changed spring - test scope to " provided "
+====NEW EXAMPLE====
+rename ignore file from hg to git
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / marketplace / .
+====NEW EXAMPLE====
+removed unnecessary initialization .
+====NEW EXAMPLE====
+add eclipse checkstyle output file to ignore .
+====NEW EXAMPLE====
+bump up the version number .
+====NEW EXAMPLE====
+add storm - 1661 to changelog . md
+====NEW EXAMPLE====
+adding size method to node_set
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+fixed import error
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / ratings / .
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+add minimizejar to jdbc / pom .
+====NEW EXAMPLE====
+added decent message when cusom matcher is used
+====NEW EXAMPLE====
+set maxlength of post editor content field to a really high value to fix text from getting cut off on certain devices .
+====NEW EXAMPLE====
+switched rest - api - spec url to https
+====NEW EXAMPLE====
+don ` t hardcode the android sdk path in the build script before you push ( im looking at you dave )
+====NEW EXAMPLE====
+prepare version 27 - beta2 .
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / polls / .
+====NEW EXAMPLE====
+upgraded maven - release - plugin to version 2 . 1 .
+====NEW EXAMPLE====
+upgrading tests to selenium 2 . 25 . 0
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+remove debug from reachtopology
+====NEW EXAMPLE====
+added eclipse configuration files to gitignore
+====NEW EXAMPLE====
+added notice - smali file to included resources .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+add storm - 1966 to changelog
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+adding storm - 1372 to changelog
+====NEW EXAMPLE====
+remove destroyed audioplayer from list of audioplayers
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / iframe / .
+====NEW EXAMPLE====
+remove memory leak .
+====NEW EXAMPLE====
+fix a typo in credits
+====NEW EXAMPLE====
+incrementing minimal - json version due to serialisation bug in 0 . 9 . 2
+====NEW EXAMPLE====
+remove extra space .
+====NEW EXAMPLE====
+fix build - current . txt regenerated
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+removed useless line
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+update expected user guide sample output
+====NEW EXAMPLE====
+add storm - 1902 to changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+remove the background color from message view headers
+====NEW EXAMPLE====
+add reportunknowntypes to the list of valid suppressions .
+====NEW EXAMPLE====
+remove " allowbackup " from manifest
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / polls / .
+====NEW EXAMPLE====
+fix reading expired row value from row cache
+====NEW EXAMPLE====
+ignore update ' modules / apps / screens / .
+====NEW EXAMPLE====
+added eclipse plugin
+====NEW EXAMPLE====
+amend changelog for 13 - beta4 .
+====NEW EXAMPLE====
+update notification address
+====NEW EXAMPLE====
+make compilesdkversion match the rest
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+allow external application to open a tab
+====NEW EXAMPLE====
+add javadoc jar to artifacts .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / item - selector / .
+====NEW EXAMPLE====
+remove 777
+====NEW EXAMPLE====
+also define boost_filesystem2_narrow_only
+====NEW EXAMPLE====
+and a derp found its way into my commit . . .
+====NEW EXAMPLE====
+add download url to pom
+====NEW EXAMPLE====
+add queryphonestate in ibluetoothheadsetphone
+====NEW EXAMPLE====
+run the same compilation command when installed via git clone .
+====NEW EXAMPLE====
+lep - 4510 - themes should contain styling for commonly used elements
+====NEW EXAMPLE====
+remove the launcher filter from the androidmanifest as per # 57
+====NEW EXAMPLE====
+fixed issue # 22
+====NEW EXAMPLE====
+incorporated pr comment
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+removed all big dataset tests
+====NEW EXAMPLE====
+test travis ci .
+====NEW EXAMPLE====
+adds storm - 1383
+====NEW EXAMPLE====
+disable precompiled headers
+====NEW EXAMPLE====
+temporary disable install core deps
+====NEW EXAMPLE====
+declare property
+====NEW EXAMPLE====
+give some margins between interpreter settings
+====NEW EXAMPLE====
+missing import .
+====NEW EXAMPLE====
+removed wait
+====NEW EXAMPLE====
+damn optimize imports on commit
+====NEW EXAMPLE====
+prepare release storm - hdfs - 0 . 1 . 2
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+bump version for development
+====NEW EXAMPLE====
+added liquibase . integrationtest . local . properties to .
+====NEW EXAMPLE====
+upgraded parent version .
+====NEW EXAMPLE====
+fixed typo .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+upgrade netflixoss nebula plugin to 3 . 2 . 2
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+removing java 6 from the travis build config since 7 + is needed for findbugs 3 . 0 .
+====NEW EXAMPLE====
+removed empty line .
+====NEW EXAMPLE====
+adding * .
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+setting tic tac toe to api level 19 for travis ci
+====NEW EXAMPLE====
+remove unknown app module
+====NEW EXAMPLE====
+add networkingprivate . ondevicestatelistchanged to chrome_extensions .
+====NEW EXAMPLE====
+allow no tests in default surefire execution
+====NEW EXAMPLE====
+disable checkstyle in java8 package
+====NEW EXAMPLE====
+add headers for redhat chkconfig
+====NEW EXAMPLE====
+grails - 5830 - close the application context at the end of integration tests .
+====NEW EXAMPLE====
+disable optimizations for interfaces
+====NEW EXAMPLE====
+added a protected method to retrieve the indent printer for reuse in subclasses of markupbuilder
+====NEW EXAMPLE====
+lps - 24377 explicitly set contribution and participation values to 0 when they are not defined in xml
+====NEW EXAMPLE====
+reset the setonkeylistener callback when view is destroyed
+====NEW EXAMPLE====
+pass the - - porcelain flag to git status .
+====NEW EXAMPLE====
+add some directories to ignore
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+disable one of the ` externaljavacintegrationtest ` test cases .
+====NEW EXAMPLE====
+add abortonerror false - so that clean build runs without a problem
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / site - navigation / .
+====NEW EXAMPLE====
+added parsing of cython include statements
+====NEW EXAMPLE====
+fixed description
+====NEW EXAMPLE====
+lps - 30638 executing portlet struts action should not create embedded portlet
+====NEW EXAMPLE====
+added pom signing to release on maven central
+====NEW EXAMPLE====
+fixed known type of dir ( ) for python 3 . x ( py - 8347 )
+====NEW EXAMPLE====
+fixed blog display to show ( no blog title ) if the blog has an empty title .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+gh - 49 build fix ( sears )
+====NEW EXAMPLE====
+as7 - 5700 removed version from maven - dependency - plugin
+====NEW EXAMPLE====
+lps - 30595 fix typo in portal properties
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / message - boards / .
+====NEW EXAMPLE====
+only build the master branch with travis .
+====NEW EXAMPLE====
+always include all helpers .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+updated documentation
+====NEW EXAMPLE====
+run the tests on oraclejdk7 and openjdk6 + 7
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+lps - 42136 ignore the log file generated when running the tests
+====NEW EXAMPLE====
+delete dangling comment about long - dead code .
+====NEW EXAMPLE====
+fix comments
+====NEW EXAMPLE====
+adding * .
+====NEW EXAMPLE====
+lps - 62799 fix nullpointer in test
+====NEW EXAMPLE====
+fixed a bug where menu items from all fragments in pager would be added to menu
+====NEW EXAMPLE====
+fix indexoutofboundsexception setspan happening on samsung devices by simply disabling long click events on edittext .
+====NEW EXAMPLE====
+lps - 52289 bump the version
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / roles / .
+====NEW EXAMPLE====
+add cap_block_suspend to system server
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+fixed the process of closing the right - hand side menu after user clicks one of the buttons .
+====NEW EXAMPLE====
+add a - d flag to dpkg
+====NEW EXAMPLE====
+changes the background color for chat room contacts .
+====NEW EXAMPLE====
+testing circle ci
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+add contributer name to misc / upstart / readme
+====NEW EXAMPLE====
+add 0dp surface view
+====NEW EXAMPLE====
+fix proguard
+====NEW EXAMPLE====
+add storm - 1470 to changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / license - manager / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / bookmarks / .
+====NEW EXAMPLE====
+updated gitignore
+====NEW EXAMPLE====
+add notes about jdi
+====NEW EXAMPLE====
+bumping commit of submodule
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+remove __author__ from python file templates .
+====NEW EXAMPLE====
+lps - 65749 prep next , use latest
+====NEW EXAMPLE====
+typo with in code , replace date . totime with date . gettime
+====NEW EXAMPLE====
+remove libarchive from travis build .
+====NEW EXAMPLE====
+jetty9 - reduced test logging .
+====NEW EXAMPLE====
+missing acceptanycertificate propagation
+====NEW EXAMPLE====
+add missing @ override to method addcontextpanelfactory ( )
+====NEW EXAMPLE====
+revert submodule change
+====NEW EXAMPLE====
+fixed error .
+====NEW EXAMPLE====
+add storm - 975 to changelog . md
+====NEW EXAMPLE====
+add deprecation reason to propertynode # setclosuresharedvariable
+====NEW EXAMPLE====
+remove debug line
+====NEW EXAMPLE====
+tfj - 480 renamed configurationbuilder # setentitiesenabled to setincludeentitiesenabled
+====NEW EXAMPLE====
+added generated jars to gitignore
+====NEW EXAMPLE====
+updating to gremlin 0 . 8
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+bump react - native - cli version
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / blogs / .
+====NEW EXAMPLE====
+implement keyguardgoingaway ( ) fixes build .
+====NEW EXAMPLE====
+fix a typo in a test method name .
+====NEW EXAMPLE====
+fix bug 4099023 - phantom clicks on some websites
+====NEW EXAMPLE====
+missing key
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / notifications / .
+====NEW EXAMPLE====
+remove an @ override that is not needed .
+====NEW EXAMPLE====
+fix inappropriate @ suppresswarnings .
+====NEW EXAMPLE====
+on virtual box , some ansible modules need selinux
+====NEW EXAMPLE====
+lps - 54296 document it
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+add jvm settings in gradle . properties
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / comment / .
+====NEW EXAMPLE====
+set minimum system version to 10 . 6
+====NEW EXAMPLE====
+updating to gremlin 0 . 8
+====NEW EXAMPLE====
+fixing rdoc typo
+====NEW EXAMPLE====
+add jekyll _site directory to .
+====NEW EXAMPLE====
+changed library version to 0 . 0 . 3
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+====NEW EXAMPLE====
+fix weird issue with d3 + retina + open sans .
+====NEW EXAMPLE====
+don ' t expand the searchview if already expanded .
+====NEW EXAMPLE====
+fix handling of paths with spaces in kotlinc script
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+don ' t need see
+====NEW EXAMPLE====
+added more doc
+====NEW EXAMPLE====
+don ' t highlight unassigned vars in boolean checks by default
+====NEW EXAMPLE====
+lps - 35679 remove language key that it ' s no longer used
+====NEW EXAMPLE====
+update readme . md
+====NEW EXAMPLE====
+fix hangouts conference calling regression .
+====NEW EXAMPLE====
+ignore pom . xml . versionsbackup
+====NEW EXAMPLE====
+fixed wrong model name
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / directory / .
+====NEW EXAMPLE====
+updated version number
+====NEW EXAMPLE====
+turn on building parse trees by default since we do - listener by default .
+====NEW EXAMPLE====
+fix finalization
+====NEW EXAMPLE====
+commented out the package tag used by javadoc plugin , because javadoc was confused
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - lock / .
+====NEW EXAMPLE====
+update readme
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+update mapping put should use / _mapping
+====NEW EXAMPLE====
+correct a typo
+====NEW EXAMPLE====
+remove potentially misleading exception message
+====NEW EXAMPLE====
+corrected snapshot version
+====NEW EXAMPLE====
+fix missing return value in android_location_gpslocationprovider_init
+====NEW EXAMPLE====
+updated gradle plugin .
+====NEW EXAMPLE====
+update location module
+====NEW EXAMPLE====
+added newline at end of percolate tests
+====NEW EXAMPLE====
+fix typo in javadoc
+====NEW EXAMPLE====
+fixed # include .
+====NEW EXAMPLE====
+added appcompat & recyclerview libraries
+====NEW EXAMPLE====
+upgrade mvn release plugin
+====NEW EXAMPLE====
+clj - 1329 - remove unused local in persistentvector . cons ( )
+====NEW EXAMPLE====
+default native proto to correct port in config
+====NEW EXAMPLE====
+compile palette with java 7 with gradle
+====NEW EXAMPLE====
+fix splash progress disappearing on image repaint
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+reload tlm in subtasks tag view refresh
+====NEW EXAMPLE====
+lrqa - 14936 move validations out of getterutil
+====NEW EXAMPLE====
+imgur hosted gif
+====NEW EXAMPLE====
+compile support - v4 with java 7 in gradle
+====NEW EXAMPLE====
+removed @ nullable from getvirtualfile ( ) since it is almost never null
+====NEW EXAMPLE====
+modify dockerfile
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / flags / .
+====NEW EXAMPLE====
+added storm - 831 to changelog
+====NEW EXAMPLE====
+remove - - debug option
+====NEW EXAMPLE====
+bump android version requirement to 1 . 6
+====NEW EXAMPLE====
+reorder modules in top - level pom . xml
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+lps - 49320 this causes sql exceptions in some dbms ( like postgresql )
+====NEW EXAMPLE====
+add compiler options to find unchecked / deprecated code
+====NEW EXAMPLE====
+push version to 13 - beta3 , 11242 .
+====NEW EXAMPLE====
+fixed revision number
+====NEW EXAMPLE====
+update changes
+====NEW EXAMPLE====
+upgrade apache commons collections to v3 . 2 . 2
+====NEW EXAMPLE====
+woops java type checks !
+====NEW EXAMPLE====
+update travis
+====NEW EXAMPLE====
+specify - noprecompile for faster devmode startup
+====NEW EXAMPLE====
+updated pointer to android library
+====NEW EXAMPLE====
+fix builder issue
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / portlet - configuration / .
+====NEW EXAMPLE====
+fix poi types
+====NEW EXAMPLE====
+fixed warning at startup about the missing gremlin engine
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+added idea files to the .
+====NEW EXAMPLE====
+updating androidemojiinput submodule to fix build issue
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+bump tools version to 24 . 0 . 1 to make snap - ci happy
+====NEW EXAMPLE====
+fix changelog after backporting # 11353
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / hello - soy / .
+====NEW EXAMPLE====
+updated reame . md .
+====NEW EXAMPLE====
+ignore tags / tags generated by ctags / etags .
+====NEW EXAMPLE====
+messageoutput now has getname ( )
+====NEW EXAMPLE====
+fix wording
+====NEW EXAMPLE====
+dropped extra padding in message details .
+====NEW EXAMPLE====
+fix bug
+====NEW EXAMPLE====
+fix release number
+====NEW EXAMPLE====
+update wikidoc commit pointer
+====NEW EXAMPLE====
+change indexprimaryshardnotallocatedexception from 409 ( reststatus . conflict ) to 500 ( reststatus . internal_server_error )
+====NEW EXAMPLE====
+don ' t force reload of ide for project options
+====NEW EXAMPLE====
+added padding one last time
+====NEW EXAMPLE====
+updates minify enabled true for release builds .
+====NEW EXAMPLE====
+break loop fast when one of connection seems to broken
+====NEW EXAMPLE====
+fixed reduce parameter reordering
+====NEW EXAMPLE====
+prepare version 27 - beta2 .
+====NEW EXAMPLE====
+remove bin from root .
+====NEW EXAMPLE====
+fix gif url
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+start 2 . 2 - dev
+====NEW EXAMPLE====
+prepared for next development iteration
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+do not configure undertow listeners as reversed with the reverse proxy
+====NEW EXAMPLE====
+fix # 109 , file not unlocked after db close on windows .
+====NEW EXAMPLE====
+added storm - 1252 to changelog
+====NEW EXAMPLE====
+remove runit_nopass_rdoc_prcomp .
+====NEW EXAMPLE====
+ignore gradle - generated files
+====NEW EXAMPLE====
+adds a license file
+====NEW EXAMPLE====
+added license header
+====NEW EXAMPLE====
+lrdocs - 927 add missing period in javadoc .
+====NEW EXAMPLE====
+exclude license . txt in packaging options .
+====NEW EXAMPLE====
+fixed typeo in test
+====NEW EXAMPLE====
+lps - 21453 ignore auth token check for blogs trackback urls
+====NEW EXAMPLE====
+fixed reloading testmoduleproperties after reopening ( idea - 150835 )
+====NEW EXAMPLE====
+added storm - 791 to changelog
+====NEW EXAMPLE====
+downgrade tabulate version to 0 . 7 . 4 ( # 1127 )
+====NEW EXAMPLE====
+upgrade logback to 1 . 0 . 3 .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+removed srcdir
+====NEW EXAMPLE====
+added tostring ( ) method in neoapp . neoapprelationshiptype . . . otherwise
+====NEW EXAMPLE====
+add ' inheritdotparams ' roxygen keyword
+====NEW EXAMPLE====
+not skipping test when creating package
+====NEW EXAMPLE====
+bump platform
+====NEW EXAMPLE====
+changed project from agent to instrument
+====NEW EXAMPLE====
+remove malloc_leak_check references .
+====NEW EXAMPLE====
+turn off active by default on tests
+====NEW EXAMPLE====
+lrqa - 20954 add new test property for deploying osgi modules
+====NEW EXAMPLE====
+cache the contents of .
+====NEW EXAMPLE====
+fix failing test , account for url - mappings - report
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+released 1 . 5 . 1 - snapshot .
+====NEW EXAMPLE====
+undertow - 401 request scheme attribute returns the wrong thing
+====NEW EXAMPLE====
+restored projectname property to support backwards compatibility with plugins etc .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - scripting / .
+====NEW EXAMPLE====
+exported create - struct
+====NEW EXAMPLE====
+build config fix
+====NEW EXAMPLE====
+removing unimplemented method activescansessionurls from clientapi
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / microblogs / .
+====NEW EXAMPLE====
+add log4j dependency notice .
+====NEW EXAMPLE====
+fix comments
+====NEW EXAMPLE====
+added saving functionality for gpx file .
+====NEW EXAMPLE====
+add incubating to src zip name
+====NEW EXAMPLE====
+don ' t use stlport .
+====NEW EXAMPLE====
+shade infinispan and dependencies
+====NEW EXAMPLE====
+allow locker configuration
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / flags / .
+====NEW EXAMPLE====
+update changelog for storm - 279
+====NEW EXAMPLE====
+fixing build
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+setting default name for master
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - configuration / .
+====NEW EXAMPLE====
+fixed typo in doc
+====NEW EXAMPLE====
+added javadoc
+====NEW EXAMPLE====
+removed - - stacktrace form ci buildscript
+====NEW EXAMPLE====
+switch master to 4 . 1 . 0 . build - snapshot
+====NEW EXAMPLE====
+travis requires the ' tools ' component to build with android build tools 23 . 0 . 2
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+no longer skip integration tests on jenkins
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - editor / .
+====NEW EXAMPLE====
+hey , we have a mailing list now !
+====NEW EXAMPLE====
+prepare next development version .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+remove unnecessary line
+====NEW EXAMPLE====
+ignore update ' modules / apps / marketplace / .
+====NEW EXAMPLE====
+bump to version 5 . 4 - rc - 2
+====NEW EXAMPLE====
+fix memory leaks in throwable
+====NEW EXAMPLE====
+adding image of app
+====NEW EXAMPLE====
+upped script version in assets .
+====NEW EXAMPLE====
+follow change in parent .
+====NEW EXAMPLE====
+fix eclipse javadoc warning
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+updated gitignore
+====NEW EXAMPLE====
+add site deploy note
+====NEW EXAMPLE====
+fix seekableviewsfortest to handle the reset ( long , double ) overload properly
+====NEW EXAMPLE====
+suppress warning .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / my - account / .
+====NEW EXAMPLE====
+make go case sensitive language
+====NEW EXAMPLE====
+upgraded the version in the parent pom references in our example components to 3 .
+====NEW EXAMPLE====
+updated version in readme .
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+make uploadmavencentral task , that encompasses other tasks
+====NEW EXAMPLE====
+increased version code
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+add missing project on settings . gradle
+====NEW EXAMPLE====
+lrqa - 28296 add new property
+====NEW EXAMPLE====
+remove component annotation
+====NEW EXAMPLE====
+suppressing deprecation warning in a test
+====NEW EXAMPLE====
+@ deprecated does not have effect in groovy
+====NEW EXAMPLE====
+remove useless import
+====NEW EXAMPLE====
+updated jsr305 dependency .
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - security / .
+====NEW EXAMPLE====
+fixed failing test
+====NEW EXAMPLE====
+removed unnecessary tag
+====NEW EXAMPLE====
+update jansi to 16 ( fixes some 32 / 64 - bit detection problems on windows )
+====NEW EXAMPLE====
+added eric crampton .
+====NEW EXAMPLE====
+add console line back ( since it ' s still in the code )
+====NEW EXAMPLE====
+fix a numeric equality bug spotted by intellij
+====NEW EXAMPLE====
+add storm - 1679 to changelog
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+add missing @ override
+====NEW EXAMPLE====
+bump version number for 2 . 14 . 1
+====NEW EXAMPLE====
+trailing whitespace police
+====NEW EXAMPLE====
+updated fake - dom so that body has append / remove child
+====NEW EXAMPLE====
+added kosl90 to contributors list .
+====NEW EXAMPLE====
+bump up version number .
+====NEW EXAMPLE====
+remove destroyed audioplayer from list of audioplayers
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / petra / .
+====NEW EXAMPLE====
+tweak comment for # 754
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - cache / .
+====NEW EXAMPLE====
+set curr . release to 0 . 90 .
+====NEW EXAMPLE====
+remove error case
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - editor / .
+====NEW EXAMPLE====
+fixes java 1 . 5 error .
+====NEW EXAMPLE====
+add storm - 1842 to changelog
+====NEW EXAMPLE====
+ignore eclipse generated markdown files
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / site / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+groovy test module has a runtime dependency onto the " ant " module for tests
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+adding words suggested by users
+====NEW EXAMPLE====
+remove background color from welcome fragment
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - editor / .
+====NEW EXAMPLE====
+prevent surfaceflinger from using layer token 31 .
+====NEW EXAMPLE====
+prepare release acra - 4 . 6 . 0
+====NEW EXAMPLE====
+remove whitespacek
+====NEW EXAMPLE====
+remove an obsolete code comment
+====NEW EXAMPLE====
+bump up rc version release
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - taglib / .
+====NEW EXAMPLE====
+ignore tags / tags generated by ctags / etags .
+====NEW EXAMPLE====
+changed target build sdk for osmand
+====NEW EXAMPLE====
+upgraded netty to 4 . 0 . 7
+====NEW EXAMPLE====
+fix for ticket 670
+====NEW EXAMPLE====
+lowering log level for integration tests , silencing mongo driver .
+====NEW EXAMPLE====
+corrected the groovybundleversion in build . properties for the new 1 . 8 . 0 - beta - 1 branch .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+fix master ; increase dex max heap size
+====NEW EXAMPLE====
+revert " disable jack usage for the rs support library . "
+====NEW EXAMPLE====
+lps - 45755 - add ' portal - acceptance ' component
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+updated gradle dependency version
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+upgraded maven - site - plugin to 2 . 1 . 1 .
+====NEW EXAMPLE====
+upgraded parent declaration in all trunks to use version 1 of parent - central .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+ignore calevent - importer 1 . 0 . 2 prep next
+====NEW EXAMPLE====
+add tests . log * into gitignore
+====NEW EXAMPLE====
+add play and pause keycodes and remove play_pause keycode .
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+====NEW EXAMPLE====
+lps - 27263 add gitignore
+====NEW EXAMPLE====
+removed incorrect dependency on ' util ' module from ' forms_rt '
+====NEW EXAMPLE====
+delete an unused flag in incrementalindexsegment
+====NEW EXAMPLE====
+fixed compilation error .
+====NEW EXAMPLE====
+setting version to 1 . 0 . 140
+====NEW EXAMPLE====
+this fixes scroll to top and resigning first responder
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - scripting / .
+====NEW EXAMPLE====
+modify min sdk version in androidmanifest . xml
+====NEW EXAMPLE====
+clj - 1338 - make murmur3 public
+====NEW EXAMPLE====
+updating changelog
+====NEW EXAMPLE====
+add missing changelog entry
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / polls / .
+====NEW EXAMPLE====
+included only runtime dependencies when copying
+====NEW EXAMPLE====
+hhh - 4088 - session . getsession should always return sessions from parent ( or root ) session
+====NEW EXAMPLE====
+lps - 49294 fix compile error
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / ratings / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / roles / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+configure checkstyle maven plugin to validate only ' src ' folder
+====NEW EXAMPLE====
+upgraded parent version .
+====NEW EXAMPLE====
+fixed py - 7294 invalid warning about encodings in python files
+====NEW EXAMPLE====
+added storm - 747 to changelog
+====NEW EXAMPLE====
+smack 4 . 0 . 6 - snapshot
+====NEW EXAMPLE====
+bump up version
+====NEW EXAMPLE====
+remove unused import from test code .
+====NEW EXAMPLE====
+updated changelog .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+correctly specify github release task
+====NEW EXAMPLE====
+enable on_start notification always
+====NEW EXAMPLE====
+rerun failing tests
+====NEW EXAMPLE====
+add storm - 2063 to changelog
+====NEW EXAMPLE====
+add missing @ override annotation
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+use underlying type for builtins
+====NEW EXAMPLE====
+skip tests in building alluxio instructions
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+remove completed fixme
+====NEW EXAMPLE====
+push api version to 1 . 1 . 0 .
+====NEW EXAMPLE====
+released orientdb 2 . 1 . 0 ga
+====NEW EXAMPLE====
+added missing benchmarkrunner config for svenson json databind
+====NEW EXAMPLE====
+upgrade java - util dependency to include " ruby " time
+====NEW EXAMPLE====
+fix broken performance test .
+====NEW EXAMPLE====
+ignore update ' modules / apps / static / osgi / .
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+fix distribute task description
+====NEW EXAMPLE====
+add gc thread to rsgl .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / server / .
+====NEW EXAMPLE====
+fix glcopytexsubimage2d inverted texture bug .
+====NEW EXAMPLE====
+changed version number so i could push the new version to dist .
+====NEW EXAMPLE====
+remove debug output .
+====NEW EXAMPLE====
+bump spongecommon ref .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+fix false alarm in " drum und dran "
+====NEW EXAMPLE====
+bumping commit of submodule
+====NEW EXAMPLE====
+prune empty directories when switching to just created tag or branch
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+lrqa - 16928 set a default value for the ' test . skip . tear . down ' property in ' test . properties '
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+modify makefile
+====NEW EXAMPLE====
+added getselecteditem to the shadowadpaterview base class for android ' s spinner class .
+====NEW EXAMPLE====
+changed wording
+====NEW EXAMPLE====
+add echo off to cqlsh . bat
+====NEW EXAMPLE====
+added missing def
+====NEW EXAMPLE====
+remove redundant ignore .
+====NEW EXAMPLE====
+update pom . xml
+====NEW EXAMPLE====
+updated read me
+====NEW EXAMPLE====
+improve deployment on travis
+====NEW EXAMPLE====
+remove unnessary bundle package
+====NEW EXAMPLE====
+add licences button
+====NEW EXAMPLE====
+disable broken inspection by default
+====NEW EXAMPLE====
+skip javadoc
+====NEW EXAMPLE====
+remove mms last sync date
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+do not specify settings . xml when deploying
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+allow external application to open a tab
+====NEW EXAMPLE====
+prevent ioexception suppressing at the end of file copying
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+fixed test data for duplocator test
+====NEW EXAMPLE====
+compile with sdk 25 , built tools 25 . 0 . 0 .
+====NEW EXAMPLE====
+push ci
+====NEW EXAMPLE====
+on the off - chance anyone is referencing the plugin only require the library .
+====NEW EXAMPLE====
+ignore new fabric config file .
+====NEW EXAMPLE====
+ignore release folder
+====NEW EXAMPLE====
+sonar - 4923 add missing jira ticket on migration
+====NEW EXAMPLE====
+fixed official api name in docs
+====NEW EXAMPLE====
+exclude weld - core from javadoc ; fixes jbpapp - 9155 exposed private api in zip and rpm javadoc distribution .
+====NEW EXAMPLE====
+preparing wip - release v0 . 1 . 40 - alpha
+====NEW EXAMPLE====
+extend compile alluxio timeout to 30min , due to slow vb
+====NEW EXAMPLE====
+do not use the lastest tool on travis
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / portlet - configuration / .
+====NEW EXAMPLE====
+using the latest buildtools version here too
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+fixed a compilation error ( returning from a void method ) .
+====NEW EXAMPLE====
+bumping commit of submodule
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+removed redundant line from readme . md .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - settings / .
+====NEW EXAMPLE====
+use updated angular profile
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+updated codegen dependency to 0 . 3 . 0
+====NEW EXAMPLE====
+adds the hamcrest jar to internal build .
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / xstream / .
+====NEW EXAMPLE====
+push version to 13 - beta3 , 11242 .
+====NEW EXAMPLE====
+removing @ override from interface method impl
+====NEW EXAMPLE====
+dispose previous root model when changing to a new one without events
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / product - navigation / .
+====NEW EXAMPLE====
+reversing immediately after starting animator ends it
+====NEW EXAMPLE====
+fix codenarc in groovy test
+====NEW EXAMPLE====
+remove userid when logout
+====NEW EXAMPLE====
+removed unnecessary else condition
+====NEW EXAMPLE====
+add api 20
+====NEW EXAMPLE====
+amend changelog for 13 - beta4 .
+====NEW EXAMPLE====
+update changelog for storm - 842
+====NEW EXAMPLE====
+set ulimit
+====NEW EXAMPLE====
+fixed broken right arrow key .
+====NEW EXAMPLE====
+py - 1065 reformat and auto - import do not respect space - after - comma preference in multiline imports
+====NEW EXAMPLE====
+declare a constant for user credentials
+====NEW EXAMPLE====
+add 1 . 10 . 4 to changelog
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+whoops dont need that
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+updated test for groovy - 3401 with a correct example showing that we can put a blankline before the colon
+====NEW EXAMPLE====
+added storm - 1208 to changelog
+====NEW EXAMPLE====
+fixing comment in code to match new default .
+====NEW EXAMPLE====
+add storm - 1336 to changelog . md
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+add parsejsonarray ( ) and parsejsonobject ( ) to keywords . txt
+====NEW EXAMPLE====
+modify makefile
+====NEW EXAMPLE====
+fix bug # 12993929 screen orientation change replaces wifi password dialog with add network dialog
+====NEW EXAMPLE====
+changed search request failure error message
+====NEW EXAMPLE====
+remove extra newline
+====NEW EXAMPLE====
+fix indents
+====NEW EXAMPLE====
+set project version to 6 . 1 for release .
+====NEW EXAMPLE====
+remove unnecessary subclassing psiclass in marker interface
+====NEW EXAMPLE====
+was missing beta_features = true
+====NEW EXAMPLE====
+exclude log4j in kafka dependency as well
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+revert parts of the .
+====NEW EXAMPLE====
+ignore portal - profile 1 . 0 . 0 prep next
+====NEW EXAMPLE====
+engines are standalone blocks
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+add sleep to rule out false positives in integrationtest
+====NEW EXAMPLE====
+upgraded proguard to 5 . 2
+====NEW EXAMPLE====
+make scripts executable and fix travis config to use container - based architecture .
+====NEW EXAMPLE====
+trim driver version string in gradle build file
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / my - account / .
+====NEW EXAMPLE====
+add provided configuration
+====NEW EXAMPLE====
+lps - 42360 break - all will prevent overflow from containers
+====NEW EXAMPLE====
+setting version to 1 . 0 . 80 - snapshot
+====NEW EXAMPLE====
+update travis to the latest build tools
+====NEW EXAMPLE====
+fix finalization
+====NEW EXAMPLE====
+fixed networker crash due to threading bug
+====NEW EXAMPLE====
+fix nullptr exception .
+====NEW EXAMPLE====
+ignore mac and emacs files
+====NEW EXAMPLE====
+add dpad keys to playpad
+====NEW EXAMPLE====
+added xcode 4 phonegap framework note in the ios readme
+====NEW EXAMPLE====
+added support for assertstatement
+====NEW EXAMPLE====
+bump robolectric version to 1 . 1 .
+====NEW EXAMPLE====
+use same groupid as apache repo and ibiblio repo .
+====NEW EXAMPLE====
+remove unused property
+====NEW EXAMPLE====
+rename libprotobuf - cpp - lite_static to libprotobuf - cpp - lite
+====NEW EXAMPLE====
+changed dependencies to milestone versions in preparation of tagging
+====NEW EXAMPLE====
+restore missing usage assignment in audioattributes
+====NEW EXAMPLE====
+applicationstarterbase can process external command line
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / directory / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+attach sources for test jars
+====NEW EXAMPLE====
+testing selective commit of submodule .
+====NEW EXAMPLE====
+fix the instruction of gradle script written in readme
+====NEW EXAMPLE====
+fix an issue where ' getmediafilemimetype ( file mediafile , boolean isimage ) ' is called with false on images
+====NEW EXAMPLE====
+fix option parsing when piping data in via stdin
+====NEW EXAMPLE====
+get help for package completions
+====NEW EXAMPLE====
+don ' t confuse stat and stat64 .
+====NEW EXAMPLE====
+remove blank line in readme . txt
+====NEW EXAMPLE====
+add ' 1 . 1 ' branch to travis deploy list
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / site / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / product - navigation / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / item - selector / .
+====NEW EXAMPLE====
+push version to 11250 .
+====NEW EXAMPLE====
+add default task
+====NEW EXAMPLE====
+updated url of install doc
+====NEW EXAMPLE====
+ignore iml files
+====NEW EXAMPLE====
+update pom . xml
+====NEW EXAMPLE====
+bump gradle to 2 . 4
+====NEW EXAMPLE====
+adding @ suppresswarnings to avoid warning in java 7
+====NEW EXAMPLE====
+refresh annotations dir during setup
+====NEW EXAMPLE====
+add material edittext
+====NEW EXAMPLE====
+added ignored_columns .
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / hello - soy / .
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+remove mention of groovy - 6226 ( configure eclipse plugin ) now that the issue is closed
+====NEW EXAMPLE====
+add date
+====NEW EXAMPLE====
+calculate hash on adding book
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+updated imports .
+====NEW EXAMPLE====
+add the release data for 0 . 8 . 1
+====NEW EXAMPLE====
+fixed clirr config
+====NEW EXAMPLE====
+camel - 2185 reverted my last commit which can ' t do what i expect and caused camel - cxf build error
+====NEW EXAMPLE====
+should not be closing system dialogs when recents is hidden .
+====NEW EXAMPLE====
+setting version to 1 . 0 . 74 - snapshot
+====NEW EXAMPLE====
+includes the notice file in the release
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+do not build sources archive in buildall . sh
+====NEW EXAMPLE====
+add tests for concatenation of strings
+====NEW EXAMPLE====
+ignore intellij project files
+====NEW EXAMPLE====
+add note on probable bug
+====NEW EXAMPLE====
+updated pointer to android library
+====NEW EXAMPLE====
+removed osmand . xml
+====NEW EXAMPLE====
+updated documentation to point on newer library
+====NEW EXAMPLE====
+updated the changelog
+====NEW EXAMPLE====
+change the scope
+====NEW EXAMPLE====
+build tools version updated to 22 . 0 . 1
+====NEW EXAMPLE====
+ignore update ' modules / apps / marketplace / .
+====NEW EXAMPLE====
+bump up version number .
+====NEW EXAMPLE====
+fix build
+====NEW EXAMPLE====
+lps - 62826 configjsmodules supports multiple includes
+====NEW EXAMPLE====
+ignore eclipse project files .
+====NEW EXAMPLE====
+relase 1 . 0 . 4 - bumped version number
+====NEW EXAMPLE====
+prepare next release v0 . 87 . 6 - snapshot
+====NEW EXAMPLE====
+adding gitnore
+====NEW EXAMPLE====
+fix test data
+====NEW EXAMPLE====
+tweak run tests folder names
+====NEW EXAMPLE====
+fixed borken pom
+====NEW EXAMPLE====
+fix build
+====NEW EXAMPLE====
+updated the gitignore file to ignore eclips config files .
+====NEW EXAMPLE====
+return a blank plugin context path if it is null
+====NEW EXAMPLE====
+lps - 62787 prep next , use latest
+====NEW EXAMPLE====
+added java7 compile options
+====NEW EXAMPLE====
+fix a grammatical error in readme
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+prepare release 0 . 8 . 9
+====NEW EXAMPLE====
+add newline to end of rules file .
+====NEW EXAMPLE====
+upgraded javadoc plugin to 2 . 10 . 1 .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+explicitly specify jspc version
+====NEW EXAMPLE====
+remove duplicate groupid
+====NEW EXAMPLE====
+set defaultpublishconfig to debug - in case we had source dependencies to this module
+====NEW EXAMPLE====
+fix edge label positionning .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / microblogs / .
+====NEW EXAMPLE====
+compendium cannot load javax / xml / parsers / factoryconfigurationerror
+====NEW EXAMPLE====
+update switch . js docs - tintcolor changes border
+====NEW EXAMPLE====
+set theme res in a wrapper from constructor
+====NEW EXAMPLE====
+adding newline to ensure tests pass on windows
+====NEW EXAMPLE====
+bump version number
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / map / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+reverted build tools version to fix circleci
+====NEW EXAMPLE====
+add getter for genericvertex max index
+====NEW EXAMPLE====
+fix an unintentional change in method signature and avoid an api change .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / mentions / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - security / .
+====NEW EXAMPLE====
+modified samples
+====NEW EXAMPLE====
+remove impute . flow from index . list
+====NEW EXAMPLE====
+try it at a one - liner
+====NEW EXAMPLE====
+changed minsdkversion to 8
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / invitation / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / login / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+added tag 0 . 4 for changeset ca3fe55c28a6
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - security / .
+====NEW EXAMPLE====
+fix typo for networkingprivate . wimaxstateproperties extern .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+disable node integration tests temporarily
+====NEW EXAMPLE====
+fix database upgrade
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / nested - portlets / .
+====NEW EXAMPLE====
+added relative path to the parent pom so that the user won ' t need to
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+bump version number
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+move tests to elasticsearch test framework
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / blogs / .
+====NEW EXAMPLE====
+removed unused import
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+added debugging flag to build to find cause for api failure .
+====NEW EXAMPLE====
+don ' t publish spock - maven for now
+====NEW EXAMPLE====
+fixed # 464
+====NEW EXAMPLE====
+added override tag
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - editor / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+lrqa - 24891 add portal . upgrades to the list of available properties
+====NEW EXAMPLE====
+rogue line number for try / catch statement confuses ide debuggers
+====NEW EXAMPLE====
+fix a typo in the badge plugin
+====NEW EXAMPLE====
+revert " revert " upgrade to flow 0 . 3 . 32 "
+====NEW EXAMPLE====
+remove weird import from previous commit .
+====NEW EXAMPLE====
+include docs as part of release .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+updated docs url
+====NEW EXAMPLE====
+remove a wrong char " 7 "
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+prepared for next development iteration
+====NEW EXAMPLE====
+ignores macosx specific files .
+====NEW EXAMPLE====
+created array to keep track of tabs
+====NEW EXAMPLE====
+fix react word wrapping crash
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / portlet - configuration / .
+====NEW EXAMPLE====
+fix applicationinfo copy ctor
+====NEW EXAMPLE====
+use java 7 .
+====NEW EXAMPLE====
+fix the label for a redis parameter
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+fix trivial equals implementation
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / notifications / .
+====NEW EXAMPLE====
+ignore networkchannel class .
+====NEW EXAMPLE====
+egl14 . eglcreatewindowsurface should set producercontrolledbyapp
+====NEW EXAMPLE====
+lps - 52679 don ' t use the word portal unless it has the package \ " portal \ " , like portal - bootstrap
+====NEW EXAMPLE====
+setting version to 1 . 0 . 151 - snapshot
+====NEW EXAMPLE====
+putting viewer window in middle maximizes window for viewing cam
+====NEW EXAMPLE====
+add todo comment
+====NEW EXAMPLE====
+udpated version to 2 . 0 . 3 - snapshot
+====NEW EXAMPLE====
+lps - 47293 you don ' t need this because the @ generated already excludes it
+====NEW EXAMPLE====
+update sample app to use android - 19
+====NEW EXAMPLE====
+remove duplicate annotation
+====NEW EXAMPLE====
+lrqa - 19302 add sf exclusion
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / message - boards / .
+====NEW EXAMPLE====
+update changelog for storm - 380
+====NEW EXAMPLE====
+fix input device listener registration in inputmanager
+====NEW EXAMPLE====
+delete an unused flag in queryableindexsegment
+====NEW EXAMPLE====
+removing java . util . arrays import
+====NEW EXAMPLE====
+bump engine . io - client
+====NEW EXAMPLE====
+add word - break rule to messages ;
+====NEW EXAMPLE====
+changed readme
+====NEW EXAMPLE====
+adds throwable - less exception
+====NEW EXAMPLE====
+revert " force using supported cipher suites for http / 2 "
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - editor / .
+====NEW EXAMPLE====
+moving to a proper maven source directory
+====NEW EXAMPLE====
+resolve ' collision . com . badlogic . gdx . physics . bullet . collision ' issue
+====NEW EXAMPLE====
+upgrade anonymous usage statistics to version 1 . 1 . 0
+====NEW EXAMPLE====
+added missing network synchronization , fix # 1560
+====NEW EXAMPLE====
+help topic ( py - 348 )
+====NEW EXAMPLE====
+restore env stuff to heroku
+====NEW EXAMPLE====
+fix the build .
+====NEW EXAMPLE====
+update location module
+====NEW EXAMPLE====
+lps - 67495 prep next , use latest
+====NEW EXAMPLE====
+don ' t fork as ci kills the processes
+====NEW EXAMPLE====
+ignore files
+====NEW EXAMPLE====
+bump version number to 1 . 0 . 0 - snapshot
+====NEW EXAMPLE====
+set jdiff version
+====NEW EXAMPLE====
+fix crash in r some implementations on r_releaseobject ( null )
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / petra / .
+====NEW EXAMPLE====
+g does not have a video camera but can still decode via avff preview functions
+====NEW EXAMPLE====
+remove unnecessary line
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+excluded another test on java 9 .
+====NEW EXAMPLE====
+prepare version 24 - beta4 .
+====NEW EXAMPLE====
+bump maven lib version to 1 . 0 . 1 .
+====NEW EXAMPLE====
+updated android gradle plugin
+====NEW EXAMPLE====
+added gbm . r to collate
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+fix format
+====NEW EXAMPLE====
+added kindle branch
+====NEW EXAMPLE====
+updated sonatype parent pom version from 7 to 9
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / roles / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+improve textinput docs
+====NEW EXAMPLE====
+adjust travis versions to test on
+====NEW EXAMPLE====
+update build tools
+====NEW EXAMPLE====
+add play services to travis config
+====NEW EXAMPLE====
+emit better ( correct ) timestamps that respect aac upsampling .
+====NEW EXAMPLE====
+add ' 1 . 1 ' branch to travis deploy list
+====NEW EXAMPLE====
+prepare version 21 . 0 . 4 .
+====NEW EXAMPLE====
+fix layout
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+fix broken build due to @ remotableviewmethod
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / microblogs / .
+====NEW EXAMPLE====
+lps - 50131 this does not need newclassloaderjunittestrunner
+====NEW EXAMPLE====
+change the scope for spring - boot - starter - test to test .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+extending async testunit timeout
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+add storm - 993 to changelog . md
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+add multinode suite .
+====NEW EXAMPLE====
+fix string16 operator + to actually work
+====NEW EXAMPLE====
+use intellij 15 . 0 . 5 by default
+====NEW EXAMPLE====
+require maven 3 . 0 . 3 or greater , because we use that api .
+====NEW EXAMPLE====
+throwing this one over the fence , but this change appears sane .
+====NEW EXAMPLE====
+disable reloading for scripts with dates in the future
+====NEW EXAMPLE====
+updating parent pom
+====NEW EXAMPLE====
+delete an extra line
+====NEW EXAMPLE====
+build # 7
+====NEW EXAMPLE====
+updated android gradle plugin version
+====NEW EXAMPLE====
+updated faq
+====NEW EXAMPLE====
+fix memory leak
+====NEW EXAMPLE====
+disable the logback compiler exclude thing for now , not working as intended
+====NEW EXAMPLE====
+removing legacy dependencies
+====NEW EXAMPLE====
+fixed reference to actorserializer
+====NEW EXAMPLE====
+fastarray doesn ' t overwrite tostring ( ) method
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+actually run all the tests
+====NEW EXAMPLE====
+add mainframewebview to cmakelists . txt
+====NEW EXAMPLE====
+suppress content - length in requests without content
+====NEW EXAMPLE====
+only show warnings and errors from maven - javadoc - plugin
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / login / .
+====NEW EXAMPLE====
+add @ override annotation
+====NEW EXAMPLE====
+lrqa - 28621 prep next , use latest
+====NEW EXAMPLE====
+lps - 7438 - button - row is missing some top margin or spacing in classic theme
+====NEW EXAMPLE====
+upgraded maven - release - plugin to version 2 . 1 .
+====NEW EXAMPLE====
+fixing the problem where new users get permission errors on login
+====NEW EXAMPLE====
+include sources for all files in ' fat ' binary jar
+====NEW EXAMPLE====
+removed android 16 / 19 to test drive
+====NEW EXAMPLE====
+fix typo
+====NEW EXAMPLE====
+restore autoprov behavior
+====NEW EXAMPLE====
+fix url format
+====NEW EXAMPLE====
+fixed lod functions overload in glslcompat lib
+====NEW EXAMPLE====
+updated test for linear technique
+====NEW EXAMPLE====
+add storm - 2079 to changelog
+====NEW EXAMPLE====
+fix generic method signature
+====NEW EXAMPLE====
+remove java 1 . 7 method
+====NEW EXAMPLE====
+missing completion for qapplication class
+====NEW EXAMPLE====
+lps - 69453 keep old jar name
+====NEW EXAMPLE====
+changed maps version to 9_r2 because 9_r1 is no longer available .
+====NEW EXAMPLE====
+fix bug # 12993929 screen orientation change replaces wifi password dialog with add network dialog
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+undo version change made by mvn release plugin
+====NEW EXAMPLE====
+making the navigation transition page style
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+commented maven push for travis
+====NEW EXAMPLE====
+restore ' grails - bom ' subproject
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / configuration - admin / .
+====NEW EXAMPLE====
+remove lib directory from gitignore
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+setting version to 1 . 0 . 136 - snapshot
+====NEW EXAMPLE====
+use 0 . 6 of the gradle plugin .
+====NEW EXAMPLE====
+fix build
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+reverted pom to r2 since our build server can ' t handle r3
+====NEW EXAMPLE====
+add commons / build
+====NEW EXAMPLE====
+remove the static new dialog instance on cancel .
+====NEW EXAMPLE====
+fix the build
+====NEW EXAMPLE====
+imgur hosted gif
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+ignore dump . rdb files
+====NEW EXAMPLE====
+add project . properties to gitignore
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / map / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / contacts / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+backspace in lookup shouldn ' t undo common prefix
+====NEW EXAMPLE====
+added libsox - dev to apt - get install line in order to resolve all dependencies
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+testing new jitsi repo
+====NEW EXAMPLE====
+corrected typo when checking inputstream methods
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+update to latest gradle plugin
+====NEW EXAMPLE====
+added shadowremotecallbacklist . class to robolectric . java
+====NEW EXAMPLE====
+set correct ' test ' scope on core - tests dependency
+====NEW EXAMPLE====
+raised maximum size of gelf messages to 8192 byte
+====NEW EXAMPLE====
+idea - 151696 add ' liskov ' to the intellij dictionnary
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+add battery capacity property
+====NEW EXAMPLE====
+set daemon flag on poller threads .
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+====NEW EXAMPLE====
+ignore * ~ from hg
+====NEW EXAMPLE====
+fixing documentation
+====NEW EXAMPLE====
+added kindle branch
+====NEW EXAMPLE====
+add missing library in linker option .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+lps - 55100 ignore lib for versions . xml
+====NEW EXAMPLE====
+remove extra version
+====NEW EXAMPLE====
+core - 1216 generatechangelog pulls data with schema by default
+====NEW EXAMPLE====
+lps - 52139 make sure to cleanup template managers
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+exclude sun . nio . ch . directbuffer from animal - sniffer check
+====NEW EXAMPLE====
+removed unused import
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+minecraftforge / fml @ bf54d4d66799f2e58944095826d0722ed0120b1f make each mod ' s eventbus log a child of it ' s main logger .
+====NEW EXAMPLE====
+fix some ruby dependencies for travis , see
+====NEW EXAMPLE====
+decreasing default max connections per node to 10
+====NEW EXAMPLE====
+remove unused resources
+====NEW EXAMPLE====
+giving more memory to gradle jvm
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+printing all threads stack trace , is making the console out put very large and not giving much info
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / polls / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+removed placeholder text
+====NEW EXAMPLE====
+stop test launchers to download jars every time .
+====NEW EXAMPLE====
+remove unusage service type .
+====NEW EXAMPLE====
+evaluate the injected javascript
+====NEW EXAMPLE====
+remove redundant
+====NEW EXAMPLE====
+fixed protobuf package
+====NEW EXAMPLE====
+fix the build
+====NEW EXAMPLE====
+templatize the definition of array in externs
+====NEW EXAMPLE====
+remove unused field
+====NEW EXAMPLE====
+make bazel compile ( a previous change added a graph - > jsr305 dependency that was not reflected in the build file )
+====NEW EXAMPLE====
+preparing wip - release v0 . 1 . 43 - alpha
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+make predicate package local
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+corrected license identifying information .
+====NEW EXAMPLE====
+push version to 219 .
+====NEW EXAMPLE====
+fix suggestion popup for rtl text on ltr layout .
+====NEW EXAMPLE====
+remove unnecessary redefinition of window . chrome namespace
+====NEW EXAMPLE====
+added words
+====NEW EXAMPLE====
+hide new interface to fix build .
+====NEW EXAMPLE====
+updated pointer to android library
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+add install task to root that installs the scripts jar and populates the dependency cache
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / xstream / .
+====NEW EXAMPLE====
+add jcenter to repositories to get actionbarsherlock . aar
+====NEW EXAMPLE====
+add storm - 1573 to changelog . md
+====NEW EXAMPLE====
+changed thrown exception in javadoc in ' fileinstreamintegrationtest '
+====NEW EXAMPLE====
+update changes
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+fix build
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / blogs / .
+====NEW EXAMPLE====
+added storm - 1208 to changelog
+====NEW EXAMPLE====
+setting version to 1 . 0 . 92 - snapshot
+====NEW EXAMPLE====
+added invalidatemaster method to control that behaviour from outside
+====NEW EXAMPLE====
+fixed accidental refresh when sending media file to other app
+====NEW EXAMPLE====
+removed debugging statement
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+revert " restrict s3 deployment to actual tarball "
+====NEW EXAMPLE====
+fixed accidental suppressing of errors in unit tests
+====NEW EXAMPLE====
+added a missing def
+====NEW EXAMPLE====
+add reportunknowntypes to the list of valid suppressions .
+====NEW EXAMPLE====
+avoid re - downloading boost if possible
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / petra / .
+====NEW EXAMPLE====
+make getvirtualfile public
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+groovy console - - option to auto - save on run - added missing action mapping entry
+====NEW EXAMPLE====
+prevent ioexception suppressing at the end of file copying
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+add storm - 2039 to changelog
+====NEW EXAMPLE====
+changed maps version to 9_r2 because 9_r1 is no longer available .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+updated todo
+====NEW EXAMPLE====
+updated gitignore
+====NEW EXAMPLE====
+fix field_type_null value to match android java mapping
+====NEW EXAMPLE====
+add eric to contributors
+====NEW EXAMPLE====
+fixed memory leak in extracteditlayout finish ( )
+====NEW EXAMPLE====
+updated to tz version 2006d
+====NEW EXAMPLE====
+project thumbnail should have the same aspect ratio
+====NEW EXAMPLE====
+set cam quality to 100 .
+====NEW EXAMPLE====
+add missing section include for reindex breaking changes
+====NEW EXAMPLE====
+ignore intellij files ( from ybonnel )
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+don ' t use unicode type for python 3 stdlib annotations
+====NEW EXAMPLE====
+added hint for standard release tag format .
+====NEW EXAMPLE====
+ignore grails - test - suite - uber / configured /
+====NEW EXAMPLE====
+fix suggestion popup for rtl text on ltr layout .
+====NEW EXAMPLE====
+simplified travis ci yml file
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / plugins - admin / .
+====NEW EXAMPLE====
+remove leading whitespace
+====NEW EXAMPLE====
+add cloud - aws module
+====NEW EXAMPLE====
+compile appcompat with java 7
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+added shell script to launch voldemort ' s scala shell & added jar files
+====NEW EXAMPLE====
+moved ( copied ) components and ported to kernel / index / shell 1 . 0 - snapshot .
+====NEW EXAMPLE====
+clj - 1329 - remove unused local in persistentvector . cons ( )
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - instances / .
+====NEW EXAMPLE====
+lps - 13388 set javac . fork default to false for building performance
+====NEW EXAMPLE====
+removed sleep from clickonview ( ) as requested by issue - 333
+====NEW EXAMPLE====
+cleaned javadoc
+====NEW EXAMPLE====
+moved res directory for eclipse .
+====NEW EXAMPLE====
+update authors . md
+====NEW EXAMPLE====
+add putobjectstoredirhere to .
+====NEW EXAMPLE====
+fixed typo in .
+====NEW EXAMPLE====
+don ' t add symlink tree to rule key
+====NEW EXAMPLE====
+e9c5ade 46ab5e1
+====NEW EXAMPLE====
+add versions to fbobjc .
+====NEW EXAMPLE====
+o adding missing properties to gitblit . properties for adjusting the context path .
+====NEW EXAMPLE====
+update location module
+====NEW EXAMPLE====
+lps - 53669 set cluster property to false in portal tools to allow automated clustering tests to run
+====NEW EXAMPLE====
+add explanation for using more than one option at a time
+====NEW EXAMPLE====
+change proguard rule to show xprivacy
+====NEW EXAMPLE====
+reset a session callback variable when tune is failed
+====NEW EXAMPLE====
+prepared 2 . 0 . 5 release
+====NEW EXAMPLE====
+bump version to snapshot
+====NEW EXAMPLE====
+explicitly specify jspc version
+====NEW EXAMPLE====
+update mapping put should use / _mapping
+====NEW EXAMPLE====
+added e - mail to travis . yml
+====NEW EXAMPLE====
+setting version to 1 . 0 . 151 - snapshot
+====NEW EXAMPLE====
+fix hash code for method descriptor
+====NEW EXAMPLE====
+too many levels failed test removed
+====NEW EXAMPLE====
+removed unnecessary attribute .
+====NEW EXAMPLE====
+let gradle out of travis for the moment - needs additional review
+====NEW EXAMPLE====
+use the cache for ~ / .
+====NEW EXAMPLE====
+awaken listview scroll bars for overscroll
+====NEW EXAMPLE====
+netty updated 3 . 5 . 2
+====NEW EXAMPLE====
+build cllient locale
+====NEW EXAMPLE====
+add project default encoding
+====NEW EXAMPLE====
+use 2016 . 1 meta - version
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+add test - config / system folders to .
+====NEW EXAMPLE====
+downgrading server to jersey 1 . 3 due to issue with loading of external jax - rs packages .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / login / .
+====NEW EXAMPLE====
+override cannavigatetosource for the future compatibility
+====NEW EXAMPLE====
+add missing suppressions .
+====NEW EXAMPLE====
+add html attribute
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+add my dummy mainclass to gitignore to prevent me from checking it in .
+====NEW EXAMPLE====
+lrqa - 20954 add new test property for deploying osgi modules
+====NEW EXAMPLE====
+fix param for metrics consumers
+====NEW EXAMPLE====
+delete inspection profiles on apply ( ideadev - 38918 )
+====NEW EXAMPLE====
+allow 60 seconds for cloud to build instead of 30 .
+====NEW EXAMPLE====
+add storm - 1876 to changelog
+====NEW EXAMPLE====
+add storm - 1573 to changelog . md
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / site / .
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+include server examples in the build .
+====NEW EXAMPLE====
+updated changes
+====NEW EXAMPLE====
+revert " changed name for me "
+====NEW EXAMPLE====
+added storm - 1134 to changelog
+====NEW EXAMPLE====
+make blueprints - test a test scope dependency
+====NEW EXAMPLE====
+adding audioparam as a valid parameter type for audionode . connect per
+====NEW EXAMPLE====
+update build tools for travis
+====NEW EXAMPLE====
+remove dead code .
+====NEW EXAMPLE====
+added security dependency on webapp . mod
+====NEW EXAMPLE====
+leave changeling unchanged
+====NEW EXAMPLE====
+fix crash in bug 4259574
+====NEW EXAMPLE====
+change the title of webinterface . md .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - taglib / .
+====NEW EXAMPLE====
+tweak ios test script to make it not copy source / javadoc jars
+====NEW EXAMPLE====
+change minsdkversion from 15 to 14 .
+====NEW EXAMPLE====
+registered the plugin id for passive scanner " viewstate scanner " .
+====NEW EXAMPLE====
+updated list of contributors .
+====NEW EXAMPLE====
+update travis config
+====NEW EXAMPLE====
+don ' t rethrow runtimeexceptions , refs # 292
+====NEW EXAMPLE====
+remove feature / ppa from travis build file
+====NEW EXAMPLE====
+add common eclipse ignore files
+====NEW EXAMPLE====
+add vim .
+====NEW EXAMPLE====
+update crate - theme to 0 . 0 . 10 to get rid of the pil dependency
+====NEW EXAMPLE====
+fixed the filter decrement count bug in subtasks mode
+====NEW EXAMPLE====
+catch the indexoutofboundsexception thrown by ansicolordiagnosticlistener .
+====NEW EXAMPLE====
+fixed pom . xml tag
+====NEW EXAMPLE====
+get share link
+====NEW EXAMPLE====
+set current version to 0 . 1 . 0
+====NEW EXAMPLE====
+added support for automatic legend generation for wheelchair renderer
+====NEW EXAMPLE====
+lps - 32745 missing place
+====NEW EXAMPLE====
+set inherit_log4j default to false .
+====NEW EXAMPLE====
+expose floatingactionsmenu . isexpanded ( ) state
+====NEW EXAMPLE====
+fix builds without use_opengl_renderer
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - language / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+prevent new ripples when max reached
+====NEW EXAMPLE====
+fix destination filename for the helios - solo zip
+====NEW EXAMPLE====
+use python2 . 7 ( # 570 )
+====NEW EXAMPLE====
+adding changes entry for and baf36c4
+====NEW EXAMPLE====
+fix up label in qs detail
+====NEW EXAMPLE====
+upgrade mvn release plugin
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+add changes entry for unnest
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+fix typo in jsse name
+====NEW EXAMPLE====
+upgraded netty to 4 . 0 . 36
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / map / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / configuration - admin / .
+====NEW EXAMPLE====
+fix bugs
+====NEW EXAMPLE====
+fixing junit dep scope to test
+====NEW EXAMPLE====
+fixed double - packaging
+====NEW EXAMPLE====
+remove spurious comment
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / license - manager / .
+====NEW EXAMPLE====
+part of fix for bug 5065047 build libchromium as a shared lib
+====NEW EXAMPLE====
+improve reliability of myaccountpagetest
+====NEW EXAMPLE====
+do not leak menu - > root_panel - > .
+====NEW EXAMPLE====
+removed size
+====NEW EXAMPLE====
+update to latest support libraries v23 . 3 . 0
+====NEW EXAMPLE====
+cleaner hack does not assert file option
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - settings / .
+====NEW EXAMPLE====
+removed system out .
+====NEW EXAMPLE====
+restored nice border effect on footer
+====NEW EXAMPLE====
+add todo
+====NEW EXAMPLE====
+revert " rollback avs to 2 . 9 . 8 ( 2 . 9 . 3 was too far ) "
+====NEW EXAMPLE====
+reordering the build repositories in the hope that this fixes the jenkins build .
+====NEW EXAMPLE====
+remove web
+====NEW EXAMPLE====
+add maven gpg plugin version to " release " profile
+====NEW EXAMPLE====
+disable doc lint
+====NEW EXAMPLE====
+fix memory leak with touchtargets not being recycled .
+====NEW EXAMPLE====
+recalculate orientation in getorientation ( )
+====NEW EXAMPLE====
+remove defaulthostnameverifier from preloaded - classes .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / hello - world / .
+====NEW EXAMPLE====
+fixing small memory leak when evaluating xpath queries .
+====NEW EXAMPLE====
+moved ( copied ) components and ported to kernel / index / shell 1 . 0 - snapshot .
+====NEW EXAMPLE====
+fixed wrong suite
+====NEW EXAMPLE====
+fix a numeric equality bug spotted by intellij
+====NEW EXAMPLE====
+lps - 40395 specifies z - index for portlet - topper - toolbar
+====NEW EXAMPLE====
+minecraftforge / fml @ 31cf2a9cab6d1977d31436220d9612eaa13d4e0f remove j7 only constructor in enhancedruntimeexception , j6 compiling compatibility restored .
+====NEW EXAMPLE====
+set node_env and use node - env - inline plugin
+====NEW EXAMPLE====
+lps - 43188 - save original iorequest object in case we need to access it
+====NEW EXAMPLE====
+updated upgrading section
+====NEW EXAMPLE====
+build x module by default .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+lps - 27654 - adding translation in web content in control panel on ie8 breaks
+====NEW EXAMPLE====
+removed fixed todo
+====NEW EXAMPLE====
+get rid of unnecessary package imports
+====NEW EXAMPLE====
+update gitignore with local . properties
+====NEW EXAMPLE====
+added a missing def
+====NEW EXAMPLE====
+exported create - struct
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - instances / .
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+do not make rctdevloadingview a keywindow
+====NEW EXAMPLE====
+fix an npe if available ( ) is called before the input buffer is created .
+====NEW EXAMPLE====
+added liquibase . integrationtest . local . properties to .
+====NEW EXAMPLE====
+set quizactivity launchmode to singletop
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+fix travis building .
+====NEW EXAMPLE====
+added storm - 797 to changelog
+====NEW EXAMPLE====
+classes preloading re - enabled
+====NEW EXAMPLE====
+upgraded parent declaration in all trunks to use version 1 of parent - central .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / rss / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / announcements / .
+====NEW EXAMPLE====
+scroll pane resets border on l & f
+====NEW EXAMPLE====
+smack 4 . 1 . 9 - snapshot
+====NEW EXAMPLE====
+missing import
+====NEW EXAMPLE====
+remove code highlighted as unused by ucdetector
+====NEW EXAMPLE====
+launcher now launches non blocking process ( so no console keeps being open )
+====NEW EXAMPLE====
+optimize travis - ci builds by caching gradle / maven artifacts
+====NEW EXAMPLE====
+fix wrong artifact id
+====NEW EXAMPLE====
+update doc
+====NEW EXAMPLE====
+remove listener in order to avoid memory leak in preferences
+====NEW EXAMPLE====
+added cython to py requirements
+====NEW EXAMPLE====
+do not back up / restore the " pulse led for notifications " setting
+====NEW EXAMPLE====
+fixed missing sys import
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+ignoring bin folder
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - settings / .
+====NEW EXAMPLE====
+add razorrepository to factory
+====NEW EXAMPLE====
+fixed native param format of settimeout in app . differ
+====NEW EXAMPLE====
+checking only test files
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / comment / .
+====NEW EXAMPLE====
+deprecate yaml snitch
+====NEW EXAMPLE====
+updated dev version
+====NEW EXAMPLE====
+added storm - 449 to changelog
+====NEW EXAMPLE====
+fixed formatting of data structure test code
+====NEW EXAMPLE====
+fix lint
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+remove broken long arg trial
+====NEW EXAMPLE====
+fix quality flaw
+====NEW EXAMPLE====
+upgrade wrapper to 2 . 10
+====NEW EXAMPLE====
+ignore update ' modules / apps / marketplace / .
+====NEW EXAMPLE====
+fix testreconfigserver . cc
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+add link to snapshots
+====NEW EXAMPLE====
+bump master version
+====NEW EXAMPLE====
+lps - 17648 readd accidentally removed language keys from rev 82301
+====NEW EXAMPLE====
+try 3 . 4 again
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+update javadoc
+====NEW EXAMPLE====
+fix build
+====NEW EXAMPLE====
+missing cast in a test case
+====NEW EXAMPLE====
+added back in author / revision info
+====NEW EXAMPLE====
+include docs as part of release .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / rss / .
+====NEW EXAMPLE====
+remove redundant option
+====NEW EXAMPLE====
+add changelog entry for filip ' s inclusion
+====NEW EXAMPLE====
+changed url of dslv submodule
+====NEW EXAMPLE====
+include required g + + - multilib
+====NEW EXAMPLE====
+rebuild services map when deleting recon service - patch from sergio @ wikier . org
+====NEW EXAMPLE====
+upgraded logback to 1 . 1 . 6
+====NEW EXAMPLE====
+added missing break
+====NEW EXAMPLE====
+fix indents
+====NEW EXAMPLE====
+the orthographic camera had a - z default value .
+====NEW EXAMPLE====
+bump the version number to v2 . 2b4
+====NEW EXAMPLE====
+change chunk < t > to be a static inner class
+====NEW EXAMPLE====
+ignore update ' modules / apps / marketplace / .
+====NEW EXAMPLE====
+updated changelog .
+====NEW EXAMPLE====
+give access to the defining classloader
+====NEW EXAMPLE====
+set xml plugin phase to verify ( minor )
+====NEW EXAMPLE====
+fixed double - callback for cached images
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / microblogs / .
+====NEW EXAMPLE====
+problem with default configuration file for unicast , closes # 1005 .
+====NEW EXAMPLE====
+added irc notifications to travis
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+polished groovyconsole task
+====NEW EXAMPLE====
+used local_shared_libraries for proper dependencies
+====NEW EXAMPLE====
+engines are standalone blocks
+====NEW EXAMPLE====
+added src - gen folders to ignore list
+====NEW EXAMPLE====
+make note of pull request
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+added private constructor .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - language / .
+====NEW EXAMPLE====
+set orbot / tor support into experimental status
+====NEW EXAMPLE====
+fixes a bug when layouts are changed since the
+====NEW EXAMPLE====
+build fix .
+====NEW EXAMPLE====
+fix error in readme
+====NEW EXAMPLE====
+fixed incorrect method name in aloge .
+====NEW EXAMPLE====
+putting viewer window in middle maximizes window for viewing cam
+====NEW EXAMPLE====
+add * .
+====NEW EXAMPLE====
+the new snack bar hide too quick if clear previous snacks .
+====NEW EXAMPLE====
+add gradle support
+====NEW EXAMPLE====
+removed module js - analysis - api , fixed layout of javascriptplugin
+====NEW EXAMPLE====
+show hide dialog automatically
+====NEW EXAMPLE====
+lps - 62787 prep next , use latest
+====NEW EXAMPLE====
+prepare next development version .
+====NEW EXAMPLE====
+remove an unneeded assignment
+====NEW EXAMPLE====
+prepared 2 . 0 . 8 release
+====NEW EXAMPLE====
+using new release of the http - client .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / login / .
+====NEW EXAMPLE====
+adding the singleton module
+====NEW EXAMPLE====
+add kdiff orig merge files to gitignore
+====NEW EXAMPLE====
+removed an unnecessary line introduced into changes . txt by change r1087844
+====NEW EXAMPLE====
+changed id to cli friendly format .
+====NEW EXAMPLE====
+don ' t " export " bootreceiver ' s scheduleintent action
+====NEW EXAMPLE====
+lrqa - 20954 add new test property for deploying osgi modules
+====NEW EXAMPLE====
+lrqa - 25160 prep next , use latest
+====NEW EXAMPLE====
+have the comparison script handle app failure gracefully
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+ignore gradle . properties
+====NEW EXAMPLE====
+trivial javadoc commit to trigger a ci build
+====NEW EXAMPLE====
+correctly reset fragmentedopcode on ws frame completion ( @ daviesian )
+====NEW EXAMPLE====
+fixed forgotten delegation
+====NEW EXAMPLE====
+add overlay for cpp subproject
+====NEW EXAMPLE====
+theme preview webview needs js enabled
+====NEW EXAMPLE====
+add some directories to ignore
+====NEW EXAMPLE====
+updated the parent pom version to 4 which enforces you to use maven 2 . 1 or higher
+====NEW EXAMPLE====
+upgrade enforce - victims - rule to 1 . 3 . 1
+====NEW EXAMPLE====
+fix bug 5121406 - actionbar . setlogo
+====NEW EXAMPLE====
+bump imapstore
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / configuration - admin / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+filesystemcompiler # generatefilenamesfromoptions is adding filenames multiple times
+====NEW EXAMPLE====
+remove javadoc warning
+====NEW EXAMPLE====
+fixed user property
+====NEW EXAMPLE====
+setting version to 1 . 0 . 11
+====NEW EXAMPLE====
+saving blacklist and hold for moderation lists when dismissing dialog
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+added appcompat dependency for ant to work
+====NEW EXAMPLE====
+update analytics plugin
+====NEW EXAMPLE====
+add missing dependency in layoutlib build file
+====NEW EXAMPLE====
+make blueprints - test a test scope dependency
+====NEW EXAMPLE====
+fix line ending detection during checkout .
+====NEW EXAMPLE====
+gradle should match project . properties after d816483a7cd4d98b5b136139ccaacd322e0ab5b6
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+fix merged operation clipping
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+change build identifier to 1 . 5 . 0 - snapshot
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignoring all workspace . xml files .
+====NEW EXAMPLE====
+added stdinstream to antlr4 package
+====NEW EXAMPLE====
+bump dependency on neo4j - browser .
+====NEW EXAMPLE====
+update support version to 23 . 2 . 1
+====NEW EXAMPLE====
+upgrade xstream 1 . 3 - > 1 . 3 . 1
+====NEW EXAMPLE====
+fixing first - of - type
+====NEW EXAMPLE====
+enable security manager in tests
+====NEW EXAMPLE====
+excluded nightlytest in the default build profile
+====NEW EXAMPLE====
+enable treat test for eclipselink
+====NEW EXAMPLE====
+as7 - 5700 removed version from maven - dependency - plugin
+====NEW EXAMPLE====
+remove ntlm module from pom
+====NEW EXAMPLE====
+prepare release parent - 1 . 1 . 0
+====NEW EXAMPLE====
+setting version to 1 . 0 . 88 - snapshot
+====NEW EXAMPLE====
+remove ruby - head from allow_failures .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+make it a little easier to build camel without running the tests .
+====NEW EXAMPLE====
+supporting branch name env .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+added debugging flag to build to find cause for api failure .
+====NEW EXAMPLE====
+remove unused import
+====NEW EXAMPLE====
+bump xmx and maxpermsize
+====NEW EXAMPLE====
+minecraftforge / fml @ 0d810c01fab99ac491c2277097a4198518fe6c75 mark jopt needed on the server , herp derp , blame abrar !
+====NEW EXAMPLE====
+remove unused code
+====NEW EXAMPLE====
+preparing next release
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / microblogs / .
+====NEW EXAMPLE====
+fix wrong intent being passed in phonewindowmanager .
+====NEW EXAMPLE====
+prepare version 27 . 0 . 3 .
+====NEW EXAMPLE====
+ignore wiki
+====NEW EXAMPLE====
+add a runtime dependency on validation - api
+====NEW EXAMPLE====
+ignore dist folders
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+added tag 0 . 0 . 7 . 6 for changeset 45e1e724eee2
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+calculate hash on adding book
+====NEW EXAMPLE====
+reverting surefire version override ( 2 . 4 . 2 )
+====NEW EXAMPLE====
+fix travis for the third time .
+====NEW EXAMPLE====
+avoid conflict with prev pr
+====NEW EXAMPLE====
+fixed compile error caused by final keyword
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / blogs / .
+====NEW EXAMPLE====
+added storm - 449 to changelog
+====NEW EXAMPLE====
+add missing uri import
+====NEW EXAMPLE====
+modify enum value of omx_color_formatandroidopaque
+====NEW EXAMPLE====
+updating version to 3 . 0 . 0 !
+====NEW EXAMPLE====
+remove warning about building summary2 .
+====NEW EXAMPLE====
+add support for alter table modify in cubrid
+====NEW EXAMPLE====
+upgrade ivy 2 . 2 . 0 rc to final
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+fix manifest for support - v13 aar .
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+do not request focus for about command
+====NEW EXAMPLE====
+very stupid coding mistake .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+ignore vagrant state in git repo
+====NEW EXAMPLE====
+make threads configurable through environment
+====NEW EXAMPLE====
+lps - 51079 - text box field can hide links and buttons on resize
+====NEW EXAMPLE====
+bump version
+====NEW EXAMPLE====
+don ' t run performance tests by adding it to the list of excluded tasks .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+added javadoc
+====NEW EXAMPLE====
+updates the default package for correct mac builds .
+====NEW EXAMPLE====
+add typescript
+====NEW EXAMPLE====
+use correct param for heightmode in relativelayout horizontal measure
+====NEW EXAMPLE====
+update changes retroactively
+====NEW EXAMPLE====
+disable reloading for scripts with dates in the future
+====NEW EXAMPLE====
+add tools so that it can fetch 23 . 0 . 2
+====NEW EXAMPLE====
+updated default war dependencies to include hibernate annotations commons jar
+====NEW EXAMPLE====
+lrqa - 16067 add list of product names into test . properties
+====NEW EXAMPLE====
+updated ignore file
+====NEW EXAMPLE====
+removed apache warnings from proguard
+====NEW EXAMPLE====
+updated android gradle plugin version
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+reset a session callback variable when tune is failed
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+setting version to 1 . 0 . 130
+====NEW EXAMPLE====
+remove unused services module dependency from sysui .
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / polls / .
+====NEW EXAMPLE====
+ignore vagrant state in git repo
+====NEW EXAMPLE====
+adding datasketches module to top level pom
+====NEW EXAMPLE====
+replace idxmap with groupbyfieldextractor
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / message - boards / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+typo cont ' d ( remove deprecated method in trunk )
+====NEW EXAMPLE====
+adding missing commit
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+add a y
+====NEW EXAMPLE====
+bump alpha - 4 code
+====NEW EXAMPLE====
+add _functools to known_fake_reexporters ( py - 3164 )
+====NEW EXAMPLE====
+enable article mode by default
+====NEW EXAMPLE====
+lps - 16737 remove blank line
+====NEW EXAMPLE====
+update android gradle plugin
+====NEW EXAMPLE====
+update of release notes
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - scheduler / .
+====NEW EXAMPLE====
+upgraded parent declaration in all trunks to use version 1 of parent - central .
+====NEW EXAMPLE====
+fix travis build
+====NEW EXAMPLE====
+hhh - 8144 - create a ' release ' task that performs all tasks needed for doing a release
+====NEW EXAMPLE====
+set oss parent to 9
+====NEW EXAMPLE====
+remove unnecessary call .
+====NEW EXAMPLE====
+added storm - 508 to changelog
+====NEW EXAMPLE====
+delay camera autofocus till surfacechanged callback
+====NEW EXAMPLE====
+fix android_media_audiosystem_getmastermute return type .
+====NEW EXAMPLE====
+bump release number to 1 . 5 . 5
+====NEW EXAMPLE====
+configured functional tests to run with forked jvm per - test , possibly hiding a memory leak problem with tests
+====NEW EXAMPLE====
+fixing documentation
+====NEW EXAMPLE====
+added gibberish slick to the list of tests executed by nightly builds
+====NEW EXAMPLE====
+fix travis bug .
+====NEW EXAMPLE====
+adding example simperium fields to gradle . properties - example
+====NEW EXAMPLE====
+when configuring mmapfs it is not used since 0 . 19 . 7 , closes # 2253 .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - settings / .
+====NEW EXAMPLE====
+removed obe comment
+====NEW EXAMPLE====
+updated list
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+lps - 53927 update version
+====NEW EXAMPLE====
+add missing java_cmd variable to radioctl .
+====NEW EXAMPLE====
+egl14 . eglcreatewindowsurface should set producercontrolledbyapp
+====NEW EXAMPLE====
+don ' t update displaylists when dumping
+====NEW EXAMPLE====
+add waffle . io badge
+====NEW EXAMPLE====
+mvn clean compile package
+====NEW EXAMPLE====
+removes the todo to upload the library to bintray / jcenter
+====NEW EXAMPLE====
+removed the annoying font size stuff
+====NEW EXAMPLE====
+add space rather tah tab
+====NEW EXAMPLE====
+added sams name ( damn i got distracted , meant to do this some time ago )
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+fix failing test
+====NEW EXAMPLE====
+setting version to 1 . 0 . 12
+====NEW EXAMPLE====
+move tests to elasticsearch test framework
+====NEW EXAMPLE====
+write checkstyle to stdout .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+simplified shell launcher and fixed white space handling
+====NEW EXAMPLE====
+fix pom of performance tests
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+====NEW EXAMPLE====
+added storm - 1273 to changelog
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+setting version to 1 . 0 . 135
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+reorganize a few things so that targets can be sorted better internally .
+====NEW EXAMPLE====
+remove unneeded import .
+====NEW EXAMPLE====
+make translucentconversionlistener a systemapi
+====NEW EXAMPLE====
+set activityinfo . resizemode to resize_mode_resizeable by default
+====NEW EXAMPLE====
+added author .
+====NEW EXAMPLE====
+ignore docs . tar in git
+====NEW EXAMPLE====
+comment an attribute
+====NEW EXAMPLE====
+revert " lps - 46699 - cas connection test results have the same style regardless of pass / fail "
+====NEW EXAMPLE====
+add end of line .
+====NEW EXAMPLE====
+add break statement on load extractor from form
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+remove data chunks row borders
+====NEW EXAMPLE====
+ignore update ' modules / apps / marketplace / .
+====NEW EXAMPLE====
+fix hide - > quit issue
+====NEW EXAMPLE====
+ignore dictionary - web 1 . 0 . 0 prep next
+====NEW EXAMPLE====
+bumping up version of rest api generation .
+====NEW EXAMPLE====
+reset log level to info
+====NEW EXAMPLE====
+syntax error crashes checkstyle .
+====NEW EXAMPLE====
+lps - 16737 remove blank line
+====NEW EXAMPLE====
+changed a + = of a null string back to the appropriate = sign .
+====NEW EXAMPLE====
+bump to version 5 . 2
+====NEW EXAMPLE====
+change minsdkversion to 10 .
+====NEW EXAMPLE====
+relax restriction on empty strings for proxy callback url , as this should be an empty string if no proxy callback was requested during service ticket validation .
+====NEW EXAMPLE====
+actually call shutdown from async twitter
+====NEW EXAMPLE====
+prepare for next development iteration
+====NEW EXAMPLE====
+fix api typo
+====NEW EXAMPLE====
+call startpreview after stopping for musestillcamerafortimelapse = true case .
+====NEW EXAMPLE====
+remove mention of groovy - 6226 ( configure eclipse plugin ) now that the issue is closed
+====NEW EXAMPLE====
+lps - 33820 pacl - update the filechecker with modern logic - include the actual root dir
+====NEW EXAMPLE====
+prevent transparent region from getting out of sync with surface flinger
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+fix changes . txt
+====NEW EXAMPLE====
+starting 0 . 5 . 4 - snapshot
+====NEW EXAMPLE====
+ignore update ' modules / apps / screens / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+updated changelog .
+====NEW EXAMPLE====
+fixed torodb - 229
+====NEW EXAMPLE====
+changed components to use parent pom v 4 , producing source and javadoc jar packages .
+====NEW EXAMPLE====
+updated sign stage
+====NEW EXAMPLE====
+fixed typo in .
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+lps - 21453 ignore auth token check for blogs trackback urls
+====NEW EXAMPLE====
+minecraftforge / fml @ 0d810c01fab99ac491c2277097a4198518fe6c75 mark jopt needed on the server , herp derp , blame abrar !
+====NEW EXAMPLE====
+volatile should ensure double locking to work properly
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / comment / .
+====NEW EXAMPLE====
+fix build
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - editor / .
+====NEW EXAMPLE====
+fix link from # 164 .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / bookmarks / .
+====NEW EXAMPLE====
+accomodate changes in the render signature in the rajawaliscene class .
+====NEW EXAMPLE====
+findbugs plugin versionup
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+updated version to 3 . 0 . 0 for pending release
+====NEW EXAMPLE====
+removed debugging statement
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+fixed issue when the last waypoint of a motion path was not triggering listeners
+====NEW EXAMPLE====
+adding idea specific subdirs to .
+====NEW EXAMPLE====
+create jar artifact with test code
+====NEW EXAMPLE====
+update changelog for storm - 842
+====NEW EXAMPLE====
+updating manifest
+====NEW EXAMPLE====
+fix the build
+====NEW EXAMPLE====
+remove obsolete flag from makefile
+====NEW EXAMPLE====
+keep it as a test dependencies
+====NEW EXAMPLE====
+update changes
+====NEW EXAMPLE====
+remove a c / p comment after counter loop / / we never get here but clean
+====NEW EXAMPLE====
+add intention test to all tests suite
+====NEW EXAMPLE====
+added getcurrenttime ( ) to scheduler
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+fix wtf when creating a lazily initialized connection
+====NEW EXAMPLE====
+remove jitpack from buildscript
+====NEW EXAMPLE====
+added lkraz to contributors .
+====NEW EXAMPLE====
+smack 4 . 1 . 0 - rc4 - snapshot
+====NEW EXAMPLE====
+fixed a test
+====NEW EXAMPLE====
+fixed heap spec for functional tests
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / configuration - admin / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - scripting / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+made user presenter .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / message - boards / .
+====NEW EXAMPLE====
+add a todo
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+added oraclejdk7 , openjdk6 , and openjdk7 to travis ci configuration .
+====NEW EXAMPLE====
+added build_tmp to .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+ignoring eclipse .
+====NEW EXAMPLE====
+update travis config
+====NEW EXAMPLE====
+create a source jar from all modules , in the root project .
+====NEW EXAMPLE====
+updated library version
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+fix default return code for getresource
+====NEW EXAMPLE====
+setting version to 1 . 0 . 132 - snapshot
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / product - navigation / .
+====NEW EXAMPLE====
+fix for grails - 6503 " war does not include jars from compile - scoped plugins "
+====NEW EXAMPLE====
+return an empty pluginlist instead of null for the
+====NEW EXAMPLE====
+set askpass window on git checkout
+====NEW EXAMPLE====
+fixed forgotten module in parent pom . xml
+====NEW EXAMPLE====
+fixed typo .
+====NEW EXAMPLE====
+reset postsshouldrefresh
+====NEW EXAMPLE====
+added missing changes entry
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / rss / .
+====NEW EXAMPLE====
+updated reference to library
+====NEW EXAMPLE====
+see 08 / 20 log
+====NEW EXAMPLE====
+update druid
+====NEW EXAMPLE====
+update travis command
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+suppress a deprecation warning .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / bookmarks / .
+====NEW EXAMPLE====
+updated date .
+====NEW EXAMPLE====
+fix travis
+====NEW EXAMPLE====
+added camel - zipfile docs to gitbook
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+upgraded to es 0 . 90 . 7
+====NEW EXAMPLE====
+add third contributor .
+====NEW EXAMPLE====
+fixed a typo in our golden results .
+====NEW EXAMPLE====
+fix the robot smoke particle causing fps drops in certain cases
+====NEW EXAMPLE====
+remove duplicate extern definition of url
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+set release version
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / message - boards / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / petra / .
+====NEW EXAMPLE====
+push build .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / bookmarks / .
+====NEW EXAMPLE====
+reduce the amount of logging from the javadoc plugin .
+====NEW EXAMPLE====
+fix typo in permalink
+====NEW EXAMPLE====
+test for get_field_mapping was calling get_mapping
+====NEW EXAMPLE====
+add missing used flag for write ( int ) .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+updated comments
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / users - admin / .
+====NEW EXAMPLE====
+add storm - 244 to changelog .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / message - boards / .
+====NEW EXAMPLE====
+fix build errors with m2e
+====NEW EXAMPLE====
+removing println from operationmerge
+====NEW EXAMPLE====
+audiotrack will mark 0 - size buffers as consumed
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / monitoring / .
+====NEW EXAMPLE====
+remove unused import
+====NEW EXAMPLE====
+fix objective - c example in readme
+====NEW EXAMPLE====
+bump maven version .
+====NEW EXAMPLE====
+lps - 43332 do not strip html from description in getsummary method
+====NEW EXAMPLE====
+removed @ override on an interface for 1 . 5 compatibility .
+====NEW EXAMPLE====
+add thumbs . db to gitignore
+====NEW EXAMPLE====
+adding dummy credentials
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+reset suggestion counter on parsing a new log
+====NEW EXAMPLE====
+change jmh resultformat to json
+====NEW EXAMPLE====
+changed module path
+====NEW EXAMPLE====
+fix build break
+====NEW EXAMPLE====
+fix setimage
+====NEW EXAMPLE====
+remove unused method
+====NEW EXAMPLE====
+fix codebar right padding .
+====NEW EXAMPLE====
+add storm - 993 to changelog . md
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+modified example
+====NEW EXAMPLE====
+bumped version to 5 . 0 . 0 - alpha4
+====NEW EXAMPLE====
+fix param for metrics consumers
+====NEW EXAMPLE====
+updating astyanax version to 2 . 0 from 2 . 0 - beta
+====NEW EXAMPLE====
+ignore eclipse bin directory from git
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / nested - portlets / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / notifications / .
+====NEW EXAMPLE====
+add changelog for 644
+====NEW EXAMPLE====
+ignore emacs tags files
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+remove unused method
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / mentions / .
+====NEW EXAMPLE====
+do not ignore end - of - line symbols in bookmarks
+====NEW EXAMPLE====
+delete temp zip file once it is unzipped
+====NEW EXAMPLE====
+add h2o - r .
+====NEW EXAMPLE====
+enabling audio_offset tested for h264
+====NEW EXAMPLE====
+add adb devices to circle . yml
+====NEW EXAMPLE====
+extend changelog for 2 . 8 . 1beta new widget backgrounds
+====NEW EXAMPLE====
+changed travis conf .
+====NEW EXAMPLE====
+bump dependency on neo4j - browser .
+====NEW EXAMPLE====
+hide fingerprintmanagercompatapi23
+====NEW EXAMPLE====
+fixed typeo in test
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+added linksource to javadoc so we can navigate from javadoc to source code
+====NEW EXAMPLE====
+lps - 51081 automatically clean the eclipse files before generating them to prevent merging
+====NEW EXAMPLE====
+removed defaultaction property and added index closure instead
+====NEW EXAMPLE====
+reverted version back to 1 . 2 - snapshot .
+====NEW EXAMPLE====
+add maven gpg plugin version to " release " profile
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+ignore javadoc errors
+====NEW EXAMPLE====
+prepare release storm - hdfs - 0 . 1 . 2
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+add storm - 1766 to changelog
+====NEW EXAMPLE====
+ignore idea ' s .
+====NEW EXAMPLE====
+changed default param name
+====NEW EXAMPLE====
+fix label drawing on screenshot .
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+skipping xpath perf test on non - jrubies
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - store / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / ratings / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+make the execute ( ) test working on winxp / jdk 1 . 5
+====NEW EXAMPLE====
+hhh - 8733 - general build cleanup
+====NEW EXAMPLE====
+remove errant character
+====NEW EXAMPLE====
+minecraftforge / fml @ 94821fac98e64d9b8ad7434ed23a621850a8e11c add a config file that lets you add additional soft dependencies at runtime - injecteddependencies . json
+====NEW EXAMPLE====
+fixed typo in travis . yml
+====NEW EXAMPLE====
+lps - 41732 avoid resizing image cropper on ie8
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - settings / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / item - selector / .
+====NEW EXAMPLE====
+set revision 3 . 3 . 5 .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / microblogs / .
+====NEW EXAMPLE====
+missing import
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / product - navigation / .
+====NEW EXAMPLE====
+remove invariant from require ( ' react - native ' )
+====NEW EXAMPLE====
+ignored sdk directory
+====NEW EXAMPLE====
+fix labeladjust , set false to setconverged at init .
+====NEW EXAMPLE====
+add analysis - stempel module
+====NEW EXAMPLE====
+added war / to gitignore of template
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / plugins - admin / .
+====NEW EXAMPLE====
+prepare version 25 - beta3 .
+====NEW EXAMPLE====
+disable optimizations for interfaces
+====NEW EXAMPLE====
+add missing directory to clearfilesandcache ( )
+====NEW EXAMPLE====
+remove unused link to libcutils
+====NEW EXAMPLE====
+remove unused worker - hook - field def
+====NEW EXAMPLE====
+add storm - 1374 to changelog . md
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+fix deployment title section
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - security / .
+====NEW EXAMPLE====
+remove two - times init of the drawer
+====NEW EXAMPLE====
+fix dependencies
+====NEW EXAMPLE====
+bump version to 1 . 0 . 0 - alpha . 2 since douyaapikey support is ready .
+====NEW EXAMPLE====
+added release date for 0 . 17 . 0
+====NEW EXAMPLE====
+fixed paths to local maven repo
+====NEW EXAMPLE====
+updated current version
+====NEW EXAMPLE====
+removing stuff useless for release
+====NEW EXAMPLE====
+upgrade enforce - victims - rule to 1 . 3 . 1
+====NEW EXAMPLE====
+add analysis - icu module
+====NEW EXAMPLE====
+fix regression
+====NEW EXAMPLE====
+fix format name typo
+====NEW EXAMPLE====
+revert source plugin to 2 . 4
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / petra / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / marketplace / .
+====NEW EXAMPLE====
+updated gradle script for javadoc
+====NEW EXAMPLE====
+don ' t accept wertzeichenpaper / s
+====NEW EXAMPLE====
+add licences button
+====NEW EXAMPLE====
+repackaging guava
+====NEW EXAMPLE====
+add richard ' s email
+====NEW EXAMPLE====
+e9c5ade 46ab5e1
+====NEW EXAMPLE====
+added reference to distribution .
+====NEW EXAMPLE====
+removed org . gradle . daemon setting .
+====NEW EXAMPLE====
+removed dependency of snapshot to be signify release / not release
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - settings / .
+====NEW EXAMPLE====
+bump spongecommon
+====NEW EXAMPLE====
+add # 3479 ( source and capture cqlsh commands ) to changes
+====NEW EXAMPLE====
+increased the mvn version to avoid possible build bugs
+====NEW EXAMPLE====
+not required lines for travis , dumb terminal by default
+====NEW EXAMPLE====
+remove unused import
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - configuration / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / bookmarks / .
+====NEW EXAMPLE====
+updated changelog for 0 . 8 . 3
+====NEW EXAMPLE====
+added getcollection ( class ) to interface
+====NEW EXAMPLE====
+e9c5ade 46ab5e1
+====NEW EXAMPLE====
+fix stackoverflow when calling getlayoutinflater ( ) in dialogfragment
+====NEW EXAMPLE====
+cb - 11727 - travis ci setup is still using 0 . 10 . 32 node
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / iframe / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - theme / .
+====NEW EXAMPLE====
+prepare version 21 . 1 . 0 - beta5 .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / contacts / .
+====NEW EXAMPLE====
+tidied up script
+====NEW EXAMPLE====
+remove superfluous openssl include paths .
+====NEW EXAMPLE====
+remove extra space .
+====NEW EXAMPLE====
+remove code highlighted as unused by ucdetector
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / bookmarks / .
+====NEW EXAMPLE====
+add comment what this file is about
+====NEW EXAMPLE====
+added ivy dependencies to the .
+====NEW EXAMPLE====
+remove abstract activity from manifest
+====NEW EXAMPLE====
+ignore outstanding delayed shutdown on restart
+====NEW EXAMPLE====
+fixed typo in changelog entry
+====NEW EXAMPLE====
+updated todo
+====NEW EXAMPLE====
+modifies # getpresences ( string ) to return an iterator on presences instead of an iterator on map . entries
+====NEW EXAMPLE====
+updated build tools and sdk
+====NEW EXAMPLE====
+groovy not checking generics information correctly for covariant methods implementing interfaces ( fix stray legacy test )
+====NEW EXAMPLE====
+remove log .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+mention framed mode in news
+====NEW EXAMPLE====
+remove redundant check on import ( we ' ll check on creating suite )
+====NEW EXAMPLE====
+looping playing music
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+add storm - 1899 to changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - editor / .
+====NEW EXAMPLE====
+ignore webdriver droppings
+====NEW EXAMPLE====
+add ' build - bootstrap - artifacts ' target to build . xml
+====NEW EXAMPLE====
+update to latest android support libraries v23 . 2 . 1
+====NEW EXAMPLE====
+fix name of java executable
+====NEW EXAMPLE====
+setting tic tac toe to api level 19 for travis ci
+====NEW EXAMPLE====
+prepare version 19 .
+====NEW EXAMPLE====
+changed ignore
+====NEW EXAMPLE====
+fix drawerlayout to ignore non - drawers in drag operations .
+====NEW EXAMPLE====
+prepare release curator - x - zkclient - bridge - 3 . 0 . 0
+====NEW EXAMPLE====
+ignored rrd directory that someone keeps creating for me
+====NEW EXAMPLE====
+don ' t strip nativerunnable constructor .
+====NEW EXAMPLE====
+lps - 44212 the baseline task in the gradle module build can ' t find classpath locations
+====NEW EXAMPLE====
+upgrading parent version .
+====NEW EXAMPLE====
+do not merge take fake bold font property into account .
+====NEW EXAMPLE====
+add session constant for user home page
+====NEW EXAMPLE====
+bump engine . io - client
+====NEW EXAMPLE====
+upgraded the pom version to match the current trunk version
+====NEW EXAMPLE====
+also update index ranges after retention cleaning
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - css / .
+====NEW EXAMPLE====
+ignore obj files for native builds
+====NEW EXAMPLE====
+added fenwick tree ( binary indexed tree ) to the readme
+====NEW EXAMPLE====
+ignore the gradle - app .
+====NEW EXAMPLE====
+remove name from attribute definitions
+====NEW EXAMPLE====
+removed any remains of list appearance
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+updated todo
+====NEW EXAMPLE====
+updated dslv submodule
+====NEW EXAMPLE====
+fixed indentation on an analyzer test
+====NEW EXAMPLE====
+fix typo
+====NEW EXAMPLE====
+fixed compilation error
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / blogs / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / site - navigation / .
+====NEW EXAMPLE====
+updated pointer to android library
+====NEW EXAMPLE====
+deploying more artifacts .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+upgraded the pom version to match the current trunk version
+====NEW EXAMPLE====
+adding a bug
+====NEW EXAMPLE====
+fix xml version header in javascript - hl .
+====NEW EXAMPLE====
+prepare release 0 . 17 . 0
+====NEW EXAMPLE====
+prepare next development stage
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - security / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / polls / .
+====NEW EXAMPLE====
+added storm - 1709 to changelog
+====NEW EXAMPLE====
+add new line
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / blogs / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+====NEW EXAMPLE====
+fixing transitive - ness of provided
+====NEW EXAMPLE====
+ignore update ' modules / apps / marketplace / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / comment / .
+====NEW EXAMPLE====
+do not animate layout changes in episode list , closes # 245 .
+====NEW EXAMPLE====
+bumped version number to 1 . 4 . 1
+====NEW EXAMPLE====
+revert 488d532feb227afa77f5dfc7c0fecd24c023c196 and e599af1e829b5b7a5c57a6cec38e62b85c51a930
+====NEW EXAMPLE====
+bumped version
+====NEW EXAMPLE====
+updated ognl to 3 . 1 . 2
+====NEW EXAMPLE====
+removed previous test information
+====NEW EXAMPLE====
+setting version to 1 . 0 . 151
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+make bilingual text visible for city
+====NEW EXAMPLE====
+changed version number
+====NEW EXAMPLE====
+plugin does not save book encoding
+====NEW EXAMPLE====
+fixed javadoc
+====NEW EXAMPLE====
+added joachim baumann to the contributors
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+update the year for the manual .
+====NEW EXAMPLE====
+fixed crash when playbackservice wasn ' t running and no last played media
+====NEW EXAMPLE====
+fix issues with app crash
+====NEW EXAMPLE====
+fix inputtype determination of webtextview ( do not merge )
+====NEW EXAMPLE====
+fixed wrong import .
+====NEW EXAMPLE====
+fix travis by using latest platform tools required by lint .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+fixed inconsistent synchronization
+====NEW EXAMPLE====
+fixed a bug in bbb - conf
+====NEW EXAMPLE====
+sonar - 3626 fix test for windows
+====NEW EXAMPLE====
+adding client - negotiation module
+====NEW EXAMPLE====
+fix gif encoder application id .
+====NEW EXAMPLE====
+multithreading issues ( caused by parallel injected - code highlighting )
+====NEW EXAMPLE====
+missing new line
+====NEW EXAMPLE====
+add 888
+====NEW EXAMPLE====
+updated ognl to 3 . 1 . 2
+====NEW EXAMPLE====
+improve gamepad fallbacks for text entry .
+====NEW EXAMPLE====
+fix the typo costin spotted
+====NEW EXAMPLE====
+fixed typo
+====NEW EXAMPLE====
+updated japanese translation
+====NEW EXAMPLE====
+removed white spaces
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+prepared patch for drlvm tests .
+====NEW EXAMPLE====
+mentioned hide offline feature in the changelog
+====NEW EXAMPLE====
+improve gitignore
+====NEW EXAMPLE====
+ignore dot - vagrant
+====NEW EXAMPLE====
+added coverage to test interfaces
+====NEW EXAMPLE====
+preferred focused component
+====NEW EXAMPLE====
+add ' server ' keyword to title
+====NEW EXAMPLE====
+added a shutdown method
+====NEW EXAMPLE====
+prepare release checkstyle - 7 . 3
+====NEW EXAMPLE====
+edited changelog . md
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / configuration - admin / .
+====NEW EXAMPLE====
+fix a memory leak in throwable constructor
+====NEW EXAMPLE====
+fix spurious change
+====NEW EXAMPLE====
+lps - 7300 - update theming conventions
+====NEW EXAMPLE====
+checking only test files
+====NEW EXAMPLE====
+includes the notice file in the release
+====NEW EXAMPLE====
+setting default name for multi - project
+====NEW EXAMPLE====
+removing dirty hack to fix failing input launch on radio
+====NEW EXAMPLE====
+ignoring test that is redundant for com . zaxxer . hikari . pool . testconnectiontimeoutretry . testconnectionretries ( # 678 )
+====NEW EXAMPLE====
+changed photo size
+====NEW EXAMPLE====
+upgrade junit version from 4 . 11 to 4 . 12
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - lock / .
+====NEW EXAMPLE====
+add metrics constant for new settings activity
+====NEW EXAMPLE====
+remove redundant onpause from readerwebview when hiding view
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / mentions / .
+====NEW EXAMPLE====
+bump the version to 2 . 1 . 2
+====NEW EXAMPLE====
+beta version = > 2 . 0 beta 12
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+lrqa - 28723 add test properties for osgi configs
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / message - boards / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+updated parent version .
+====NEW EXAMPLE====
+very stupid coding mistake .
+====NEW EXAMPLE====
+updated avs proprietary to 2 . 8 . 7
+====NEW EXAMPLE====
+add missing piece to the build . gradle .
+====NEW EXAMPLE====
+update changelog
+====NEW EXAMPLE====
+includes the notice file in the release
+====NEW EXAMPLE====
+fix suggestion popup for rtl text on ltr layout .
+====NEW EXAMPLE====
+add mit license
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / blogs / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / configuration - admin / .
+====NEW EXAMPLE====
+set maxlength of post editor content field to a really high value to fix text from getting cut off on certain devices .
+====NEW EXAMPLE====
+remove extra ' ) ' in etag example
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+add logging of bintray user for ci
+====NEW EXAMPLE====
+setting version to 1 . 0 . 151 - snapshot
+====NEW EXAMPLE====
+fix hangouts conference calling regression .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / site / .
+====NEW EXAMPLE====
+updated test for groovy - 3401 with a correct example showing that we can put a blankline before the colon
+====NEW EXAMPLE====
+increased xmx option for the poker test .
+====NEW EXAMPLE====
+call the callback on sdkinitialize
+====NEW EXAMPLE====
+remove confusing warning from scrollresponder
+====NEW EXAMPLE====
+update changes . md
+====NEW EXAMPLE====
+stops bad behavior
+====NEW EXAMPLE====
+lps - 17831 fix compile error
+====NEW EXAMPLE====
+add deprecated annotation to util . getsize
+====NEW EXAMPLE====
+remove the linker settings for now .
+====NEW EXAMPLE====
+upgraded guava to 20 . 0
+====NEW EXAMPLE====
+removed superfluous @ suppresswarnings ( " unused " ) from putallpartitionawareoperationfactory
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / announcements / .
+====NEW EXAMPLE====
+smack 4 . 1 . 0 - alpha7 - snapshot
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+changed darwin flag default to false
+====NEW EXAMPLE====
+bumping submodule .
+====NEW EXAMPLE====
+configured functional tests to run with forked jvm per - test , possibly hiding a memory leak problem with tests
+====NEW EXAMPLE====
+removed unnecessary import
+====NEW EXAMPLE====
+modify makefile
+====NEW EXAMPLE====
+test - with - junit ` so build fails on test failures
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+reset the atmospherefactory as well
+====NEW EXAMPLE====
+remove invariant of sample . ios . js that is not used
+====NEW EXAMPLE====
+add iframe option
+====NEW EXAMPLE====
+applying changes to svn trunk , not git trunk
+====NEW EXAMPLE====
+increase the allowed time for class - reloading in testreloading ( ) to improve test stability when load is high
+====NEW EXAMPLE====
+upgraded maven - release - plugin to version 2 . 1 .
+====NEW EXAMPLE====
+changed artifact name back to liquibase - core
+====NEW EXAMPLE====
+add callback for ` add ` ( android )
+====NEW EXAMPLE====
+provide a reverseeach method for arrays
+====NEW EXAMPLE====
+disable xml rpc debug
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / configuration - admin / .
+====NEW EXAMPLE====
+lps - 28938 do not ignore log
+====NEW EXAMPLE====
+remove unnecessary subclassing psiclass in marker interface
+====NEW EXAMPLE====
+altering build script
+====NEW EXAMPLE====
+escalate visibility
+====NEW EXAMPLE====
+revert " changed power request to activation energy . "
+====NEW EXAMPLE====
+compositeshader , add unimplemented method to fix warning
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / plugins - admin / .
+====NEW EXAMPLE====
+upgraded netty to 4 . 0 . 24
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+delete an unused flag in incrementalindexsegment
+====NEW EXAMPLE====
+adds throwable - less exception
+====NEW EXAMPLE====
+added urllib3 to requirements for py
+====NEW EXAMPLE====
+fix broken test name that prevents test from running .
+====NEW EXAMPLE====
+building 4 . 6 runtime requires 4 . 5 antlr mvn plugin
+====NEW EXAMPLE====
+lps - 44237 temporarily disable submodules so everything builds cleanly
+====NEW EXAMPLE====
+add extra - android - m2repository dependency in travis
+====NEW EXAMPLE====
+disable renderthread
+====NEW EXAMPLE====
+update build tools version
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / blogs / .
+====NEW EXAMPLE====
+add storm - 1079 to changelog . md
+====NEW EXAMPLE====
+bumping snapshot version
+====NEW EXAMPLE====
+updated components definition for travis ci since the example app now requires new sdk and build tools .
+====NEW EXAMPLE====
+changed version number so i could push the new version to dist .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+remove minsdkversion and targetsdkversion to not conflict with apps .
+====NEW EXAMPLE====
+terrorist version bump to 1 . 4 . 4 . 1 for windows build fix .
+====NEW EXAMPLE====
+do not show error on success
+====NEW EXAMPLE====
+correcting typo causing build failure
+====NEW EXAMPLE====
+fixed memory leak
+====NEW EXAMPLE====
+bump maven version .
+====NEW EXAMPLE====
+fix typo
+====NEW EXAMPLE====
+modified samples
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+fix type warnings
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+====NEW EXAMPLE====
+raise default concurrent compactors to 4 to avoid lcs test timeout
+====NEW EXAMPLE====
+lps - 4668 - mb emoticons need better z - index
+====NEW EXAMPLE====
+commented out a failing line
+====NEW EXAMPLE====
+add comment
+====NEW EXAMPLE====
+compile support - v4 with java 7 in gradle
+====NEW EXAMPLE====
+prepare release hikaricp - 1 . 1 . 5
+====NEW EXAMPLE====
+fixed faulty travis config .
+====NEW EXAMPLE====
+drop cached qualified name after changing nodes in subtree
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / roles / .
+====NEW EXAMPLE====
+added bundler - y entries to .
+====NEW EXAMPLE====
+use 2016 . 1 meta - version
+====NEW EXAMPLE====
+improve mongodb script
+====NEW EXAMPLE====
+lps - 63724 add new remote export exception type
+====NEW EXAMPLE====
+remove otp - geocoder from top - level pom
+====NEW EXAMPLE====
+only set membership disconnection timer if we have not deliberately torn down
+====NEW EXAMPLE====
+ignore files
+====NEW EXAMPLE====
+install default plugins into plugin project too
+====NEW EXAMPLE====
+add target to gitignore
+====NEW EXAMPLE====
+lps - 27694 remove unused property
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+lps - 64414 no need to deploy sample - sql - builder when build - sample - sql target is called
+====NEW EXAMPLE====
+upgrade apache commons collections to v3 . 2 . 2
+====NEW EXAMPLE====
+npe on stop ( only threadstop should set thread to null , or it needs a sync ) .
+====NEW EXAMPLE====
+add a class plainsaslserver that implements the saslserver interface - - fix the method name from setup to before
+====NEW EXAMPLE====
+remove unnecessary call .
+====NEW EXAMPLE====
+update changes
+====NEW EXAMPLE====
+added debugging flag to build to find cause for api failure .
+====NEW EXAMPLE====
+gh - 49 build fix ( sears )
+====NEW EXAMPLE====
+header = 1
+====NEW EXAMPLE====
+remove errant character
+====NEW EXAMPLE====
+changed dependencies back to snapshot versions after tagging
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / invitation / .
+====NEW EXAMPLE====
+setting version to 1 . 0 . 106 - snapshot
+====NEW EXAMPLE====
+updating the peg for cacheword
+====NEW EXAMPLE====
+added blob path changes entry
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+skips adding a listener if already exists .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / message - boards / .
+====NEW EXAMPLE====
+fix warnings
+====NEW EXAMPLE====
+remove unnecessary prop
+====NEW EXAMPLE====
+change jmh resultformat to json
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+remove completed todo
+====NEW EXAMPLE====
+updated japanese translation
+====NEW EXAMPLE====
+removed testing code
+====NEW EXAMPLE====
+bat ` files should always have windows - style newlines
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / document - library / .
+====NEW EXAMPLE====
+change sample app gradle
+====NEW EXAMPLE====
+added error handling
+====NEW EXAMPLE====
+reverted the changes related to multiple cursors .
+====NEW EXAMPLE====
+upgraded to elasticsearch v0 . 20 . 4
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+updated changelog . textile .
+====NEW EXAMPLE====
+make go case sensitive language
+====NEW EXAMPLE====
+lrqa - 22780 create component name for microblogs portlet in testray
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / portlet - configuration / .
+====NEW EXAMPLE====
+changed release version
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+reset version for development
+====NEW EXAMPLE====
+add pods ignore
+====NEW EXAMPLE====
+set library min version to 7
+====NEW EXAMPLE====
+add the apidocs to the mvn build ( though temporarily requires a snapshot of the mvn plugin )
+====NEW EXAMPLE====
+added irc notifications to travis
+====NEW EXAMPLE====
+slightly increate the drag bezel size .
+====NEW EXAMPLE====
+fix # 275 .
+====NEW EXAMPLE====
+use parameterized logging
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / staging / .
+====NEW EXAMPLE====
+push version to 197 and v10 .
+====NEW EXAMPLE====
+now closes readablebytechannel after it has been read .
+====NEW EXAMPLE====
+added storm - 1219 to changelog
+====NEW EXAMPLE====
+fix crowdin task .
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+emit better ( correct ) timestamps that respect aac upsampling .
+====NEW EXAMPLE====
+added java7 compile options
+====NEW EXAMPLE====
+remove explicit " typesafe - releases " repo definition
+====NEW EXAMPLE====
+idea - 80966 debugger " resume " button - right next to the " stop " button - added a separator
+====NEW EXAMPLE====
+set last_subscription_check after check
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+rolled back bootstrap version
+====NEW EXAMPLE====
+commented maven push for travis
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / mentions / .
+====NEW EXAMPLE====
+ignore spring - build ' docbook ' directory
+====NEW EXAMPLE====
+don ' t show the menu button twice .
+====NEW EXAMPLE====
+add usage
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / asset / .
+====NEW EXAMPLE====
++ stderr + stdout
+====NEW EXAMPLE====
+added reactcommon to package . json to allow for building locally
+====NEW EXAMPLE====
+fixed the apache - camel kit has the camel - core - test jar issue
+====NEW EXAMPLE====
+fix masking of lockclientstoppedexception during operationfacade . unregisterexecutingquery
+====NEW EXAMPLE====
+bump version to 0 . 0 . 2 .
+====NEW EXAMPLE====
+fix failing test
+====NEW EXAMPLE====
+jms now also enlists topic destinations as managed endpoints in jmx
+====NEW EXAMPLE====
+added eclipse settings files to gitignore
+====NEW EXAMPLE====
+fork every tooling api test ( temporarily ) , to test hypothesis about cause of windows ci build failures .
+====NEW EXAMPLE====
+exclude the source jar files .
+====NEW EXAMPLE====
+lrqa - 24837 use new upgrade tool
+====NEW EXAMPLE====
+upgraded ( optional ) gson dependency from 2 . 3 to 2 . 6 . 2
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / contacts / .
+====NEW EXAMPLE====
+configuration not needed any more .
+====NEW EXAMPLE====
+update gradle
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - configuration / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / export - import / .
+====NEW EXAMPLE====
+updated com . jakewharton . sdkmanager to 0 . 12
+====NEW EXAMPLE====
+add " not null " to owner column in acl schema .
+====NEW EXAMPLE====
+lps - 50131 this does not need newclassloaderjunittestrunner
+====NEW EXAMPLE====
+updated version number
+====NEW EXAMPLE====
+fix comments
+====NEW EXAMPLE====
+fix an issue where ' getmediafilemimetype ( file mediafile , boolean isimage ) ' is called with false on images
+====NEW EXAMPLE====
+added empty line
+====NEW EXAMPLE====
+use $ { project . build . directory } rather than directly using target
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+changed order of repos in the gradle build so the dependencies are more reliably located .
+====NEW EXAMPLE====
+build tools 21 . 1 . 1
+====NEW EXAMPLE====
+add a missing include in documentsui android . mk .
+====NEW EXAMPLE====
+change the scope
+====NEW EXAMPLE====
+add method for exposing version less than 1 . 1 in alluxio version .
+====NEW EXAMPLE====
+added changelog entry
+====NEW EXAMPLE====
+fix margin on top of the pages
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - configuration / .
+====NEW EXAMPLE====
+setting version to 1 . 0 . 8 - snapshot
+====NEW EXAMPLE====
+add tostring ( ) to golighttype
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / frontend - js / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - search / .
+====NEW EXAMPLE====
+set blockallnetworktrafficchaostype to enabled in config
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+changed a typo from shnapshot to snapshot = )
+====NEW EXAMPLE====
+removed redundant ' pooled = true '
+====NEW EXAMPLE====
+fix android build
+====NEW EXAMPLE====
+add new module to platformimplementationmodules
+====NEW EXAMPLE====
+add missing mechanism - too - weak sasl error
+====NEW EXAMPLE====
+bump cqlsh ' s default_cqlver to 3 . 1 . 6
+====NEW EXAMPLE====
+add storm - 1091 to changelog . md
+====NEW EXAMPLE====
+fix mongodb test
+====NEW EXAMPLE====
+updated changes
+====NEW EXAMPLE====
+bump version from 1 . 7 . 8 - > 1 . 7 . 9
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+fatal errors now kill processing
+====NEW EXAMPLE====
+add missing local_min_sdk_version for support library demos
+====NEW EXAMPLE====
+make allocator a static inner class
+====NEW EXAMPLE====
+prepare release hdrhistogram - 1 . 0 . 7
+====NEW EXAMPLE====
+ignore update ' modules / apps / forms - and - workflow / calendar / .
+====NEW EXAMPLE====
+lps - 44362 add @ override
+====NEW EXAMPLE====
+bump up revision number .
+====NEW EXAMPLE====
+fix a bug in canaddtolastinputmethod ( )
+====NEW EXAMPLE====
+ignore morefilesintegrationtest .
+====NEW EXAMPLE====
+ignore libs directory
+====NEW EXAMPLE====
+fixing syncdoc task to avoid up - to - date message only because target directory already exists
+====NEW EXAMPLE====
+added tag 0 . 0 . 7 . 8 for changeset 9bb7ad84eace
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - template / .
+====NEW EXAMPLE====
+add missing coming tag
+====NEW EXAMPLE====
+add lint config
+====NEW EXAMPLE====
+added call to hystrixplugins . reset ( ) in hystrixcommandtestwithcustomconcurrencystrategy
+====NEW EXAMPLE====
+updated changelog
+====NEW EXAMPLE====
+ignore sync - api 1 . 0 . 2 prep next
+====NEW EXAMPLE====
+removing unused import
+====NEW EXAMPLE====
+updated version
+====NEW EXAMPLE====
+o adding missing properties to gitblit . properties for adjusting the context path .
+====NEW EXAMPLE====
+hide the nanos even harder
+====NEW EXAMPLE====
+forcing revalidation after entering fullscreen .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / layout / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / portal - scheduler / .
+====NEW EXAMPLE====
+added a missing def
+====NEW EXAMPLE====
+prepare version 27 . 0 . 3 .
+====NEW EXAMPLE====
+fix deselction of all gpx
+====NEW EXAMPLE====
+ignore update ' modules / apps / foundation / roles / .
+====NEW EXAMPLE====
+engines are standalone blocks
+====NEW EXAMPLE====
+bump gradle to 3 . 2 . 1
+====NEW EXAMPLE====
+bump common ref .
+====NEW EXAMPLE====
+ignore update ' modules / apps / collaboration / wiki / .
+====NEW EXAMPLE====
+ignore update ' modules / apps / web - experience / journal / .
+====NEW EXAMPLE====
+fix possible resource leak .
+====NEW EXAMPLE====
+ignore update ' modules / apps / sync / .
+====NEW EXAMPLE====
+fixing gitignore file
+====NEW EXAMPLE====
+handle calendars with an access level of " root "
+====NEW EXAMPLE====
+add todos
+====NEW EXAMPLE====
+remove typo
+====NEW EXAMPLE====
+lps - 34188 add missing list close tag in the export layouts form
+====NEW EXAMPLE====
+updated travis to support building ( skips desktop unit tests )
+====NEW EXAMPLE====
+catch the indexoutofboundsexception thrown by ansicolordiagnosticlistener .
+====NEW EXAMPLE====
+updated changelog .
+====NEW EXAMPLE====
+revert " lps - 51081 ignore " tmp " dir "
+====NEW EXAMPLE====
+updated file
+====NEW EXAMPLE====
+add full heron tar ball dependency to the target packages
+====NEW EXAMPLE====
+force ast injected property check with staticcheckervisitor
+====NEW EXAMPLE====
+activating isolate plugin
+====NEW EXAMPLE====
+set release version
+====NEW EXAMPLE====
+lps - 55100 ignore lib for versions . xml
+====NEW EXAMPLE====
+bump up revision number .
+====NEW EXAMPLE====
+adding intellij files to ignore
+====NEW EXAMPLE====
+lrqa - 22807 remove wildfly + mariadb smoke while we investigate
+====NEW EXAMPLE====
+upgraded guava to 14 . 0
