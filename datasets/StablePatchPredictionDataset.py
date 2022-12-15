@@ -6,6 +6,7 @@ from torchtext import data
 from torchtext.data import Field, Dataset
 
 from datasets.dataset_utils import create_filter_predicate_on_length
+from datasets.HunkSplitter import HunkSplitter
 from edit_representation.sequence_encoding.Differ import Differ
 from neural_editor.seq2seq.config import Config
 
@@ -13,7 +14,7 @@ from neural_editor.seq2seq.config import Config
 class StablePatchPredictionDataset(data.Dataset):
     """Defines a dataset for commit message generation. It parses text files with tokens"""
 
-    def __init__(self, path: str, diffs_field: Field, config: Config, filter_pred) -> None:
+    def __init__(self, path: str, diffs_field: Field, config: Config, filter_pred, max_size=None) -> None:
         fields = [('src', diffs_field), ('trg', Field(sequential=False, use_vocab=False)),
                   ('diff_alignment', diffs_field), ('diff_prev', diffs_field), ('diff_updated', diffs_field),
                   ('updated', diffs_field),
@@ -22,31 +23,42 @@ class StablePatchPredictionDataset(data.Dataset):
         differ = Differ(config['REPLACEMENT_TOKEN'], config['DELETION_TOKEN'],
                         config['ADDITION_TOKEN'], config['UNCHANGED_TOKEN'],
                         config['PADDING_TOKEN'])
+        hunk_splitter = HunkSplitter(config['CONTEXT_SIZE_FOR_HUNKS'], differ, config)
         with open(os.path.join(path, 'trg.txt'), mode='r', encoding='utf-8') as stable, \
                 open(os.path.join(path, 'prev.txt'), mode='r', encoding='utf-8') as prev, \
                 open(os.path.join(path, 'updated.txt'), mode='r', encoding='utf-8') as updated:
+            total = 0
+            errors = 0
             for stable_line, prev_line, updated_line in zip(stable, prev, updated):
+                total += 1
+                if max_size is not None and total > max_size:
+                    break
+
                 stable_line, prev_line, updated_line = stable_line.strip(), prev_line.strip(), updated_line.strip()
-                diff = differ.diff_tokens_fast_lvn(prev_line.split(' '), updated_line.split(' '),
-                                                   leave_only_changed=config['LEAVE_ONLY_CHANGED'])
+                diff, prev_line, updated_line = hunk_splitter.diff_sequences_and_add_hunks(prev_line, updated_line)
                 is_correct, error = filter_pred((prev_line.split(' '), updated_line.split(' '),
                                                  diff[0], diff[1], diff[2]))
                 if not is_correct:
-                    print(f'Incorrect example is seen. Error: {error}', file=sys.stderr)
+                    errors += 1
+                    print(f'Incorrect {total - 1} example is seen. Error: {error}', file=sys.stderr)
                     continue
                 examples.append(data.Example.fromlist(
                     [prev_line, int(stable_line), diff[0], diff[1], diff[2], updated_line, len(examples)], fields))
+            print(f'Errors: {errors} / {total - 1} = {errors / total}')
         super(StablePatchPredictionDataset, self).__init__(examples, fields)
 
     @staticmethod
     def load_data(diffs_field: Field, verbose: bool, config: Config) -> Tuple[Dataset, Dataset, Dataset]:
         filter_predicate = create_filter_predicate_on_length(config['TOKENS_CODE_CHUNK_MAX_LEN'])
         train_data = StablePatchPredictionDataset(os.path.join(config['DATASET_ROOT_COMMIT'], 'train'),
-                                                  diffs_field, config, filter_pred=filter_predicate)
+                                                  diffs_field, config, filter_pred=filter_predicate,
+                                                  max_size=config['MAX_NUMBER_OF_EXAMPLES_TEST'])
         val_data = StablePatchPredictionDataset(os.path.join(config['DATASET_ROOT_COMMIT'], 'val'),
-                                                diffs_field, config, filter_pred=filter_predicate)
+                                                diffs_field, config, filter_pred=filter_predicate,
+                                                max_size=config['MAX_NUMBER_OF_EXAMPLES_TEST'])
         test_data = StablePatchPredictionDataset(os.path.join(config['DATASET_ROOT_COMMIT'], 'test'),
-                                                 diffs_field, config, filter_pred=filter_predicate)
+                                                 diffs_field, config, filter_pred=filter_predicate,
+                                                 max_size=config['MAX_NUMBER_OF_EXAMPLES_TEST'])
         if verbose:
             StablePatchPredictionDataset.print_data_info(train_data, val_data, test_data, diffs_field, config)
         return train_data, val_data, test_data

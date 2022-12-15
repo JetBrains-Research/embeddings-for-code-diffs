@@ -5,8 +5,6 @@ from torch import nn, Tensor
 from torch.nn import Embedding
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
-from neural_editor.seq2seq import Batch
-
 
 class EditEncoder(nn.Module):
     """Encodes a sequence of word embeddings"""
@@ -49,20 +47,20 @@ class EditEncoder(nn.Module):
         lengths_mask_reverse = torch.argsort(lengths_mask)
         return output[lengths_mask_reverse, :], (h_n[:, lengths_mask_reverse, :], c_n[:, lengths_mask_reverse, :])
 
-    def encode_edit(self, batch: Batch) -> Tuple[Tensor, Tensor]:
+    def encode_edit(self, diff_alignment: Tensor, diff_prev: Tensor, diff_updated: Tensor,
+                    lengths: Tensor) -> Tuple[Tensor, Tensor]:
         """
         Returns edit representations (edit_final) of samples in the batch.
-        :param batch: batch to encode
         :return: Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]]
         """
         diff_embedding = torch.cat(
-            (self.embed(batch.diff_alignment), self.embed(batch.diff_prev), self.embed(batch.diff_updated)),
+            (self.embed(diff_alignment), self.embed(diff_prev), self.embed(diff_updated)),
             dim=2
         )  # [B, SeqAlignedLen, EmbDiff + EmbDiff + EmbDiff]
         # [B, AlignedSeqLen, NumDirections * DiffEncoderH]
         # Tuple[[NumLayers, B, NumDirections * DiffEncoderH], [NumLayers, B, NumDirections * DiffEncoderH]]
         _, edit_final = self.forward(
             diff_embedding,
-            batch.diff_alignment_lengths  # B * 1 * AlignedSeqLen
+            lengths  # B * 1 * AlignedSeqLen
         )
         return edit_final
