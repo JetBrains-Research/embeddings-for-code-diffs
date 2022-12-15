@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'GumTreeDiffer'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile 'org.jetbrains:annotations:16.0.2'
+
+    // https://mvnrepository.com/artifact/com.github.gumtreediff/client
+    compile group: 'com.github.gumtreediff', name: 'client', version: '2.1.2'
+
+    // https://mvnrepository.com/artifact/com.github.gumtreediff/gen.jdt
+    compile group: 'com.github.gumtreediff', name: 'gen.jdt', version: '2.1.2'
+
+    // https://mvnrepository.com/artifact/org.eclipse.jdt/org.eclipse.jdt.core
+    compile group: 'org.eclipse.jdt', name: 'org.eclipse.jdt.core', version: '3.10.0'
+
+    // https://mvnrepository.com/artifact/com.github.gumtreediff/core
+    runtime group: 'com.github.gumtreediff', name: 'core', version: '2.1.2'
+
+    // https://mvnrepository.com/artifact/com.github.gumtreediff/gen.jdt
+    compile group: 'com.github.gumtreediff', name: 'gen.jdt', version: '2.1.2'
+
+    // https://mvnrepository.com/artifact/com.github.gumtreediff/gen.antlr
+    compile group: 'com.github.gumtreediff', name: 'gen.antlr', version: '2.0.0'
+}
